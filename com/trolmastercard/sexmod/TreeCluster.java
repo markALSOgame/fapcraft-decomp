@@ -96,7 +96,7 @@ public class TreeCluster {
             if (kobold.getSexPlayerUuid() == null) {
                kobold.setNoGravity(false);
                kobold.noClip = false;
-               kobold.b(GirlAnimationState.NULL);
+               kobold.setCurrentAction(GirlAnimationState.NULL);
                kobold.getDataManager().set(GirlEntity.BusyKey, false);
             }
          } catch (RuntimeException error) {

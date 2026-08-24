@@ -156,8 +156,8 @@ public class GoblinNpcRenderer extends ScaledGirlGeoRenderer<GoblinNpc> {
       );
    }
 
-   public void a(GeoModel model, GoblinNpc goblin, float f, float f2, float f3, float f4, float f5) {
-      super.a(model, goblin, f, f2, f3, f4, goblin.FadeAlpha);
+   public void render(GeoModel model, GoblinNpc goblin, float f, float f2, float f3, float f4, float f5) {
+      super.render(model, goblin, f, f2, f3, f4, goblin.FadeAlpha);
    }
 
 
@@ -233,7 +233,7 @@ public class GoblinNpcRenderer extends ScaledGirlGeoRenderer<GoblinNpc> {
    }
 
 
-   public void a(GoblinNpc goblin, double d, double d2, double d3, float f, float f2) {
+   public void doRender(GoblinNpc goblin, double d, double d2, double d3, float f, float f2) {
       this.RenderEntity = goblin;
       this.Initialized = -420.69F == f && goblin.getCurrentAction() == GirlAnimationState.SHOULDER_IDLE;
       this.F = -420.69F == f && goblin.getCurrentAction() == GirlAnimationState.PICK_UP;
@@ -343,7 +343,7 @@ public class GoblinNpcRenderer extends ScaledGirlGeoRenderer<GoblinNpc> {
          }
       }
 
-      super.a(goblin, d, d2, d3, f, f2);
+      super.doRender(goblin, d, d2, d3, f, f2);
 
       if (isInCatchThrowAnimation(goblin, girlAnimationState) && Mc.gameSettings.thirdPersonView == 0 && Mc.player.getPersistentID().equals(uuid)) {
          GlStateManager.popMatrix();

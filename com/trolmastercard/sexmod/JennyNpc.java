@@ -98,7 +98,7 @@ fg {
     }
 
     @Override
-    public String c() {
+    public String getDisplayName() {
         return "Jenny";
     }
 
@@ -163,7 +163,7 @@ fg {
                                 entityPlayerMP.moveRelative(0.0f, 0.0f, 0.0f, 0.0f);
                                 this.a(0.0, 0.0, 0.4, 0.0f, 60.0f);
                                 this.AimTarget = null;
-                                this.b(GirlAnimationState.DOGGYSTART);
+                                this.setCurrentAction(GirlAnimationState.DOGGYSTART);
                                 NetworkHandler.channel.sendTo((IMessage)new PacketSetPlayerMovement(false), entityPlayerMP);
                             }
                             try {
@@ -190,7 +190,7 @@ fg {
                                 this.motionX = 0.0;
                                 this.motionY = 0.0;
                                 this.motionZ = 0.0;
-                                this.b(GirlAnimationState.STARTDOGGY);
+                                this.setCurrentAction(GirlAnimationState.STARTDOGGY);
                                 break block23;
                             }
                             catch (RuntimeException runtimeException) {
@@ -247,7 +247,7 @@ fg {
                         throw JennyNpc.rethrow(runtimeException);
                     }
                 }
-                this.b(GirlAnimationState.PAYMENT);
+                this.setCurrentAction(GirlAnimationState.PAYMENT);
                 break block26;
             }
             this.rotationYaw = this.I().floatValue();
@@ -431,7 +431,7 @@ fg {
             }
             try {
                 if ("action.names.dressup".equals(string)) {
-                    this.b(GirlAnimationState.STRIP);
+                    this.setCurrentAction(GirlAnimationState.STRIP);
                 }
             }
             catch (RuntimeException runtimeException) {
@@ -508,7 +508,7 @@ fg {
     }
 
     @Override
-    public void b(GirlAnimationState girlAnimationState) {
+    public void setCurrentAction(GirlAnimationState girlAnimationState) {
         block34: {
             GirlAnimationState girlAnimationState2;
             block32: {
@@ -583,7 +583,7 @@ fg {
             }
             try {
                 try {
-                    super.b(girlAnimationState);
+                    super.setCurrentAction(girlAnimationState);
                     if (girlAnimationState2 == GirlAnimationState.STARTBLOWJOB || girlAnimationState2 == GirlAnimationState.PAIZURI_START) break block34;
                 }
                 catch (RuntimeException runtimeException) {
@@ -741,148 +741,148 @@ fg {
     }
 
     @Override
-    protected <E extends IAnimatable> PlayState a(AnimationEvent<E> animEvent) {
+    protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> animEvent) {
         if (this.world instanceof PreviewWorld) {
             return null;
         }
         block5: switch (animEvent.getController().getName()) {
             case "eyes": {
                 if (this.getCurrentAction() != GirlAnimationState.NULL || !this.getCurrentAction().autoBlink) {
-                    this.a("animation.jenny.null", true, animEvent);
+                    this.createAnimationOnce("animation.jenny.null", true, animEvent);
                     break;
                 }
-                this.a("animation.jenny.fhappy", true, animEvent);
+                this.createAnimationOnce("animation.jenny.fhappy", true, animEvent);
                 break;
             }
             case "movement": {
                 if (this.getCurrentAction() != GirlAnimationState.NULL && this.getCurrentAction() != null) {
-                    this.a("animation.jenny.null", true, animEvent);
+                    this.createAnimationOnce("animation.jenny.null", true, animEvent);
                     break;
                 }
                 if (this.isRiding()) {
-                    this.a("animation.jenny.sit", true, animEvent);
+                    this.createAnimationOnce("animation.jenny.sit", true, animEvent);
                     break;
                 }
                 if (Math.abs(this.prevPosX - this.posX) + Math.abs(this.prevPosZ - this.posZ) > 0.0) {
                     switch (this.getWalkState()) {
                         case RUN: {
-                            this.a("animation.jenny.run", true, animEvent);
+                            this.createAnimationOnce("animation.jenny.run", true, animEvent);
                             break;
                         }
                         case FAST_WALK: {
-                            this.a("animation.jenny.fastwalk", true, animEvent);
+                            this.createAnimationOnce("animation.jenny.fastwalk", true, animEvent);
                             break;
                         }
                         case WALK: {
-                            this.a("animation.jenny.walk", true, animEvent);
+                            this.createAnimationOnce("animation.jenny.walk", true, animEvent);
                         }
                     }
                     this.rotationYaw = this.rotationYawHead;
                     break;
                 }
-                this.a("animation.jenny.idle", true, animEvent);
+                this.createAnimationOnce("animation.jenny.idle", true, animEvent);
                 break;
             }
             case "action": {
                 switch (this.getCurrentAction()) {
                     case NULL: {
-                        this.a("animation.jenny.null", true, animEvent);
+                        this.createAnimationOnce("animation.jenny.null", true, animEvent);
                         break block5;
                     }
                     case STRIP: {
-                        this.a("animation.jenny.strip", false, animEvent);
+                        this.createAnimationOnce("animation.jenny.strip", false, animEvent);
                         break block5;
                     }
                     case PAYMENT: {
-                        this.a("animation.jenny.payment", false, animEvent);
+                        this.createAnimationOnce("animation.jenny.payment", false, animEvent);
                         break block5;
                     }
                     case STARTBLOWJOB: {
-                        this.a("animation.jenny.blowjobintro", false, animEvent);
+                        this.createAnimationOnce("animation.jenny.blowjobintro", false, animEvent);
                         break block5;
                     }
                     case SUCKBLOWJOB: {
-                        this.a("animation.jenny.blowjobsuck", true, animEvent);
+                        this.createAnimationOnce("animation.jenny.blowjobsuck", true, animEvent);
                         break block5;
                     }
                     case THRUSTBLOWJOB: {
-                        this.a("animation.jenny.blowjobthrust", true, animEvent);
+                        this.createAnimationOnce("animation.jenny.blowjobthrust", true, animEvent);
                         break block5;
                     }
                     case CUMBLOWJOB: {
-                        this.a("animation.jenny.blowjobcum", false, animEvent);
+                        this.createAnimationOnce("animation.jenny.blowjobcum", false, animEvent);
                         break block5;
                     }
                     case STARTDOGGY: {
-                        this.a("animation.jenny.doggygoonbed", false, animEvent);
+                        this.createAnimationOnce("animation.jenny.doggygoonbed", false, animEvent);
                         break block5;
                     }
                     case WAITDOGGY: {
-                        this.a("animation.jenny.doggywait", true, animEvent);
+                        this.createAnimationOnce("animation.jenny.doggywait", true, animEvent);
                         break block5;
                     }
                     case DOGGYSTART: {
-                        this.a("animation.jenny.doggystart", false, animEvent);
+                        this.createAnimationOnce("animation.jenny.doggystart", false, animEvent);
                         break block5;
                     }
                     case DOGGYSLOW: {
-                        this.a("animation.jenny.doggyslow", true, animEvent);
+                        this.createAnimationOnce("animation.jenny.doggyslow", true, animEvent);
                         break block5;
                     }
                     case DOGGYFAST: {
-                        this.a("animation.jenny.doggyfast_" + (this.aa ? "hard" : "soft"), true, animEvent);
+                        this.createAnimationOnce("animation.jenny.doggyfast_" + (this.aa ? "hard" : "soft"), true, animEvent);
                         break block5;
                     }
                     case DOGGYCUM: {
-                        this.a("animation.jenny.doggycum", false, animEvent);
+                        this.createAnimationOnce("animation.jenny.doggycum", false, animEvent);
                         break block5;
                     }
                     case ATTACK: {
-                        this.a("animation.jenny.attack" + this.S, false, animEvent);
+                        this.createAnimationOnce("animation.jenny.attack" + this.S, false, animEvent);
                         break block5;
                     }
                     case BOW: {
-                        this.a("animation.jenny.bowcharge", false, animEvent);
+                        this.createAnimationOnce("animation.jenny.bowcharge", false, animEvent);
                         break block5;
                     }
                     case RIDE: {
-                        this.a("animation.jenny.ride", true, animEvent);
+                        this.createAnimationOnce("animation.jenny.ride", true, animEvent);
                         break block5;
                     }
                     case SIT: {
-                        this.a("animation.jenny.sit", true, animEvent);
+                        this.createAnimationOnce("animation.jenny.sit", true, animEvent);
                         break block5;
                     }
                     case THROW_PEARL: {
-                        this.a("animation.jenny.throwpearl", false, animEvent);
+                        this.createAnimationOnce("animation.jenny.throwpearl", false, animEvent);
                         break block5;
                     }
                     case DOWNED: {
-                        this.a("animation.jenny.downed", true, animEvent);
+                        this.createAnimationOnce("animation.jenny.downed", true, animEvent);
                         break block5;
                     }
                     case PAIZURI_START: {
-                        this.a("animation.jenny.paizuri_start", false, animEvent);
+                        this.createAnimationOnce("animation.jenny.paizuri_start", false, animEvent);
                         break block5;
                     }
                     case PAIZURI_SLOW: {
-                        this.a("animation.jenny.paizuri_slow", true, animEvent);
+                        this.createAnimationOnce("animation.jenny.paizuri_slow", true, animEvent);
                         break block5;
                     }
                     case PAIZURI_FAST: {
-                        this.a("animation.jenny.paizuri_fast", true, animEvent);
+                        this.createAnimationOnce("animation.jenny.paizuri_fast", true, animEvent);
                         break block5;
                     }
                     case PAIZURI_CUM: {
-                        this.a("animation.jenny.paizuri_cum", false, animEvent);
+                        this.createAnimationOnce("animation.jenny.paizuri_cum", false, animEvent);
                         break block5;
                     }
                     case WAVE: {
-                        this.a("animation.jenny.wave", true, animEvent);
+                        this.createAnimationOnce("animation.jenny.wave", true, animEvent);
                         break block5;
                     }
                     case WAVE_IDLE: {
-                        this.a("animation.jenny.wave_idle", true, animEvent);
+                        this.createAnimationOnce("animation.jenny.wave_idle", true, animEvent);
                     }
                 }
             }

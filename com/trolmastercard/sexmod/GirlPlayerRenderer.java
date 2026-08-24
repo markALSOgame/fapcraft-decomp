@@ -21,10 +21,13 @@ import net.minecraft.util.EnumHand;
 import org.lwjgl.opengl.GL11;
 import software.bernie.geckolib3.core.util.Color;
 import software.bernie.geckolib3.geo.render.built.GeoBone;
+import software.bernie.geckolib3.geo.render.built.GeoCube;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.geckolib3.renderers.geo.IGeoRenderer;
+import net.minecraft.client.gui.inventory.GuiContainerCreative;
+import net.minecraft.client.gui.inventory.GuiInventory;
 
-public class GirlPlayerRenderer extends GeoGirlRenderer {
+public class GirlPlayerRenderer extends GeoGirlRenderer<GirlEntity> {
    public static boolean RenderTrigger = false;
    ItemStack MainHandStack = ItemStack.EMPTY;
    ItemStack OffHandStack = ItemStack.EMPTY;
@@ -41,7 +44,7 @@ public class GirlPlayerRenderer extends GeoGirlRenderer {
    public void doRenderShadowAndFire(Entity entity, double d, double d2, double d3, float f, float f2) {
    }
 
-   boolean a(GirlEntity girl) {
+   boolean shouldRender(GirlEntity girl) {
       try {
          if (girl.isTracked()) {
             return true;
@@ -56,9 +59,9 @@ public class GirlPlayerRenderer extends GeoGirlRenderer {
    }
 
    @Override
-   public void a(GirlEntity girl, double d, double d2, double d3, float f, float f2) {
+   public void doRender(GirlEntity girl, double d, double d2, double d3, float f, float f2) {
       try {
-         if (!this.a(girl)) {
+         if (!this.shouldRender(girl)) {
             return;
          }
       } catch (IllegalStateException error) {
@@ -100,7 +103,7 @@ public class GirlPlayerRenderer extends GeoGirlRenderer {
          throw rethrow(error4);
       }
 
-      super.a(girl, d, d2, d3, f, f2);
+      super.doRender(girl, d, d2, d3, f, f2);
    }
 
    @Override
@@ -270,7 +273,7 @@ public class GirlPlayerRenderer extends GeoGirlRenderer {
         block11: {
             block10: {
                 try {
-                    if (!((PlayerGirlEntity)this.RenderEntity).f()) {
+                    if (!((PlayerGirlEntity)this.RenderEntity).isBoundToLocalPlayer()) {
                         return true;
                     }
                 }

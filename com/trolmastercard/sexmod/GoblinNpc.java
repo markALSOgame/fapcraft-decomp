@@ -204,7 +204,7 @@ implements GirlMaster {
         this.aX = true;
         this.c(vec3d);
         this.b(f);
-        this.b(GirlAnimationState.SIT);
+        this.setCurrentAction(GirlAnimationState.SIT);
         this.a(true);
         this.setPosition(vec3d.x, vec3d.y, vec3d.z);
     }
@@ -263,7 +263,7 @@ implements GirlMaster {
     public void a(String string, UUID uUID) {
         try {
             if ("take ur stuff back".equals(string)) {
-                this.b(GirlAnimationState.START_THROWING);
+                this.setCurrentAction(GirlAnimationState.START_THROWING);
             }
         }
         catch (ConcurrentModificationException concurrentModificationException) {
@@ -294,7 +294,7 @@ implements GirlMaster {
     }
 
     @Override
-    public String c() {
+    public String getDisplayName() {
         return "Goblin";
     }
 
@@ -618,7 +618,7 @@ implements GirlMaster {
                         }
                         this.c(entityPlayer.getPositionVector());
                         this.b(entityPlayer.rotationYaw);
-                        this.b(GirlAnimationState.CATCH);
+                        this.setCurrentAction(GirlAnimationState.CATCH);
                         this.DataManager.set(h, (Object)"bj");
                         this.a(entityPlayer.getPersistentID());
                         this.e(entityPlayer.getPersistentID());
@@ -639,7 +639,7 @@ implements GirlMaster {
                 }
             }
             this.a(entityPlayer.getPersistentID());
-            this.b(GirlAnimationState.PICK_UP);
+            this.setCurrentAction(GirlAnimationState.PICK_UP);
             this.aQ = 45;
             this.a(false);
             this.DataManager.set(TamedKey, (Object)true);
@@ -833,7 +833,7 @@ implements GirlMaster {
                                     catch (ConcurrentModificationException concurrentModificationException) {
                                         throw GoblinNpc.rethrow(concurrentModificationException);
                                     }
-                                    this.b(entityPlayer);
+                                    this.canInteract(entityPlayer);
                                     this.getNavigator().clearPath();
                                     return;
                                 }
@@ -919,7 +919,7 @@ implements GirlMaster {
             throw GoblinNpc.rethrow(concurrentModificationException);
         }
         this.aa = 0;
-        this.b(GirlAnimationState.NULL);
+        this.setCurrentAction(GirlAnimationState.NULL);
     }
 
     @Override
@@ -960,7 +960,7 @@ implements GirlMaster {
             throw GoblinNpc.rethrow(concurrentModificationException);
         }
         this.a(0);
-        this.b(GirlAnimationState.STAND_UP);
+        this.setCurrentAction(GirlAnimationState.STAND_UP);
     }
 
     void h() {
@@ -1024,7 +1024,7 @@ implements GirlMaster {
         for (GoblinNpc goblin2 : this.NearbyGoblins) {
             try {
                 if (((Boolean)goblin2.getDataManager().get(TamedKey)).booleanValue()) continue;
-                goblin2.b(GirlAnimationState.VANISH);
+                goblin2.setCurrentAction(GirlAnimationState.VANISH);
             }
             catch (ConcurrentModificationException concurrentModificationException) {
                 throw GoblinNpc.rethrow(concurrentModificationException);
@@ -1097,8 +1097,8 @@ implements GirlMaster {
         goblin3.b(0.0f);
         goblin2.a(true);
         goblin3.a(true);
-        goblin2.b(GirlAnimationState.AWAIT_PICK_UP);
-        goblin3.b(GirlAnimationState.AWAIT_PICK_UP);
+        goblin2.setCurrentAction(GirlAnimationState.AWAIT_PICK_UP);
+        goblin3.setCurrentAction(GirlAnimationState.AWAIT_PICK_UP);
         goblin2.setNoGravity(false);
         goblin3.setNoGravity(false);
         entityPlayer.setNoGravity(false);
@@ -1236,7 +1236,7 @@ implements GirlMaster {
         }
         this.c(vec3d);
         this.b(this.ThroneRot);
-        this.b(GirlAnimationState.BREEDING_INTRO_0);
+        this.setCurrentAction(GirlAnimationState.BREEDING_INTRO_0);
         this.noClip = true;
         this.setNoGravity(true);
         Vec3d vec3d2 = GoblinNpc.rotateVec3dYaw(new Vec3d(0.0, 0.44375 - (double)entityPlayer.eyeHeight, -0.7875), this.ThroneRot - 180.0f);
@@ -1248,7 +1248,7 @@ implements GirlMaster {
             goblin = list.get(0);
             goblin.c(vec3d);
             goblin.b(this.ThroneRot);
-            goblin.b(GirlAnimationState.BREEDING_INTRO_1);
+            goblin.setCurrentAction(GirlAnimationState.BREEDING_INTRO_1);
             goblin.noClip = true;
             goblin.setNoGravity(true);
         }
@@ -1256,7 +1256,7 @@ implements GirlMaster {
             goblin = list.get(1);
             goblin.c(vec3d);
             goblin.b(this.ThroneRot);
-            goblin.b(GirlAnimationState.BREEDING_INTRO_2);
+            goblin.setCurrentAction(GirlAnimationState.BREEDING_INTRO_2);
             goblin.noClip = true;
             goblin.setNoGravity(true);
         }
@@ -1355,7 +1355,7 @@ implements GirlMaster {
         float f = entityPlayer.rotationYaw + 180.0f;
         NetworkHandler.channel.sendTo((IMessage)new PacketSetPlayerMovement(false), (EntityPlayerMP)entityPlayer);
         this.e(uUID);
-        this.b(GirlAnimationState.JUMP_0);
+        this.setCurrentAction(GirlAnimationState.JUMP_0);
         this.c(vec3d);
         this.b(f);
         this.a(true);
@@ -1363,14 +1363,14 @@ implements GirlMaster {
         if (list.size() > 0) {
             GoblinNpc goblin = list.get(0);
             goblin.e(uUID);
-            goblin.b(GirlAnimationState.JUMP_1);
+            goblin.setCurrentAction(GirlAnimationState.JUMP_1);
             goblin.c(vec3d);
             goblin.b(f);
             goblin.a(true);
             if (list.size() > 1) {
                 GoblinNpc goblin2 = list.get(1);
                 goblin2.e(uUID);
-                goblin2.b(GirlAnimationState.JUMP_2);
+                goblin2.setCurrentAction(GirlAnimationState.JUMP_2);
                 goblin2.c(vec3d);
                 goblin2.b(f);
                 goblin2.a(true);
@@ -1478,7 +1478,7 @@ implements GirlMaster {
             this.setNoGravity(false);
             if (i == 39) {
                 this.c(-1);
-                this.b(GirlAnimationState.THROWN);
+                this.setCurrentAction(GirlAnimationState.THROWN);
                 this.e((UUID)null);
                 this.a((UUID)null);
             }
@@ -1766,10 +1766,10 @@ implements GirlMaster {
         GoblinNpc goblin = new GoblinNpc(this.world, this.getGirlUuid().toString(), this.k());
         Vec3d vec3d4 = GoblinNpc.rotateVec3dYaw(new Vec3d(0.0, 0.0, (double)-0.2f), entityPlayer.rotationYawHead);
         goblin.setPosition(entityPlayer.posX + vec3d4.x, entityPlayer.posY, entityPlayer.posZ + vec3d4.z);
-        goblin.b(GirlAnimationState.RUN);
+        goblin.setCurrentAction(GirlAnimationState.RUN);
         this.world.spawnEntity((Entity)goblin);
         goblin.DataManager.set(HeldItemKey, (Object)itemStack);
-        entityPlayer.sendMessage((ITextComponent)new TextComponentString(String.format("<%s> I got your %s hehe~", goblin.c(), itemStack.getDisplayName())));
+        entityPlayer.sendMessage((ITextComponent)new TextComponentString(String.format("<%s> I got your %s hehe~", goblin.getDisplayName(), itemStack.getDisplayName())));
         entityPlayer.inventory.removeStackFromSlot(i.intValue());
         this.aO = 0;
     }
@@ -1833,7 +1833,7 @@ implements GirlMaster {
         this.b(this.ThroneRot);
         this.a(true);
         this.setNoGravity(true);
-        this.b(GirlAnimationState.SIT);
+        this.setCurrentAction(GirlAnimationState.SIT);
     }
 
     @Override
@@ -1994,7 +1994,7 @@ implements GirlMaster {
         catch (ConcurrentModificationException concurrentModificationException) {
             throw GoblinNpc.rethrow(concurrentModificationException);
         }
-        this.b(GirlAnimationState.NULL);
+        this.setCurrentAction(GirlAnimationState.NULL);
         this.e((UUID)null);
         this.a((UUID)null);
         this.world.removeEntity((Entity)this);
@@ -2019,7 +2019,7 @@ implements GirlMaster {
             throw GoblinNpc.rethrow(concurrentModificationException);
         }
         this.aY = -1;
-        this.b(GirlAnimationState.PAIZURI_START);
+        this.setCurrentAction(GirlAnimationState.PAIZURI_START);
         Minecraft.getMinecraft().player.closeScreen();
     }
 
@@ -2042,14 +2042,14 @@ implements GirlMaster {
             throw GoblinNpc.rethrow(concurrentModificationException);
         }
         this.az = -1;
-        this.b(GirlAnimationState.NELSON_INTRO);
+        this.setCurrentAction(GirlAnimationState.NELSON_INTRO);
         Minecraft minecraft = Minecraft.getMinecraft();
         minecraft.player.closeScreen();
         minecraft.gameSettings.thirdPersonView = 2;
     }
 
     @Override
-    public void b(GirlAnimationState girlAnimationState) {
+    public void setCurrentAction(GirlAnimationState girlAnimationState) {
         block59: {
             GirlAnimationState girlAnimationState2;
             block58: {
@@ -2224,7 +2224,7 @@ implements GirlMaster {
                 throw GoblinNpc.rethrow(concurrentModificationException);
             }
         }
-        super.b(girlAnimationState);
+        super.setCurrentAction(girlAnimationState);
     }
 
     void D() {
@@ -2538,7 +2538,7 @@ implements GirlMaster {
     }
 
     @Override
-    protected <E extends IAnimatable> PlayState a(AnimationEvent<E> animEvent) {
+    protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> animEvent) {
         if (this.world instanceof PreviewWorld) {
             return PlayState.STOP;
         }
@@ -2548,32 +2548,32 @@ implements GirlMaster {
         block5 : switch (animEvent.getController().getName()) {
             case "eyes": {
                 if (this.getCurrentAction() != GirlAnimationState.NULL) {
-                    this.a("animation.goblin.null", true, animEvent);
+                    this.createAnimationOnce("animation.goblin.null", true, animEvent);
                     break;
                 }
-                this.a("animation.goblin.blink", true, animEvent);
+                this.createAnimationOnce("animation.goblin.blink", true, animEvent);
                 break;
             }
             case "movement": {
                 if (this.getCurrentAction() != GirlAnimationState.NULL) {
-                    this.a("animation.goblin.null", true, animEvent);
+                    this.createAnimationOnce("animation.goblin.null", true, animEvent);
                     break;
                 }
                 double d = Math.abs(this.prevPosX - this.posX) + Math.abs(this.prevPosZ - this.posZ);
                 if (!((Boolean)this.DataManager.get(BusyKey)).booleanValue() && d > 0.0) {
                     if (this.onGround && Math.abs(Math.abs(this.prevPosY) - Math.abs(this.posY)) < (double)0.1f) {
                         if (d > (double)0.2f) {
-                            this.a("animation.goblin.walk", true, animEvent);
+                            this.createAnimationOnce("animation.goblin.walk", true, animEvent);
                         } else {
-                            this.a("animation.goblin.walk", true, animEvent);
+                            this.createAnimationOnce("animation.goblin.walk", true, animEvent);
                         }
                         this.rotationYaw = this.rotationYawHead;
                         break;
                     }
-                    this.a("animation.goblin.fly", true, animEvent);
+                    this.createAnimationOnce("animation.goblin.fly", true, animEvent);
                     break;
                 }
-                this.a("animation.goblin.idle", true, animEvent);
+                this.createAnimationOnce("animation.goblin.idle", true, animEvent);
                 break;
             }
             case "action": {
@@ -2581,11 +2581,11 @@ implements GirlMaster {
                 String string = minecraft.player.getPersistentID().equals(this.e()) && minecraft.gameSettings.thirdPersonView == 0 ? "1" : "3";
                 switch (this.getCurrentAction()) {
                     case NULL: {
-                        this.a("animation.goblin.null", true, animEvent);
+                        this.createAnimationOnce("animation.goblin.null", true, animEvent);
                         break block5;
                     }
                     case SHOULDER_IDLE: {
-                        this.a("animation.goblin.shoulder_idle", true, animEvent);
+                        this.createAnimationOnce("animation.goblin.shoulder_idle", true, animEvent);
                         break block5;
                     }
                     case PICK_UP: {
@@ -2593,15 +2593,15 @@ implements GirlMaster {
                         break block5;
                     }
                     case SIT: {
-                        this.a("animation.goblin.sit", true, animEvent);
+                        this.createAnimationOnce("animation.goblin.sit", true, animEvent);
                         break block5;
                     }
                     case RUN: {
                         if (this.onGround) {
-                            this.a("animation.goblin.running", true, animEvent);
+                            this.createAnimationOnce("animation.goblin.running", true, animEvent);
                             break block5;
                         }
-                        this.a("animation.goblin.fly", true, animEvent);
+                        this.createAnimationOnce("animation.goblin.fly", true, animEvent);
                         break block5;
                     }
                     case CATCH: {
@@ -2621,112 +2621,112 @@ implements GirlMaster {
                         break block5;
                     }
                     case THROWN: {
-                        this.a("animation.goblin.thrown", true, animEvent);
+                        this.createAnimationOnce("animation.goblin.thrown", true, animEvent);
                         break block5;
                     }
                     case PAIZURI_START: {
-                        this.a("animation.goblin.paizuri_start", true, animEvent);
+                        this.createAnimationOnce("animation.goblin.paizuri_start", true, animEvent);
                         break block5;
                     }
                     case PAIZURI_SLOW: {
-                        this.a("animation.goblin.paizuri_slow" + this.aP, true, animEvent);
+                        this.createAnimationOnce("animation.goblin.paizuri_slow" + this.aP, true, animEvent);
                         break block5;
                     }
                     case PAIZURI_FAST: {
-                        this.a("animation.goblin.paizuri_fast", true, animEvent);
+                        this.createAnimationOnce("animation.goblin.paizuri_fast", true, animEvent);
                         break block5;
                     }
                     case PAIZURI_FAST_CONTINUES: {
-                        this.a("animation.goblin.paizuri_fast_countinues", true, animEvent);
+                        this.createAnimationOnce("animation.goblin.paizuri_fast_countinues", true, animEvent);
                         break block5;
                     }
                     case PAIZURI_IDLE: {
-                        this.a("animation.goblin.paizuri_idle", true, animEvent);
+                        this.createAnimationOnce("animation.goblin.paizuri_idle", true, animEvent);
                         break block5;
                     }
                     case PAIZURI_CUM: {
-                        this.a("animation.goblin.paizuri_cum", true, animEvent);
+                        this.createAnimationOnce("animation.goblin.paizuri_cum", true, animEvent);
                         break block5;
                     }
                     case JUMP_0: {
-                        this.a("animation.goblin.jump_1", true, animEvent);
+                        this.createAnimationOnce("animation.goblin.jump_1", true, animEvent);
                         break block5;
                     }
                     case JUMP_1: {
-                        this.a("animation.goblin.jump_2", true, animEvent);
+                        this.createAnimationOnce("animation.goblin.jump_2", true, animEvent);
                         break block5;
                     }
                     case JUMP_2: {
-                        this.a("animation.goblin.jump_3", true, animEvent);
+                        this.createAnimationOnce("animation.goblin.jump_3", true, animEvent);
                         break block5;
                     }
                     case BREEDING_INTRO_0: {
-                        this.a("animation.goblin.breeding_intro_1", true, animEvent);
+                        this.createAnimationOnce("animation.goblin.breeding_intro_1", true, animEvent);
                         break block5;
                     }
                     case BREEDING_INTRO_1: {
-                        this.a("animation.goblin.breeding_intro_2", true, animEvent);
+                        this.createAnimationOnce("animation.goblin.breeding_intro_2", true, animEvent);
                         break block5;
                     }
                     case BREEDING_INTRO_2: {
-                        this.a("animation.goblin.breeding_intro_3", true, animEvent);
+                        this.createAnimationOnce("animation.goblin.breeding_intro_3", true, animEvent);
                         break block5;
                     }
                     case BREEDING_SLOW_0: {
-                        this.a("animation.goblin.breeding_slow_1" + (this.aD ? "l" : "r"), true, animEvent);
+                        this.createAnimationOnce("animation.goblin.breeding_slow_1" + (this.aD ? "l" : "r"), true, animEvent);
                         break block5;
                     }
                     case BREEDING_SLOW_2: {
-                        this.a("animation.goblin.breeding_slow_3", true, animEvent);
+                        this.createAnimationOnce("animation.goblin.breeding_slow_3", true, animEvent);
                         break block5;
                     }
                     case BREEDING_FAST_0: {
-                        this.a("animation.goblin.breeding_fast_1" + (this.ay ? "c" : "s"), true, animEvent);
+                        this.createAnimationOnce("animation.goblin.breeding_fast_1" + (this.ay ? "c" : "s"), true, animEvent);
                         break block5;
                     }
                     case BREEDING_FAST_2: {
-                        this.a("animation.goblin.breeding_fast_3", true, animEvent);
+                        this.createAnimationOnce("animation.goblin.breeding_fast_3", true, animEvent);
                         break block5;
                     }
                     case BREEDING_CUM_0: {
-                        this.a("animation.goblin.breeding_cum_1", true, animEvent);
+                        this.createAnimationOnce("animation.goblin.breeding_cum_1", true, animEvent);
                         break block5;
                     }
                     case BREEDING_CUM_1: {
-                        this.a("animation.goblin.breeding_cum_2", true, animEvent);
+                        this.createAnimationOnce("animation.goblin.breeding_cum_2", true, animEvent);
                         break block5;
                     }
                     case BREEDING_CUM_2: {
-                        this.a("animation.goblin.breeding_cum_3", true, animEvent);
+                        this.createAnimationOnce("animation.goblin.breeding_cum_3", true, animEvent);
                         break block5;
                     }
                     case BREEDING_1: {
-                        this.a("animation.goblin.breeding_2", true, animEvent);
+                        this.createAnimationOnce("animation.goblin.breeding_2", true, animEvent);
                         break block5;
                     }
                     case VANISH:
                     case AWAIT_PICK_UP: {
-                        this.a("animation.goblin.await_pick_up", true, animEvent);
+                        this.createAnimationOnce("animation.goblin.await_pick_up", true, animEvent);
                         break block5;
                     }
                     case STAND_UP: {
-                        this.a("animation.goblin.stand_up", false, animEvent);
+                        this.createAnimationOnce("animation.goblin.stand_up", false, animEvent);
                         break block5;
                     }
                     case NELSON_INTRO: {
-                        this.a("animation.goblin.nelson_intro", true, animEvent);
+                        this.createAnimationOnce("animation.goblin.nelson_intro", true, animEvent);
                         break block5;
                     }
                     case NELSON_SLOW: {
-                        this.a("animation.goblin.nelson_slow" + (this.aF ? "" : "2"), true, animEvent);
+                        this.createAnimationOnce("animation.goblin.nelson_slow" + (this.aF ? "" : "2"), true, animEvent);
                         break block5;
                     }
                     case NELSON_FAST: {
-                        this.a("animation.goblin.nelson_fast" + (this.X ? "c" : "s"), true, animEvent);
+                        this.createAnimationOnce("animation.goblin.nelson_fast" + (this.X ? "c" : "s"), true, animEvent);
                         break block5;
                     }
                     case NELSON_CUM: {
-                        this.a("animation.goblin.nelson_cum", true, animEvent);
+                        this.createAnimationOnce("animation.goblin.nelson_cum", true, animEvent);
                     }
                 }
             }
@@ -2774,11 +2774,11 @@ implements GirlMaster {
                 }
                 case "catchDone": {
                     if (!"bj".equals((String)this.DataManager.get(BlowjobStageKey))) break;
-                    this.b(GirlAnimationState.CATCH_BJ);
+                    this.setCurrentAction(GirlAnimationState.CATCH_BJ);
                     break;
                 }
                 case "catchBjDone": {
-                    this.b(GirlAnimationState.CATCH_BJ_IDLE);
+                    this.setCurrentAction(GirlAnimationState.CATCH_BJ_IDLE);
                     if (!this.isOwnedByLocalPlayer()) break;
                     EntityPlayerSP entityPlayerSP = Minecraft.getMinecraft().player;
                     GirlEntity.openActionMenuWithItems(entityPlayerSP, this, new String[]{"use her", "take ur stuff back"}, null, false);
@@ -2815,18 +2815,18 @@ implements GirlMaster {
                     break;
                 }
                 case "paizuri_startDone": {
-                    this.b(GirlAnimationState.PAIZURI_IDLE);
+                    this.setCurrentAction(GirlAnimationState.PAIZURI_IDLE);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.showHud();
                     break;
                 }
                 case "paizuriFastDone": {
-                    this.b(GirlAnimationState.PAIZURI_SLOW);
+                    this.setCurrentAction(GirlAnimationState.PAIZURI_SLOW);
                     break;
                 }
                 case "paizuriFastReady": {
                     if (!this.isOwnedByLocalPlayer() || AnimationInputLock.SneakPressed) break;
-                    this.b(GirlAnimationState.PAIZURI_FAST_CONTINUES);
+                    this.setCurrentAction(GirlAnimationState.PAIZURI_FAST_CONTINUES);
                     break;
                 }
                 case "paizuriFastContinuesReady": {
@@ -2853,7 +2853,7 @@ implements GirlMaster {
                     break;
                 }
                 case "paizuriCumDone": {
-                    this.b(GirlAnimationState.NULL);
+                    this.setCurrentAction(GirlAnimationState.NULL);
                     break;
                 }
                 case "cumSound": {
@@ -2900,7 +2900,7 @@ implements GirlMaster {
                     }
                 }
                 case "breedingIntroDone": {
-                    this.b(GirlAnimationState.BREEDING_SLOW_0);
+                    this.setCurrentAction(GirlAnimationState.BREEDING_SLOW_0);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.showHud();
                     break;
@@ -2910,12 +2910,12 @@ implements GirlMaster {
                         boolean bl = this.aD = !this.aD;
                     }
                     if (!this.isOwnedByLocalPlayer() || AnimationInputLock.SneakPressed) break;
-                    this.b(GirlAnimationState.BREEDING_FAST_0);
+                    this.setCurrentAction(GirlAnimationState.BREEDING_FAST_0);
                     this.ay = false;
                     break;
                 }
                 case "breeding_fast1Done": {
-                    this.b(GirlAnimationState.BREEDING_SLOW_0);
+                    this.setCurrentAction(GirlAnimationState.BREEDING_SLOW_0);
                     if (!this.isOwnedByLocalPlayer()) break;
                     this.ay = false;
                     break;
@@ -2932,7 +2932,7 @@ implements GirlMaster {
                     break;
                 }
                 case "breeding_intro_3Done": {
-                    this.b(GirlAnimationState.BREEDING_SLOW_2);
+                    this.setCurrentAction(GirlAnimationState.BREEDING_SLOW_2);
                     break;
                 }
                 case "breeding_3_wiggle": {
@@ -2942,11 +2942,11 @@ implements GirlMaster {
                 }
                 case "breeding_fast_3Done": {
                     if (!this.isOwnedByLocalPlayer() || AnimationInputLock.SneakPressed) break;
-                    this.b(GirlAnimationState.BREEDING_SLOW_2);
+                    this.setCurrentAction(GirlAnimationState.BREEDING_SLOW_2);
                     break;
                 }
                 case "breeding_intro_2Done": {
-                    this.b(GirlAnimationState.BREEDING_1);
+                    this.setCurrentAction(GirlAnimationState.BREEDING_1);
                     break;
                 }
                 case "breeding_cumCam": {
@@ -2960,7 +2960,7 @@ implements GirlMaster {
                     break;
                 }
                 case "neslon_introDone": {
-                    this.b(GirlAnimationState.NELSON_SLOW);
+                    this.setCurrentAction(GirlAnimationState.NELSON_SLOW);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.showHud();
                     break;
@@ -2991,13 +2991,13 @@ implements GirlMaster {
                 case "nelsonFastDone": {
                     this.X = false;
                     if (!this.isOwnedByLocalPlayer()) break;
-                    this.b(GirlAnimationState.NELSON_SLOW);
+                    this.setCurrentAction(GirlAnimationState.NELSON_SLOW);
                     break;
                 }
                 case "nelson_cumDone": {
                     if (!this.isOwnedByLocalPlayer()) break;
                     this.resetAimTarget();
-                    this.b(GirlAnimationState.NULL);
+                    this.setCurrentAction(GirlAnimationState.NULL);
                 }
             }
         };
@@ -3080,7 +3080,7 @@ implements GirlMaster {
                     goblin = goblin2;
                     goblin.a((UUID)null);
                     goblin.e((UUID)null);
-                    goblin.b(GirlAnimationState.NULL);
+                    goblin.setCurrentAction(GirlAnimationState.NULL);
                     GoblinNpc goblin3 = new GoblinNpc(world);
                     goblin3.dimension = i;
                     goblin3.forceSpawn = true;
@@ -3090,7 +3090,7 @@ implements GirlMaster {
                     world.spawnEntity((Entity)goblin3);
                     goblin3.setPositionAndUpdate(entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ);
                     goblin3.a(uUID);
-                    goblin3.b(GirlAnimationState.SHOULDER_IDLE);
+                    goblin3.setCurrentAction(GirlAnimationState.SHOULDER_IDLE);
                     break;
                 }
             }

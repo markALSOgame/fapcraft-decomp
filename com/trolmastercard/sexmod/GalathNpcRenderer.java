@@ -84,8 +84,9 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
       super(renderManager, animatedGeoModel, d);
    }
 
+   @Override
    @Nullable
-   protected Vec3f a(GalathNpc galath) {
+   protected Vec3f e(GalathNpc galath) {
       try {
          if (galath.world instanceof PreviewWorld) {
             return null;
@@ -106,7 +107,7 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
    }
 
    @Override
-   public HashSet<String> a() {
+   public HashSet<String> getFilteredBoneNames() {
       try {
          if (!this.Initialized) {
             E.addAll(BoneColorHelper.AdultParts);
@@ -125,7 +126,7 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
       a(tessellator, bufferBuilder, girl, vec3f, f);
    }
 
-   protected void b(GalathNpc galath) {
+   protected void preRender(GalathNpc galath) {
       try {
          if (galath.getCurrentAction() != GirlAnimationState.MASTERBATE) {
             return;
@@ -142,8 +143,8 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
       galath.rotationYawHead = f;
    }
 
-   public void a(GalathNpc galath, double d2, double d3, double d4, float f, float f2) {
-      Vec3d vec3d = renderGirl(galath, f2);
+   public void doRender(GalathNpc galath, double d2, double d3, double d4, float f, float f2) {
+      Vec3d vec3d = a(galath, f2);
 
       try {
          if (vec3d != null) {
@@ -156,9 +157,9 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
       try {
          galath.aG = vec3d;
          GalathNpc.rotateToTarget(galath, f2);
-         this.d(galath);
+         this.applyKnockedOutPose(galath);
          this.c(galath);
-         super.a(galath, d2, d3, d4, f, f2);
+         super.doRender(galath, d2, d3, d4, f, f2);
          renderGirl((GirlEntity)galath, f2);
          if (galath.b()) {
             ManglelieNpcRenderer.renderGirl((GirlEntity)galath, f2);
@@ -181,7 +182,7 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
       galath.prevRenderYawOffset = galath.renderYawOffset;
    }
 
-   void d(GalathNpc galath) {
+   void applyKnockedOutPose(GalathNpc galath) {
       try {
          if (!(Boolean)galath.getDataManager().get(GalathNpc.IsKnockedOutKey)) {
             return;
@@ -282,7 +283,7 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
     }
 
    public static void renderGirl(GirlEntity girl, float f) {
-      EntityPlayerSP mcPlayer = KoboldEggEntity.player;
+      EntityPlayerSP mcPlayer = Minecraft.getMinecraft().player;
 
       try {
          if (mcPlayer == null) {
@@ -296,7 +297,7 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
       BufferBuilder bufferBuilder = tessellator.getBuffer();
       GlStateManager.pushMatrix();
       VectorUtil.drawGirlBones(Mc, girl, f);
-      KoboldEggEntity.getTextureManager().bindTexture(LineTexture);
+      Minecraft.getMinecraft().getTextureManager().bindTexture(LineTexture);
       GlStateManager.disableCull();
       GlStateManager.disableLighting();
       a(girl, bufferBuilder, tessellator, LerpMath.lerp(girl.prevRenderYawOffset, girl.renderYawOffset, f));
@@ -335,16 +336,16 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
       GlStateManager.pushMatrix();
       Vec3d vec3d = girl.getModelBone("stars");
       GlStateManager.translate(vec3d.x, vec3d.y, vec3d.z);
-      float f2 = (float)KoboldEggEntity.world.getTotalWorldTime() + f;
+      float f2 = (float)Minecraft.getMinecraft().world.getTotalWorldTime() + f;
       float f3 = (float)(Math.sin(f2 * 0.2) * 5.0);
       float f4 = (float)(Math.cos(f2 * 0.2) * 5.0);
       float f5 = (float)(f2 * 3.0);
       GlStateManager.rotate(f3, 1.0F, 0.0F, 0.0F);
       GlStateManager.rotate(f5, 0.0F, 1.0F, 0.0F);
       GlStateManager.rotate(f4, 0.0F, 0.0F, 1.0F);
-      float f6 = AngleMath.degToRadians(9.0);
+      float f6 = AngleMath.degToRadians(9.0F);
       Vec3f vec3f = GalathNpc.BodyColor;
-      KoboldEggEntity.getTextureManager().bindTexture(LineTexture);
+      Minecraft.getMinecraft().getTextureManager().bindTexture(LineTexture);
       bufferBuilder.begin(3, DefaultVertexFormats.POSITION_TEX_COLOR);
       GlStateManager.glLineWidth(a(girl, f, 1.0F, 3.0F));
 
@@ -355,9 +356,9 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
       }
 
       tessellator.draw();
-      KoboldEggEntity.getTextureManager().bindTexture(BodyTexture);
+      Minecraft.getMinecraft().getTextureManager().bindTexture(BodyTexture);
       bufferBuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-      f6 = AngleMath.degToRadians(60.0);
+      f6 = AngleMath.degToRadians(60.0F);
 
       for (float f8 = 0.0F; f8 < Math.PI * 2; f8 += f6) {
          double d3 = Math.sin(f8) * 0.3F;
@@ -398,14 +399,14 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
 
    static void a(GirlEntity girl, BufferBuilder bufferBuilder, Tessellator tessellator) {
       try {
-         if (!((BoxSource)girl).a()) {
+         if (!((BoxSource)girl).isVisible()) {
             return;
          }
       } catch (RuntimeException error) {
          throw rethrow(error);
       }
 
-      KoboldEggEntity.getTextureManager().bindTexture(ModelGalath.GalathTexture);
+      Minecraft.getMinecraft().getTextureManager().bindTexture(ModelGalath.GalathTexture);
       Vec3d[] vec3dArray = new Vec3d[14];
       Vec3d[] vec3dArray2 = new Vec3d[14];
       int i = 0;
@@ -502,27 +503,23 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
             label67: {
                label66: {
                   label65: {
-                     try {
-                        switch (string.hashCode()) {
-                           case 3029410:
-                              break;
-                           case 3059345:
-                              break label65;
-                           case 93911760:
-                              break label66;
-                           case 109761491:
-                              if (!string.equals("steve")) {
-                                 break label68;
-                              }
-                              break label67;
-                           default:
-                              break label68;
+                  switch (string.hashCode()) {
+                     case 3029410:
+                        break;
+                     case 3059345:
+                        break label65;
+                     case 93911760:
+                        break label66;
+                     case 109761491:
+                        if (!string.equals("steve")) {
+                           break label68;
                         }
-                     } catch (IOException error) {
-                        throw rethrow(error);
-                     }
+                        break label67;
+                     default:
+                        break label68;
+                  }
 
-                     if (string.equals("body")) {
+                  if (string.equals("body")) {
                         bv = 1;
                      }
                      break label68;
@@ -575,17 +572,13 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
          error2.printStackTrace();
       }
 
-      try {
-         this.renderRecursively(bufferBuilder, bone4, f, f2, f3, this.RenderEntity.getScale());
+      this.renderRecursively(bufferBuilder, bone4, f, f2, f3, this.RenderEntity.getScale());
+      Tessellator.getInstance().draw();
+      if (bone5 != null) {
+         bufferBuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
+         Minecraft.getMinecraft().renderEngine.bindTexture(ModelManglelie.SkinTexture);
+         this.renderRecursively(bufferBuilder, bone5, f, f2, f3, this.RenderEntity.getScale());
          Tessellator.getInstance().draw();
-         if (bone5 != null) {
-            bufferBuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
-            Minecraft.getMinecraft().renderEngine.bindTexture(ModelManglelie.SkinTexture);
-            this.renderRecursively(bufferBuilder, bone5, f, f2, f3, this.RenderEntity.getScale());
-            Tessellator.getInstance().draw();
-         }
-      } catch (IOException error3) {
-         throw rethrow(error3);
       }
 
       MATRIX_STACK.pop();
@@ -728,7 +721,7 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
             }
         }
         try {
-            f = ((GalathNpc)this.RenderEntity).aD ? 1.0f - Math.min(0.29f, GirlAnimationState.getAnimationProgress(this.RenderEntity, KoboldEggEntity.getRenderPartialTicks())) / 0.29f : 1.0f;
+            f = ((GalathNpc)this.RenderEntity).aD ? 1.0f - Math.min(0.29f, GirlAnimationState.getAnimationProgress(this.RenderEntity, Minecraft.getMinecraft().getRenderPartialTicks())) / 0.29f : 1.0f;
         }
         catch (RuntimeException runtimeException) {
             throw GalathNpcRenderer.rethrow(runtimeException);
@@ -748,14 +741,14 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
       }
 
       try {
-         if (KoboldEggEntity.isGamePaused()) {
+         if (Minecraft.getMinecraft().isGamePaused()) {
             return;
          }
       } catch (RuntimeException error2) {
          throw rethrow(error2);
       }
 
-      float f = KoboldEggEntity.player.ticksExisted + KoboldEggEntity.getRenderPartialTicks();
+      float f = Minecraft.getMinecraft().player.ticksExisted + Minecraft.getMinecraft().getRenderPartialTicks();
       float f2 = (float)(Math.sin(f * 0.1F) * 0.1F) + 0.2F;
       float f3 = (float)Math.sin(f * 0.1F) * 0.1F;
 
@@ -777,7 +770,7 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
          throw rethrow(error4);
       }
 
-      float f4 = 1.0F - Math.min(0.5F, GirlAnimationState.getAnimationProgress(this.RenderEntity, KoboldEggEntity.getRenderPartialTicks())) / 0.5F;
+      float f4 = 1.0F - Math.min(0.5F, GirlAnimationState.getAnimationProgress(this.RenderEntity, Minecraft.getMinecraft().getRenderPartialTicks())) / 0.5F;
       bone.setRotationY(bone.getRotationY() + f2 * f4);
       bone.setRotationZ(bone.getRotationZ() + f3 * f4);
    }
@@ -792,14 +785,14 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
       }
 
       try {
-         if (KoboldEggEntity.isGamePaused()) {
+         if (Minecraft.getMinecraft().isGamePaused()) {
             return;
          }
       } catch (RuntimeException error2) {
          throw rethrow(error2);
       }
 
-      float f = KoboldEggEntity.player.ticksExisted + KoboldEggEntity.getRenderPartialTicks();
+      float f = Minecraft.getMinecraft().player.ticksExisted + Minecraft.getMinecraft().getRenderPartialTicks();
       float f2 = (float)Math.sin(f * -0.1F) * 0.1F;
       float f3 = (float)Math.sin(f * 0.1F) * 0.1F;
 
@@ -821,7 +814,7 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
          throw rethrow(error4);
       }
 
-      float f4 = Math.min(0.5F, GirlAnimationState.getAnimationProgress(this.RenderEntity, KoboldEggEntity.getRenderPartialTicks())) / 0.5F;
+      float f4 = Math.min(0.5F, GirlAnimationState.getAnimationProgress(this.RenderEntity, Minecraft.getMinecraft().getRenderPartialTicks())) / 0.5F;
       bone.setRotationY(bone.getRotationY() + f2 * f4);
       bone.setRotationZ(bone.getRotationZ() + f3 * f4);
    }
@@ -836,14 +829,14 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
       }
 
       try {
-         if (KoboldEggEntity.isGamePaused()) {
+         if (Minecraft.getMinecraft().isGamePaused()) {
             return;
          }
       } catch (RuntimeException error2) {
          throw rethrow(error2);
       }
 
-      float f = KoboldEggEntity.player.ticksExisted + KoboldEggEntity.getRenderPartialTicks();
+      float f = Minecraft.getMinecraft().player.ticksExisted + Minecraft.getMinecraft().getRenderPartialTicks();
       bone.setPositionX((float)(bone.getPositionX() + Math.sin(f * 0.1F) * -0.1F));
    }
 
@@ -857,19 +850,19 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
       }
 
       try {
-         if (KoboldEggEntity.isGamePaused()) {
+         if (Minecraft.getMinecraft().isGamePaused()) {
             return;
          }
       } catch (RuntimeException error2) {
          throw rethrow(error2);
       }
 
-      float f = KoboldEggEntity.player.ticksExisted + KoboldEggEntity.getRenderPartialTicks();
+      float f = Minecraft.getMinecraft().player.ticksExisted + Minecraft.getMinecraft().getRenderPartialTicks();
       bone.setPositionX((float)(bone.getPositionX() + Math.sin(f * 0.1F) * -0.15F));
    }
 
    void a(BufferBuilder bufferBuilder, GeoBone bone, float f) {
-      float f2 = GirlAnimationState.getAnimationNormalized01(this.RenderEntity, KoboldEggEntity.getRenderPartialTicks());
+      float f2 = GirlAnimationState.getAnimationNormalized01(this.RenderEntity, Minecraft.getMinecraft().getRenderPartialTicks());
       float f3 = f * (float)(0.02F * (-0.4F * Math.cos((Math.PI * 2) * f2 + 1.05) + 0.6F));
       QuadRenderHelper.QuadConfig quadConfig = new QuadRenderHelper.QuadConfig(
          H,
@@ -886,7 +879,7 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
    }
 
    void d(BufferBuilder bufferBuilder, GeoBone bone) {
-      float f = GirlAnimationState.getAnimationNormalized01(this.RenderEntity, KoboldEggEntity.getRenderPartialTicks());
+      float f = GirlAnimationState.getAnimationNormalized01(this.RenderEntity, Minecraft.getMinecraft().getRenderPartialTicks());
       QuadRenderHelper.QuadConfig quadConfig = new QuadRenderHelper.QuadConfig(
          H,
          0.0F,
@@ -902,7 +895,7 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
    }
 
    void f(BufferBuilder bufferBuilder, GeoBone bone) {
-      float f = this.RenderEntity.b(KoboldEggEntity.getRenderPartialTicks());
+      float f = this.RenderEntity.b(Minecraft.getMinecraft().getRenderPartialTicks());
 
       try {
          if (f == 0.0F) {
@@ -1017,7 +1010,8 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
       return vec3d;
    }
 
-   private static Exception rethrow(Exception error) {
-      return error;
+   @SuppressWarnings("unchecked")
+   private static <E extends Throwable> E rethrow(Throwable error) throws E {
+      throw (E) error;
    }
 }

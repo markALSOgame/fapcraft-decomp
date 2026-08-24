@@ -115,7 +115,7 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
       NetworkHandler.channel.sendToAllTracking(new PacketForcePlayerGirlUpdate(this.getBoundPlayerUuid(), i, girlAnimationState), this.P());
    }
 
-   public EntityPlayer c(EntityPlayer player) {
+   public EntityPlayer asPlayer(EntityPlayer player) {
       return player;
    }
 
@@ -140,23 +140,23 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
    }
 
    @SideOnly(Side.CLIENT)
-   public void H() {
+   public void H_() {
    }
 
    public boolean canStartInteraction() {
       return true;
    }
 
-   public boolean a(String string) {
+   public boolean startActionByKey(String string) {
       return false;
    }
 
-   public boolean A() {
+   public boolean A_() {
       return true;
    }
 
    @Override
-   public String c() {
+   public String getDisplayName() {
       if (((Optional)this.DataManager.get(BoundPlayerKey)).isPresent()) {
          EntityPlayer player = this.world.getPlayerEntityByUUID((UUID)((Optional)this.DataManager.get(BoundPlayerKey)).get());
 
@@ -172,7 +172,7 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
       return "anonymous horny girl";
    }
 
-   public void u() {
+   public void u_() {
    }
 
    public abstract void b(String string, UUID uuid);
@@ -194,7 +194,7 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
       return true;
    }
 
-   public boolean F() {
+   public boolean F_() {
       return false;
    }
 
@@ -220,7 +220,7 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
    }
 
    @Override
-   public void r() {
+   public void resetAimTarget() {
       try {
          this.AimTarget = null;
          this.setNoGravity(false);
@@ -249,14 +249,16 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
       mcPlayer.setNoGravity(false);
       mcPlayer.noClip = false;
       this.DataManager.set(BusyKey, false);
-      NetworkHandler.channel.sendToServer(new PacketResetGirl(this.isBoundToLocalPlayer()));
+      NetworkHandler.channel.sendToServer(new PacketResetGirl(this.getGirlUuid()));
    }
 
    @SideOnly(Side.CLIENT)
    @Override
 
    public boolean H() {
-    }
+      Minecraft mc = Minecraft.getMinecraft();
+      return !this.isBoundToLocalPlayer() || mc.gameSettings.thirdPersonView != 0;
+   }
 
    protected void c(boolean flag) {
       try {
@@ -298,9 +300,9 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
    }
 
    public static boolean hasGirl(UUID uuid) {
-      C();
+      C_();
 
-      for (Entry entry : PlayerGirls.entrySet()) {
+      for (Entry<UUID, PlayerGirlEntity> entry : PlayerGirls.entrySet()) {
          UUID uuid2 = (UUID)entry.getKey();
 
          try {
@@ -360,8 +362,8 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
 
    @SideOnly(Side.CLIENT)
    @Override
-   public boolean e() {
-      EntityPlayer player2 = this.getRenderPosition();
+   public boolean isLocalPlayerNearby() {
+      EntityPlayer player2 = this.j();
 
       try {
          if (player2 == null) {
@@ -404,7 +406,7 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
       super.playStepSound(pos, block);
    }
 
-   public AxisAlignedBB a(EntityPlayer player) {
+   public AxisAlignedBB getPlayerBoundingBox(EntityPlayer player) {
       return player.getEntityBoundingBox();
    }
 
@@ -414,7 +416,7 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
          this.noClip = true;
          this.setNoGravity(true);
          super.onUpdate();
-         this.D();
+         this.D_();
          if (!this.world.isRemote) {
             return;
          }
@@ -449,7 +451,7 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
       return ((UUID)((Optional)this.DataManager.get(BoundPlayerKey)).get()).equals(Minecraft.getMinecraft().player.getPersistentID());
    }
 
-   public boolean E() {
+   public boolean E_() {
       return false;
    }
 
@@ -466,7 +468,7 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
             Object object;
             EntityPlayer entityPlayer;
             block16: {
-                PlayerGirlEntity.C();
+                PlayerGirlEntity.C_();
                 this.isInteractionAllowed();
                 this.G();
                 UUID uUID = this.getBoundPlayerUuid();
@@ -503,7 +505,7 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
                     catch (ConcurrentModificationException concurrentModificationException) {
                         throw PlayerGirlEntity.rethrow(concurrentModificationException);
                     }
-                    this.b(GirlAnimationState.ATTACK);
+                    this.setCurrentAction(GirlAnimationState.ATTACK);
                 }
                 catch (ConcurrentModificationException concurrentModificationException) {
                     throw PlayerGirlEntity.rethrow(concurrentModificationException);
@@ -516,7 +518,7 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
                 catch (ConcurrentModificationException concurrentModificationException) {
                     throw PlayerGirlEntity.rethrow(concurrentModificationException);
                 }
-                this.b(GirlAnimationState.NULL);
+                this.setCurrentAction(GirlAnimationState.NULL);
             }
             catch (ConcurrentModificationException concurrentModificationException) {
                 throw PlayerGirlEntity.rethrow(concurrentModificationException);
@@ -525,7 +527,7 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
     }
 
 
-   void D() {
+   void D_() {
         block18: {
             int i;
             PlayerGirlEntity playerGirl;
@@ -590,7 +592,7 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
         catch (ConcurrentModificationException concurrentModificationException) {
             throw PlayerGirlEntity.rethrow(concurrentModificationException);
         }
-        this.b(GirlAnimationState.NULL);
+        this.setCurrentAction(GirlAnimationState.NULL);
     }
 
    @SideOnly(Side.CLIENT)
@@ -611,7 +613,7 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
       return vec3d;
    }
 
-   public boolean a(GirlAnimationState girlAnimationState, EntityPlayer player) {
+   public boolean canDoAction(GirlAnimationState girlAnimationState, EntityPlayer player) {
       return false;
    }
 
@@ -624,7 +626,7 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
 
    @Override
 
-   public void b(GirlAnimationState girlAnimationState) {
+   public void setCurrentAction(GirlAnimationState girlAnimationState) {
         block11: {
             int i;
             block13: {
@@ -670,7 +672,7 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
             }
             playerGirl.JoinTickCounter = i;
         }
-        super.b(girlAnimationState);
+        super.setCurrentAction(girlAnimationState);
     }
 
    void syncEquipment(EntityPlayer player) {
@@ -754,18 +756,18 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
       return this.world.getPlayerEntityByUUID(uuid);
    }
 
-   public void a(Optional<UUID> optional) {
+   public void setBoundPlayer(Optional<UUID> optional) {
       this.DataManager.set(BoundPlayerKey, optional);
    }
 
    public void y() {
    }
 
-   public void B() {
+   public void B_() {
    }
 
-   public static void C() {
-      ArrayList list = new ArrayList();
+   public static void C_() {
+      ArrayList<PlayerGirlEntity> list = new ArrayList<>();
 
       try {
          for (PlayerGirlEntity playerGirl : AllPlayerGirls) {
@@ -785,13 +787,13 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
          AllPlayerGirls.remove(playerGirl2);
       }
 
-      t();
+      t_();
    }
 
-   static void t() {
-      ArrayList list = new ArrayList();
+   static void t_() {
+      ArrayList<UUID> list = new ArrayList<>();
 
-      for (Entry entry : PlayerGirls.entrySet()) {
+      for (Entry<UUID, PlayerGirlEntity> entry : PlayerGirls.entrySet()) {
          try {
             if (((PlayerGirlEntity)entry.getValue()).isDead) {
                list.add(entry.getKey());
@@ -831,7 +833,7 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
    @Override
    public void a(String string, UUID uuid) {
       try {
-         if (this.a(string)) {
+         if (this.startActionByKey(string)) {
             return;
          }
       } catch (ConcurrentModificationException error) {
@@ -864,8 +866,8 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
    }
 
    @Override
-   public void a(SoundEvent sound, float f, float f2) {
-      Vec3d vec3d = this.getCustomName();
+   public void playSoundAt(SoundEvent sound, float f, float f2) {
+      Vec3d vec3d = this.w();
 
       try {
          if (this.world.isRemote) {
@@ -880,17 +882,17 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
    }
 
    @Override
-   public void a(SoundEvent sound) {
-      this.a(sound, 1.0F, 1.0F);
+   public void playSoundEvent(SoundEvent sound) {
+      this.playSoundAt(sound, 1.0F, 1.0F);
    }
 
-   public void a(SoundEvent[] soundArray) {
-      this.a(soundArray[this.getRNG().nextInt(soundArray.length)], 1.0F, 1.0F);
+   public void playRandomSoundSingle(SoundEvent[] soundArray) {
+      this.playSoundAt(soundArray[this.getRNG().nextInt(soundArray.length)], 1.0F, 1.0F);
    }
 
    @Override
-   public void a(SoundEvent sound, float f) {
-      this.a(sound, f, 1.0F);
+   public void playSoundAtVolume(SoundEvent sound, float f) {
+      this.playSoundAt(sound, f, 1.0F);
    }
 
    @Override

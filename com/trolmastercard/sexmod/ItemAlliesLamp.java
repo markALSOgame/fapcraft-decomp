@@ -272,7 +272,7 @@ public class ItemAlliesLamp extends Item implements IAnimatable {
                 BlockPos blockPos = allie2.getPosition().add(0, -1, 0);
                 try {
                     if (!allie2.world.getBlockState(blockPos).getBlock().equals(Blocks.SAND)) break block25;
-                    allie2.b(GirlAnimationState.SUMMON_SAND);
+                    allie2.setCurrentAction(GirlAnimationState.SUMMON_SAND);
                     break block26;
                 }
                 catch (RuntimeException runtimeException) {
@@ -286,7 +286,7 @@ public class ItemAlliesLamp extends Item implements IAnimatable {
             catch (RuntimeException runtimeException) {
                 throw ItemAlliesLamp.rethrow(runtimeException);
             }
-            allie.b(girlAnimationState);
+            allie.setCurrentAction(girlAnimationState);
         }
         stack.setTagCompound(nBTTagCompound);
     }

@@ -161,7 +161,7 @@ fg {
     }
 
     @Override
-    public String c() {
+    public String getDisplayName() {
         return "Luna";
     }
 
@@ -186,7 +186,7 @@ fg {
     }
 
     @Override
-    public void b(GirlAnimationState girlAnimationState) {
+    public void setCurrentAction(GirlAnimationState girlAnimationState) {
         block14: {
             block12: {
                 try {
@@ -275,7 +275,7 @@ fg {
             }
             try {
                 try {
-                    if (!this.world.isRemote || this.b(entityPlayer)) break block12;
+                    if (!this.world.isRemote || this.canInteract(entityPlayer)) break block12;
                 }
                 catch (RuntimeException runtimeException) {
                     throw LunaNpc.rethrow(runtimeException);
@@ -290,7 +290,7 @@ fg {
     }
 
     @Override
-    public boolean b(EntityPlayer entityPlayer) {
+    public boolean canInteract(EntityPlayer entityPlayer) {
         String[] stringArray = new String[]{"action.names.sex", "action.names.touchboobs", "action.names.headpat"};
         ItemStack[] itemStackArray = new ItemStack[]{new ItemStack(Items.FISH, 3, 0), new ItemStack(Items.FISH, 2, 1), null};
         LunaNpc.openActionMenuWithItems(entityPlayer, (GirlEntity)this, stringArray, itemStackArray);
@@ -1177,125 +1177,125 @@ fg {
     }
 
     @Override
-    protected <E extends IAnimatable> PlayState a(AnimationEvent<E> animEvent) {
+    protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> animEvent) {
         if (this.world instanceof PreviewWorld) {
             return PlayState.STOP;
         }
         block5 : switch (animEvent.getController().getName()) {
             case "eyes": {
                 if (this.getCurrentAction() != GirlAnimationState.NULL) {
-                    this.a("animation.cat.null", true, animEvent);
+                    this.createAnimationOnce("animation.cat.null", true, animEvent);
                     break;
                 }
-                this.a("animation.cat.blink", true, animEvent);
+                this.createAnimationOnce("animation.cat.blink", true, animEvent);
                 break;
             }
             case "movement": {
                 if (this.getCurrentAction() != GirlAnimationState.NULL) {
-                    this.a("animation.cat.null", true, animEvent);
+                    this.createAnimationOnce("animation.cat.null", true, animEvent);
                     break;
                 }
                 if (this.isRiding()) {
-                    this.a("animation.cat.sit", true, animEvent);
+                    this.createAnimationOnce("animation.cat.sit", true, animEvent);
                     break;
                 }
                 if (Math.abs(this.prevPosX - this.posX) + Math.abs(this.prevPosZ - this.posZ) > 0.0) {
                     if (this.onGround && Math.abs(Math.abs(this.prevPosY) - Math.abs(this.posY)) < (double)0.1f) {
                         this.a(((Float)this.DataManager.get(Y)).floatValue() < 3.0f ? "animation.cat.walk" : "animation.cat.run", true, animEvent);
                     } else {
-                        this.a("animation.cat.fly", true, animEvent);
+                        this.createAnimationOnce("animation.cat.fly", true, animEvent);
                     }
                     this.rotationYaw = this.rotationYawHead;
                     break;
                 }
-                this.a("animation.cat.idle" + (this.ad ? "2" : ""), true, animEvent);
+                this.createAnimationOnce("animation.cat.idle" + (this.ad ? "2" : ""), true, animEvent);
                 break;
             }
             case "action": {
                 switch (this.getCurrentAction()) {
                     case NULL: {
-                        this.a("animation.cat.null", true, animEvent);
+                        this.createAnimationOnce("animation.cat.null", true, animEvent);
                         break block5;
                     }
                     case ATTACK: {
-                        this.a("animation.cat.attack" + this.S, false, animEvent);
+                        this.createAnimationOnce("animation.cat.attack" + this.S, false, animEvent);
                         break block5;
                     }
                     case RIDE:
                     case SIT: {
-                        this.a("animation.cat.sit", true, animEvent);
+                        this.createAnimationOnce("animation.cat.sit", true, animEvent);
                         break block5;
                     }
                     case BOW: {
-                        this.a("animation.cat.bowcharge", false, animEvent);
+                        this.createAnimationOnce("animation.cat.bowcharge", false, animEvent);
                         break block5;
                     }
                     case THROW_PEARL: {
-                        this.a("animation.cat.throwpearl", true, animEvent);
+                        this.createAnimationOnce("animation.cat.throwpearl", true, animEvent);
                         break block5;
                     }
                     case DOWNED: {
-                        this.a("animation.cat.downed", true, animEvent);
+                        this.createAnimationOnce("animation.cat.downed", true, animEvent);
                         break block5;
                     }
                     case FISHING_START: {
-                        this.a("animation.cat.start_fishing", false, animEvent);
+                        this.createAnimationOnce("animation.cat.start_fishing", false, animEvent);
                         break block5;
                     }
                     case FISHING_IDLE: {
-                        this.a("animation.cat.idle_fishing", true, animEvent);
+                        this.createAnimationOnce("animation.cat.idle_fishing", true, animEvent);
                         break block5;
                     }
                     case FISHING_EAT: {
-                        this.a("animation.cat.eat_fishing", false, animEvent);
+                        this.createAnimationOnce("animation.cat.eat_fishing", false, animEvent);
                         break block5;
                     }
                     case FISHING_THROW_AWAY: {
-                        this.a("animation.cat.throw_away", false, animEvent);
+                        this.createAnimationOnce("animation.cat.throw_away", false, animEvent);
                         break block5;
                     }
                     case PAYMENT: {
-                        this.a("animation.cat.payment", false, animEvent);
+                        this.createAnimationOnce("animation.cat.payment", false, animEvent);
                         break block5;
                     }
                     case TOUCH_BOOBS_INTRO: {
-                        this.a("animation.cat.touch_boobs_intro", false, animEvent);
+                        this.createAnimationOnce("animation.cat.touch_boobs_intro", false, animEvent);
                         break block5;
                     }
                     case TOUCH_BOOBS_SLOW: {
-                        this.a("animation.cat.touch_boobs_slow" + (this.ae ? "1" : ""), true, animEvent);
+                        this.createAnimationOnce("animation.cat.touch_boobs_slow" + (this.ae ? "1" : ""), true, animEvent);
                         break block5;
                     }
                     case TOUCH_BOOBS_FAST: {
-                        this.a("animation.cat.touch_boobs_fast", true, animEvent);
+                        this.createAnimationOnce("animation.cat.touch_boobs_fast", true, animEvent);
                         break block5;
                     }
                     case TOUCH_BOOBS_CUM: {
-                        this.a("animation.cat.touch_boobs_cum", false, animEvent);
+                        this.createAnimationOnce("animation.cat.touch_boobs_cum", false, animEvent);
                         break block5;
                     }
                     case WAIT_CAT: {
-                        this.a("animation.cat.wait", false, animEvent);
+                        this.createAnimationOnce("animation.cat.wait", false, animEvent);
                         break block5;
                     }
                     case COWGIRL_SITTING_INTRO: {
-                        this.a("animation.cat.sitting_intro", false, animEvent);
+                        this.createAnimationOnce("animation.cat.sitting_intro", false, animEvent);
                         break block5;
                     }
                     case COWGIRL_SITTING_SLOW: {
-                        this.a("animation.cat.sitting_slow", true, animEvent);
+                        this.createAnimationOnce("animation.cat.sitting_slow", true, animEvent);
                         break block5;
                     }
                     case COWGIRL_SITTING_FAST: {
-                        this.a("animation.cat.sitting_fast", true, animEvent);
+                        this.createAnimationOnce("animation.cat.sitting_fast", true, animEvent);
                         break block5;
                     }
                     case COWGIRL_SITTING_CUM: {
-                        this.a("animation.cat.sitting_cum", false, animEvent);
+                        this.createAnimationOnce("animation.cat.sitting_cum", false, animEvent);
                         break block5;
                     }
                     case HEAD_PAT: {
-                        this.a("animation.cat.head_pat", true, animEvent);
+                        this.createAnimationOnce("animation.cat.head_pat", true, animEvent);
                     }
                 }
             }

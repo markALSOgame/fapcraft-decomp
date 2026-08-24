@@ -52,7 +52,7 @@ public class PacketSummonAllie implements IMessage {
                         BlockPos blockPos = allie2.getPosition().add(0, -1, 0);
                         try {
                             if (!allie2.world.getBlockState(blockPos).getBlock().equals(Blocks.SAND)) break block4;
-                            allie2.b(GirlAnimationState.SUMMON_SAND);
+                            allie2.setCurrentAction(GirlAnimationState.SUMMON_SAND);
                             break block5;
                         }
                         catch (RuntimeException runtimeException) {
@@ -66,7 +66,7 @@ public class PacketSummonAllie implements IMessage {
                     catch (RuntimeException runtimeException) {
                         throw PacketSummonAllie.Handler.rethrow(runtimeException);
                     }
-                    allie.b(girlAnimationState);
+                    allie.setCurrentAction(girlAnimationState);
                 }
             });
             return null;

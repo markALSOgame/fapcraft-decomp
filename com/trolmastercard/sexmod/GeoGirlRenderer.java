@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Objects;
@@ -14,6 +15,9 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.vecmath.Matrix4f;
+import javax.vecmath.Tuple3f;
+import javax.vecmath.Tuple4f;
+import javax.vecmath.Vector3f;
 import javax.vecmath.Vector4f;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -33,6 +37,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityHanging;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemArmor;
@@ -49,14 +54,23 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
 import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.IAnimatableModel;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.geo.render.built.GeoBone;
 import software.bernie.geckolib3.geo.render.built.GeoCube;
 import software.bernie.geckolib3.geo.render.built.GeoModel;
+import software.bernie.geckolib3.geo.render.built.GeoQuad;
+import software.bernie.geckolib3.geo.render.built.GeoVertex;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.geckolib3.model.provider.GeoModelProvider;
+import software.bernie.geckolib3.model.provider.data.EntityModelData;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
+import software.bernie.geckolib3.renderers.geo.GeoLayerRenderer;
+import software.bernie.geckolib3.renderers.geo.RenderHurtColor;
 import software.bernie.geckolib3.util.MatrixStack;
+import software.bernie.shadowed.eliotlash.mclib.utils.Interpolations;
 
 public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extends GeoEntityRenderer<T> implements GirlBoneFilter {
    protected static final ResourceLocation LineTexture = new ResourceLocation("sexmod", "textures/line.png");
@@ -318,10 +332,9 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
     }
 
 
-   public void a(GeoModel model, T t, float f, float f2, float f3, float f4, float f5) {
+   public void render(GeoModel model, T t, float f, float f2, float f3, float f4, float f5) {
         boolean flag;
         Boolean flag2;
-        GeoGirlRenderer d_2;
         block10: {
             try {
                 try {
@@ -349,22 +362,20 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
             }
         }
         GlStateManager.enableRescaleNormal();
-        this.a(t, f, f2, f3, f4, f5);
+        this.renderEarly(t, f, f2, f3, f4, f5);
         this.renderLate(t, f, f2, f3, f4, f5);
         BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
         try {
             bufferBuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
             this.bindTexture(Objects.requireNonNull(this.getEntityTexture(this.RenderEntity)));
             this.ProcessedBones.clear();
-            GeoGirlRenderer d_3 = this;
-            d_2 = this;
             flag2 = ((GirlEntity)t).h();
             flag = ((GirlEntity)t).ah() == 0;
         }
         catch (IllegalStateException illegalStateException) {
             throw GeoGirlRenderer.rethrow(illegalStateException);
         }
-        d_3.ProcessedBones = d_2.a(flag2, flag);
+        this.ProcessedBones = this.a(flag2, flag);
         this.d();
         BoneColorHelper.a(((GirlEntity)t).b().getModelRendererList(), this.a(), this);
         BoneColorHelper.setSkinColor(t, f);
@@ -414,7 +425,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
       Tessellator.getInstance().draw();
    }
 
-   String a(String string) {
+   String readFileToString(String string) {
       StringBuilder sb = new StringBuilder();
 
       try {
@@ -424,15 +435,11 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
             String string2;
             String string3 = string2 = reader.readLine();
 
-            try {
-               if (string3 == null) {
-                  break;
-               }
-
-               sb.append(string2).append("//\n");
-            } catch (IOException error) {
-               throw rethrow(error);
+            if (string3 == null) {
+               break;
             }
+
+            sb.append(string2).append("//\n");
          }
 
          reader.close();
@@ -443,7 +450,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
       return sb.toString();
    }
 
-   protected void a(double d, double d2, double d3) {
+   protected void renderNameLabel(double d, double d2, double d3) {
       try {
          if (this.RenderEntity.h()) {
             return;
@@ -519,7 +526,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
                                     throw GeoGirlRenderer.rethrow(illegalStateException);
                                 }
                             }
-                            this.a(d, d2, d3);
+                            this.renderNameLabel(d, d2, d3);
                         }
                         catch (IllegalStateException illegalStateException) {
                             throw GeoGirlRenderer.rethrow(illegalStateException);
@@ -561,7 +568,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
                 }
                 try {
                     try {
-                        if (!(t2 instanceof PlayerGirlEntity) || !((PlayerGirlEntity)t2).f()) break block27;
+                        if (!(t2 instanceof PlayerGirlEntity) || !((PlayerGirlEntity)t2).isBoundToLocalPlayer()) break block27;
                     }
                     catch (IllegalStateException illegalStateException) {
                         throw GeoGirlRenderer.rethrow(illegalStateException);
@@ -583,18 +590,17 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
         return vec3d;
     }
 
-   protected void b(T t) {
+   protected void preRender(T t) {
    }
 
 
-   public void a(T t, double d, double d2, double d3, float f, float f2) {
+   public void doRender(T t, double d, double d2, double d3, float f, float f2) {
         boolean flag;
         float f3;
         float f4;
         float f5;
         T t2;
         AnimationEvent<T> animationEvent;
-        AnimationEvent<T> animationEvent2;
         float f6;
         float f7;
         float f8;
@@ -617,7 +623,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
                                 d2 = vec3d.y;
                                 d3 = vec3d.z;
                                 try {
-                                    this.b(t);
+                                    this.preRender(t);
                                     if (t.getLeashed()) {
                                         this.a((GirlEntity)t, d, d2 + this.c, d3, f2);
                                     }
@@ -679,7 +685,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
                     }
                     f8 = Interpolations.lerp(((GirlEntity)t).prevRotationPitch, ((GirlEntity)t).rotationPitch, f2);
                     f10 = this.handleRotationFloat(t, f2);
-                    this.b(t, f10, f11, f2);
+                     this.applyRotations(t, f10, f11, f2);
                     f7 = 0.0f;
                     f6 = 0.0f;
                     try {
@@ -698,11 +704,8 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
                     }
                 }
                 try {
-                    AnimationEvent<T> animationEvent3;
                     entityModelData.headPitch = -f8;
                     entityModelData.netHeadYaw = -f9;
-                    animationEvent2 = animationEvent3;
-                    animationEvent = animationEvent3;
                     t2 = t;
                     f5 = f6;
                     f4 = f7;
@@ -717,7 +720,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
             }
             flag = false;
         }
-        animationEvent2(t2, f5, f4, f3, flag, Collections.singletonList(entityModelData));
+        animationEvent = new AnimationEvent<T>(t2, f5, f4, f3, flag, Collections.singletonList(entityModelData));
         AnimationEvent<T> animationEvent4 = animationEvent;
         GeoModelProvider geoModelProvider = super.getGeoModelProvider();
         ResourceLocation resourceLocation = geoModelProvider.getModelLocation(t);
@@ -736,7 +739,8 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
         software.bernie.geckolib3.core.util.Color color = this.getRenderColor(t, f2);
         boolean flag4 = this.setDoRenderBrightness(t, f2);
         try {
-            this.a(geoModel, t, f2, (float)color.getRed() / 255.0f, (float)color.getBlue() / 255.0f, (float)color.getGreen() / 255.0f, (float)color.getAlpha() / 255.0f);
+            this.render(geoModel, t, f2, (float)color.getRed() / 255.0f, (float)color.getBlue() / 255.0f, (float)color.getGreen() / 255.0f, (float)color.getAlpha() / 255.0f);
+
             if (flag4) {
                 RenderHurtColor.unset();
             }
@@ -766,7 +770,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
     }
 
    void a(T t) {
-      ArrayList list = new ArrayList<>(GirlGeoModel.CamBones);
+      ArrayList<String> list = new ArrayList<>(GirlGeoModel.CamBones);
       list.addAll(t.p);
 
       for (String string : list) {
@@ -900,7 +904,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
       a(bufferBuilder, tessellator, girl, "braStringLeftEndL", "braStringLeftStartL", vec3f.X, vec3f.Y, vec3f.Z, f);
    }
 
-   protected void b(T t, float f, float f2, float f3) {
+   protected void applyRotations(T t, float f, float f2, float f3) {
       try {
          super.applyRotations(t, f, f2, f3);
          if (!(t instanceof PlayerGirlEntity)) {
@@ -1085,7 +1089,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
       }
 
       try {
-         if (!this.b(string)) {
+         if (!this.isBoneVisible(string)) {
             MATRIX_STACK.pop();
             return;
          }
@@ -1131,7 +1135,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
       return new Vector4f(f, f2, f3, 0.0F);
    }
 
-   boolean b(String string) {
+   boolean isBoneVisible(String string) {
       try {
          if (!string.startsWith("armor")) {
             return true;
@@ -1214,7 +1218,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
       return new Vector4f(f, f2, f3, 72.0F * f4 / 4096.0F);
    }
 
-   public void a(T t, float f, float f2, float f3, float f4, float f5) {
+   public void renderEarly(T t, float f, float f2, float f3, float f4, float f5) {
       this.ModelMatrix = (Matrix4f)MATRIX_STACK.getModelMatrix().clone();
    }
 
@@ -1742,7 +1746,8 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
       return null;
    }
 
-   private static Exception rethrow(Exception error) {
-      return error;
+   @SuppressWarnings("unchecked")
+   private static <E extends Throwable> E rethrow(Throwable error) throws E {
+      throw (E) error;
    }
 }

@@ -65,7 +65,7 @@ extends PlayerGirlEntity {
 
     @Override
     public void sitDown() {
-        this.b(GirlAnimationState.SITDOWN);
+        this.setCurrentAction(GirlAnimationState.SITDOWN);
     }
 
     @Override
@@ -73,7 +73,7 @@ extends PlayerGirlEntity {
         try {
             if ("Face fuck".equals(string)) {
                 this.b(uUID);
-                this.b(GirlAnimationState.CARRY_INTRO);
+                this.setCurrentAction(GirlAnimationState.CARRY_INTRO);
                 this.a(this.getOutfitIndex(), GirlAnimationState.CARRY_INTRO);
             }
         }
@@ -153,7 +153,7 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    public void b(GirlAnimationState girlAnimationState) {
+    public void setCurrentAction(GirlAnimationState girlAnimationState) {
         block14: {
             GirlAnimationState girlAnimationState2;
             block12: {
@@ -202,7 +202,7 @@ extends PlayerGirlEntity {
                 throw ElliePlayer.rethrow(runtimeException);
             }
         }
-        super.b(girlAnimationState);
+        super.setCurrentAction(girlAnimationState);
     }
 
     @Override
@@ -331,12 +331,12 @@ extends PlayerGirlEntity {
             entityPlayerMP.setNoGravity(true);
             entityPlayer.setNoGravity(true);
             if ("Missionary".equals(string)) {
-                this.b(GirlAnimationState.MISSIONARY_START);
+                this.setCurrentAction(GirlAnimationState.MISSIONARY_START);
                 Vec3d vec3d = this.getCustomName().subtract(0.0, 0.1, 0.0);
                 entityPlayer.setPositionAndRotation(vec3d.x, vec3d.y, vec3d.z, this.I().floatValue(), 60.0f);
                 entityPlayer.setPositionAndUpdate(vec3d.x, vec3d.y, vec3d.z);
             } else {
-                this.b(GirlAnimationState.COWGIRLSTART);
+                this.setCurrentAction(GirlAnimationState.COWGIRLSTART);
                 Vec3d vec3d = this.getCustomName().add(new Vec3d(-Math.sin((double)this.I().floatValue() * (Math.PI / 180)) * 1.8, -0.65, Math.cos((double)this.I().floatValue() * (Math.PI / 180)) * 1.8));
                 entityPlayer.setPositionAndRotation(vec3d.x, vec3d.y, vec3d.z, 180.0f + this.I().floatValue(), -30.0f);
                 entityPlayer.setPositionAndUpdate(vec3d.x, vec3d.y, vec3d.z);
@@ -365,30 +365,30 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    protected <E extends IAnimatable> PlayState a(AnimationEvent<E> animEvent) {
+    protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> animEvent) {
         block5 : switch (animEvent.getController().getName()) {
             case "eyes": {
                 if (this.getCurrentAction() != GirlAnimationState.NULL || !this.getCurrentAction().autoBlink) {
-                    this.a("animation.ellie.null", true, animEvent);
+                    this.createAnimationOnce("animation.ellie.null", true, animEvent);
                     break;
                 }
-                this.a("animation.ellie.eyes", true, animEvent);
+                this.createAnimationOnce("animation.ellie.eyes", true, animEvent);
                 break;
             }
             case "movement": {
                 if (this.getCurrentAction() != GirlAnimationState.NULL) {
-                    this.a("animation.ellie.null", true, animEvent);
+                    this.createAnimationOnce("animation.ellie.null", true, animEvent);
                     break;
                 }
                 if (this.ak) {
-                    this.a("animation.ellie.ride", true, animEvent);
+                    this.createAnimationOnce("animation.ellie.ride", true, animEvent);
                     break;
                 }
                 if (this.MovementController.getCurrentAnimation() != null && this.MovementController.getCurrentAnimation().animationName.contains("fly") && this.af) {
                     boolean bl = this.ar = !this.ar;
                 }
                 if (!this.af) {
-                    this.a("animation.ellie.fly" + (this.ar ? "2" : ""), true, animEvent);
+                    this.createAnimationOnce("animation.ellie.fly" + (this.ar ? "2" : ""), true, animEvent);
                     break;
                 }
                 if (Math.abs(this.ao.x) + Math.abs(this.ao.y) > 0.0f) {
@@ -412,107 +412,107 @@ extends PlayerGirlEntity {
             case "action": {
                 switch (this.getCurrentAction()) {
                     case NULL: {
-                        this.a("animation.ellie.null", true, animEvent);
+                        this.createAnimationOnce("animation.ellie.null", true, animEvent);
                         break block5;
                     }
                     case STRIP: {
-                        this.a("animation.ellie.strip", false, animEvent);
+                        this.createAnimationOnce("animation.ellie.strip", false, animEvent);
                         break block5;
                     }
                     case DASH: {
-                        this.a("animation.ellie.dash", false, animEvent);
+                        this.createAnimationOnce("animation.ellie.dash", false, animEvent);
                         break block5;
                     }
                     case HUG: {
-                        this.a("animation.ellie.hug", false, animEvent);
+                        this.createAnimationOnce("animation.ellie.hug", false, animEvent);
                         break block5;
                     }
                     case HUGIDLE: {
-                        this.a("animation.ellie.hugidle", true, animEvent);
+                        this.createAnimationOnce("animation.ellie.hugidle", true, animEvent);
                         break block5;
                     }
                     case HUGSELECTED: {
-                        this.a("animation.ellie.hugselected", false, animEvent);
+                        this.createAnimationOnce("animation.ellie.hugselected", false, animEvent);
                         break block5;
                     }
                     case SITDOWN: {
-                        this.a("animation.ellie.sitdown", false, animEvent);
+                        this.createAnimationOnce("animation.ellie.sitdown", false, animEvent);
                         break block5;
                     }
                     case SITDOWNIDLE: {
-                        this.a("animation.ellie.sitdownidle", true, animEvent);
+                        this.createAnimationOnce("animation.ellie.sitdownidle", true, animEvent);
                         break block5;
                     }
                     case COWGIRLSTART: {
-                        this.a("animation.ellie.cowgirlstart", false, animEvent);
+                        this.createAnimationOnce("animation.ellie.cowgirlstart", false, animEvent);
                         break block5;
                     }
                     case COWGIRLSLOW: {
-                        this.a("animation.ellie.cowgirlslow2", true, animEvent);
+                        this.createAnimationOnce("animation.ellie.cowgirlslow2", true, animEvent);
                         break block5;
                     }
                     case COWGIRLFAST: {
-                        this.a("animation.ellie.cowgirlfast", true, animEvent);
+                        this.createAnimationOnce("animation.ellie.cowgirlfast", true, animEvent);
                         break block5;
                     }
                     case COWGIRLCUM: {
-                        this.a("animation.ellie.cowgirlcum", true, animEvent);
+                        this.createAnimationOnce("animation.ellie.cowgirlcum", true, animEvent);
                         break block5;
                     }
                     case ATTACK: {
-                        this.a("animation.ellie.attack" + this.S, false, animEvent);
+                        this.createAnimationOnce("animation.ellie.attack" + this.S, false, animEvent);
                         break block5;
                     }
                     case BOW: {
-                        this.a("animation.ellie.bowcharge", false, animEvent);
+                        this.createAnimationOnce("animation.ellie.bowcharge", false, animEvent);
                         break block5;
                     }
                     case RIDE: {
-                        this.a("animation.ellie.ride", true, animEvent);
+                        this.createAnimationOnce("animation.ellie.ride", true, animEvent);
                         break block5;
                     }
                     case SIT: {
-                        this.a("animation.ellie.sit", true, animEvent);
+                        this.createAnimationOnce("animation.ellie.sit", true, animEvent);
                         break block5;
                     }
                     case THROW_PEARL: {
-                        this.a("animation.ellie.throwpearl", false, animEvent);
+                        this.createAnimationOnce("animation.ellie.throwpearl", false, animEvent);
                         break block5;
                     }
                     case DOWNED: {
-                        this.a("animation.ellie.downed", true, animEvent);
+                        this.createAnimationOnce("animation.ellie.downed", true, animEvent);
                         break block5;
                     }
                     case MISSIONARY_START: {
-                        this.a("animation.ellie.missionary_start", false, animEvent);
+                        this.createAnimationOnce("animation.ellie.missionary_start", false, animEvent);
                         break block5;
                     }
                     case MISSIONARY_SLOW: {
-                        this.a("animation.ellie.missionary_slow", true, animEvent);
+                        this.createAnimationOnce("animation.ellie.missionary_slow", true, animEvent);
                         break block5;
                     }
                     case MISSIONARY_FAST: {
-                        this.a("animation.ellie.missionary_fast", true, animEvent);
+                        this.createAnimationOnce("animation.ellie.missionary_fast", true, animEvent);
                         break block5;
                     }
                     case MISSIONARY_CUM: {
-                        this.a("animation.ellie.missionary_cum", false, animEvent);
+                        this.createAnimationOnce("animation.ellie.missionary_cum", false, animEvent);
                         break block5;
                     }
                     case CARRY_INTRO: {
-                        this.a("animation.ellie.carry_intro", false, animEvent);
+                        this.createAnimationOnce("animation.ellie.carry_intro", false, animEvent);
                         break block5;
                     }
                     case CARRY_SLOW: {
-                        this.a("animation.ellie.carry_slow" + this.ap, true, animEvent);
+                        this.createAnimationOnce("animation.ellie.carry_slow" + this.ap, true, animEvent);
                         break block5;
                     }
                     case CARRY_FAST: {
-                        this.a("animation.ellie.carry_fast", true, animEvent);
+                        this.createAnimationOnce("animation.ellie.carry_fast", true, animEvent);
                         break block5;
                     }
                     case CARRY_CUM: {
-                        this.a("animation.ellie.carry_cum", true, animEvent);
+                        this.createAnimationOnce("animation.ellie.carry_cum", true, animEvent);
                     }
                 }
             }
@@ -549,7 +549,7 @@ extends PlayerGirlEntity {
                 }
                 case "dashDone": {
                     float f;
-                    this.b(GirlAnimationState.HUG);
+                    this.setCurrentAction(GirlAnimationState.HUG);
                     EntityPlayer entityPlayer = this.world.getClosestPlayerToEntity(this, 15.0);
                     if (entityPlayer == null) break;
                     this.rotationYaw = f = entityPlayer.rotationYaw;
@@ -586,7 +586,7 @@ extends PlayerGirlEntity {
                 case "hugDone": {
                     EntityPlayerSP entityPlayerSP = Minecraft.getMinecraft().player;
                     if (!entityPlayerSP.getPersistentID().equals(this.getSexPlayerUuid())) break;
-                    this.b(GirlAnimationState.HUGIDLE);
+                    this.setCurrentAction(GirlAnimationState.HUGIDLE);
                     this.openActionMenu((EntityPlayer)entityPlayerSP);
                     break;
                 }
@@ -609,7 +609,7 @@ extends PlayerGirlEntity {
                     NetworkHandler.channel.sendToServer((IMessage)new PacketUpdateGirl(this.getGirlUuid(), "targetPos", string));
                     this.resetAimTarget();
                     NetworkHandler.channel.sendToServer((IMessage)new PacketSendGirlToSex(this.getGirlUuid()));
-                    this.b(GirlAnimationState.NULL);
+                    this.setCurrentAction(GirlAnimationState.NULL);
                     break;
                 }
                 case "sitdownMSG1": {
@@ -620,13 +620,13 @@ extends PlayerGirlEntity {
                 }
                 case "sitdownDone": {
                     if (!this.isBoundToLocalPlayer()) break;
-                    this.b(GirlAnimationState.SITDOWNIDLE);
+                    this.setCurrentAction(GirlAnimationState.SITDOWNIDLE);
                     this.openActionMenu(this.world.getPlayerEntityByUUID(this.getBoundPlayerUuid()));
                     break;
                 }
                 case "missionary_startDone": {
                     if (!this.isOwnedByLocalPlayer()) break;
-                    this.b(GirlAnimationState.MISSIONARY_SLOW);
+                    this.setCurrentAction(GirlAnimationState.MISSIONARY_SLOW);
                     GuiHud.showHud();
                     break;
                 }
@@ -649,7 +649,7 @@ extends PlayerGirlEntity {
                 }
                 case "cowgirlStartDone": {
                     if (!this.isOwnedByLocalPlayer()) break;
-                    this.b(GirlAnimationState.COWGIRLSLOW);
+                    this.setCurrentAction(GirlAnimationState.COWGIRLSLOW);
                     GuiHud.showHud();
                     break;
                 }
@@ -667,7 +667,7 @@ extends PlayerGirlEntity {
                 case "cowgirlfastReady": {
                     if (!this.isOwnedByLocalPlayer()) break;
                     if (!AnimationInputLock.SneakPressed) {
-                        this.b(GirlAnimationState.COWGIRLSLOW);
+                        this.setCurrentAction(GirlAnimationState.COWGIRLSLOW);
                         break;
                     }
                     if (ModConstants.Random.nextInt(4) == 1) break;
@@ -758,10 +758,10 @@ extends PlayerGirlEntity {
                 case "missionary_fastDone": {
                     if (!this.isOwnedByLocalPlayer()) break;
                     if (AnimationInputLock.SneakPressed) {
-                        this.b(GirlAnimationState.MISSIONARY_FAST);
+                        this.setCurrentAction(GirlAnimationState.MISSIONARY_FAST);
                         break;
                     }
-                    this.b(GirlAnimationState.MISSIONARY_SLOW);
+                    this.setCurrentAction(GirlAnimationState.MISSIONARY_SLOW);
                     break;
                 }
                 case "bedRustle": {
@@ -813,7 +813,7 @@ extends PlayerGirlEntity {
                 }
                 case "carry_fastDone": {
                     if (!this.isOwnedByLocalPlayer() || AnimationInputLock.SneakPressed) break;
-                    this.b(GirlAnimationState.CARRY_SLOW);
+                    this.setCurrentAction(GirlAnimationState.CARRY_SLOW);
                     break;
                 }
                 case "sexUI": {

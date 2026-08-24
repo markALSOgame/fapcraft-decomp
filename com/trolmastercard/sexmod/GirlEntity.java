@@ -312,7 +312,7 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
         }
     }
 
-   public void a(@Nonnull EntityPlayer player) {
+   public void setSexPlayer(@Nonnull EntityPlayer player) {
       this.handleGirlUuidEvent(player.getPersistentID());
    }
 
@@ -330,7 +330,7 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
       }
    }
 
-   public void a(Vec3d vec3d) {
+   public void setTargetPosUnsafe(Vec3d vec3d) {
       this.DataManager.set(TargetPosKey, vec3d.x + "|" + vec3d.y + "|" + vec3d.z);
    }
 
@@ -365,50 +365,40 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
 
 
    protected GirlEntity(World world) {
-        block8: {
-            super(world);
-            this.Factory = new AnimationFactory(this);
-            this.HomePos = Vec3d.ZERO;
-            this.n = 1.0f;
-            this.F = false;
-            this.Tracked = false;
-            this.AnchorPoints = new HashMap();
-            this.AnimRanges = new HashMap();
-            this.BoneProcessor = null;
-            this.AnchorNames = new ArrayList<String>();
-            this.OutfitData = null;
-            if (world.isRemote) {
-                this.initAnimationControllers();
-            }
-            try {
-                try {
-                    if (!world.isRemote || !(world instanceof PreviewWorld)) break block8;
-                }
-                catch (ConcurrentModificationException concurrentModificationException) {
-                    throw GirlEntity.rethrow(concurrentModificationException);
-                }
-                return;
-            }
-            catch (ConcurrentModificationException concurrentModificationException) {
-                throw GirlEntity.rethrow(concurrentModificationException);
-            }
-        }
-        PathNavigate pathNavigate = this.getNavigator();
-        try {
-            if (pathNavigate instanceof PathNavigateGround) {
-                ((PathNavigateGround)pathNavigate).setBreakDoors(true);
-            }
-        }
-        catch (ConcurrentModificationException concurrentModificationException) {
-            throw GirlEntity.rethrow(concurrentModificationException);
-        }
-    }
+      super(world);
+      this.Factory = new AnimationFactory(this);
+      this.HomePos = Vec3d.ZERO;
+      this.n = 1.0f;
+      this.F = false;
+      this.Tracked = false;
+      this.AnchorPoints = new HashMap<>();
+      this.AnimRanges = new HashMap<>();
+      this.BoneProcessor = null;
+      this.AnchorNames = new ArrayList<>();
+      this.OutfitData = null;
+      if (world.isRemote) {
+         this.initAnimationControllers();
+      }
+
+      try {
+         if (world.isRemote && world instanceof PreviewWorld) {
+            return;
+         }
+      } catch (ConcurrentModificationException error) {
+         throw rethrow(error);
+      }
+
+      PathNavigate pathNavigate = this.getNavigator();
+      if (pathNavigate instanceof PathNavigateGround) {
+         ((PathNavigateGround)pathNavigate).setBreakDoors(true);
+      }
+   }
 
    @SideOnly(Side.CLIENT)
    protected void initAnimationControllers() {
-      this.ActionController = new AnimationController(this, "action", 0.0F, this::a);
-      this.MovementController = new AnimationController(this, "movement", 5.0F, this::a);
-      this.EyesController = new AnimationController(this, "eyes", 10.0F, this::a);
+      this.ActionController = new AnimationController(this, "action", 0.0F, this::predicate);
+      this.MovementController = new AnimationController(this, "movement", 5.0F, this::predicate);
+      this.EyesController = new AnimationController(this, "eyes", 10.0F, this::predicate);
    }
 
    protected void entityInit() {
@@ -634,7 +624,7 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
       this.motionZ = d3;
    }
 
-   public void b(Vec3d vec3d) {
+   public void setMotionVector(Vec3d vec3d) {
       this.motionX = vec3d.x;
       this.motionY = vec3d.y;
       this.motionZ = vec3d.z;
@@ -680,9 +670,9 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
          throw rethrow(error);
       }
 
-      HashSet set = this.Y();
+      HashSet<String> set = this.Y();
       GirlRegistry girlType = GirlRegistry.getByEntity(this);
-      HashSet set2 = new HashSet();
+      HashSet<String> set2 = new HashSet<>();
       String string = FilePersistence.getModelsPath();
 
       for (String string2 : set) {
@@ -833,7 +823,7 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
    }
 
    @SideOnly(Side.CLIENT)
-   public boolean b(EntityPlayer player) {
+   public boolean canInteract(EntityPlayer player) {
       return false;
    }
 
@@ -852,7 +842,7 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
       Minecraft.getMinecraft().displayGuiScreen(new GuiGirlCommandMenu(girl, player, stringArray, null, flag));
    }
 
-   public void a(ItemStack stack) {
+   public void setActiveItemStack(ItemStack stack) {
       this.activeItemStack = stack;
    }
 
@@ -887,7 +877,7 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
       this.DataManager.set(WalkStateKey, GirlEntity.WalkState.WALK.toString());
    }
 
-   protected void a(EntityPlayerMP serverPlayer, boolean flag) {
+   protected void teleportServerPlayerInFront(EntityPlayerMP serverPlayer, boolean flag) {
       serverPlayer.motionX = 0.0;
       serverPlayer.motionY = 0.0;
       serverPlayer.motionZ = 0.0;
@@ -993,12 +983,12 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
       return list;
    }
 
-   protected BlockPos a(BlockPos pos) {
-      return this.a(pos, 1);
+   protected BlockPos findNearbyBedPos(BlockPos pos) {
+      return this.findBedPos(pos, 1);
    }
 
-   public BlockPos a(BlockPos pos, int i) {
-      return this.a(pos, i, Blocks.BED, 22, 3, null);
+   public BlockPos findBedPos(BlockPos pos, int i) {
+      return this.findBlockPos(pos, i, Blocks.BED, 22, 3, null);
    }
 
    public void W() {
@@ -1010,7 +1000,7 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
    }
 
 
-   public BlockPos a(BlockPos pos, int i, Block block, int i3, int i4, @Nullable HashSet<Biome> set) {
+   public BlockPos findBlockPos(BlockPos pos, int i, Block block, int i3, int i4, @Nullable HashSet<Biome> set) {
         int i5 = 1;
         int i6 = -1;
         BlockPos blockPos2 = pos;
@@ -1111,7 +1101,7 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
     }
 
 
-   protected List<BlockPos> a(BlockPos pos, Class cls, int i, int i3, @Nullable HashSet<Biome> set) {
+   protected List<BlockPos> findBlockPositions(BlockPos pos, Class cls, int i, int i3, @Nullable HashSet<Biome> set) {
         int i4 = 1;
         int i5 = -1;
         BlockPos blockPos2 = pos;
@@ -1254,16 +1244,16 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
    }
 
    @SideOnly(Side.CLIENT)
-   protected abstract <MovementController extends IAnimatable> PlayState a(AnimationEvent<MovementController> animEvent);
+   protected abstract <MovementController extends IAnimatable> PlayState predicate(AnimationEvent<MovementController> animEvent);
 
    @SideOnly(Side.CLIENT)
-   protected boolean a(GirlAnimationState girlAnimationState, String string, boolean flag, AnimationEvent animEvent) {
+   protected boolean shouldHoldAnimation(GirlAnimationState girlAnimationState, String string, boolean flag, AnimationEvent animEvent) {
       return false;
    }
 
    @SideOnly(Side.CLIENT)
 
-   protected void a(String string, boolean flag, AnimationEvent animEvent, boolean flag2) {
+   protected void createAnimation(String string, boolean flag, AnimationEvent animEvent, boolean flag2) {
         ILoopType.EDefaultLoopTypes eDefaultLoopTypes;
         block8: {
             try {
@@ -1274,7 +1264,7 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
                     catch (ConcurrentModificationException concurrentModificationException) {
                         throw GirlEntity.rethrow(concurrentModificationException);
                     }
-                    if (!this.a(this.getCurrentAction(), string, AnimationInputLock.SneakPressed, animEvent)) break block8;
+                    if (!this.shouldHoldAnimation(this.getCurrentAction(), string, AnimationInputLock.SneakPressed, animEvent)) break block8;
                 }
                 catch (ConcurrentModificationException concurrentModificationException) {
                     throw GirlEntity.rethrow(concurrentModificationException);
@@ -1297,13 +1287,13 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
     }
 
    @SideOnly(Side.CLIENT)
-   protected void a(String string, boolean flag, AnimationEvent animEvent) {
-      this.a(string, flag, animEvent, false);
+   protected void createAnimationOnce(String string, boolean flag, AnimationEvent animEvent) {
+      this.createAnimation(string, flag, animEvent, false);
    }
 
    @SideOnly(Side.CLIENT)
 
-   protected void a(String string, int i, float f, AnimationEvent animEvent, boolean flag) {
+   protected void createRangeAnimation(String string, int i, float f, AnimationEvent animEvent, boolean flag) {
         int i2;
         Integer i3;
         String string2;
@@ -1329,7 +1319,7 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
                                 catch (ConcurrentModificationException concurrentModificationException) {
                                     throw GirlEntity.rethrow(concurrentModificationException);
                                 }
-                                if (!this.a(this.getCurrentAction(), string, AnimationInputLock.SneakPressed, animEvent)) break block15;
+                                if (!this.shouldHoldAnimation(this.getCurrentAction(), string, AnimationInputLock.SneakPressed, animEvent)) break block15;
                             }
                             catch (ConcurrentModificationException concurrentModificationException) {
                                 throw GirlEntity.rethrow(concurrentModificationException);
@@ -1394,8 +1384,8 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
     }
 
    @SideOnly(Side.CLIENT)
-   protected void a(String string, int i, float f, AnimationEvent animEvent) {
-      this.a(string, i, f, animEvent, false);
+   protected void createRangeAnimationOnce(String string, int i, float f, AnimationEvent animEvent) {
+      this.createRangeAnimation(string, i, f, animEvent, false);
    }
 
    // $VF: Handled exception range with multiple entry points by splitting it
@@ -1494,7 +1484,7 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
    }
 
    @SideOnly(Side.CLIENT)
-   public Vec3d a(Minecraft mc, PreviewEntity previewEntity, EntityLivingBase livingBase, float f) {
+   public Vec3d getRenderPosition(Minecraft mc, PreviewEntity previewEntity, EntityLivingBase livingBase, float f) {
       return PreviewRenderer.getRenderPosition(mc, previewEntity, livingBase, this, f);
    }
 
@@ -1683,7 +1673,7 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
             }
          }
 
-         GirlAnimationState girlAnimationState = girl.c(girl.getCurrentAction());
+            GirlAnimationState girlAnimationState = girl.getFollowUpAction(girl.getCurrentAction());
          if (girlAnimationState != null) {
             girl.setCurrentAction(girlAnimationState);
          }
@@ -1729,7 +1719,7 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
                throw rethrow(error4);
             }
 
-            GirlAnimationState girlAnimationState = girl.a(girl.getCurrentAction());
+            GirlAnimationState girlAnimationState = girl.nextAnimationState(girl.getCurrentAction());
 
             try {
                if (girlAnimationState == null) {
@@ -1757,10 +1747,10 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
 
    @SideOnly(Side.CLIENT)
    @Nullable
-   protected abstract GirlAnimationState c(GirlAnimationState girlAnimationState);
+   protected abstract GirlAnimationState getFollowUpAction(GirlAnimationState girlAnimationState);
 
    @SideOnly(Side.CLIENT)
-   protected abstract GirlAnimationState a(GirlAnimationState girlAnimationState2);
+   protected abstract GirlAnimationState nextAnimationState(GirlAnimationState girlAnimationState2);
 
    public TargetPoint P() {
       return new TargetPoint(this.dimension, this.posX, this.posY, this.posZ, 50.0);
@@ -1854,7 +1844,7 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
 
    public abstract String getDisplayName();
 
-   public String getDisplayName() {
+   public String getChatName() {
       String string = (String)this.DataManager.get(CustomNameKey);
 
       try {
@@ -1880,7 +1870,7 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
          if (!this.world.isRemote) {
             NetworkHandler.channel
                .sendToAllAround(
-                  new PacketSendChatMessage(String.format("<%s> %s", this.getDisplayName(), string), this.dimension, this.getGirlUuid()),
+                  new PacketSendChatMessage(String.format("<%s> %s", this.getChatName(), string), this.dimension, this.getGirlUuid()),
                   new TargetPoint(this.dimension, this.posX, this.posY, this.posZ, 40.0)
                );
             return;
@@ -1891,7 +1881,7 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
 
       try {
          if (this.isOwnedByLocalPlayer()) {
-            NetworkHandler.channel.sendToServer(new PacketSendChatMessage(String.format("<%s> %s", this.getDisplayName(), string), this.dimension, this.getGirlUuid()));
+            NetworkHandler.channel.sendToServer(new PacketSendChatMessage(String.format("<%s> %s", this.getChatName(), string), this.dimension, this.getGirlUuid()));
          }
       } catch (ConcurrentModificationException error2) {
          throw rethrow(error2);
@@ -1932,7 +1922,7 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
    protected void a(String string) {
       try {
          if (this.world.isRemote) {
-            Minecraft.getMinecraft().player.sendMessage(new TextComponentString(String.format("<%s> %s", this.getDisplayName(), string)));
+            Minecraft.getMinecraft().player.sendMessage(new TextComponentString(String.format("<%s> %s", this.getChatName(), string)));
          }
       } catch (ConcurrentModificationException error) {
          throw rethrow(error);
@@ -1960,7 +1950,7 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
       }
    }
 
-   public void a(SoundEvent sound, float f, float f2) {
+   public void playSoundAt(SoundEvent sound, float f, float f2) {
       this.world
          .playSound(
             this.getPosition().getX(),
@@ -1974,29 +1964,29 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
          );
    }
 
-   public void a(SoundEvent sound) {
-      this.a(sound, 1.0F, 1.0F);
+   public void playSoundEvent(SoundEvent sound) {
+      this.playSoundAt(sound, 1.0F, 1.0F);
    }
 
-   public void a(SoundEvent[] soundArray, int... ints) {
+   public void playRandomSound(SoundEvent[] soundArray, int... ints) {
       try {
          if (ints.length == 0) {
-            this.a(soundArray[this.getRNG().nextInt(soundArray.length)]);
+            this.playSoundEvent(soundArray[this.getRNG().nextInt(soundArray.length)]);
             return;
          }
       } catch (ConcurrentModificationException error) {
          throw rethrow(error);
       }
 
-      this.a(soundArray[ints[this.getRNG().nextInt(ints.length)]], 1.0F, 1.0F);
+      this.playSoundAt(soundArray[ints[this.getRNG().nextInt(ints.length)]], 1.0F, 1.0F);
    }
 
-   public void a(SoundEvent[] soundArray, float f) {
-      this.a(soundArray[this.getRNG().nextInt(soundArray.length)], f, 1.0F);
+   public void playRandomSoundWithChance(SoundEvent[] soundArray, float f) {
+      this.playSoundAt(soundArray[this.getRNG().nextInt(soundArray.length)], f, 1.0F);
    }
 
-   public void a(SoundEvent sound, float f) {
-      this.a(sound, f, 1.0F);
+   public void playSoundAtVolume(SoundEvent sound, float f) {
+      this.playSoundAt(sound, f, 1.0F);
    }
 
    public static boolean isGirlEntity(Entity entity) {
@@ -2057,7 +2047,7 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
       return player.getPositionVector().add(-Math.sin(f * (Math.PI / 180.0)) * d, 0.0, Math.cos(f * (Math.PI / 180.0)) * d);
    }
 
-   public Vec3d a(Vec3d vec3d, float f) {
+   public Vec3d transformRenderPos(Vec3d vec3d, float f) {
       return vec3d;
    }
 
@@ -2213,11 +2203,11 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
         ((MatrixStack)object).moveToPivot(geoBone);
         ((MatrixStack)object).rotate(geoBone);
         ((MatrixStack)object).scale(geoBone);
-        object = this.a((MatrixStack)object);
-        return object;
+         object = this.transformBoneMatrix((MatrixStack)object);
+        return (MatrixStack)object;
     }
 
-   protected MatrixStack a(MatrixStack matrixStack) {
+   protected MatrixStack transformBoneMatrix(MatrixStack matrixStack) {
       return matrixStack;
    }
 
@@ -2249,7 +2239,7 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
       return this.getModelBone(string).add(this.getPositionVector());
    }
 
-   public void a(String string, Vec3d vec3d) {
+   public void setAnchorPoint(String string, Vec3d vec3d) {
       this.AnchorPoints.put(string, vec3d);
    }
 

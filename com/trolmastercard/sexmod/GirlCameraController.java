@@ -30,7 +30,7 @@ public class GirlCameraController {
          throw rethrow(error);
       }
 
-      PlayerGirlEntity.C();
+      PlayerGirlEntity.C_();
       PlayerGirlEntity playerGirl = PlayerGirlEntity.getByUuid(pre.getEntityPlayer().getPersistentID());
 
       try {
@@ -56,7 +56,7 @@ public class GirlCameraController {
             player2 = playerGirl.getByPlayer(player2);
             try {
                 try {
-                    if (!player2.isInvisibleToPlayer((EntityPlayer)minecraft.player) || playerGirl.E()) break block8;
+                    if (!player2.isInvisibleToPlayer((EntityPlayer)minecraft.player) || playerGirl.E_()) break block8;
                 }
                 catch (RuntimeException runtimeException) {
                     throw GirlCameraController.rethrow(runtimeException);
@@ -138,7 +138,7 @@ public class GirlCameraController {
                                 catch (RuntimeException runtimeException) {
                                     throw GirlCameraController.rethrow(runtimeException);
                                 }
-                                playerGirl.b(GirlAnimationState.BOW);
+                                playerGirl.setCurrentAction(GirlAnimationState.BOW);
                             }
                             catch (RuntimeException runtimeException) {
                                 throw GirlCameraController.rethrow(runtimeException);
@@ -151,7 +151,7 @@ public class GirlCameraController {
                             catch (RuntimeException runtimeException) {
                                 throw GirlCameraController.rethrow(runtimeException);
                             }
-                            playerGirl.b(GirlAnimationState.NULL);
+                            playerGirl.setCurrentAction(GirlAnimationState.NULL);
                         }
                         catch (RuntimeException runtimeException) {
                             throw GirlCameraController.rethrow(runtimeException);
@@ -265,7 +265,7 @@ public class GirlCameraController {
         GirlAnimationState girlAnimationState = playerGirl.getCurrentAction();
         float f = playerGirl.I().floatValue();
         try {
-            if (playerGirl.a(girlAnimationState, (EntityPlayer)minecraft.player)) {
+            if (playerGirl.canDoAction(girlAnimationState, (EntityPlayer)minecraft.player)) {
                 return;
             }
         }
@@ -337,7 +337,7 @@ public class GirlCameraController {
       }
 
       try {
-         if (!playerGirl.F()) {
+         if (!playerGirl.F_()) {
             return;
          }
       } catch (RuntimeException error3) {

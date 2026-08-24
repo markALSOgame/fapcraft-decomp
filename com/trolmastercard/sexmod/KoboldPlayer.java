@@ -178,7 +178,7 @@ implements BooleanCheck {
         try {
             if ("anal".equals(string)) {
                 this.b(uUID);
-                this.b(GirlAnimationState.KOBOLD_ANAL_START);
+                this.setCurrentAction(GirlAnimationState.KOBOLD_ANAL_START);
                 this.a(this.getOutfitIndex(), GirlAnimationState.KOBOLD_ANAL_START);
                 this.f(0);
             }
@@ -189,7 +189,7 @@ implements BooleanCheck {
         try {
             if ("oral".equals(string)) {
                 this.b(uUID);
-                this.b(GirlAnimationState.STARTBLOWJOB);
+                this.setCurrentAction(GirlAnimationState.STARTBLOWJOB);
                 this.a(this.getOutfitIndex(), GirlAnimationState.STARTBLOWJOB);
                 this.f(0);
             }
@@ -200,7 +200,7 @@ implements BooleanCheck {
         try {
             if ("mating".equals(string)) {
                 this.b(uUID);
-                this.b(GirlAnimationState.MATING_PRESS_START);
+                this.setCurrentAction(GirlAnimationState.MATING_PRESS_START);
                 this.a(this.getOutfitIndex(), GirlAnimationState.MATING_PRESS_START);
                 this.f(0);
             }
@@ -231,7 +231,7 @@ implements BooleanCheck {
     }
 
     @Override
-    protected MatrixStack a(MatrixStack matrixStack) {
+    protected MatrixStack transformBoneMatrix(MatrixStack matrixStack) {
         float f = 0.25f - ((Float)this.DataManager.get(BodySizeKey)).floatValue();
         matrixStack.scale(1.0f - f, 1.0f - f, 1.0f - f);
         return matrixStack;
@@ -334,7 +334,7 @@ implements BooleanCheck {
     }
 
     @Override
-    public void b(GirlAnimationState girlAnimationState) {
+    public void setCurrentAction(GirlAnimationState girlAnimationState) {
         block22: {
             GirlAnimationState girlAnimationState2;
             block20: {
@@ -406,11 +406,11 @@ implements BooleanCheck {
                 throw KoboldPlayer.rethrow(runtimeException);
             }
         }
-        super.b(girlAnimationState);
+        super.setCurrentAction(girlAnimationState);
     }
 
     @Override
-    protected <E extends IAnimatable> PlayState a(AnimationEvent<E> animEvent) {
+    protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> animEvent) {
         if (this.world instanceof PreviewWorld) {
             return PlayState.STOP;
         }
@@ -419,128 +419,128 @@ implements BooleanCheck {
         block5 : switch (animEvent.getController().getName()) {
             case "eyes": {
                 if (this.getCurrentAction() != GirlAnimationState.NULL || !this.getCurrentAction().autoBlink) {
-                    this.a("animation.kobold.null", true, animEvent);
+                    this.createAnimationOnce("animation.kobold.null", true, animEvent);
                     break;
                 }
-                this.a("animation.kobold.blink", true, animEvent);
+                this.createAnimationOnce("animation.kobold.blink", true, animEvent);
                 break;
             }
             case "movement": {
                 if (this.getCurrentAction() != GirlAnimationState.NULL) {
-                    this.a("animation.kobold.null", true, animEvent);
+                    this.createAnimationOnce("animation.kobold.null", true, animEvent);
                     break;
                 }
                 if (this.ak) {
-                    this.a("animation.kobold.sit", true, animEvent);
+                    this.createAnimationOnce("animation.kobold.sit", true, animEvent);
                     break;
                 }
                 if (this.MovementController.getCurrentAnimation() != null && this.MovementController.getCurrentAnimation().animationName.contains("fly") && this.af) {
                     boolean bl = this.aB = !this.aB;
                 }
                 if (!this.af) {
-                    this.a("animation.kobold.fly" + (this.aB ? "2" : ""), true, animEvent);
+                    this.createAnimationOnce("animation.kobold.fly" + (this.aB ? "2" : ""), true, animEvent);
                     break;
                 }
                 if (Math.abs(this.ao.x) + Math.abs(this.ao.y) > 0.0f) {
                     if (this.aj) {
                         this.MovementController.setAnimationSpeed(1.2f);
-                        this.a("animation.kobold.run", true, animEvent);
+                        this.createAnimationOnce("animation.kobold.run", true, animEvent);
                         break;
                     }
                     if (this.ao.y >= -0.1f) {
                         this.MovementController.setAnimationSpeed(2.0);
-                        this.a("animation.kobold.walk", true, animEvent);
+                        this.createAnimationOnce("animation.kobold.walk", true, animEvent);
                         break;
                     }
                     this.MovementController.setAnimationSpeed(1.75);
-                    this.a("animation.kobold.backwards_walk", true, animEvent);
+                    this.createAnimationOnce("animation.kobold.backwards_walk", true, animEvent);
                     break;
                 }
-                this.a("animation.kobold.idle", true, animEvent);
+                this.createAnimationOnce("animation.kobold.idle", true, animEvent);
                 break;
             }
             case "action": {
                 switch (this.getCurrentAction()) {
                     case NULL: {
-                        this.a("animation.kobold.null", true, animEvent);
+                        this.createAnimationOnce("animation.kobold.null", true, animEvent);
                         break block5;
                     }
                     case STRIP: {
-                        this.a("animation.kobold.strip", false, animEvent);
+                        this.createAnimationOnce("animation.kobold.strip", false, animEvent);
                         break block5;
                     }
                     case ATTACK: {
-                        this.a("animation.kobold.attack" + this.S, false, animEvent);
+                        this.createAnimationOnce("animation.kobold.attack" + this.S, false, animEvent);
                         break block5;
                     }
                     case BOW: {
-                        this.a("animation.kobold.bowcharge", false, animEvent);
+                        this.createAnimationOnce("animation.kobold.bowcharge", false, animEvent);
                         break block5;
                     }
                     case SIT: {
-                        this.a("animation.kobold.sit", true, animEvent);
+                        this.createAnimationOnce("animation.kobold.sit", true, animEvent);
                         break block5;
                     }
                     case MINE: {
-                        this.a("animation.kobold.fall_tree", true, animEvent);
+                        this.createAnimationOnce("animation.kobold.fall_tree", true, animEvent);
                         break block5;
                     }
                     case PAYMENT: {
-                        this.a("animation.kobold.paymentBackpack", true, animEvent);
+                        this.createAnimationOnce("animation.kobold.paymentBackpack", true, animEvent);
                         break block5;
                     }
                     case STARTBLOWJOB: {
-                        this.a("animation.kobold.blowjobStart", false, animEvent);
+                        this.createAnimationOnce("animation.kobold.blowjobStart", false, animEvent);
                         break block5;
                     }
                     case SUCKBLOWJOB_BLINK: {
                         String string = this.az ? "R" : "L";
                         String string2 = this.ay ? "Switch" : "";
-                        this.a("animation.kobold.blowjobSlow" + string + string2, true, animEvent);
+                        this.createAnimationOnce("animation.kobold.blowjobSlow" + string + string2, true, animEvent);
                         break block5;
                     }
                     case THRUSTBLOWJOB: {
-                        this.a("animation.kobold.blowjobFast", true, animEvent);
+                        this.createAnimationOnce("animation.kobold.blowjobFast", true, animEvent);
                         break block5;
                     }
                     case CUMBLOWJOB: {
-                        this.a("animation.kobold.blowjobCum", false, animEvent);
+                        this.createAnimationOnce("animation.kobold.blowjobCum", false, animEvent);
                         break block5;
                     }
                     case KOBOLD_ANAL_START: {
-                        this.a("animation.kobold.analStart", false, animEvent);
+                        this.createAnimationOnce("animation.kobold.analStart", false, animEvent);
                         break block5;
                     }
                     case KOBOLD_ANAL_SLOW: {
-                        this.a("animation.kobold.analSoft", true, animEvent);
+                        this.createAnimationOnce("animation.kobold.analSoft", true, animEvent);
                         break block5;
                     }
                     case KOBOLD_ANAL_FAST: {
-                        this.a("animation.kobold.analHard", true, animEvent);
+                        this.createAnimationOnce("animation.kobold.analHard", true, animEvent);
                         break block5;
                     }
                     case KOBOLD_ANAL_CUM: {
-                        this.a("animation.kobold.analCum", true, animEvent);
+                        this.createAnimationOnce("animation.kobold.analCum", true, animEvent);
                         break block5;
                     }
                     case SLEEP: {
-                        this.a("animation.kobold.sleep", true, animEvent);
+                        this.createAnimationOnce("animation.kobold.sleep", true, animEvent);
                         break block5;
                     }
                     case MATING_PRESS_START: {
-                        this.a("animation.kobold.mating_press_start", false, animEvent);
+                        this.createAnimationOnce("animation.kobold.mating_press_start", false, animEvent);
                         break block5;
                     }
                     case MATING_PRESS_SOFT: {
-                        this.a("animation.kobold.mating_press_soft", true, animEvent);
+                        this.createAnimationOnce("animation.kobold.mating_press_soft", true, animEvent);
                         break block5;
                     }
                     case MATING_PRESS_HARD: {
-                        this.a("animation.kobold.mating_press_hard", true, animEvent);
+                        this.createAnimationOnce("animation.kobold.mating_press_hard", true, animEvent);
                         break block5;
                     }
                     case MATING_PRESS_CUM: {
-                        this.a("animation.kobold.mating_press_cum", true, animEvent);
+                        this.createAnimationOnce("animation.kobold.mating_press_cum", true, animEvent);
                     }
                 }
             }
@@ -632,7 +632,7 @@ implements BooleanCheck {
                     break;
                 }
                 case "blowjobStartDone": {
-                    this.b(GirlAnimationState.SUCKBLOWJOB_BLINK);
+                    this.setCurrentAction(GirlAnimationState.SUCKBLOWJOB_BLINK);
                     this.ay = false;
                     this.az = true;
                     if (!this.isOwnedByLocalPlayer()) break;
@@ -652,7 +652,7 @@ implements BooleanCheck {
                 }
                 case "blowjobFastDone": {
                     if (!this.isOwnedByLocalPlayer() || AnimationInputLock.SneakPressed) break;
-                    this.b(GirlAnimationState.SUCKBLOWJOB_BLINK);
+                    this.setCurrentAction(GirlAnimationState.SUCKBLOWJOB_BLINK);
                     break;
                 }
                 case "cumLoud": {
@@ -671,7 +671,7 @@ implements BooleanCheck {
                     break;
                 }
                 case "analStartDone": {
-                    this.b(GirlAnimationState.KOBOLD_ANAL_SLOW);
+                    this.setCurrentAction(GirlAnimationState.KOBOLD_ANAL_SLOW);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.showHud();
                     break;
@@ -693,12 +693,12 @@ implements BooleanCheck {
                         this.N();
                         break;
                     }
-                    this.b(GirlAnimationState.KOBOLD_ANAL_FAST);
+                    this.setCurrentAction(GirlAnimationState.KOBOLD_ANAL_FAST);
                     break;
                 }
                 case "analDone": {
                     if (this.getCurrentAction() != GirlAnimationState.KOBOLD_ANAL_FAST) break;
-                    this.b(GirlAnimationState.KOBOLD_ANAL_SLOW);
+                    this.setCurrentAction(GirlAnimationState.KOBOLD_ANAL_SLOW);
                     break;
                 }
                 case "analHard": {
@@ -782,7 +782,7 @@ implements BooleanCheck {
                 }
                 case "mating_press_hardDone": {
                     if (!this.isOwnedByLocalPlayer()) break;
-                    this.b(GirlAnimationState.MATING_PRESS_SOFT);
+                    this.setCurrentAction(GirlAnimationState.MATING_PRESS_SOFT);
                     break;
                 }
                 case "mating_press_softReady": {
@@ -790,7 +790,7 @@ implements BooleanCheck {
                         GuiHud.addProgress(0.04f);
                     }
                     if (!this.isOwnedByLocalPlayer() || !AnimationInputLock.SneakPressed) break;
-                    this.b(GirlAnimationState.MATING_PRESS_HARD);
+                    this.setCurrentAction(GirlAnimationState.MATING_PRESS_HARD);
                     break;
                 }
                 case "mating_press_hardReady": {

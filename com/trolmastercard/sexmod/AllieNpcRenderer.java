@@ -1,5 +1,7 @@
 package com.trolmastercard.sexmod;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderManager;
 import software.bernie.geckolib3.geo.render.built.GeoModel;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
@@ -32,13 +34,11 @@ public class AllieNpcRenderer extends GeoGirlRenderer {
             }
         }
         try {
-            AllieNpc allie2 = allie;
-            f8 = allie.ConversionTimer == 1.0f ? allie.ConversionTimer : allie.ConversionTimer - 0.01f;
+            allie.ConversionTimer = allie.ConversionTimer == 1.0f ? allie.ConversionTimer : allie.ConversionTimer - 0.01f;
         }
         catch (RuntimeException runtimeException) {
             throw AllieNpcRenderer.rethrow(runtimeException);
         }
-        allie2.ConversionTimer = f8;
         f5 = allie.ConversionTimer;
         try {
             GlStateManager.scale((float)f5, (float)f5, (float)f5);
@@ -79,7 +79,7 @@ public class AllieNpcRenderer extends GeoGirlRenderer {
       }
 
       try {
-         if (KoboldEggEntity.getRenderManager().renderViewEntity == null) {
+         if (Minecraft.getMinecraft().getRenderManager().renderViewEntity == null) {
             return;
          }
       } catch (RuntimeException error4) {

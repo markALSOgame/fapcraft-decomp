@@ -104,7 +104,7 @@ implements BoxSource {
         try {
             if ("cowgirl".equals(string)) {
                 this.b(uUID);
-                this.b(GirlAnimationState.RAPE_INTRO);
+                this.setCurrentAction(GirlAnimationState.RAPE_INTRO);
                 this.a(this.getOutfitIndex(), GirlAnimationState.RAPE_INTRO);
                 return;
             }
@@ -115,7 +115,7 @@ implements BoxSource {
         try {
             if ("mating press".equals(string)) {
                 this.b(uUID);
-                this.b(GirlAnimationState.CORRUPT_SLOW);
+                this.setCurrentAction(GirlAnimationState.CORRUPT_SLOW);
                 this.a(this.getOutfitIndex(), GirlAnimationState.CORRUPT_SLOW);
                 this.a();
                 return;
@@ -127,7 +127,7 @@ implements BoxSource {
     }
 
     @Override
-    public void b(GirlAnimationState girlAnimationState) {
+    public void setCurrentAction(GirlAnimationState girlAnimationState) {
         block20: {
             GirlAnimationState girlAnimationState2;
             block19: {
@@ -189,7 +189,7 @@ implements BoxSource {
         catch (RuntimeException runtimeException) {
             throw GalathPlayer.rethrow(runtimeException);
         }
-        super.b(girlAnimationState);
+        super.setCurrentAction(girlAnimationState);
     }
 
     void a() {
@@ -277,7 +277,7 @@ implements BoxSource {
     }
 
     @Override
-    public void B() {
+    public void B_() {
         this.c(true);
     }
 
@@ -354,28 +354,28 @@ implements BoxSource {
     }
 
     @Override
-    protected <E extends IAnimatable> PlayState a(AnimationEvent<E> animEvent) {
+    protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> animEvent) {
         block5 : switch (animEvent.getController().getName()) {
             case "eyes": {
                 if (this.getCurrentAction() != GirlAnimationState.NULL || !this.getCurrentAction().autoBlink) {
-                    this.a("animation.galath.null", true, animEvent);
+                    this.createAnimationOnce("animation.galath.null", true, animEvent);
                     break;
                 }
-                this.a("animation.galath.blink", true, animEvent);
+                this.createAnimationOnce("animation.galath.blink", true, animEvent);
                 break;
             }
             case "movement": {
                 this.MovementController.setAnimationSpeed(1.0);
                 if (this.getCurrentAction() != GirlAnimationState.NULL) {
-                    this.a("animation.galath.null", true, animEvent);
+                    this.createAnimationOnce("animation.galath.null", true, animEvent);
                     break;
                 }
                 if (this.ak) {
-                    this.a("animation.galath.sit", true, animEvent);
+                    this.createAnimationOnce("animation.galath.sit", true, animEvent);
                     break;
                 }
                 if (!this.af) {
-                    this.a("animation.galath.controlled_flight", true, animEvent);
+                    this.createAnimationOnce("animation.galath.controlled_flight", true, animEvent);
                     break;
                 }
                 if (Math.abs(this.ao.x) + Math.abs(this.ao.y) == 0.0f) {
@@ -402,56 +402,56 @@ implements BoxSource {
                         return PlayState.STOP;
                     }
                     case STRIP: {
-                        this.a("animation.galath.strip", true, animEvent);
+                        this.createAnimationOnce("animation.galath.strip", true, animEvent);
                         break block5;
                     }
                     case ATTACK: {
-                        this.a("animation.galath.attack" + this.S, true, animEvent);
+                        this.createAnimationOnce("animation.galath.attack" + this.S, true, animEvent);
                         break block5;
                     }
                     case BOW: {
-                        this.a("animation.galath.bowcharge", true, animEvent);
+                        this.createAnimationOnce("animation.galath.bowcharge", true, animEvent);
                         break block5;
                     }
                     case RIDE: 
                     case SIT: {
-                        this.a("animation.galath.sit", true, animEvent);
+                        this.createAnimationOnce("animation.galath.sit", true, animEvent);
                         break block5;
                     }
                     case RAPE_INTRO: {
-                        this.a("animation.galath.rape_intro", true, animEvent);
+                        this.createAnimationOnce("animation.galath.rape_intro", true, animEvent);
                         break block5;
                     }
                     case RAPE_ON_GOING: {
-                        this.a("animation.galath.rape" + this.ar, true, animEvent);
+                        this.createAnimationOnce("animation.galath.rape" + this.ar, true, animEvent);
                         break block5;
                     }
                     case RAPE_CUM: {
-                        this.a("animation.galath.rape_cum", true, animEvent);
+                        this.createAnimationOnce("animation.galath.rape_cum", true, animEvent);
                         break block5;
                     }
                     case RAPE_CUM_IDLE: {
-                        this.a("animation.galath.rape_cum_idle", true, animEvent);
+                        this.createAnimationOnce("animation.galath.rape_cum_idle", true, animEvent);
                         break block5;
                     }
                     case CORRUPT_FAST: {
-                        this.a("animation.galath.corrupt_" + (this.WasCorrupting ? "hard" : "soft"), true, animEvent);
+                        this.createAnimationOnce("animation.galath.corrupt_" + (this.WasCorrupting ? "hard" : "soft"), true, animEvent);
                         break block5;
                     }
                     case CORRUPT_SLOW: {
-                        this.a("animation.galath.corrupt_slow", true, animEvent);
+                        this.createAnimationOnce("animation.galath.corrupt_slow", true, animEvent);
                         break block5;
                     }
                     case CORRUPT_INTRO: {
-                        this.a("animation.galath.corrupt_intro", true, animEvent);
+                        this.createAnimationOnce("animation.galath.corrupt_intro", true, animEvent);
                         break block5;
                     }
                     case CORRUPT_CUM: {
-                        this.a("animation.galath.corrupt_cum", true, animEvent);
+                        this.createAnimationOnce("animation.galath.corrupt_cum", true, animEvent);
                         break block5;
                     }
                     case CONTROLLED_FLIGHT: {
-                        this.a("animation.galath.controlled_flight", true, animEvent);
+                        this.createAnimationOnce("animation.galath.controlled_flight", true, animEvent);
                     }
                 }
             }
@@ -495,7 +495,7 @@ implements BoxSource {
                 }
                 case "rapeIntroDone": {
                     if (!this.isOwnedByLocalPlayer()) break;
-                    this.b(GirlAnimationState.RAPE_ON_GOING);
+                    this.setCurrentAction(GirlAnimationState.RAPE_ON_GOING);
                     break;
                 }
                 case "rape_switch": {
@@ -528,7 +528,7 @@ implements BoxSource {
                 }
                 case "corruptSwitch": {
                     if (!this.isOwnedByLocalPlayer() || !AnimationInputLock.SneakPressed) break;
-                    this.b(GirlAnimationState.CORRUPT_FAST);
+                    this.setCurrentAction(GirlAnimationState.CORRUPT_FAST);
                     break;
                 }
                 case "corrupt_hard": {
@@ -538,7 +538,7 @@ implements BoxSource {
                     break;
                 }
                 case "corrupt_hard_end": {
-                    this.b(GirlAnimationState.CORRUPT_SLOW);
+                    this.setCurrentAction(GirlAnimationState.CORRUPT_SLOW);
                     this.WasCorrupting = false;
                     break;
                 }

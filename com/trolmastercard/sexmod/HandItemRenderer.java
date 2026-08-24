@@ -38,7 +38,7 @@ public class HandItemRenderer {
                     float f2;
                     float f3;
                     block25: {
-                        PlayerGirlEntity.C();
+                        PlayerGirlEntity.C_();
                         PlayerGirlEntity playerGirl = PlayerGirlEntity.getByUuid(Minecraft.getMinecraft().player.getPersistentID());
                         try {
                             if (playerGirl == null) {

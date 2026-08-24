@@ -408,7 +408,7 @@ LeftBallActiveKey {
     }
 
     @Override
-    public String c() {
+    public String getDisplayName() {
         return "Galath";
     }
 
@@ -1791,7 +1791,7 @@ LeftBallActiveKey {
                                 try {
                                     if (f > 16.0f) {
                                         pathNavigate.clearPath();
-                                        this.b(entityPlayer);
+                                        this.canInteract(entityPlayer);
                                         return true;
                                     }
                                 }
@@ -1815,7 +1815,7 @@ LeftBallActiveKey {
                             try {
                                 this.aq = this.a(entityPlayer, blockPos);
                                 if (this.aq != null) break block37;
-                                this.b(entityPlayer);
+                                this.canInteract(entityPlayer);
                                 break block35;
                             }
                             catch (ConcurrentModificationException concurrentModificationException) {
@@ -2388,7 +2388,7 @@ LeftBallActiveKey {
     }
 
     @Override
-    public void b(GirlAnimationState girlAnimationState) {
+    public void setCurrentAction(GirlAnimationState girlAnimationState) {
         block55: {
             GirlAnimationState girlAnimationState2;
             block54: {
@@ -3983,7 +3983,7 @@ LeftBallActiveKey {
     }
 
     @Override
-    protected boolean a(GirlAnimationState girlAnimationState, String string, boolean flag, AnimationEvent animationEvent) {
+    protected boolean shouldHoldAnimation(GirlAnimationState girlAnimationState, String string, boolean flag, AnimationEvent animationEvent) {
         block40: {
             block39: {
                 block37: {
@@ -3999,7 +3999,7 @@ LeftBallActiveKey {
                                             throw GalathNpc.rethrow(concurrentModificationException);
                                         }
                                         this.bx = false;
-                                        this.a("animation.galath.masterbating_sitting", true, animationEvent, true);
+                                        this.createAnimation("animation.galath.masterbating_sitting", true, animationEvent, true);
                                         return true;
                                     }
                                     catch (ConcurrentModificationException concurrentModificationException) {
@@ -4027,7 +4027,7 @@ LeftBallActiveKey {
                                 catch (ConcurrentModificationException concurrentModificationException) {
                                     throw GalathNpc.rethrow(concurrentModificationException);
                                 }
-                                this.a("animation.shared.bed_fast", true, animationEvent, true);
+                                this.createAnimation("animation.shared.bed_fast", true, animationEvent, true);
                                 this.aD = false;
                                 return true;
                             }
@@ -4052,7 +4052,7 @@ LeftBallActiveKey {
                                 throw GalathNpc.rethrow(concurrentModificationException);
                             }
                             this.a5 = false;
-                            this.a("animation.galath.pussy_licking", true, animationEvent, true);
+                            this.createAnimation("animation.galath.pussy_licking", true, animationEvent, true);
                             return true;
                         }
                         catch (ConcurrentModificationException concurrentModificationException) {
@@ -4077,7 +4077,7 @@ LeftBallActiveKey {
                         }
                         this.aD = true;
                         this.setCurrentAction(GirlAnimationState.MORNING_BLOWJOB_FAST);
-                        this.a("animation.shared.bed_soft", true, animationEvent, true);
+                        this.createAnimation("animation.shared.bed_soft", true, animationEvent, true);
                         return true;
                     }
                     catch (ConcurrentModificationException concurrentModificationException) {
@@ -4092,7 +4092,7 @@ LeftBallActiveKey {
                         throw GalathNpc.rethrow(concurrentModificationException);
                     }
                     this.bt = false;
-                    this.a("animation.shared.bed_slow", true, animationEvent, true);
+                    this.createAnimation("animation.shared.bed_slow", true, animationEvent, true);
                     return true;
                 }
                 catch (ConcurrentModificationException concurrentModificationException) {
@@ -4108,7 +4108,7 @@ LeftBallActiveKey {
                 }
                 this.setCurrentAction(GirlAnimationState.MORNING_BLOWJOB_SLOW);
                 this.bt = true;
-                this.a("animation.shared.bed_back", true, animationEvent, true);
+                this.createAnimation("animation.shared.bed_back", true, animationEvent, true);
                 return true;
             }
             catch (ConcurrentModificationException concurrentModificationException) {
@@ -4162,9 +4162,9 @@ LeftBallActiveKey {
     }
 
     @Override
-    protected <E extends IAnimatable> PlayState a(AnimationEvent<E> animEvent) {
+    protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> animEvent) {
         if (this.isTracked()) {
-            this.a("animation.galath.idle", true, animEvent);
+            this.createAnimationOnce("animation.galath.idle", true, animEvent);
             return PlayState.CONTINUE;
         }
         GirlAnimationState girlAnimationState = this.getCurrentAction();
@@ -4174,7 +4174,7 @@ LeftBallActiveKey {
             if (!girlAnimationState.autoBlink || girlAnimationState == GirlAnimationState.GALATH_DE_SUMMON) {
                 return PlayState.STOP;
             }
-            this.a("animation.galath.blink", true, animEvent);
+            this.createAnimationOnce("animation.galath.blink", true, animEvent);
             return PlayState.CONTINUE;
         }
         if (animationController.equals(this.MovementController)) {
@@ -4182,16 +4182,16 @@ LeftBallActiveKey {
                 return PlayState.STOP;
             }
             if (!this.onGround) {
-                this.a("animation.galath.controlled_flight", true, animEvent);
+                this.createAnimationOnce("animation.galath.controlled_flight", true, animEvent);
                 return PlayState.CONTINUE;
             }
             Vec3d vec3d = this.getPositionVector().subtract(new Vec3d(this.lastTickPosX, this.lastTickPosY, this.lastTickPosZ));
             if (vec3d.equals(Vec3d.ZERO)) {
-                this.a("animation.galath.idle", true, animEvent);
+                this.createAnimationOnce("animation.galath.idle", true, animEvent);
                 return PlayState.CONTINUE;
             }
             this.rotationYaw = this.rotationYawHead;
-            this.a("animation.galath." + ((Boolean)this.DataManager.get(bT) != false ? "run" : "walk"), true, animEvent);
+            this.createAnimationOnce("animation.galath." + ((Boolean)this.DataManager.get(bT) != false ? "run" : "walk"), true, animEvent);
             return PlayState.CONTINUE;
         }
         switch (this.getCurrentAction()) {
@@ -4199,101 +4199,101 @@ LeftBallActiveKey {
                 return PlayState.STOP;
             }
             case FLY: {
-                this.a("animation.galath.idle_flying", true, animEvent);
+                this.createAnimationOnce("animation.galath.idle_flying", true, animEvent);
                 break;
             }
             case SUMMON_SKELETON: {
-                this.a("animation.galath.summon_skeleton" + ((Boolean)this.DataManager.get(FlipSideKey) != false ? "Mirrored" : ""), true, animEvent);
+                this.createAnimationOnce("animation.galath.summon_skeleton" + ((Boolean)this.DataManager.get(FlipSideKey) != false ? "Mirrored" : ""), true, animEvent);
                 break;
             }
             case ATTACK_SWORD: {
-                this.a("animation.galath.attack", true, animEvent);
+                this.createAnimationOnce("animation.galath.attack", true, animEvent);
                 break;
             }
             case KNOCK_OUT_FLY: {
                 animationController.setAnimationSpeed(1.5);
-                this.a("animation.galath.knockout_air", true, animEvent);
+                this.createAnimationOnce("animation.galath.knockout_air", true, animEvent);
                 break;
             }
             case KNOCK_OUT_GROUND: {
-                this.a("animation.galath.knocked_out", true, animEvent);
+                this.createAnimationOnce("animation.galath.knocked_out", true, animEvent);
                 break;
             }
             case KNOCK_OUT_STAND_UP: {
-                this.a("animation.galath.knocked_out_stand_up", true, animEvent);
+                this.createAnimationOnce("animation.galath.knocked_out_stand_up", true, animEvent);
                 break;
             }
             case RAPE_PREPARE: {
-                this.a("animation.galath.rape_prepare", true, animEvent);
+                this.createAnimationOnce("animation.galath.rape_prepare", true, animEvent);
                 break;
             }
             case RAPE_CHARGE: {
-                this.a("animation.galath.rape_charge", true, animEvent);
+                this.createAnimationOnce("animation.galath.rape_charge", true, animEvent);
                 break;
             }
             case RAPE_INTRO: {
-                this.a("animation.galath.rape_intro", true, animEvent);
+                this.createAnimationOnce("animation.galath.rape_intro", true, animEvent);
                 break;
             }
             case RAPE_ON_GOING: {
-                this.a("animation.galath.rape" + this.i7, true, animEvent);
+                this.createAnimationOnce("animation.galath.rape" + this.i7, true, animEvent);
                 break;
             }
             case RAPE_CUM: {
-                this.a("animation.galath.rape_cum", true, animEvent);
+                this.createAnimationOnce("animation.galath.rape_cum", true, animEvent);
                 break;
             }
             case RAPE_CUM_IDLE: {
-                this.a("animation.galath.rape_cum_idle", true, animEvent);
+                this.createAnimationOnce("animation.galath.rape_cum_idle", true, animEvent);
                 break;
             }
             case CORRUPT_FAST: {
-                this.a("animation.galath.corrupt_" + (this.aT ? "hard" : "soft"), true, animEvent);
+                this.createAnimationOnce("animation.galath.corrupt_" + (this.aT ? "hard" : "soft"), true, animEvent);
                 break;
             }
             case CORRUPT_SLOW: {
-                this.a("animation.galath.corrupt_slow", true, animEvent);
+                this.createAnimationOnce("animation.galath.corrupt_slow", true, animEvent);
                 break;
             }
             case CORRUPT_INTRO: {
-                this.a("animation.galath.corrupt_intro", true, animEvent);
+                this.createAnimationOnce("animation.galath.corrupt_intro", true, animEvent);
                 break;
             }
             case CORRUPT_CUM: {
-                this.a("animation.galath.corrupt_cum", true, animEvent);
+                this.createAnimationOnce("animation.galath.corrupt_cum", true, animEvent);
                 break;
             }
             case CONTROLLED_FLIGHT: {
-                this.a("animation.galath.controlled_flight", true, animEvent);
+                this.createAnimationOnce("animation.galath.controlled_flight", true, animEvent);
                 break;
             }
             case BOOST: {
-                this.a("animation.galath.boost", true, animEvent);
+                this.createAnimationOnce("animation.galath.boost", true, animEvent);
                 break;
             }
             case GALATH_SUMMON: {
-                this.a("animation.galath.summon", false, animEvent);
+                this.createAnimationOnce("animation.galath.summon", false, animEvent);
                 break;
             }
             case GALATH_DE_SUMMON: {
-                this.a("animation.galath.desummon" + (this.onGround ? "_standing" : ""), true, animEvent);
+                this.createAnimationOnce("animation.galath.desummon" + (this.onGround ? "_standing" : ""), true, animEvent);
                 break;
             }
             case GIVE_COIN: {
-                this.a("animation.galath.give_coin", true, animEvent);
+                this.createAnimationOnce("animation.galath.give_coin", true, animEvent);
                 break;
             }
             case MASTERBATE: {
-                this.a("animation.galath.masterbate", true, animEvent);
+                this.createAnimationOnce("animation.galath.masterbate", true, animEvent);
                 break;
             }
             case RUN: {
                 animationController.setAnimationSpeed(0.7);
-                this.a("animation.galath.running", true, animEvent);
+                this.createAnimationOnce("animation.galath.running", true, animEvent);
                 break;
             }
             case HUG_MANG: {
-                this.a("animation.galath.hug_mang", true, animEvent);
+                this.createAnimationOnce("animation.galath.hug_mang", true, animEvent);
                 break;
             }
             case PUSSY_LICKING: {
@@ -4305,7 +4305,7 @@ LeftBallActiveKey {
                 break;
             }
             case MASTERBATE_SITTING_CUM: {
-                this.a("animation.galath.masterbating_sitting_cum", true, animEvent);
+                this.createAnimationOnce("animation.galath.masterbating_sitting_cum", true, animEvent);
                 break;
             }
             case MORNING_BLOWJOB_SLOW: {
@@ -4314,14 +4314,14 @@ LeftBallActiveKey {
             }
             case MORNING_BLOWJOB_FAST: {
                 if (this.aD) {
-                    this.a("animation.shared.bed_soft", true, animEvent);
+                    this.createAnimationOnce("animation.shared.bed_soft", true, animEvent);
                     break;
                 }
-                this.a("animation.shared.bed_fast", 4, 0.75f, animEvent);
+                this.createRangeAnimationOnce("animation.shared.bed_fast", 4, 0.75f, animEvent);
                 break;
             }
             case MORNING_BLOWJOB_CUM: {
-                this.a("animation.shared.bed_cum", true, animEvent);
+                this.createAnimationOnce("animation.shared.bed_cum", true, animEvent);
             }
         }
         return PlayState.CONTINUE;
@@ -4330,9 +4330,9 @@ LeftBallActiveKey {
     @Override
     @SideOnly(value=Side.CLIENT)
     public void registerControllers(AnimationData animationData) {
-        this.ActionController = new CustomAnimationController<GalathNpc>(this, "action", 0.0f, this::a);
-        this.MovementController = new AnimationController<GalathNpc>(this, "movement", 5.0f, this::a);
-        this.EyesController = new AnimationController<GalathNpc>(this, "eyes", 10.0f, this::a);
+        this.ActionController = new CustomAnimationController<GalathNpc>(this, "action", 0.0f, this::predicate);
+        this.MovementController = new AnimationController<GalathNpc>(this, "movement", 5.0f, this::predicate);
+        this.EyesController = new AnimationController<GalathNpc>(this, "eyes", 10.0f, this::predicate);
         this.ActionController.registerSoundListener(arg1 -> {
             switch (arg1.sound) {
                 case "goodTiming": {

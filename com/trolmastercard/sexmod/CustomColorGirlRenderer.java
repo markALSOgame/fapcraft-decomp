@@ -7,13 +7,20 @@ import javax.vecmath.Vector4f;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.item.ItemBow;
+import net.minecraft.item.ItemShield;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import software.bernie.geckolib3.core.util.Color;
 import software.bernie.geckolib3.geo.render.built.GeoBone;
 import software.bernie.geckolib3.geo.render.built.GeoCube;
+import software.bernie.geckolib3.geo.render.built.GeoQuad;
+import software.bernie.geckolib3.geo.render.built.GeoVertex;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
+import javax.vecmath.Tuple3f;
+import javax.vecmath.Tuple4f;
+import javax.vecmath.Vector3f;
 
 public abstract class CustomColorGirlRenderer extends GirlPlayerRenderer {
    protected static final Vec3i DefaultColor = new Vec3i(255, 255, 255);
@@ -64,7 +71,7 @@ public abstract class CustomColorGirlRenderer extends GirlPlayerRenderer {
       return 1.0F;
    }
 
-   protected Vec3d a(ItemStack stack) {
+   protected Vec3d getItemRenderRotation(ItemStack stack) {
       return new Vec3d(-90.0, 0.0, 0.0);
    }
 
@@ -280,9 +287,8 @@ public abstract class CustomColorGirlRenderer extends GirlPlayerRenderer {
             if (this.c(bone.getName())) {
                 vec3d = new Vec3d((double)f, (double)f2, (double)f3);
             } else {
-                GeoVertex[] geoVertexArray = this.a(bone);
-                geoVertexArray = this.a((Vec3i)geoVertexArray);
-                vec3d = BoneColorHelper.applyBoneColor(this, bone, new Vec3d((double)((float)geoVertexArray.getX() / 255.0f), (double)((float)geoVertexArray.getY() / 255.0f), (double)((float)geoVertexArray.getZ() / 255.0f)), vector3f);
+                Vec3i vec3i = this.a((Vec3i)this.a(bone));
+                vec3d = BoneColorHelper.applyBoneColor(this, bone, new Vec3d((double)((float)vec3i.getX() / 255.0f), (double)((float)vec3i.getY() / 255.0f), (double)((float)vec3i.getZ() / 255.0f)), vector3f);
             }
             for (GeoVertex geoVertex : geoQuad.vertices) {
                 Vector4f vector4f = new Vector4f(geoVertex.position.getX(), geoVertex.position.getY(), geoVertex.position.getZ(), 1.0f);

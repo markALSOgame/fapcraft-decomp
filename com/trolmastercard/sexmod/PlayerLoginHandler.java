@@ -41,7 +41,7 @@ public class PlayerLoginHandler {
             HashSet<BlockPos> tribePositions = GirlHomeBuilder.getTribeAreaPositions(tribeUuid);
             NetworkHandler.channel.sendTo((IMessage)new PacketSendBlocks(tribePositions, true), serverPlayer);
         }
-        PlayerGirlEntity.C();
+        PlayerGirlEntity.C_();
         PlayerGirlEntity playerGirl = PlayerGirlEntity.getByUuid(playerLoggedInEvent.player.getPersistentID());
         World world = FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld();
         this.removePlayerGirls(world, (EntityPlayer)serverPlayer, playerGirl);
@@ -69,7 +69,7 @@ public class PlayerLoginHandler {
       bia.motionZ = 0.0;
       bia.setPosition(player.posX, player.posY + 69.0, player.posZ);
       world.spawnEntity(bia);
-      bia.B();
+      bia.B_();
    }
 
    void spawnElliePlayer(World world, EntityPlayer player, UUID uuid) {
@@ -81,7 +81,7 @@ public class PlayerLoginHandler {
       ellie.motionZ = 0.0;
       ellie.setPosition(player.posX, player.posY + 69.0, player.posZ);
       world.spawnEntity(ellie);
-      ellie.B();
+      ellie.B_();
    }
 
 

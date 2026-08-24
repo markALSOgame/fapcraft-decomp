@@ -256,7 +256,7 @@ public enum DeadClass {
         }
         f_2.bL = null;
         f_2.b(0);
-        f_2.b(GirlAnimationState.FLY);
+        f_2.setCurrentAction(GirlAnimationState.FLY);
         NetworkHandler.channel.sendToAllTracking((IMessage)new PacketResetController(f_2.f()), (Entity)f_2);
     }, f_2 -> {
         Vec3d vec3d = f_2.getPositionVector();
@@ -300,7 +300,7 @@ public enum DeadClass {
         f_2.bL = null;
     }, false, f_2 -> true, false),
     SUMMON_SKELETON(f_2 -> {
-        f_2.b(GirlAnimationState.SUMMON_SKELETON);
+        f_2.setCurrentAction(GirlAnimationState.SUMMON_SKELETON);
         f_2.ad = 0;
         EntityDataManager entityDataManager = f_2.getDataManager();
         entityDataManager.set(GalathNpc.RightBallActiveKey, (Object)true);
@@ -417,7 +417,7 @@ public enum DeadClass {
     }, true),
     ATTACK_SWORD(f_2 -> {
         f_2.a(0);
-        f_2.b(GirlAnimationState.ATTACK_SWORD);
+        f_2.setCurrentAction(GirlAnimationState.ATTACK_SWORD);
         f_2.b(Vec3d.ZERO);
         Vec3d vec3d = f_2.getPositionVector();
         f_2.e(vec3d);
@@ -471,7 +471,7 @@ public enum DeadClass {
         }
         if (i7 == 54) {
             f_2.a(false);
-            f_2.b(GirlAnimationState.FLY);
+            f_2.setCurrentAction(GirlAnimationState.FLY);
             Vec3d vec3d = f_2.B().subtract(f_2.getPositionVector()).normalize();
             f_2.motionX = vec3d.x * (double)0.6f;
             f_2.motionY = vec3d.y * (double)0.6f;
@@ -497,7 +497,7 @@ public enum DeadClass {
         f_2.a(false);
     }, true, f_2 -> true, false),
     RAPE(f_2 -> {
-        f_2.b(GirlAnimationState.RAPE_PREPARE);
+        f_2.setCurrentAction(GirlAnimationState.RAPE_PREPARE);
         f_2.aF = 0;
         f_2.bd = null;
         f_2.O = null;
@@ -520,7 +520,7 @@ public enum DeadClass {
             catch (RuntimeException runtimeException) {
                 throw DeadClass.rethrow(runtimeException);
             }
-            f_2.b(GirlAnimationState.RAPE_CHARGE);
+            f_2.setCurrentAction(GirlAnimationState.RAPE_CHARGE);
             EntityLivingBase entityLivingBase = f_2.M();
             if (f_2.bd == null) {
                 f_2.O = entityLivingBase.getPositionVector().add(0.0, (double)(entityLivingBase.getEyeHeight() / 2.0f), 0.0);
@@ -580,7 +580,7 @@ public enum DeadClass {
                 f_2.c(entityPlayer2.getPositionVector());
                 f_2.e(entityPlayer2.getPersistentID());
                 f_2.a(true);
-                f_2.b(GirlAnimationState.RAPE_INTRO);
+                f_2.setCurrentAction(GirlAnimationState.RAPE_INTRO);
                 byte bv = (byte)MathHelper.floor((float)((f_2.I().floatValue() + 180.0f) * 256.0f / 360.0f));
                 NetworkHandler.channel.sendTo((IMessage)new PacketSetPlayerMovement(false), entityPlayerMP);
                 entityPlayerMP.connection.sendPacket((Packet)new SPacketEntityVelocity(entityPlayerMP.getEntityId(), 0.0, 0.0, 0.0));

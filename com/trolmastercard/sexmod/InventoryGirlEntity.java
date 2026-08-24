@@ -178,12 +178,12 @@ public abstract class InventoryGirlEntity extends GirlEntity {
             throw rethrow(error3);
          }
 
-         try {
-            if ("action.names.setnewhome".equals(string)) {
-               this.getDisplayName();
-               NetworkHandler.channel.sendToServer(new PacketSetNewHome(this.getGirlUuid(), new Vec3d(this.getPosition())));
-            }
-         } catch (RuntimeException error4) {
+          try {
+             if ("action.names.setnewhome".equals(string)) {
+                this.c();
+                NetworkHandler.channel.sendToServer(new PacketSetNewHome(this.getGirlUuid(), new Vec3d(this.getPosition())));
+             }
+          } catch (RuntimeException error4) {
             throw rethrow(error4);
          }
       }

@@ -72,7 +72,7 @@ extends PlayerGirlEntity {
     public void startAction(String string, UUID uUID) {
         try {
             if ("action.names.deepthroat".equals(string)) {
-                this.b(GirlAnimationState.DEEPTHROAT_START);
+                this.setCurrentAction(GirlAnimationState.DEEPTHROAT_START);
                 this.a(this.getOutfitIndex(), GirlAnimationState.DEEPTHROAT_START);
                 this.b(uUID);
             }
@@ -82,7 +82,7 @@ extends PlayerGirlEntity {
         }
         try {
             if ("Reverse cowgirl".equals(string)) {
-                this.b(GirlAnimationState.REVERSE_COWGIRL_START);
+                this.setCurrentAction(GirlAnimationState.REVERSE_COWGIRL_START);
                 this.a(0, GirlAnimationState.REVERSE_COWGIRL_START);
                 this.b(uUID);
             }
@@ -99,7 +99,7 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    public void b(GirlAnimationState girlAnimationState) {
+    public void setCurrentAction(GirlAnimationState girlAnimationState) {
         block16: {
             block14: {
                 try {
@@ -152,7 +152,7 @@ extends PlayerGirlEntity {
                 throw AlliePlayer.rethrow(runtimeException);
             }
         }
-        super.b(girlAnimationState);
+        super.setCurrentAction(girlAnimationState);
     }
 
     @Override
@@ -236,7 +236,7 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    public void B() {
+    public void B_() {
         this.c(true);
     }
 
@@ -340,7 +340,7 @@ extends PlayerGirlEntity {
                     break;
                 }
                 case "deepthroat_prepareDone": {
-                    this.b(GirlAnimationState.DEEPTHROAT_START);
+                    this.setCurrentAction(GirlAnimationState.DEEPTHROAT_START);
                     if (!this.isOwnedByLocalPlayer()) break;
                     NetworkHandler.channel.sendToServer((IMessage)new PacketSexPromptReply(this.getGirlUuid(), this.getSexPlayerUuid(), false, true));
                     this.AimYaw = this.rotationYaw + 180.0f;
@@ -357,11 +357,11 @@ extends PlayerGirlEntity {
                 }
                 case "deepthroat_fastDone": {
                     if (!this.isOwnedByLocalPlayer() || AnimationInputLock.SneakPressed) break;
-                    this.b(GirlAnimationState.DEEPTHROAT_SLOW);
+                    this.setCurrentAction(GirlAnimationState.DEEPTHROAT_SLOW);
                     break;
                 }
                 case "deepthroat_startDone": {
-                    this.b(GirlAnimationState.DEEPTHROAT_SLOW);
+                    this.setCurrentAction(GirlAnimationState.DEEPTHROAT_SLOW);
                     break;
                 }
                 case "deepthroat_slowMSG1": {
@@ -438,7 +438,7 @@ extends PlayerGirlEntity {
                     if (!this.isOwnedByLocalPlayer() || !AnimationInputLock.SneakPressed) break;
                     GirlAnimationState girlAnimationState = this.getCurrentAction();
                     if (girlAnimationState == GirlAnimationState.REVERSE_COWGIRL_FAST_START) {
-                        this.b(GirlAnimationState.REVERSE_COWGIRL_FAST_CONTINUES);
+                        this.setCurrentAction(GirlAnimationState.REVERSE_COWGIRL_FAST_CONTINUES);
                         break;
                     }
                     this.N();
@@ -468,110 +468,110 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    protected <E extends IAnimatable> PlayState a(AnimationEvent<E> animEvent) {
+    protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> animEvent) {
         if (this.world instanceof PreviewWorld) {
             return PlayState.STOP;
         }
         block5 : switch (animEvent.getController().getName()) {
             case "eyes": {
                 if (this.getCurrentAction() != GirlAnimationState.NULL || !this.getCurrentAction().autoBlink) {
-                    this.a("animation.allie.null", true, animEvent);
+                    this.createAnimationOnce("animation.allie.null", true, animEvent);
                     break;
                 }
-                this.a("animation.bia.blink", true, animEvent);
+                this.createAnimationOnce("animation.bia.blink", true, animEvent);
                 break;
             }
             case "movement": {
                 double d = 4.0 * (Math.abs(this.posX - this.lastTickPosX) + Math.abs(this.posY - this.lastTickPosY) + Math.abs(this.posZ - this.lastTickPosZ));
                 d = Math.min(1.0 + d, 4.0);
                 this.MovementController.setAnimationSpeed(d);
-                this.a("animation.allie.tail", true, animEvent);
+                this.createAnimationOnce("animation.allie.tail", true, animEvent);
                 break;
             }
             case "action": {
                 switch (this.getCurrentAction()) {
                     case NULL: {
-                        this.a("animation.allie.null", true, animEvent);
+                        this.createAnimationOnce("animation.allie.null", true, animEvent);
                         break block5;
                     }
                     case SUMMON: {
-                        this.a("animation.allie.summon", false, animEvent);
+                        this.createAnimationOnce("animation.allie.summon", false, animEvent);
                         break block5;
                     }
                     case SUMMON_NORMAL: {
-                        this.a("animation.allie.summon_normal", false, animEvent);
+                        this.createAnimationOnce("animation.allie.summon_normal", false, animEvent);
                         break block5;
                     }
                     case SUMMON_NORMAL_WAIT: {
-                        this.a("animation.allie.summon_normal_wait", true, animEvent);
+                        this.createAnimationOnce("animation.allie.summon_normal_wait", true, animEvent);
                         break block5;
                     }
                     case SUMMON_WAIT: {
-                        this.a("animation.allie.summon_wait", true, animEvent);
+                        this.createAnimationOnce("animation.allie.summon_wait", true, animEvent);
                         break block5;
                     }
                     case ALLIE_PREPARE_FIRST_TIME: {
-                        this.a("animation.allie.deepthroat_prepare", false, animEvent);
+                        this.createAnimationOnce("animation.allie.deepthroat_prepare", false, animEvent);
                         break block5;
                     }
                     case ALLIE_PREPARE_NORMAL: {
-                        this.a("animation.allie.deepthroat_normal_prepare", false, animEvent);
+                        this.createAnimationOnce("animation.allie.deepthroat_normal_prepare", false, animEvent);
                         break block5;
                     }
                     case DEEPTHROAT_START: {
-                        this.a("animation.allie.deepthroat_start", false, animEvent);
+                        this.createAnimationOnce("animation.allie.deepthroat_start", false, animEvent);
                         break block5;
                     }
                     case DEEPTHROAT_SLOW: {
-                        this.a("animation.allie.deepthroat_slow", true, animEvent);
+                        this.createAnimationOnce("animation.allie.deepthroat_slow", true, animEvent);
                         break block5;
                     }
                     case DEEPTHROAT_FAST: {
-                        this.a("animation.allie.deepthroat_fast", true, animEvent);
+                        this.createAnimationOnce("animation.allie.deepthroat_fast", true, animEvent);
                         break block5;
                     }
                     case DEEPTHROAT_CUM: {
-                        this.a("animation.allie.deepthroat_cum", false, animEvent);
+                        this.createAnimationOnce("animation.allie.deepthroat_cum", false, animEvent);
                         break block5;
                     }
                     case RICH_FIRST_TIME: {
-                        this.a("animation.allie.rich", false, animEvent);
+                        this.createAnimationOnce("animation.allie.rich", false, animEvent);
                         break block5;
                     }
                     case RICH_NORMAL: {
-                        this.a("animation.allie.rich_normal", false, animEvent);
+                        this.createAnimationOnce("animation.allie.rich_normal", false, animEvent);
                         break block5;
                     }
                     case SUMMON_SAND: {
-                        this.a("animation.allie.summon_sand", false, animEvent);
+                        this.createAnimationOnce("animation.allie.summon_sand", false, animEvent);
                         break block5;
                     }
                     case ATTACK: {
-                        this.a("animation.allie.attack" + this.S, false, animEvent);
+                        this.createAnimationOnce("animation.allie.attack" + this.S, false, animEvent);
                         break block5;
                     }
                     case BOW: {
-                        this.a("animation.allie.bowcharge", false, animEvent);
+                        this.createAnimationOnce("animation.allie.bowcharge", false, animEvent);
                         break block5;
                     }
                     case REVERSE_COWGIRL_START: {
-                        this.a("animation.allie.reverse_cowgirl_start", true, animEvent);
+                        this.createAnimationOnce("animation.allie.reverse_cowgirl_start", true, animEvent);
                         break block5;
                     }
                     case REVERSE_COWGIRL_SLOW: {
-                        this.a("animation.allie.reverse_cowgirl_slow" + this.ar, true, animEvent);
+                        this.createAnimationOnce("animation.allie.reverse_cowgirl_slow" + this.ar, true, animEvent);
                         break block5;
                     }
                     case REVERSE_COWGIRL_FAST_CONTINUES: {
-                        this.a("animation.allie.reverse_cowgirl_fastc" + this.av, true, animEvent);
+                        this.createAnimationOnce("animation.allie.reverse_cowgirl_fastc" + this.av, true, animEvent);
                         break block5;
                     }
                     case REVERSE_COWGIRL_FAST_START: {
-                        this.a("animation.allie.reverse_cowgirl_fasts", true, animEvent);
+                        this.createAnimationOnce("animation.allie.reverse_cowgirl_fasts", true, animEvent);
                         break block5;
                     }
                     case REVERSE_COWGIRL_CUM: {
-                        this.a("animation.allie.reverse_cowgirl_cum", true, animEvent);
+                        this.createAnimationOnce("animation.allie.reverse_cowgirl_cum", true, animEvent);
                     }
                 }
             }

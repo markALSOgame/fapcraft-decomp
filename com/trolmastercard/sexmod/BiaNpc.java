@@ -88,7 +88,7 @@ fg {
     }
 
     @Override
-    public String c() {
+    public String getDisplayName() {
         return "Bia";
     }
 
@@ -109,7 +109,7 @@ fg {
     }
 
     @Override
-    public void b(GirlAnimationState girlAnimationState) {
+    public void setCurrentAction(GirlAnimationState girlAnimationState) {
         block19: {
             GirlAnimationState girlAnimationState2;
             block17: {
@@ -274,7 +274,7 @@ fg {
             }
             try {
                 try {
-                    if (!this.world.isRemote || this.b(entityPlayer)) break block15;
+                    if (!this.world.isRemote || this.canInteract(entityPlayer)) break block15;
                 }
                 catch (NullPointerException nullPointerException) {
                     throw BiaNpc.rethrow(nullPointerException);
@@ -289,7 +289,7 @@ fg {
     }
 
     @Override
-    public boolean b(EntityPlayer entityPlayer) {
+    public boolean canInteract(EntityPlayer entityPlayer) {
         block8: {
             String string;
             String[] stringArray;
@@ -903,156 +903,156 @@ fg {
     }
 
     @Override
-    protected <E extends IAnimatable> PlayState a(AnimationEvent<E> animEvent) {
+    protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> animEvent) {
         if (this.world instanceof PreviewWorld) {
             return null;
         }
         block5: switch (animEvent.getController().getName()) {
             case "eyes": {
                 if (this.getCurrentAction() != GirlAnimationState.NULL || !this.getCurrentAction().autoBlink) {
-                    this.a("animation.bia.null", true, animEvent);
+                    this.createAnimationOnce("animation.bia.null", true, animEvent);
                     break;
                 }
-                this.a("animation.bia.fhappy", true, animEvent);
+                this.createAnimationOnce("animation.bia.fhappy", true, animEvent);
                 break;
             }
             case "movement": {
                 if (this.getCurrentAction() != GirlAnimationState.NULL) {
-                    this.a("animation.bia.null", true, animEvent);
+                    this.createAnimationOnce("animation.bia.null", true, animEvent);
                     break;
                 }
                 if (this.isRiding()) {
-                    this.a("animation.bia.sit", true, animEvent);
+                    this.createAnimationOnce("animation.bia.sit", true, animEvent);
                     break;
                 }
                 if (Math.abs(this.prevPosX - this.posX) + Math.abs(this.prevPosZ - this.posZ) > 0.0) {
                     switch (this.getWalkState()) {
                         case RUN: {
-                            this.a("animation.bia.run", true, animEvent);
+                            this.createAnimationOnce("animation.bia.run", true, animEvent);
                             break;
                         }
                         case FAST_WALK: {
-                            this.a("animation.bia.fastwalk", true, animEvent);
+                            this.createAnimationOnce("animation.bia.fastwalk", true, animEvent);
                             break;
                         }
                         case WALK: {
-                            this.a("animation.bia.walk", true, animEvent);
+                            this.createAnimationOnce("animation.bia.walk", true, animEvent);
                         }
                     }
                     this.rotationYaw = this.rotationYawHead;
                     break;
                 }
-                this.a("animation.bia.idle", true, animEvent);
+                this.createAnimationOnce("animation.bia.idle", true, animEvent);
                 break;
             }
             case "action": {
                 switch (this.getCurrentAction()) {
                     case NULL: {
-                        this.a("animation.bia.null", true, animEvent);
+                        this.createAnimationOnce("animation.bia.null", true, animEvent);
                         break block5;
                     }
                     case STRIP: {
-                        this.a("animation.bia.strip", false, animEvent);
+                        this.createAnimationOnce("animation.bia.strip", false, animEvent);
                         break block5;
                     }
                     case ATTACK: {
-                        this.a("animation.bia.attack" + this.S, false, animEvent);
+                        this.createAnimationOnce("animation.bia.attack" + this.S, false, animEvent);
                         break block5;
                     }
                     case BOW: {
-                        this.a("animation.bia.bowcharge", false, animEvent);
+                        this.createAnimationOnce("animation.bia.bowcharge", false, animEvent);
                         break block5;
                     }
                     case RIDE: {
-                        this.a("animation.bia.ride", true, animEvent);
+                        this.createAnimationOnce("animation.bia.ride", true, animEvent);
                         break block5;
                     }
                     case SIT: {
-                        this.a("animation.bia.sit", true, animEvent);
+                        this.createAnimationOnce("animation.bia.sit", true, animEvent);
                         break block5;
                     }
                     case THROW_PEARL: {
-                        this.a("animation.bia.throwpearl", false, animEvent);
+                        this.createAnimationOnce("animation.bia.throwpearl", false, animEvent);
                         break block5;
                     }
                     case DOWNED: {
-                        this.a("animation.bia.downed", true, animEvent);
+                        this.createAnimationOnce("animation.bia.downed", true, animEvent);
                         break block5;
                     }
                     case TALK_HORNY: {
-                        this.a("animation.bia.talk_horny2", true, animEvent);
+                        this.createAnimationOnce("animation.bia.talk_horny2", true, animEvent);
                         break block5;
                     }
                     case TALK_IDLE: {
-                        this.a("animation.bia.talk_idle2", true, animEvent);
+                        this.createAnimationOnce("animation.bia.talk_idle2", true, animEvent);
                         break block5;
                     }
                     case TALK_RESPONSE: {
-                        this.a("animation.bia.talk_response", true, animEvent);
+                        this.createAnimationOnce("animation.bia.talk_response", true, animEvent);
                         break block5;
                     }
                     case ANAL_PREPARE: {
-                        this.a("animation.bia.anal_prepare", false, animEvent);
+                        this.createAnimationOnce("animation.bia.anal_prepare", false, animEvent);
                         break block5;
                     }
                     case ANAL_WAIT: {
-                        this.a("animation.bia.anal_wait", false, animEvent);
+                        this.createAnimationOnce("animation.bia.anal_wait", false, animEvent);
                         break block5;
                     }
                     case ANAL_START: {
-                        this.a("animation.bia.anal_start", true, animEvent);
+                        this.createAnimationOnce("animation.bia.anal_start", true, animEvent);
                         break block5;
                     }
                     case ANAL_SLOW: {
-                        this.a("animation.bia.anal_slow", true, animEvent);
+                        this.createAnimationOnce("animation.bia.anal_slow", true, animEvent);
                         break block5;
                     }
                     case ANAL_FAST: {
-                        this.a("animation.bia.anal_fast", true, animEvent);
+                        this.createAnimationOnce("animation.bia.anal_fast", true, animEvent);
                         break block5;
                     }
                     case ANAL_CUM: {
-                        this.a("animation.bia.anal_cum", false, animEvent);
+                        this.createAnimationOnce("animation.bia.anal_cum", false, animEvent);
                         break block5;
                     }
                     case HEAD_PAT: {
-                        this.a("animation.bia.headpat", false, animEvent);
+                        this.createAnimationOnce("animation.bia.headpat", false, animEvent);
                         break block5;
                     }
                     case SITDOWN: {
-                        this.a("animation.bia.sitdown", false, animEvent);
+                        this.createAnimationOnce("animation.bia.sitdown", false, animEvent);
                         break block5;
                     }
                     case SITDOWNIDLE: {
-                        this.a("animation.bia.sitdownidle", true, animEvent);
+                        this.createAnimationOnce("animation.bia.sitdownidle", true, animEvent);
                         break block5;
                     }
                     case PRONE_DOGGY_INTRO: {
-                        this.a("animation.bia.prone_doggy_intro", true, animEvent);
+                        this.createAnimationOnce("animation.bia.prone_doggy_intro", true, animEvent);
                         break block5;
                     }
                     case PRONE_DOGGY_INSERT: {
-                        this.a("animation.bia.prone_doggy_insert", true, animEvent);
+                        this.createAnimationOnce("animation.bia.prone_doggy_insert", true, animEvent);
                         break block5;
                     }
                     case PRONE_DOGGY_SOFT: {
-                        this.a("animation.bia.prone_doggy_soft", true, animEvent);
+                        this.createAnimationOnce("animation.bia.prone_doggy_soft", true, animEvent);
                         break block5;
                     }
                     case PRONE_DOGGY_HARD: {
-                        this.a("animation.bia.prone_doggy_hard" + this.DanceStep, true, animEvent);
+                        this.createAnimationOnce("animation.bia.prone_doggy_hard" + this.DanceStep, true, animEvent);
                         break block5;
                     }
                     case PRONE_DOGGY_CUM: {
-                        this.a("animation.bia.prone_doggy_cum", true, animEvent);
+                        this.createAnimationOnce("animation.bia.prone_doggy_cum", true, animEvent);
                         break block5;
                     }
                     case WAVE_IDLE: {
-                        this.a("animation.bia.wave_idle", true, animEvent);
+                        this.createAnimationOnce("animation.bia.wave_idle", true, animEvent);
                         break block5;
                     }
                     case WAVE: {
-                        this.a("animation.bia.wave", true, animEvent);
+                        this.createAnimationOnce("animation.bia.wave", true, animEvent);
                     }
                 }
             }

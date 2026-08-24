@@ -102,7 +102,7 @@ extends ChestGirlEntity {
     }
 
     @Override
-    public String c() {
+    public String getDisplayName() {
         return "Bee";
     }
 
@@ -189,7 +189,7 @@ extends ChestGirlEntity {
     }
 
     @Override
-    public void b(GirlAnimationState girlAnimationState) {
+    public void setCurrentAction(GirlAnimationState girlAnimationState) {
         block6: {
             try {
                 block7: {
@@ -474,7 +474,7 @@ extends ChestGirlEntity {
                 catch (RuntimeException runtimeException) {
                     throw BeeNpc.rethrow(runtimeException);
                 }
-                this.b(entityPlayer);
+                this.canInteract(entityPlayer);
             }
             catch (RuntimeException runtimeException) {
                 throw BeeNpc.rethrow(runtimeException);
@@ -489,7 +489,7 @@ extends ChestGirlEntity {
     }
 
     @Override
-    public boolean b(EntityPlayer entityPlayer) {
+    public boolean canInteract(EntityPlayer entityPlayer) {
         return false;
     }
 
@@ -557,39 +557,39 @@ extends ChestGirlEntity {
 
     @Override
     @SideOnly(value=Side.CLIENT)
-    protected <E extends IAnimatable> PlayState a(AnimationEvent<E> animEvent) {
+    protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> animEvent) {
         if (this.world instanceof PreviewWorld) {
             return PlayState.STOP;
         }
         block4: switch (animEvent.getController().getName()) {
             case "movement": {
                 if (this.getCurrentAction() != GirlAnimationState.NULL) {
-                    this.a("animation.bee.null", true, animEvent);
+                    this.createAnimationOnce("animation.bee.null", true, animEvent);
                     break;
                 }
-                this.a("animation.bee." + (((Boolean)this.DataManager.get(K)).booleanValue() ? "idle_has_chest" : "idle"), true, animEvent);
+                this.createAnimationOnce("animation.bee." + (((Boolean)this.DataManager.get(K)).booleanValue() ? "idle_has_chest" : "idle"), true, animEvent);
                 break;
             }
             case "action": {
                 switch (this.getCurrentAction()) {
                     case CITIZEN_START: {
-                        this.a("animation.bee.sex_start", false, animEvent);
+                        this.createAnimationOnce("animation.bee.sex_start", false, animEvent);
                         break block4;
                     }
                     case CITIZEN_SLOW: {
-                        this.a("animation.bee.sex_slow", true, animEvent);
+                        this.createAnimationOnce("animation.bee.sex_slow", true, animEvent);
                         break block4;
                     }
                     case CITIZEN_FAST: {
-                        this.a("animation.bee.sex_fast", true, animEvent);
+                        this.createAnimationOnce("animation.bee.sex_fast", true, animEvent);
                         break block4;
                     }
                     case CITIZEN_CUM: {
-                        this.a("animation.bee.sex_cum", false, animEvent);
+                        this.createAnimationOnce("animation.bee.sex_cum", false, animEvent);
                         break block4;
                     }
                     case THROW_PEARL: {
-                        this.a("animation.bee.throw_pearl", true, animEvent);
+                        this.createAnimationOnce("animation.bee.throw_pearl", true, animEvent);
                     }
                 }
             }

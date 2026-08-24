@@ -203,7 +203,7 @@ public class GirlInteractHandler {
       try {
          if (rightClickBlock.getWorld().isRemote) {
             AnimationInputLock.setAnimationLocked(false);
-            playerGirl.H();
+            playerGirl.H_();
             return;
          }
       } catch (RuntimeException error15) {
@@ -213,7 +213,7 @@ public class GirlInteractHandler {
       playerGirl.setTargetPos(new Vec3d(pos2.getX() + 0.5, pos2.getY() + 0.0F, pos2.getZ() + 0.5));
       playerGirl.b(player.rotationYaw);
       playerGirl.getDataManager().set(GirlEntity.BusyKey, true);
-      playerGirl.u();
+      playerGirl.u_();
    }
 
    double distanceTo(double d, double d2, double d3, double d4, double d5, double d6) {
@@ -449,7 +449,7 @@ public class GirlInteractHandler {
                     playerGirl.b(entityPlayer.rotationYaw);
                     playerGirl.getDataManager().set(GirlEntity.BusyKey, (Object)true);
                     playerGirl.getDataManager().set(GirlEntity.OutfitIndexKey, (Object)0);
-                    playerGirl.b(GirlAnimationState.STARTDOGGY);
+                    playerGirl.setCurrentAction(GirlAnimationState.STARTDOGGY);
                     if (!rightClickBlock.getWorld().isRemote || !Minecraft.getMinecraft().player.getPersistentID().equals(entityPlayer.getPersistentID())) break block28;
                 }
                 catch (RuntimeException runtimeException) {
@@ -548,7 +548,7 @@ public class GirlInteractHandler {
             throw GirlInteractHandler.rethrow(runtimeException);
         }
         try {
-            if (playerGirl.A()) {
+            if (playerGirl.A_()) {
                 return;
             }
         }
@@ -605,7 +605,7 @@ public class GirlInteractHandler {
             throw GirlInteractHandler.rethrow(runtimeException);
         }
         try {
-            if (playerGirl.A()) {
+            if (playerGirl.A_()) {
                 return;
             }
         }
@@ -630,7 +630,7 @@ public class GirlInteractHandler {
         }
         minecraft.gameSettings.thirdPersonView = 2;
         minecraft.entityRenderer.loadEntityShader(null);
-        playerGirl.b(GirlAnimationState.STRIP);
+        playerGirl.setCurrentAction(GirlAnimationState.STRIP);
         AnimationInputLock.setAnimationLocked(false);
         minecraft.player.closeScreen();
     }

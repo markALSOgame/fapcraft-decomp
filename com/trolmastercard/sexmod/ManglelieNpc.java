@@ -439,10 +439,10 @@ extends GirlEntity {
 
     @Override
     @SideOnly(value=Side.CLIENT)
-    public Vec3d a(Minecraft minecraft, PreviewEntity previewEntity, EntityLivingBase entityLivingBase, float f) {
+    public Vec3d getRenderPosition(Minecraft minecraft, PreviewEntity previewEntity, EntityLivingBase entityLivingBase, float f) {
         try {
             if (this.isTracked()) {
-                return super.a(minecraft, previewEntity, entityLivingBase, f);
+                return super.getRenderPosition(minecraft, previewEntity, entityLivingBase, f);
             }
         }
         catch (RuntimeException runtimeException) {
@@ -450,7 +450,7 @@ extends GirlEntity {
         }
         try {
             if (!this.isClaimed()) {
-                return super.a(minecraft, previewEntity, entityLivingBase, f);
+                return super.getRenderPosition(minecraft, previewEntity, entityLivingBase, f);
             }
         }
         catch (RuntimeException runtimeException) {
@@ -459,7 +459,7 @@ extends GirlEntity {
         GalathNpc f_2 = this.getMommy(false);
         try {
             if (f_2 == null) {
-                return super.a(minecraft, previewEntity, entityLivingBase, f);
+                return super.getRenderPosition(minecraft, previewEntity, entityLivingBase, f);
             }
         }
         catch (RuntimeException runtimeException) {
@@ -835,7 +835,7 @@ extends GirlEntity {
     }
 
     @Override
-    public Vec3d a(Vec3d vec3d, float f) {
+    public Vec3d transformRenderPos(Vec3d vec3d, float f) {
         try {
             if (!this.isClaimed()) {
                 return vec3d;
@@ -1280,7 +1280,7 @@ extends GirlEntity {
     }
 
     @Override
-    protected boolean a(GirlAnimationState girlAnimationState, String string, boolean flag, AnimationEvent animationEvent) {
+    protected boolean shouldHoldAnimation(GirlAnimationState girlAnimationState, String string, boolean flag, AnimationEvent animationEvent) {
         block38: {
             block37: {
                 block36: {
@@ -1312,7 +1312,7 @@ extends GirlEntity {
                                 throw ManglelieNpc.rethrow(runtimeException);
                             }
                             this.setAnimationState(GirlAnimationState.THREESOME_CUM);
-                            this.a("animation.shared.double_holding_cum", true, animationEvent, true);
+                            this.createAnimation("animation.shared.double_holding_cum", true, animationEvent, true);
                             GalathNpc f_3 = this.getMommy(false);
                             try {
                                 if (f_3 != null) {
@@ -1338,7 +1338,7 @@ extends GirlEntity {
                         }
                         this.Y = false;
                         this.setAnimationState(GirlAnimationState.THREESOME_FAST);
-                        this.a("animation.shared.double_holding_soft", true, animationEvent, true);
+                        this.createAnimation("animation.shared.double_holding_soft", true, animationEvent, true);
                         GalathNpc f_4 = this.getMommy(false);
                         try {
                             if (f_4 != null) {
@@ -1372,7 +1372,7 @@ extends GirlEntity {
                             throw ManglelieNpc.rethrow(runtimeException);
                         }
                         this.Y = true;
-                        this.a("animation.shared.double_holding_hard", true, animationEvent, true);
+                        this.createAnimation("animation.shared.double_holding_hard", true, animationEvent, true);
                         return true;
                     }
                     catch (RuntimeException runtimeException) {
@@ -1387,7 +1387,7 @@ extends GirlEntity {
                 }
                 this.M = true;
                 this.setAnimationState(GirlAnimationState.THREESOME_SLOW);
-                this.a("animation.shared.double_holding_back", true, animationEvent, true);
+                this.createAnimation("animation.shared.double_holding_back", true, animationEvent, true);
                 GalathNpc f_5 = this.getMommy(false);
                 try {
                     if (f_5 != null) {
@@ -1407,7 +1407,7 @@ extends GirlEntity {
                     throw ManglelieNpc.rethrow(runtimeException);
                 }
                 this.M = false;
-                this.a("animation.shared.double_holding_slow", true, animationEvent, true);
+                this.createAnimation("animation.shared.double_holding_slow", true, animationEvent, true);
                 return true;
             }
             catch (RuntimeException runtimeException) {
@@ -1418,13 +1418,13 @@ extends GirlEntity {
     }
 
     @Override
-    protected <E extends IAnimatable> PlayState a(AnimationEvent<E> animEvent) {
+    protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> animEvent) {
         AnimationController animationController = animEvent.getController();
         if (this.EyesController == animationController) {
             if (this.getTargetEntity() == null) {
                 return PlayState.STOP;
             }
-            this.a("animation.manglelie.angry_face", true, animEvent);
+            this.createAnimationOnce("animation.manglelie.angry_face", true, animEvent);
             return PlayState.CONTINUE;
         }
         if (this.MovementController == animationController) {
@@ -1433,14 +1433,14 @@ extends GirlEntity {
             }
             if (Math.abs(this.prevPosX - this.posX) + Math.abs(this.prevPosZ - this.posZ) > 0.0) {
                 if ((Boolean)this.DataManager.get(FleeingKey)) {
-                    this.a("animation.manglelie.scared_run", true, animEvent);
+                    this.createAnimationOnce("animation.manglelie.scared_run", true, animEvent);
                 } else {
-                    this.a("animation.manglelie.walk", true, animEvent);
+                    this.createAnimationOnce("animation.manglelie.walk", true, animEvent);
                 }
                 this.rotationYaw = this.rotationYawHead;
                 return PlayState.CONTINUE;
             }
-            this.a("animation.manglelie.idle", true, animEvent);
+            this.createAnimationOnce("animation.manglelie.idle", true, animEvent);
             return PlayState.CONTINUE;
         }
         switch (this.getCurrentAction()) {
@@ -1448,31 +1448,31 @@ extends GirlEntity {
                 return PlayState.STOP;
             }
             case RUN: {
-                this.a("animation.manglelie.running", true, animEvent);
+                this.createAnimationOnce("animation.manglelie.running", true, animEvent);
                 break;
             }
             case RIDE_MOMMY_HEAD: {
-                this.a("animation.manglelie.sit_on_galath", true, animEvent);
+                this.createAnimationOnce("animation.manglelie.sit_on_galath", true, animEvent);
                 break;
             }
             case THREESOME_SLOW: {
                 if (this.M) {
-                    this.a("animation.shared.double_holding_back", true, animEvent);
+                    this.createAnimationOnce("animation.shared.double_holding_back", true, animEvent);
                     break;
                 }
-                this.a("animation.shared.double_holding_slow", 4, 0.33f, animEvent);
+                this.createRangeAnimationOnce("animation.shared.double_holding_slow", 4, 0.33f, animEvent);
                 break;
             }
             case THREESOME_FAST: {
                 if (this.Y) {
-                    this.a("animation.shared.double_holding_hard", 3, 0.33f, animEvent);
+                    this.createRangeAnimationOnce("animation.shared.double_holding_hard", 3, 0.33f, animEvent);
                     break;
                 }
-                this.a("animation.shared.double_holding_soft", true, animEvent);
+                this.createAnimationOnce("animation.shared.double_holding_soft", true, animEvent);
                 break;
             }
             case THREESOME_CUM: {
-                this.a("animation.shared.double_holding_cum", true, animEvent);
+                this.createAnimationOnce("animation.shared.double_holding_cum", true, animEvent);
             }
         }
         return PlayState.CONTINUE;

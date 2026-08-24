@@ -69,7 +69,7 @@ extends PlayerGirlEntity {
         try {
             if ("action.names.blowjob".equals(string)) {
                 this.a(0, GirlAnimationState.SUCKBLOWJOB);
-                this.b(GirlAnimationState.SUCKBLOWJOB);
+                this.setCurrentAction(GirlAnimationState.SUCKBLOWJOB);
                 this.b(uUID);
             }
         }
@@ -85,7 +85,7 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    public void b(GirlAnimationState girlAnimationState) {
+    public void setCurrentAction(GirlAnimationState girlAnimationState) {
         block14: {
             block12: {
                 try {
@@ -132,7 +132,7 @@ extends PlayerGirlEntity {
                 throw SlimePlayer.rethrow(runtimeException);
             }
         }
-        super.b(girlAnimationState);
+        super.setCurrentAction(girlAnimationState);
     }
 
     @Override
@@ -224,7 +224,7 @@ extends PlayerGirlEntity {
         entityPlayer.setPosition(this.getCustomName().x, this.getCustomName().y, this.getCustomName().z);
         entityPlayer.moveRelative(0.0f, 0.0f, 0.0f, 0.0f);
         this.a(0.0, 0.0, 0.4, 0.0f, 60.0f);
-        this.b(GirlAnimationState.DOGGYSTART);
+        this.setCurrentAction(GirlAnimationState.DOGGYSTART);
         entityPlayer.setNoGravity(true);
         entityPlayer.noClip = true;
         EntityPlayer entityPlayer2 = this.world.getPlayerEntityByUUID(this.getBoundPlayerUuid());
@@ -235,115 +235,115 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    protected <E extends IAnimatable> PlayState a(AnimationEvent<E> animEvent) {
+    protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> animEvent) {
         block5 : switch (animEvent.getController().getName()) {
             case "eyes": {
                 if (this.getCurrentAction() == GirlAnimationState.NULL || !this.getCurrentAction().autoBlink) {
-                    this.a("animation.slime.null", true, animEvent);
+                    this.createAnimationOnce("animation.slime.null", true, animEvent);
                     break;
                 }
-                this.a("animation.slime.fhappy", true, animEvent);
+                this.createAnimationOnce("animation.slime.fhappy", true, animEvent);
                 break;
             }
             case "movement": {
                 if (this.getCurrentAction() != GirlAnimationState.NULL) {
-                    this.a("animation.slime.null", true, animEvent);
+                    this.createAnimationOnce("animation.slime.null", true, animEvent);
                     break;
                 }
                 if (this.ak) {
-                    this.a("animation.slime.sit", true, animEvent);
+                    this.createAnimationOnce("animation.slime.sit", true, animEvent);
                     break;
                 }
                 if (this.MovementController.getCurrentAnimation() != null && this.MovementController.getCurrentAnimation().animationName.contains("fly") && this.af) {
                     boolean bl = this.ap = !this.ap;
                 }
                 if (!this.af) {
-                    this.a("animation.slime.fly" + (this.ap ? "2" : ""), true, animEvent);
+                    this.createAnimationOnce("animation.slime.fly" + (this.ap ? "2" : ""), true, animEvent);
                     break;
                 }
                 if (Math.abs(this.ao.x) + Math.abs(this.ao.y) > 0.0f) {
                     if (this.aj) {
-                        this.a("animation.slime.run", true, animEvent);
+                        this.createAnimationOnce("animation.slime.run", true, animEvent);
                         break;
                     }
                     if (this.ao.y >= -0.1f) {
-                        this.a("animation.slime.walk", true, animEvent);
+                        this.createAnimationOnce("animation.slime.walk", true, animEvent);
                         break;
                     }
-                    this.a("animation.slime.backwards_walk", true, animEvent);
+                    this.createAnimationOnce("animation.slime.backwards_walk", true, animEvent);
                     break;
                 }
-                this.a("animation.slime.idle", true, animEvent);
+                this.createAnimationOnce("animation.slime.idle", true, animEvent);
                 break;
             }
             case "action": {
                 if (this.getCurrentAction() == GirlAnimationState.NULL) {
-                    this.a("animation.slime.null", true, animEvent);
+                    this.createAnimationOnce("animation.slime.null", true, animEvent);
                     break;
                 }
                 switch (this.getCurrentAction()) {
                     case UNDRESS: {
-                        this.a("animation.slime.undress", false, animEvent);
+                        this.createAnimationOnce("animation.slime.undress", false, animEvent);
                         break block5;
                     }
                     case DRESS: {
-                        this.a("animation.slime.dress", false, animEvent);
+                        this.createAnimationOnce("animation.slime.dress", false, animEvent);
                         break block5;
                     }
                     case STRIP: {
-                        this.a("animation.slime.strip", false, animEvent);
+                        this.createAnimationOnce("animation.slime.strip", false, animEvent);
                         break block5;
                     }
                     case SUCKBLOWJOB: {
-                        this.a("animation.slime.blowjobsuck", true, animEvent);
+                        this.createAnimationOnce("animation.slime.blowjobsuck", true, animEvent);
                         break block5;
                     }
                     case THRUSTBLOWJOB: {
-                        this.a("animation.slime.blowjobthrust", true, animEvent);
+                        this.createAnimationOnce("animation.slime.blowjobthrust", true, animEvent);
                         break block5;
                     }
                     case CUMBLOWJOB: {
-                        this.a("animation.slime.blowjobcum", false, animEvent);
+                        this.createAnimationOnce("animation.slime.blowjobcum", false, animEvent);
                         break block5;
                     }
                     case STARTDOGGY: {
-                        this.a("animation.slime.doggygoonbed", false, animEvent);
+                        this.createAnimationOnce("animation.slime.doggygoonbed", false, animEvent);
                         break block5;
                     }
                     case WAITDOGGY: {
-                        this.a("animation.slime.doggywait", true, animEvent);
+                        this.createAnimationOnce("animation.slime.doggywait", true, animEvent);
                         break block5;
                     }
                     case DOGGYSTART: {
-                        this.a("animation.slime.doggystart", false, animEvent);
+                        this.createAnimationOnce("animation.slime.doggystart", false, animEvent);
                         break block5;
                     }
                     case DOGGYSLOW: {
-                        this.a("animation.slime.doggyslow", true, animEvent);
+                        this.createAnimationOnce("animation.slime.doggyslow", true, animEvent);
                         break block5;
                     }
                     case DOGGYFAST: {
-                        this.a("animation.slime.doggyfast", true, animEvent);
+                        this.createAnimationOnce("animation.slime.doggyfast", true, animEvent);
                         break block5;
                     }
                     case DOGGYCUM: {
-                        this.a("animation.slime.doggycum", false, animEvent);
+                        this.createAnimationOnce("animation.slime.doggycum", false, animEvent);
                         break block5;
                     }
                     case ATTACK: {
-                        this.a("animation.slime.attack" + this.S, false, animEvent);
+                        this.createAnimationOnce("animation.slime.attack" + this.S, false, animEvent);
                         break block5;
                     }
                     case BOW: {
-                        this.a("animation.slime.bowcharge", false, animEvent);
+                        this.createAnimationOnce("animation.slime.bowcharge", false, animEvent);
                         break block5;
                     }
                     case RIDE: {
-                        this.a("animation.slime.ride", true, animEvent);
+                        this.createAnimationOnce("animation.slime.ride", true, animEvent);
                         break block5;
                     }
                     case SIT: {
-                        this.a("animation.slime.sit", true, animEvent);
+                        this.createAnimationOnce("animation.slime.sit", true, animEvent);
                     }
                 }
             }
@@ -415,13 +415,13 @@ extends PlayerGirlEntity {
                     break;
                 }
                 case "bjiDone": {
-                    this.b(GirlAnimationState.SUCKBLOWJOB);
+                    this.setCurrentAction(GirlAnimationState.SUCKBLOWJOB);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.showHud();
                     break;
                 }
                 case "bjtDone": {
-                    this.b(GirlAnimationState.SUCKBLOWJOB);
+                    this.setCurrentAction(GirlAnimationState.SUCKBLOWJOB);
                     break;
                 }
                 case "doggyfastReady": {
@@ -467,7 +467,7 @@ extends PlayerGirlEntity {
                 }
                 case "doggyGoOnBedDone": {
                     NetworkHandler.channel.sendToServer((IMessage)new PacketSetPlayerForGirl(this.getGirlUuid(), Minecraft.getMinecraft().player.getPersistentID()));
-                    this.b(GirlAnimationState.WAITDOGGY);
+                    this.setCurrentAction(GirlAnimationState.WAITDOGGY);
                     break;
                 }
                 case "doggystartMSG1": {
@@ -494,7 +494,7 @@ extends PlayerGirlEntity {
                     break;
                 }
                 case "doggystartDone": {
-                    this.b(GirlAnimationState.DOGGYSLOW);
+                    this.setCurrentAction(GirlAnimationState.DOGGYSLOW);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.showHud();
                     break;
@@ -535,7 +535,7 @@ extends PlayerGirlEntity {
                     break;
                 }
                 case "doggyfastDone": {
-                    this.b(GirlAnimationState.DOGGYSLOW);
+                    this.setCurrentAction(GirlAnimationState.DOGGYSLOW);
                     break;
                 }
                 case "doggycumMSG1": {

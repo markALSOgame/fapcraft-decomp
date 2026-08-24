@@ -1024,7 +1024,7 @@ public class GirlHomeBuilder {
                     throw GirlHomeBuilder.HomeData.rethrow(runtimeException);
                 }
                 for (KoboldNpc kobold : treeCluster.Assignees) {
-                    kobold.b(GirlAnimationState.NULL);
+                    kobold.setCurrentAction(GirlAnimationState.NULL);
                     kobold.setNoGravity(false);
                     kobold.noClip = false;
                     kobold.getDataManager().set(GirlEntity.BusyKey, (Object)false);

@@ -30,7 +30,7 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    public void B() {
+    public void B_() {
         this.c(true);
     }
 
@@ -62,7 +62,7 @@ extends PlayerGirlEntity {
     public void startAction(String string, UUID uUID) {
         this.a(0, GirlAnimationState.CITIZEN_START);
         this.f(0);
-        this.b(GirlAnimationState.CITIZEN_START);
+        this.setCurrentAction(GirlAnimationState.CITIZEN_START);
         this.b(uUID);
         EntityPlayer entityPlayer = this.world.getPlayerEntityByUUID(uUID);
         try {
@@ -84,7 +84,7 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    public void b(GirlAnimationState girlAnimationState) {
+    public void setCurrentAction(GirlAnimationState girlAnimationState) {
         block6: {
             try {
                 block7: {
@@ -108,7 +108,7 @@ extends PlayerGirlEntity {
                 throw BeePlayer.rethrow(runtimeException);
             }
         }
-        super.b(girlAnimationState);
+        super.setCurrentAction(girlAnimationState);
     }
 
     @Override
@@ -160,52 +160,52 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    protected <E extends IAnimatable> PlayState a(AnimationEvent<E> animEvent) {
+    protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> animEvent) {
         block4 : switch (animEvent.getController().getName()) {
             case "movement": {
                 if (this.getCurrentAction() != GirlAnimationState.NULL) {
-                    this.a("animation.bee.null", true, animEvent);
+                    this.createAnimationOnce("animation.bee.null", true, animEvent);
                     break;
                 }
-                this.a("animation.bee.idle", true, animEvent);
+                this.createAnimationOnce("animation.bee.idle", true, animEvent);
                 break;
             }
             case "action": {
                 switch (this.getCurrentAction()) {
                     case NULL: {
-                        this.a("animation.bee.null", false, animEvent);
+                        this.createAnimationOnce("animation.bee.null", false, animEvent);
                         break block4;
                     }
                     case CITIZEN_START: {
-                        this.a("animation.bee.sex_start", false, animEvent);
+                        this.createAnimationOnce("animation.bee.sex_start", false, animEvent);
                         break block4;
                     }
                     case CITIZEN_SLOW: {
-                        this.a("animation.bee.sex_slow", true, animEvent);
+                        this.createAnimationOnce("animation.bee.sex_slow", true, animEvent);
                         break block4;
                     }
                     case CITIZEN_FAST: {
-                        this.a("animation.bee.sex_fast", true, animEvent);
+                        this.createAnimationOnce("animation.bee.sex_fast", true, animEvent);
                         break block4;
                     }
                     case CITIZEN_CUM: {
-                        this.a("animation.bee.sex_cum", false, animEvent);
+                        this.createAnimationOnce("animation.bee.sex_cum", false, animEvent);
                         break block4;
                     }
                     case THROW_PEARL: {
-                        this.a("animation.bee.throw_pearl", true, animEvent);
+                        this.createAnimationOnce("animation.bee.throw_pearl", true, animEvent);
                         break block4;
                     }
                     case ATTACK: {
-                        this.a("animation.bee.attack" + this.S, false, animEvent);
+                        this.createAnimationOnce("animation.bee.attack" + this.S, false, animEvent);
                         break block4;
                     }
                     case BOW: {
-                        this.a("animation.bee.bowcharge", false, animEvent);
+                        this.createAnimationOnce("animation.bee.bowcharge", false, animEvent);
                         break block4;
                     }
                     case RIDE: {
-                        this.a("animation.bee.ride", true, animEvent);
+                        this.createAnimationOnce("animation.bee.ride", true, animEvent);
                     }
                 }
             }
@@ -261,7 +261,7 @@ extends PlayerGirlEntity {
                     if (!this.isOwnedByLocalPlayer() || AnimationInputLock.SneakPressed) break;
                 }
                 case "sex_startDone": {
-                    this.b(GirlAnimationState.CITIZEN_SLOW);
+                    this.setCurrentAction(GirlAnimationState.CITIZEN_SLOW);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.showHud();
                     break;

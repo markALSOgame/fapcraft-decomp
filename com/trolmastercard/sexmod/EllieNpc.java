@@ -89,7 +89,7 @@ implements VoidCallback {
     }
 
     @Override
-    public String c() {
+    public String getDisplayName() {
         return "Ellie";
     }
 
@@ -233,11 +233,11 @@ implements VoidCallback {
     }
 
     @Override
-    protected void a(EntityPlayerMP entityPlayerMP, boolean flag) {
+    protected void teleportServerPlayerInFront(EntityPlayerMP entityPlayerMP, boolean flag) {
     }
 
     @Override
-    public void b(GirlAnimationState girlAnimationState) {
+    public void setCurrentAction(GirlAnimationState girlAnimationState) {
         block30: {
             GirlAnimationState girlAnimationState2;
             block28: {
@@ -938,22 +938,22 @@ implements VoidCallback {
     }
 
     @Override
-    protected <E extends IAnimatable> PlayState a(AnimationEvent<E> animEvent) {
+    protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> animEvent) {
         if (this.world instanceof PreviewWorld) {
             return null;
         }
         block5: switch (animEvent.getController().getName()) {
             case "eyes": {
                 if (this.getCurrentAction() != GirlAnimationState.NULL || !this.getCurrentAction().autoBlink) {
-                    this.a("animation.ellie.null", true, animEvent);
+                    this.createAnimationOnce("animation.ellie.null", true, animEvent);
                     break;
                 }
-                this.a("animation.ellie.eyes", true, animEvent);
+                this.createAnimationOnce("animation.ellie.eyes", true, animEvent);
                 break;
             }
             case "movement": {
                 if (this.getCurrentAction() != GirlAnimationState.NULL) {
-                    this.a("animation.ellie.null", true, animEvent);
+                    this.createAnimationOnce("animation.ellie.null", true, animEvent);
                     break;
                 }
                 double d = Math.abs(this.prevPosX - this.posX) + Math.abs(this.prevPosZ - this.posZ);
@@ -962,20 +962,20 @@ implements VoidCallback {
                     break;
                 }
                 if (this.i()) {
-                    this.a("animation.ellie.crouchwalk", true, animEvent);
+                    this.createAnimationOnce("animation.ellie.crouchwalk", true, animEvent);
                     break;
                 }
                 switch (this.getWalkState()) {
                     case RUN: {
-                        this.a("animation.ellie.run", true, animEvent);
+                        this.createAnimationOnce("animation.ellie.run", true, animEvent);
                         break;
                     }
                     case FAST_WALK: {
-                        this.a("animation.ellie.fastwalk", true, animEvent);
+                        this.createAnimationOnce("animation.ellie.fastwalk", true, animEvent);
                         break;
                     }
                     case WALK: {
-                        this.a("animation.ellie.walk", true, animEvent);
+                        this.createAnimationOnce("animation.ellie.walk", true, animEvent);
                     }
                 }
                 break;
@@ -983,107 +983,107 @@ implements VoidCallback {
             case "action": {
                 switch (this.getCurrentAction()) {
                     case NULL: {
-                        this.a("animation.ellie.null", true, animEvent);
+                        this.createAnimationOnce("animation.ellie.null", true, animEvent);
                         break block5;
                     }
                     case STRIP: {
-                        this.a("animation.ellie.strip", false, animEvent);
+                        this.createAnimationOnce("animation.ellie.strip", false, animEvent);
                         break block5;
                     }
                     case DASH: {
-                        this.a("animation.ellie.dash", false, animEvent);
+                        this.createAnimationOnce("animation.ellie.dash", false, animEvent);
                         break block5;
                     }
                     case HUG: {
-                        this.a("animation.ellie.hug", false, animEvent);
+                        this.createAnimationOnce("animation.ellie.hug", false, animEvent);
                         break block5;
                     }
                     case HUGIDLE: {
-                        this.a("animation.ellie.hugidle", true, animEvent);
+                        this.createAnimationOnce("animation.ellie.hugidle", true, animEvent);
                         break block5;
                     }
                     case HUGSELECTED: {
-                        this.a("animation.ellie.hugselected", false, animEvent);
+                        this.createAnimationOnce("animation.ellie.hugselected", false, animEvent);
                         break block5;
                     }
                     case SITDOWN: {
-                        this.a("animation.ellie.sitdown", false, animEvent);
+                        this.createAnimationOnce("animation.ellie.sitdown", false, animEvent);
                         break block5;
                     }
                     case SITDOWNIDLE: {
-                        this.a("animation.ellie.sitdownidle", true, animEvent);
+                        this.createAnimationOnce("animation.ellie.sitdownidle", true, animEvent);
                         break block5;
                     }
                     case COWGIRLSTART: {
-                        this.a("animation.ellie.cowgirlstart", false, animEvent);
+                        this.createAnimationOnce("animation.ellie.cowgirlstart", false, animEvent);
                         break block5;
                     }
                     case COWGIRLSLOW: {
-                        this.a("animation.ellie.cowgirlslow2", true, animEvent);
+                        this.createAnimationOnce("animation.ellie.cowgirlslow2", true, animEvent);
                         break block5;
                     }
                     case COWGIRLFAST: {
-                        this.a("animation.ellie.cowgirlfast", true, animEvent);
+                        this.createAnimationOnce("animation.ellie.cowgirlfast", true, animEvent);
                         break block5;
                     }
                     case COWGIRLCUM: {
-                        this.a("animation.ellie.cowgirlcum", true, animEvent);
+                        this.createAnimationOnce("animation.ellie.cowgirlcum", true, animEvent);
                         break block5;
                     }
                     case ATTACK: {
-                        this.a("animation.ellie.attack" + this.S, false, animEvent);
+                        this.createAnimationOnce("animation.ellie.attack" + this.S, false, animEvent);
                         break block5;
                     }
                     case BOW: {
-                        this.a("animation.ellie.bowcharge", false, animEvent);
+                        this.createAnimationOnce("animation.ellie.bowcharge", false, animEvent);
                         break block5;
                     }
                     case RIDE: {
-                        this.a("animation.ellie.ride", true, animEvent);
+                        this.createAnimationOnce("animation.ellie.ride", true, animEvent);
                         break block5;
                     }
                     case SIT: {
-                        this.a("animation.ellie.sit", true, animEvent);
+                        this.createAnimationOnce("animation.ellie.sit", true, animEvent);
                         break block5;
                     }
                     case THROW_PEARL: {
-                        this.a("animation.ellie.throwpearl", false, animEvent);
+                        this.createAnimationOnce("animation.ellie.throwpearl", false, animEvent);
                         break block5;
                     }
                     case DOWNED: {
-                        this.a("animation.ellie.downed", true, animEvent);
+                        this.createAnimationOnce("animation.ellie.downed", true, animEvent);
                         break block5;
                     }
                     case MISSIONARY_START: {
-                        this.a("animation.ellie.missionary_start", false, animEvent);
+                        this.createAnimationOnce("animation.ellie.missionary_start", false, animEvent);
                         break block5;
                     }
                     case MISSIONARY_SLOW: {
-                        this.a("animation.ellie.missionary_slow", true, animEvent);
+                        this.createAnimationOnce("animation.ellie.missionary_slow", true, animEvent);
                         break block5;
                     }
                     case MISSIONARY_FAST: {
-                        this.a("animation.ellie.missionary_fast", true, animEvent);
+                        this.createAnimationOnce("animation.ellie.missionary_fast", true, animEvent);
                         break block5;
                     }
                     case MISSIONARY_CUM: {
-                        this.a("animation.ellie.missionary_cum", false, animEvent);
+                        this.createAnimationOnce("animation.ellie.missionary_cum", false, animEvent);
                         break block5;
                     }
                     case CARRY_INTRO: {
-                        this.a("animation.ellie.carry_intro", false, animEvent);
+                        this.createAnimationOnce("animation.ellie.carry_intro", false, animEvent);
                         break block5;
                     }
                     case CARRY_SLOW: {
-                        this.a("animation.ellie.carry_slow" + this.aa, true, animEvent);
+                        this.createAnimationOnce("animation.ellie.carry_slow" + this.aa, true, animEvent);
                         break block5;
                     }
                     case CARRY_FAST: {
-                        this.a("animation.ellie.carry_fast", true, animEvent);
+                        this.createAnimationOnce("animation.ellie.carry_fast", true, animEvent);
                         break block5;
                     }
                     case CARRY_CUM: {
-                        this.a("animation.ellie.carry_cum", true, animEvent);
+                        this.createAnimationOnce("animation.ellie.carry_cum", true, animEvent);
                     }
                 }
             }

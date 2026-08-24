@@ -68,7 +68,7 @@ public class BiaPlayerRenderer extends GirlPlayerRenderer {
     }
 
    @Override
-   public HashSet<String> getAdultParts() {
+   public HashSet<String> getFilteredBoneNames() {
       return new HashSet<String>() {
          {
             this.add("boobs");

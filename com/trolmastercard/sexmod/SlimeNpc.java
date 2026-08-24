@@ -70,7 +70,7 @@ extends GirlEntity {
     }
 
     @Override
-    public String c() {
+    public String getDisplayName() {
         return "Slime";
     }
 
@@ -80,7 +80,7 @@ extends GirlEntity {
     }
 
     @Override
-    public void b(GirlAnimationState girlAnimationState) {
+    public void setCurrentAction(GirlAnimationState girlAnimationState) {
         block14: {
             block12: {
                 try {
@@ -127,7 +127,7 @@ extends GirlEntity {
                 throw SlimeNpc.rethrow(runtimeException);
             }
         }
-        super.b(girlAnimationState);
+        super.setCurrentAction(girlAnimationState);
     }
 
     @Override
@@ -268,7 +268,7 @@ extends GirlEntity {
                     catch (RuntimeException runtimeException) {
                         throw SlimeNpc.rethrow(runtimeException);
                     }
-                    this.b(GirlAnimationState.UNDRESS);
+                    this.setCurrentAction(GirlAnimationState.UNDRESS);
                 }
                 catch (RuntimeException runtimeException) {
                     throw SlimeNpc.rethrow(runtimeException);
@@ -419,7 +419,7 @@ extends GirlEntity {
                             this.DataManager.set(G, (Object)true);
                             this.setNoGravity(true);
                             this.noClip = true;
-                            this.b(GirlAnimationState.STARTDOGGY);
+                            this.setCurrentAction(GirlAnimationState.STARTDOGGY);
                             return;
                         }
                         catch (RuntimeException runtimeException) {
@@ -462,14 +462,14 @@ extends GirlEntity {
                 try {
                     entityPlayer.setPosition(this.posX + vec3d.x, this.posY, this.posZ + vec3d.z);
                     if (this.getCurrentAction() != GirlAnimationState.WAITDOGGY) break block20;
-                    this.b(GirlAnimationState.DOGGYSTART);
+                    this.setCurrentAction(GirlAnimationState.DOGGYSTART);
                     break block21;
                 }
                 catch (RuntimeException runtimeException) {
                     throw SlimeNpc.rethrow(runtimeException);
                 }
             }
-            this.b(GirlAnimationState.SUCKBLOWJOB);
+            this.setCurrentAction(GirlAnimationState.SUCKBLOWJOB);
         }
     }
 
@@ -574,7 +574,7 @@ extends GirlEntity {
             try {
                 this.DataManager.set(HornyLevelKey, (Object)i2);
                 if (i2 == 1) {
-                    this.b(GirlAnimationState.UNDRESS);
+                    this.setCurrentAction(GirlAnimationState.UNDRESS);
                 }
             }
             catch (RuntimeException runtimeException) {
@@ -653,17 +653,17 @@ extends GirlEntity {
     }
 
     @Override
-    protected <E extends IAnimatable> PlayState a(AnimationEvent<E> animEvent) {
+    protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> animEvent) {
         if (this.world instanceof PreviewWorld) {
             return null;
         }
         block4 : switch (animEvent.getController().getName()) {
             case "eyes": {
                 if (this.getCurrentAction() == GirlAnimationState.NULL || !this.getCurrentAction().autoBlink) {
-                    this.a("animation.slime.null", true, animEvent);
+                    this.createAnimationOnce("animation.slime.null", true, animEvent);
                     break;
                 }
-                this.a("animation.slime.fhappy", true, animEvent);
+                this.createAnimationOnce("animation.slime.fhappy", true, animEvent);
                 break;
             }
             case "action": {
@@ -673,55 +673,55 @@ extends GirlEntity {
                 }
                 switch (this.getCurrentAction()) {
                     case UNDRESS: {
-                        this.a("animation.slime.undress", false, animEvent);
+                        this.createAnimationOnce("animation.slime.undress", false, animEvent);
                         break block4;
                     }
                     case DRESS: {
-                        this.a("animation.slime.dress", false, animEvent);
+                        this.createAnimationOnce("animation.slime.dress", false, animEvent);
                         break block4;
                     }
                     case STRIP: {
-                        this.a("animation.slime.strip", false, animEvent);
+                        this.createAnimationOnce("animation.slime.strip", false, animEvent);
                         break block4;
                     }
                     case STARTBLOWJOB: {
-                        this.a("animation.slime.blowjobintro", false, animEvent);
+                        this.createAnimationOnce("animation.slime.blowjobintro", false, animEvent);
                         break block4;
                     }
                     case SUCKBLOWJOB: {
-                        this.a("animation.slime.blowjobsuck", true, animEvent);
+                        this.createAnimationOnce("animation.slime.blowjobsuck", true, animEvent);
                         break block4;
                     }
                     case THRUSTBLOWJOB: {
-                        this.a("animation.slime.blowjobthrust", true, animEvent);
+                        this.createAnimationOnce("animation.slime.blowjobthrust", true, animEvent);
                         break block4;
                     }
                     case CUMBLOWJOB: {
-                        this.a("animation.slime.blowjobcum", false, animEvent);
+                        this.createAnimationOnce("animation.slime.blowjobcum", false, animEvent);
                         break block4;
                     }
                     case STARTDOGGY: {
-                        this.a("animation.slime.doggygoonbed", false, animEvent);
+                        this.createAnimationOnce("animation.slime.doggygoonbed", false, animEvent);
                         break block4;
                     }
                     case WAITDOGGY: {
-                        this.a("animation.slime.doggywait", true, animEvent);
+                        this.createAnimationOnce("animation.slime.doggywait", true, animEvent);
                         break block4;
                     }
                     case DOGGYSTART: {
-                        this.a("animation.slime.doggystart", false, animEvent);
+                        this.createAnimationOnce("animation.slime.doggystart", false, animEvent);
                         break block4;
                     }
                     case DOGGYSLOW: {
-                        this.a("animation.slime.doggyslow", true, animEvent);
+                        this.createAnimationOnce("animation.slime.doggyslow", true, animEvent);
                         break block4;
                     }
                     case DOGGYFAST: {
-                        this.a("animation.slime.doggyfast", true, animEvent);
+                        this.createAnimationOnce("animation.slime.doggyfast", true, animEvent);
                         break block4;
                     }
                     case DOGGYCUM: {
-                        this.a("animation.slime.doggycum", false, animEvent);
+                        this.createAnimationOnce("animation.slime.doggycum", false, animEvent);
                     }
                 }
             }
@@ -736,7 +736,7 @@ extends GirlEntity {
                 case "undress": {
                     if (!this.isLocalPlayerNearby()) break;
                     this.a("currentModel", "0");
-                    this.b(GirlAnimationState.NULL);
+                    this.setCurrentAction(GirlAnimationState.NULL);
                     break;
                 }
                 case "dress": {
@@ -783,13 +783,13 @@ extends GirlEntity {
                     break;
                 }
                 case "bjiDone": {
-                    this.b(GirlAnimationState.SUCKBLOWJOB);
+                    this.setCurrentAction(GirlAnimationState.SUCKBLOWJOB);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.showHud();
                     break;
                 }
                 case "bjtDone": {
-                    this.b(GirlAnimationState.SUCKBLOWJOB);
+                    this.setCurrentAction(GirlAnimationState.SUCKBLOWJOB);
                     break;
                 }
                 case "bjtReady":
@@ -831,7 +831,7 @@ extends GirlEntity {
                     break;
                 }
                 case "doggyGoOnBedDone": {
-                    this.b(GirlAnimationState.WAITDOGGY);
+                    this.setCurrentAction(GirlAnimationState.WAITDOGGY);
                     break;
                 }
                 case "doggystartMSG1": {
@@ -856,7 +856,7 @@ extends GirlEntity {
                     break;
                 }
                 case "doggystartDone": {
-                    this.b(GirlAnimationState.DOGGYSLOW);
+                    this.setCurrentAction(GirlAnimationState.DOGGYSLOW);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.showHud();
                     break;
@@ -897,7 +897,7 @@ extends GirlEntity {
                     break;
                 }
                 case "doggyfastDone": {
-                    this.b(GirlAnimationState.DOGGYSLOW);
+                    this.setCurrentAction(GirlAnimationState.DOGGYSLOW);
                     break;
                 }
                 case "doggycumMSG1": {

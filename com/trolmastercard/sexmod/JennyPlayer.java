@@ -65,7 +65,7 @@ extends PlayerGirlEntity {
 
     @Override
     public void startDoggy() {
-        this.b(GirlAnimationState.STARTDOGGY);
+        this.setCurrentAction(GirlAnimationState.STARTDOGGY);
         this.DataManager.set(GirlEntity.OutfitIndexKey, (Object)0);
         this.AimYaw = ((Float)this.DataManager.get(GirlEntity.RotationYawKey)).floatValue();
     }
@@ -98,7 +98,7 @@ extends PlayerGirlEntity {
         try {
             if ("action.names.boobjob".equals(string)) {
                 this.DataManager.set(GirlEntity.OutfitIndexKey, (Object)0);
-                this.b(GirlAnimationState.PAIZURI_START);
+                this.setCurrentAction(GirlAnimationState.PAIZURI_START);
                 this.a(0, GirlAnimationState.PAIZURI_START);
                 this.b(uUID);
             }
@@ -108,7 +108,7 @@ extends PlayerGirlEntity {
         }
         try {
             if ("action.names.blowjob".equals(string)) {
-                this.b(GirlAnimationState.STARTBLOWJOB);
+                this.setCurrentAction(GirlAnimationState.STARTBLOWJOB);
                 this.a(this.getOutfitIndex(), GirlAnimationState.PAIZURI_START);
                 this.b(uUID);
             }
@@ -154,7 +154,7 @@ extends PlayerGirlEntity {
                 this.world.getPlayerEntityByUUID((UUID)this.getBoundPlayerUuid()).capabilities.isFlying = true;
                 this.a(0.0, 0.0, 0.4, 0.0f, 60.0f);
                 this.AimTarget = null;
-                this.b(GirlAnimationState.DOGGYSTART);
+                this.setCurrentAction(GirlAnimationState.DOGGYSTART);
                 NetworkHandler.channel.sendTo((IMessage)new PacketSetPlayerMovement(false), (EntityPlayerMP)entityPlayer);
             }
         }
@@ -235,7 +235,7 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    public void b(GirlAnimationState girlAnimationState) {
+    public void setCurrentAction(GirlAnimationState girlAnimationState) {
         block22: {
             GirlAnimationState girlAnimationState2;
             block20: {
@@ -307,146 +307,146 @@ extends PlayerGirlEntity {
                 throw JennyPlayer.rethrow(runtimeException);
             }
         }
-        super.b(girlAnimationState);
+        super.setCurrentAction(girlAnimationState);
     }
 
     @Override
-    protected <E extends IAnimatable> PlayState a(AnimationEvent<E> animEvent) {
+    protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> animEvent) {
         block5 : switch (animEvent.getController().getName()) {
             case "eyes": {
                 if (this.getCurrentAction() != GirlAnimationState.NULL || !this.getCurrentAction().autoBlink) {
-                    this.a("animation.jenny.null", true, animEvent);
+                    this.createAnimationOnce("animation.jenny.null", true, animEvent);
                     break;
                 }
-                this.a("animation.jenny.fhappy", true, animEvent);
+                this.createAnimationOnce("animation.jenny.fhappy", true, animEvent);
                 break;
             }
             case "movement": {
                 if (this.getCurrentAction() != GirlAnimationState.NULL) {
-                    this.a("animation.jenny.null", true, animEvent);
+                    this.createAnimationOnce("animation.jenny.null", true, animEvent);
                     break;
                 }
                 if (this.ak) {
-                    this.a("animation.jenny.sit", true, animEvent);
+                    this.createAnimationOnce("animation.jenny.sit", true, animEvent);
                     break;
                 }
                 if (this.MovementController.getCurrentAnimation() != null && this.MovementController.getCurrentAnimation().animationName.contains("fly") && this.af) {
                     boolean bl = this.ap = !this.ap;
                 }
                 if (!this.af) {
-                    this.a("animation.jenny.fly" + (this.ap ? "2" : ""), true, animEvent);
+                    this.createAnimationOnce("animation.jenny.fly" + (this.ap ? "2" : ""), true, animEvent);
                     break;
                 }
                 if (Math.abs(this.ao.x) + Math.abs(this.ao.y) > 0.0f) {
                     if (this.aj) {
                         this.MovementController.setAnimationSpeed(1.2f);
-                        this.a("animation.jenny.run", true, animEvent);
+                        this.createAnimationOnce("animation.jenny.run", true, animEvent);
                         break;
                     }
                     if (this.ao.y >= -0.1f) {
                         this.MovementController.setAnimationSpeed(1.5);
-                        this.a("animation.jenny.fastwalk", true, animEvent);
+                        this.createAnimationOnce("animation.jenny.fastwalk", true, animEvent);
                         break;
                     }
                     this.MovementController.setAnimationSpeed(1.2f);
-                    this.a("animation.jenny.backwards_walk", true, animEvent);
+                    this.createAnimationOnce("animation.jenny.backwards_walk", true, animEvent);
                     break;
                 }
-                this.a("animation.jenny.idle", true, animEvent);
+                this.createAnimationOnce("animation.jenny.idle", true, animEvent);
                 break;
             }
             case "action": {
                 switch (this.getCurrentAction()) {
                     case NULL: {
-                        this.a("animation.jenny.null", true, animEvent);
+                        this.createAnimationOnce("animation.jenny.null", true, animEvent);
                         break block5;
                     }
                     case STRIP: {
-                        this.a("animation.jenny.strip", false, animEvent);
+                        this.createAnimationOnce("animation.jenny.strip", false, animEvent);
                         break block5;
                     }
                     case PAYMENT: {
-                        this.a("animation.jenny.payment", false, animEvent);
+                        this.createAnimationOnce("animation.jenny.payment", false, animEvent);
                         break block5;
                     }
                     case STARTBLOWJOB: {
-                        this.a("animation.jenny.blowjobintro", false, animEvent);
+                        this.createAnimationOnce("animation.jenny.blowjobintro", false, animEvent);
                         break block5;
                     }
                     case SUCKBLOWJOB: {
-                        this.a("animation.jenny.blowjobsuck", true, animEvent);
+                        this.createAnimationOnce("animation.jenny.blowjobsuck", true, animEvent);
                         break block5;
                     }
                     case THRUSTBLOWJOB: {
-                        this.a("animation.jenny.blowjobthrust", true, animEvent);
+                        this.createAnimationOnce("animation.jenny.blowjobthrust", true, animEvent);
                         break block5;
                     }
                     case CUMBLOWJOB: {
-                        this.a("animation.jenny.blowjobcum", false, animEvent);
+                        this.createAnimationOnce("animation.jenny.blowjobcum", false, animEvent);
                         break block5;
                     }
                     case STARTDOGGY: {
-                        this.a("animation.jenny.doggygoonbed", false, animEvent);
+                        this.createAnimationOnce("animation.jenny.doggygoonbed", false, animEvent);
                         break block5;
                     }
                     case WAITDOGGY: {
-                        this.a("animation.jenny.doggywait", true, animEvent);
+                        this.createAnimationOnce("animation.jenny.doggywait", true, animEvent);
                         break block5;
                     }
                     case DOGGYSTART: {
-                        this.a("animation.jenny.doggystart", false, animEvent);
+                        this.createAnimationOnce("animation.jenny.doggystart", false, animEvent);
                         break block5;
                     }
                     case DOGGYSLOW: {
-                        this.a("animation.jenny.doggyslow", true, animEvent);
+                        this.createAnimationOnce("animation.jenny.doggyslow", true, animEvent);
                         break block5;
                     }
                     case DOGGYFAST: {
-                        this.a("animation.jenny.doggyfast_" + (this.ar ? "hard" : "soft"), true, animEvent);
+                        this.createAnimationOnce("animation.jenny.doggyfast_" + (this.ar ? "hard" : "soft"), true, animEvent);
                         break block5;
                     }
                     case DOGGYCUM: {
-                        this.a("animation.jenny.doggycum", false, animEvent);
+                        this.createAnimationOnce("animation.jenny.doggycum", false, animEvent);
                         break block5;
                     }
                     case ATTACK: {
-                        this.a("animation.jenny.attack" + this.S, false, animEvent);
+                        this.createAnimationOnce("animation.jenny.attack" + this.S, false, animEvent);
                         break block5;
                     }
                     case BOW: {
-                        this.a("animation.jenny.bowcharge", false, animEvent);
+                        this.createAnimationOnce("animation.jenny.bowcharge", false, animEvent);
                         break block5;
                     }
                     case RIDE: {
-                        this.a("animation.jenny.ride", true, animEvent);
+                        this.createAnimationOnce("animation.jenny.ride", true, animEvent);
                         break block5;
                     }
                     case SIT: {
-                        this.a("animation.jenny.sit", true, animEvent);
+                        this.createAnimationOnce("animation.jenny.sit", true, animEvent);
                         break block5;
                     }
                     case THROW_PEARL: {
-                        this.a("animation.jenny.throwpearl", false, animEvent);
+                        this.createAnimationOnce("animation.jenny.throwpearl", false, animEvent);
                         break block5;
                     }
                     case DOWNED: {
-                        this.a("animation.jenny.downed", true, animEvent);
+                        this.createAnimationOnce("animation.jenny.downed", true, animEvent);
                         break block5;
                     }
                     case PAIZURI_START: {
-                        this.a("animation.jenny.paizuri_start", false, animEvent);
+                        this.createAnimationOnce("animation.jenny.paizuri_start", false, animEvent);
                         break block5;
                     }
                     case PAIZURI_SLOW: {
-                        this.a("animation.jenny.paizuri_slow", true, animEvent);
+                        this.createAnimationOnce("animation.jenny.paizuri_slow", true, animEvent);
                         break block5;
                     }
                     case PAIZURI_FAST: {
-                        this.a("animation.jenny.paizuri_fast", true, animEvent);
+                        this.createAnimationOnce("animation.jenny.paizuri_fast", true, animEvent);
                         break block5;
                     }
                     case PAIZURI_CUM: {
-                        this.a("animation.jenny.paizuri_cum", false, animEvent);
+                        this.createAnimationOnce("animation.jenny.paizuri_cum", false, animEvent);
                     }
                 }
             }
@@ -600,13 +600,13 @@ extends PlayerGirlEntity {
                     break;
                 }
                 case "bjiDone": {
-                    this.b(GirlAnimationState.SUCKBLOWJOB);
+                    this.setCurrentAction(GirlAnimationState.SUCKBLOWJOB);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.showHud();
                     break;
                 }
                 case "bjtDone": {
-                    this.b(GirlAnimationState.SUCKBLOWJOB);
+                    this.setCurrentAction(GirlAnimationState.SUCKBLOWJOB);
                     break;
                 }
                 case "doggyfastReady": {
@@ -685,7 +685,7 @@ extends PlayerGirlEntity {
                 }
                 case "doggyGoOnBedDone": {
                     NetworkHandler.channel.sendToServer((IMessage)new PacketSetPlayerForGirl(this.getGirlUuid(), Minecraft.getMinecraft().player.getPersistentID()));
-                    this.b(GirlAnimationState.WAITDOGGY);
+                    this.setCurrentAction(GirlAnimationState.WAITDOGGY);
                     break;
                 }
                 case "doggystartMSG1": {
@@ -713,7 +713,7 @@ extends PlayerGirlEntity {
                     break;
                 }
                 case "doggystartDone": {
-                    this.b(GirlAnimationState.DOGGYSLOW);
+                    this.setCurrentAction(GirlAnimationState.DOGGYSLOW);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.showHud();
                     break;
@@ -760,7 +760,7 @@ extends PlayerGirlEntity {
                 }
                 case "doggyfastDone": {
                     this.ar = false;
-                    this.b(GirlAnimationState.DOGGYSLOW);
+                    this.setCurrentAction(GirlAnimationState.DOGGYSLOW);
                     break;
                 }
                 case "doggycumMSG1": {
@@ -798,7 +798,7 @@ extends PlayerGirlEntity {
                 }
                 case "paizuri_startDone": {
                     if (!this.isOwnedByLocalPlayer()) break;
-                    this.b(GirlAnimationState.PAIZURI_SLOW);
+                    this.setCurrentAction(GirlAnimationState.PAIZURI_SLOW);
                     GuiHud.resetProgress();
                     GuiHud.showHud();
                     break;
@@ -822,7 +822,7 @@ extends PlayerGirlEntity {
                     break;
                 }
                 case "paizuri_fastDone": {
-                    this.b(GirlAnimationState.PAIZURI_SLOW);
+                    this.setCurrentAction(GirlAnimationState.PAIZURI_SLOW);
                     if (!this.isOwnedByLocalPlayer() || this.as) break;
                     this.as = true;
                     this.a(-0.7, -0.6, -0.2, 60.0f, -3.0f);

@@ -67,7 +67,7 @@ public class ManglelieNpcRenderer extends GeoGirlRenderer<ManglelieNpc> {
       return B;
    }
 
-   public void a(ManglelieNpc manglelie, double d2, double d3, double d4, float f, float f2) {
+   public void doRender(ManglelieNpc manglelie, double d2, double d3, double d4, float f, float f2) {
       try {
          if (this.d(manglelie)) {
             return;
@@ -100,7 +100,7 @@ public class ManglelieNpcRenderer extends GeoGirlRenderer<ManglelieNpc> {
          throw rethrow(error4);
       }
 
-      super.a(manglelie, d2, d3, d4, f, f2);
+      super.doRender(manglelie, d2, d3, d4, f, f2);
       renderGirl(manglelie, f2);
    }
 

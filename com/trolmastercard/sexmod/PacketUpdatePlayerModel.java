@@ -97,7 +97,7 @@ public class PacketUpdatePlayerModel implements IMessage {
                     existing.y();
                     PlayerGirlEntity.PlayerGirls.remove(uuid);
                     GirlEntity.getAllGirls().remove(existing);
-                    existing.a(Optional.absent());
+                    existing.setBoundPlayer(Optional.absent());
                 }
                 GirlRegistry girlType = packet.GirlType;
                 if (girlType == null) {
@@ -119,7 +119,7 @@ public class PacketUpdatePlayerModel implements IMessage {
                 spawned.motionZ = 0.0;
                 spawned.setPosition(serverPlayer.posX, serverPlayer.posY + 69.0, serverPlayer.posZ);
                 world.spawnEntity(spawned);
-                spawned.B();
+                spawned.B_();
             });
             return null;
         }
