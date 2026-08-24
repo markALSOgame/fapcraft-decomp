@@ -1,11 +1,18 @@
 package com.trolmastercard.sexmod;
 
+import com.google.common.base.Optional;
 import io.netty.buffer.ByteBuf;
+import java.lang.reflect.Constructor;
 import java.util.ConcurrentModificationException;
+import java.util.UUID;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class PacketUpdatePlayerModel implements IMessage {
    boolean Loaded = false;
@@ -73,28 +80,46 @@ public class PacketUpdatePlayerModel implements IMessage {
                 }
             }
             FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() -> {
-                /*
-                 * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
-                 * 
-                 * org.benf.cfr.reader.util.ConfusedCFRException: Started 3 blocks at once
-                 *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.getStartingBlocks(Op04StructuredStatement.java:412)
-                 *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:487)
-                 *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
-                 *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
-                 *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
-                 *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
-                 *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
-                 *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
-                 *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1050)
-                 *     at org.benf.cfr.reader.entities.ClassFile.analyseInnerClassesPass1(ClassFile.java:923)
-                 *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1035)
-                 *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
-                 *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
-                 *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
-                 *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
-                 *     at org.benf.cfr.reader.Main.main(Main.java:54)
-                 */
-                throw new IllegalStateException("Decompilation failed");
+                EntityPlayerMP serverPlayer = ctx.getServerHandler().player;
+                World world = serverPlayer.world;
+                UUID uuid = serverPlayer.getPersistentID();
+                PlayerGirlEntity existing = PlayerGirlEntity.getByUuid(uuid);
+                if (existing != null) {
+                    try {
+                        for (GirlEntity girl : GirlEntity.getAllGirls()) {
+                            if (girl.world.isRemote || !girl.getGirlUuid().equals(existing.getGirlUuid())) continue;
+                            world.removeEntity(girl);
+                        }
+                    }
+                    catch (ConcurrentModificationException concurrentModificationException) {
+                        // empty catch block
+                    }
+                    existing.y();
+                    PlayerGirlEntity.PlayerGirls.remove(uuid);
+                    GirlEntity.getAllGirls().remove(existing);
+                    existing.a(Optional.absent());
+                }
+                GirlRegistry girlType = packet.GirlType;
+                if (girlType == null) {
+                    return;
+                }
+                PlayerGirlEntity spawned;
+                try {
+                    Constructor<? extends PlayerGirlEntity> constructor = girlType.playerClass.getConstructor(World.class, UUID.class);
+                    spawned = constructor.newInstance(world, uuid);
+                }
+                catch (Exception exception) {
+                    exception.printStackTrace();
+                    return;
+                }
+                spawned.setNoGravity(true);
+                spawned.noClip = true;
+                spawned.motionX = 0.0;
+                spawned.motionY = 0.0;
+                spawned.motionZ = 0.0;
+                spawned.setPosition(serverPlayer.posX, serverPlayer.posY + 69.0, serverPlayer.posZ);
+                world.spawnEntity(spawned);
+                spawned.B();
             });
             return null;
         }

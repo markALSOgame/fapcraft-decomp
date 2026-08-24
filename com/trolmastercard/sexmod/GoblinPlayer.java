@@ -916,32 +916,25 @@ implements GirlMaster {
         this.DataManager.set(at, (Object)stringBuilder.toString());
     }
 
-    /*
-     * Exception decompiling
-     */
     @Override
     @Nullable
     protected GirlAnimationState c(GirlAnimationState girlAnimationState) {
-        /*
-         * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
-         * 
-         * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 1[SWITCH]
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
-         *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
-         *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1055)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
-         *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
-         *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
-         *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
-         *     at org.benf.cfr.reader.Main.main(Main.java:54)
-         */
-        throw new IllegalStateException("Decompilation failed");
+        switch (girlAnimationState) {
+            case PAIZURI_IDLE: 
+            case PAIZURI_SLOW: {
+                return GirlAnimationState.PAIZURI_FAST;
+            }
+            case BREEDING_SLOW_0: {
+                return GirlAnimationState.BREEDING_FAST_0;
+            }
+            case BREEDING_SLOW_2: {
+                return GirlAnimationState.BREEDING_FAST_2;
+            }
+            case NELSON_SLOW: {
+                return GirlAnimationState.NELSON_FAST;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -1136,58 +1129,208 @@ implements GirlMaster {
         this.a((UUID)null);
     }
 
-    /*
-     * Exception decompiling
-     */
     @Override
     protected GirlAnimationState a(GirlAnimationState girlAnimationState) {
-        /*
-         * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
-         * 
-         * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 1[SWITCH]
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
-         *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
-         *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1055)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
-         *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
-         *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
-         *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
-         *     at org.benf.cfr.reader.Main.main(Main.java:54)
-         */
-        throw new IllegalStateException("Decompilation failed");
+        switch (girlAnimationState) {
+            case PAIZURI_SLOW: 
+            case PAIZURI_FAST: 
+            case PAIZURI_FAST_CONTINUES: {
+                return GirlAnimationState.PAIZURI_CUM;
+            }
+            case BREEDING_1: {
+                return GirlAnimationState.BREEDING_CUM_1;
+            }
+            case BREEDING_SLOW_2: 
+            case BREEDING_FAST_2: {
+                return GirlAnimationState.BREEDING_CUM_2;
+            }
+            case NELSON_FAST: 
+            case NELSON_SLOW: {
+                return GirlAnimationState.NELSON_CUM;
+            }
+        }
+        return null;
     }
 
-    /*
-     * Exception decompiling
-     */
     @Override
     protected <E extends IAnimatable> PlayState a(AnimationEvent<E> animEvent) {
-        /*
-         * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
-         * 
-         * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [1[TRYBLOCK]], but top level block is 23[SWITCH]
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
-         *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
-         *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1055)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
-         *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
-         *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
-         *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
-         *     at org.benf.cfr.reader.Main.main(Main.java:54)
-         */
-        throw new IllegalStateException("Decompilation failed");
+        if (this.world instanceof PreviewWorld) {
+            return PlayState.STOP;
+        }
+        block5 : switch (animEvent.getController().getName()) {
+            case "eyes": {
+                if (this.getCurrentAction() != GirlAnimationState.NULL || !this.getCurrentAction().autoBlink) {
+                    this.a("animation.goblin.null", true, animEvent);
+                    break;
+                }
+                this.a("animation.goblin.blink", true, animEvent);
+                break;
+            }
+            case "movement": {
+                if (this.getCurrentAction() != GirlAnimationState.NULL) {
+                    this.a("animation.goblin.null", true, animEvent);
+                    break;
+                }
+                if (this.ak) {
+                    this.a("animation.goblin.sit", true, animEvent);
+                    break;
+                }
+                if (this.MovementController.getCurrentAnimation() != null && this.MovementController.getCurrentAnimation().animationName.contains("fly") && this.af) {
+                    boolean bl = this.aC = !this.aC;
+                }
+                if (!this.af) {
+                    this.a("animation.goblin.fly" + (this.aC ? "2" : ""), true, animEvent);
+                    break;
+                }
+                if (Math.abs(this.ao.x) + Math.abs(this.ao.y) > 0.0f) {
+                    if (this.aj) {
+                        this.MovementController.setAnimationSpeed(1.2f);
+                        this.a("animation.goblin.running", true, animEvent);
+                        break;
+                    }
+                    if (this.ao.y >= -0.1f) {
+                        this.MovementController.setAnimationSpeed(2.0);
+                        this.a("animation.goblin.walk", true, animEvent);
+                        break;
+                    }
+                    this.MovementController.setAnimationSpeed(1.5);
+                    this.a("animation.goblin.backwards_walk", true, animEvent);
+                    break;
+                }
+                this.a("animation.goblin.idle", true, animEvent);
+                break;
+            }
+            case "action": {
+                Minecraft minecraft = Minecraft.getMinecraft();
+                String string = minecraft.player.getPersistentID().equals(this.e()) && minecraft.gameSettings.thirdPersonView == 0 ? "1" : "3";
+                switch (this.getCurrentAction()) {
+                    case SHOULDER_IDLE: {
+                        this.a("animation.goblin.shoulder_idle", true, animEvent);
+                        break block5;
+                    }
+                    case PICK_UP: {
+                        this.a(String.format("animation.goblin.pick_up_%sperson", string), true, animEvent);
+                        break block5;
+                    }
+                    case START_THROWING: {
+                        this.a(String.format("animation.goblin.throw_%sperson", string), true, animEvent);
+                        break block5;
+                    }
+                    case THROWN: {
+                        this.a("animation.goblin.thrown", true, animEvent);
+                        break block5;
+                    }
+                    case NULL: {
+                        this.a("animation.goblin.null", true, animEvent);
+                        break block5;
+                    }
+                    case STAND_UP: {
+                        this.a("animation.goblin.stand_up", false, animEvent);
+                        break block5;
+                    }
+                    case STRIP: {
+                        this.a("animation.goblin.strip", false, animEvent);
+                        break block5;
+                    }
+                    case ATTACK: {
+                        this.a("animation.goblin.attack" + this.S, false, animEvent);
+                        break block5;
+                    }
+                    case BOW: {
+                        this.a("animation.goblin.bowcharge", false, animEvent);
+                        break block5;
+                    }
+                    case SIT: {
+                        this.a("animation.goblin.sit", true, animEvent);
+                        break block5;
+                    }
+                    case NELSON_INTRO: {
+                        this.a("animation.goblin.nelson_intro", true, animEvent);
+                        break block5;
+                    }
+                    case NELSON_SLOW: {
+                        this.a("animation.goblin.nelson_slow" + (this.ay ? "" : "2"), true, animEvent);
+                        break block5;
+                    }
+                    case NELSON_FAST: {
+                        this.a("animation.goblin.nelson_fast" + (this.aF ? "c" : "s"), true, animEvent);
+                        break block5;
+                    }
+                    case NELSON_CUM: {
+                        this.a("animation.goblin.nelson_cum", true, animEvent);
+                        break block5;
+                    }
+                    case BREEDING_INTRO_0: {
+                        this.a("animation.goblin.breeding_intro_1", true, animEvent);
+                        break block5;
+                    }
+                    case BREEDING_INTRO_1: {
+                        this.a("animation.goblin.breeding_intro_2", true, animEvent);
+                        break block5;
+                    }
+                    case BREEDING_INTRO_2: {
+                        this.a("animation.goblin.breeding_intro_3", true, animEvent);
+                        break block5;
+                    }
+                    case BREEDING_SLOW_0: {
+                        this.a("animation.goblin.breeding_slow_1" + (this.aB ? "l" : "r"), true, animEvent);
+                        break block5;
+                    }
+                    case BREEDING_SLOW_2: {
+                        this.a("animation.goblin.breeding_slow_3", true, animEvent);
+                        break block5;
+                    }
+                    case BREEDING_FAST_0: {
+                        this.a("animation.goblin.breeding_fast_1" + (this.aH ? "c" : "s"), true, animEvent);
+                        break block5;
+                    }
+                    case BREEDING_FAST_2: {
+                        this.a("animation.goblin.breeding_fast_3", true, animEvent);
+                        break block5;
+                    }
+                    case BREEDING_CUM_0: {
+                        this.a("animation.goblin.breeding_cum_1", true, animEvent);
+                        break block5;
+                    }
+                    case BREEDING_CUM_1: {
+                        this.a("animation.goblin.breeding_cum_2", true, animEvent);
+                        break block5;
+                    }
+                    case BREEDING_CUM_2: {
+                        this.a("animation.goblin.breeding_cum_3", true, animEvent);
+                        break block5;
+                    }
+                    case BREEDING_1: {
+                        this.a("animation.goblin.breeding_2", true, animEvent);
+                        break block5;
+                    }
+                    case PAIZURI_START: {
+                        this.a("animation.goblin.paizuri_start", true, animEvent);
+                        break block5;
+                    }
+                    case PAIZURI_SLOW: {
+                        this.a("animation.goblin.paizuri_slow" + this.aD, true, animEvent);
+                        break block5;
+                    }
+                    case PAIZURI_FAST: {
+                        this.a("animation.goblin.paizuri_fast", true, animEvent);
+                        break block5;
+                    }
+                    case PAIZURI_FAST_CONTINUES: {
+                        this.a("animation.goblin.paizuri_fast_countinues", true, animEvent);
+                        break block5;
+                    }
+                    case PAIZURI_IDLE: {
+                        this.a("animation.goblin.paizuri_idle", true, animEvent);
+                        break block5;
+                    }
+                    case PAIZURI_CUM: {
+                        this.a("animation.goblin.paizuri_cum", true, animEvent);
+                    }
+                }
+            }
+        }
+        return PlayState.CONTINUE;
     }
 
     @Override
@@ -1202,26 +1345,254 @@ implements GirlMaster {
             throw GoblinPlayer.rethrow(runtimeException);
         }
         AnimationController.ISoundListener iSoundListener = arg1 -> {
-            /*
-             * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
-             * 
-             * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 33[SWITCH]
-             *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
-             *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
-             *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
-             *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
-             *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
-             *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
-             *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
-             *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
-             *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1050)
-             *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
-             *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
-             *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
-             *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
-             *     at org.benf.cfr.reader.Main.main(Main.java:54)
-             */
-            throw new IllegalStateException("Decompilation failed");
+            switch (arg1.sound) {
+                case "attackDone": {
+                    if (++this.S != 3) break;
+                    this.S = 0;
+                    break;
+                }
+                case "catchEh": {
+                    this.a("ehh..");
+                    this.a(ModSounds.MISC_PLOB, new int[0]);
+                    break;
+                }
+                case "catchAkward": {
+                    this.a("awkward..");
+                    this.a(ModSounds.MISC_PLOB, new int[0]);
+                    break;
+                }
+                case "catchWell": {
+                    this.a("well...");
+                    this.a(ModSounds.MISC_PLOB, new int[0]);
+                    break;
+                }
+                case "catchRather": {
+                    this.a("would you rather have this stupid... thing?");
+                    this.a(ModSounds.MISC_PLOB, new int[0]);
+                    break;
+                }
+                case "catchMe": {
+                    this.a("...or use me?~");
+                    this.a(ModSounds.MISC_PLOB, new int[0]);
+                    break;
+                }
+                case "catchDone": {
+                    if (!"bj".equals(this.DataManager.get(GirlEntity.BlowjobStageKey))) break;
+                    this.b(GirlAnimationState.CATCH_BJ);
+                    break;
+                }
+                case "catchBjDone": {
+                    this.b(GirlAnimationState.CATCH_BJ_IDLE);
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    EntityPlayerSP entityPlayerSP = Minecraft.getMinecraft().player;
+                    GirlEntity.openActionMenuWithItems(entityPlayerSP, this, new String[]{"use her", "take ur stuff back"}, null, false);
+                    break;
+                }
+                case "paizuriChoice": {
+                    this.a("good choice!~");
+                    this.a(ModSounds.MISC_PLOB, new int[0]);
+                    break;
+                }
+                case "paizuriBoth": {
+                    this.a("...for both of us!");
+                    this.a(ModSounds.MISC_PLOB, new int[0]);
+                    break;
+                }
+                case "paizruiUse": {
+                    this.a("now use me like a fuck toy!~");
+                    this.a(ModSounds.MISC_PLOB, new int[0]);
+                    break;
+                }
+                case "paizuriSwitch": {
+                    if (this.getRNG().nextBoolean()) break;
+                    this.aD = "".equals(this.aD) ? "2" : "";
+                    break;
+                }
+                case "touch": {
+                    this.a(ModSounds.MISC_TOUCH, 3.0f);
+                    break;
+                }
+                case "pound": {
+                    this.a(ModSounds.MISC_POUNDING, new int[0]);
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.addProgress(0.04f);
+                    break;
+                }
+                case "paizuri_startDone": {
+                    this.b(GirlAnimationState.PAIZURI_IDLE);
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.showHud();
+                    break;
+                }
+                case "paizuriFastDone": {
+                    this.b(GirlAnimationState.PAIZURI_SLOW);
+                    break;
+                }
+                case "paizuriFastReady": {
+                    if (!this.isOwnedByLocalPlayer() || !AnimationInputLock.SneakPressed) break;
+                    this.b(GirlAnimationState.PAIZURI_FAST_CONTINUES);
+                    break;
+                }
+                case "paizuriFastContinuesReady":
+                case "neslon_fastBackSwitch": {
+                    if (!this.isOwnedByLocalPlayer() || !AnimationInputLock.SneakPressed) break;
+                    this.N();
+                    break;
+                }
+                case "smallPound": {
+                    this.a(ModSounds.MISC_POUNDING, 0.25f);
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.addProgress(0.02f);
+                    break;
+                }
+                case "paizruiCam": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    EntityPlayerSP entityPlayerSP = Minecraft.getMinecraft().player;
+                    entityPlayerSP.rotationPitch = 70.0f;
+                    entityPlayerSP.prevRotationPitch = 70.0f;
+                    break;
+                }
+                case "blackScreen": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiTransitionScreen.startTransition();
+                    break;
+                }
+                case "cumSound": {
+                    this.a(ModSounds.MISC_SMALLINSERTS, 3.0f);
+                    break;
+                }
+                case "jumpCam": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    Minecraft minecraft = Minecraft.getMinecraft();
+                    minecraft.player.rotationYaw = this.I().floatValue() + 170.0f;
+                    minecraft.player.rotationPitch = -20.0f;
+                    minecraft.player.rotationYawHead = minecraft.player.rotationYaw;
+                    minecraft.gameSettings.thirdPersonView = 2;
+                    break;
+                }
+                case "breedingHmm": {
+                    if (this.isOwnedByLocalPlayer()) {
+                        Minecraft minecraft = Minecraft.getMinecraft();
+                        minecraft.player.rotationYaw = this.I().floatValue() + 180.0f;
+                        minecraft.player.rotationPitch = -15.0f;
+                        minecraft.player.rotationYawHead = minecraft.player.rotationYaw;
+                        minecraft.gameSettings.thirdPersonView = 0;
+                    }
+                    this.a("hmm...");
+                    this.a(ModSounds.MISC_PLOB, new int[0]);
+                    break;
+                }
+                case "breedingFound": {
+                    this.a("guess we found a worthy breeding partner!");
+                    this.a(ModSounds.MISC_PLOB, new int[0]);
+                    break;
+                }
+                case "breedingEnough": {
+                    this.a("Eh.. go pin him down, before he runs off!");
+                    this.a(ModSounds.MISC_PLOB, new int[0]);
+                    break;
+                }
+                case "breedingCam2": {
+                    if (this.isOwnedByLocalPlayer()) {
+                        Minecraft minecraft = Minecraft.getMinecraft();
+                        minecraft.gameSettings.thirdPersonView = 2;
+                        minecraft.player.rotationYaw = this.I().floatValue() - 120.0f;
+                        minecraft.player.rotationPitch = -30.0f;
+                    }
+                }
+                case "breedingIntroDone": {
+                    this.b(GirlAnimationState.BREEDING_SLOW_0);
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.showHud();
+                    break;
+                }
+                case "breeding_slow1Done": {
+                    if (this.getRNG().nextBoolean()) {
+                        boolean bl = this.aB = !this.aB;
+                    }
+                    if (!this.isOwnedByLocalPlayer() || !AnimationInputLock.SneakPressed) break;
+                    this.b(GirlAnimationState.BREEDING_FAST_0);
+                    this.aH = false;
+                    break;
+                }
+                case "breeding_fast1Done": {
+                    this.b(GirlAnimationState.BREEDING_SLOW_0);
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    this.aH = false;
+                    break;
+                }
+                case "breeding_fast1Ready": {
+                    if (!this.isOwnedByLocalPlayer() || !AnimationInputLock.SneakPressed) break;
+                    this.aH = true;
+                    this.N();
+                    this.ActionController.tickOffset = 0.0;
+                    break;
+                }
+                case "cum": {
+                    this.a(ModSounds.MISC_SMALLINSERTS, 2.0f);
+                    break;
+                }
+                case "breeding_intro_3Done": {
+                    this.b(GirlAnimationState.BREEDING_SLOW_2);
+                    break;
+                }
+                case "breeding_3_wiggle": {
+                    if (!this.getRNG().nextBoolean()) break;
+                    this.ActionController.tickOffset = 0.0;
+                    break;
+                }
+                case "breeding_fast_3Done": {
+                    if (!this.isOwnedByLocalPlayer() || AnimationInputLock.SneakPressed) break;
+                    this.b(GirlAnimationState.BREEDING_SLOW_2);
+                    break;
+                }
+                case "breeding_intro_2Done": {
+                    this.b(GirlAnimationState.BREEDING_1);
+                    break;
+                }
+                case "breeding_cumCam": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    Minecraft minecraft = Minecraft.getMinecraft();
+                    minecraft.gameSettings.thirdPersonView = 0;
+                    minecraft.player.rotationYaw = this.I().floatValue() + 180.0f;
+                    minecraft.player.rotationPitch = -15.0f;
+                    minecraft.player.rotationYawHead = minecraft.player.rotationYaw;
+                    minecraft.gameSettings.thirdPersonView = 0;
+                    break;
+                }
+                case "neslon_introDone": {
+                    this.b(GirlAnimationState.NELSON_SLOW);
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.showHud();
+                    break;
+                }
+                case "nelson_slowDone": {
+                    if (!this.getRNG().nextBoolean()) break;
+                    this.ay = !this.ay;
+                    break;
+                }
+                case "neslon_fastSwitch": {
+                    if (!this.isOwnedByLocalPlayer()) {
+                        this.aF = true;
+                        return;
+                    }
+                    if (!AnimationInputLock.SneakPressed) break;
+                    this.aF = true;
+                    break;
+                }
+                case "nelsonFastDone": {
+                    this.aF = false;
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    this.b(GirlAnimationState.NELSON_SLOW);
+                    break;
+                }
+                case "paizuriCumDone":
+                case "nelson_cumDone": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    this.resetAimTarget();
+                    this.b(GirlAnimationState.NULL);
+                }
+            }
         };
         this.ActionController.registerSoundListener(iSoundListener);
         this.MovementController.transitionLengthTicks = 2.0;

@@ -50,6 +50,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -606,31 +607,41 @@ fg {
         this.tasks.addTask(5, (EntityAIBase)this.WanderAI);
     }
 
-    /*
-     * Exception decompiling
-     */
     @Override
     public void a(String string, UUID uuid) {
-        /*
-         * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
-         * 
-         * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 2[SWITCH]
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
-         *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
-         *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1055)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
-         *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
-         *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
-         *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
-         *     at org.benf.cfr.reader.Main.main(Main.java:54)
-         */
-        throw new IllegalStateException("Decompilation failed");
+        super.a(string, uuid);
+        switch (string) {
+            case "action.names.talk": {
+                this.handleGirlUuidEvent(Minecraft.getMinecraft().player.getPersistentID());
+                this.a("playerSheHasSexWith", Minecraft.getMinecraft().player.getPersistentID().toString());
+                this.a("animationFollowUp", "talkHorny");
+                this.acceptPlayer(uuid);
+                break;
+            }
+            case "action.names.headpat": {
+                this.handleGirlUuidEvent(Minecraft.getMinecraft().player.getPersistentID());
+                this.a("playerSheHasSexWith", Minecraft.getMinecraft().player.getPersistentID().toString());
+                this.a("animationFollowUp", "Headpat");
+                this.acceptPlayer(uuid);
+                break;
+            }
+            case "action.names.anal": {
+                this.a("animationFollowUp", "anal");
+                this.setCurrentAction(GirlAnimationState.TALK_RESPONSE);
+                this.MenuPending = true;
+                break;
+            }
+            case "doggy": {
+                this.a("animationFollowUp", "doggy");
+                this.setCurrentAction(GirlAnimationState.TALK_RESPONSE);
+                this.MenuPending = true;
+                break;
+            }
+            case "action.names.dressup": 
+            case "action.names.strip": {
+                this.setCurrentAction(GirlAnimationState.STRIP);
+            }
+        }
     }
 
     public void onDeath(DamageSource damageSource) {
@@ -919,31 +930,29 @@ fg {
         return null;
     }
 
-    /*
-     * Exception decompiling
-     */
     @Override
     protected void U() {
-        /*
-         * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
-         * 
-         * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 3[SWITCH]
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
-         *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
-         *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1055)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
-         *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
-         *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
-         *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
-         *     at org.benf.cfr.reader.Main.main(Main.java:54)
-         */
-        throw new IllegalStateException("Decompilation failed");
+        switch ((String)this.DataManager.get(BlowjobStageKey)) {
+            case "talkHorny": {
+                this.setCurrentAction(GirlAnimationState.TALK_HORNY);
+                break;
+            }
+            case "Headpat": {
+                this.setCurrentAction(GirlAnimationState.HEAD_PAT);
+                break;
+            }
+            case "doggy": 
+            case "anal": {
+                this.resetAimTarget();
+                NetworkHandler.channel.sendToServer((IMessage)new PacketSendGirlToSex(this.getGirlUuid()));
+                return;
+            }
+        }
+        if (this.world.isRemote) {
+            this.a("animationFollowUp", "");
+        } else {
+            this.DataManager.set(BlowjobStageKey, (Object)"");
+        }
     }
 
     @Override
@@ -956,31 +965,162 @@ fg {
         return 140.0f;
     }
 
-    /*
-     * Exception decompiling
-     */
     @Override
     protected <E extends IAnimatable> PlayState a(AnimationEvent<E> animEvent) {
-        /*
-         * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
-         * 
-         * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [1[TRYBLOCK]], but top level block is 10[SWITCH]
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
-         *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
-         *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1055)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
-         *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
-         *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
-         *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
-         *     at org.benf.cfr.reader.Main.main(Main.java:54)
-         */
-        throw new IllegalStateException("Decompilation failed");
+        if (this.world instanceof PreviewWorld) {
+            return null;
+        }
+        block5: switch (animEvent.getController().getName()) {
+            case "eyes": {
+                if (this.getCurrentAction() != GirlAnimationState.NULL || !this.getCurrentAction().autoBlink) {
+                    this.a("animation.bia.null", true, animEvent);
+                    break;
+                }
+                this.a("animation.bia.fhappy", true, animEvent);
+                break;
+            }
+            case "movement": {
+                if (this.getCurrentAction() != GirlAnimationState.NULL) {
+                    this.a("animation.bia.null", true, animEvent);
+                    break;
+                }
+                if (this.isRiding()) {
+                    this.a("animation.bia.sit", true, animEvent);
+                    break;
+                }
+                if (Math.abs(this.prevPosX - this.posX) + Math.abs(this.prevPosZ - this.posZ) > 0.0) {
+                    switch (this.getWalkState()) {
+                        case RUN: {
+                            this.a("animation.bia.run", true, animEvent);
+                            break;
+                        }
+                        case FAST_WALK: {
+                            this.a("animation.bia.fastwalk", true, animEvent);
+                            break;
+                        }
+                        case WALK: {
+                            this.a("animation.bia.walk", true, animEvent);
+                        }
+                    }
+                    this.rotationYaw = this.rotationYawHead;
+                    break;
+                }
+                this.a("animation.bia.idle", true, animEvent);
+                break;
+            }
+            case "action": {
+                switch (this.getCurrentAction()) {
+                    case NULL: {
+                        this.a("animation.bia.null", true, animEvent);
+                        break block5;
+                    }
+                    case STRIP: {
+                        this.a("animation.bia.strip", false, animEvent);
+                        break block5;
+                    }
+                    case ATTACK: {
+                        this.a("animation.bia.attack" + this.S, false, animEvent);
+                        break block5;
+                    }
+                    case BOW: {
+                        this.a("animation.bia.bowcharge", false, animEvent);
+                        break block5;
+                    }
+                    case RIDE: {
+                        this.a("animation.bia.ride", true, animEvent);
+                        break block5;
+                    }
+                    case SIT: {
+                        this.a("animation.bia.sit", true, animEvent);
+                        break block5;
+                    }
+                    case THROW_PEARL: {
+                        this.a("animation.bia.throwpearl", false, animEvent);
+                        break block5;
+                    }
+                    case DOWNED: {
+                        this.a("animation.bia.downed", true, animEvent);
+                        break block5;
+                    }
+                    case TALK_HORNY: {
+                        this.a("animation.bia.talk_horny2", true, animEvent);
+                        break block5;
+                    }
+                    case TALK_IDLE: {
+                        this.a("animation.bia.talk_idle2", true, animEvent);
+                        break block5;
+                    }
+                    case TALK_RESPONSE: {
+                        this.a("animation.bia.talk_response", true, animEvent);
+                        break block5;
+                    }
+                    case ANAL_PREPARE: {
+                        this.a("animation.bia.anal_prepare", false, animEvent);
+                        break block5;
+                    }
+                    case ANAL_WAIT: {
+                        this.a("animation.bia.anal_wait", false, animEvent);
+                        break block5;
+                    }
+                    case ANAL_START: {
+                        this.a("animation.bia.anal_start", true, animEvent);
+                        break block5;
+                    }
+                    case ANAL_SLOW: {
+                        this.a("animation.bia.anal_slow", true, animEvent);
+                        break block5;
+                    }
+                    case ANAL_FAST: {
+                        this.a("animation.bia.anal_fast", true, animEvent);
+                        break block5;
+                    }
+                    case ANAL_CUM: {
+                        this.a("animation.bia.anal_cum", false, animEvent);
+                        break block5;
+                    }
+                    case HEAD_PAT: {
+                        this.a("animation.bia.headpat", false, animEvent);
+                        break block5;
+                    }
+                    case SITDOWN: {
+                        this.a("animation.bia.sitdown", false, animEvent);
+                        break block5;
+                    }
+                    case SITDOWNIDLE: {
+                        this.a("animation.bia.sitdownidle", true, animEvent);
+                        break block5;
+                    }
+                    case PRONE_DOGGY_INTRO: {
+                        this.a("animation.bia.prone_doggy_intro", true, animEvent);
+                        break block5;
+                    }
+                    case PRONE_DOGGY_INSERT: {
+                        this.a("animation.bia.prone_doggy_insert", true, animEvent);
+                        break block5;
+                    }
+                    case PRONE_DOGGY_SOFT: {
+                        this.a("animation.bia.prone_doggy_soft", true, animEvent);
+                        break block5;
+                    }
+                    case PRONE_DOGGY_HARD: {
+                        this.a("animation.bia.prone_doggy_hard" + this.DanceStep, true, animEvent);
+                        break block5;
+                    }
+                    case PRONE_DOGGY_CUM: {
+                        this.a("animation.bia.prone_doggy_cum", true, animEvent);
+                        break block5;
+                    }
+                    case WAVE_IDLE: {
+                        this.a("animation.bia.wave_idle", true, animEvent);
+                        break block5;
+                    }
+                    case WAVE: {
+                        this.a("animation.bia.wave", true, animEvent);
+                    }
+                }
+            }
+        }
+        return PlayState.CONTINUE;
     }
 
     @Override
@@ -995,26 +1135,215 @@ fg {
             throw BiaNpc.rethrow(nullPointerException);
         }
         AnimationController.ISoundListener iSoundListener = arg1 -> {
-            /*
-             * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
-             * 
-             * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 23[SWITCH]
-             *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
-             *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
-             *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
-             *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
-             *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
-             *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
-             *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
-             *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
-             *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1050)
-             *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
-             *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
-             *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
-             *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
-             *     at org.benf.cfr.reader.Main.main(Main.java:54)
-             */
-            throw new IllegalStateException("Decompilation failed");
+            switch (arg1.sound) {
+                case "attackDone": {
+                    this.setCurrentAction(GirlAnimationState.NULL);
+                    if (++this.S != 3) break;
+                    this.S = 0;
+                    break;
+                }
+                case "becomeNude": {
+                    if (!this.isLocalPlayerNearby()) break;
+                    this.a("currentModel", (Integer)this.DataManager.get(OutfitIndexKey) == 1 ? "0" : "1");
+                    break;
+                }
+                case "stripDone": {
+                    this.resetAimTarget();
+                    this.U();
+                    break;
+                }
+                case "stripMSG1": {
+                    this.a(I18n.format("bia.dialogue.hihi", new Object[0]));
+                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_BIA_GIGGLE));
+                    break;
+                }
+                case "sexUiOn": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.showHud();
+                    break;
+                }
+                case "pearl": {
+                    NetworkHandler.channel.sendToServer((IMessage)new PacketSendCompanionHome(this.getGirlUuid()));
+                    break;
+                }
+                case "talk_hornyMSG1": {
+                    this.a(I18n.format("bia.dialogue.heya", new Object[0]));
+                    this.a(ModSounds.GIRLS_BIA_HEY, new int[0]);
+                    break;
+                }
+                case "talk_hornyMSG2": {
+                    this.a(I18n.format("bia.dialogue.horny", new Object[0]));
+                    this.a(ModSounds.GIRLS_BIA_GIGGLE[2]);
+                    break;
+                }
+                case "talk_hornyMSG3": {
+                    this.a(I18n.format("bia.dialogue.so", new Object[0]));
+                    this.a(ModSounds.GIRLS_BIA_BREATH[0]);
+                    break;
+                }
+                case "talk_hornyMSG4": {
+                    this.a(I18n.format("bia.dialogue.fun", new Object[0]));
+                    this.a(ModSounds.GIRLS_BIA_HUH[0]);
+                    break;
+                }
+                case "talk_hornyDone": {
+                    this.setCurrentAction(GirlAnimationState.TALK_IDLE);
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    this.openActionMenu(Minecraft.getMinecraft().player);
+                    break;
+                }
+                case "talk_responseMSG1": {
+                    this.a(I18n.format("bia.dialogue.huh", new Object[0]));
+                    this.a(ModSounds.GIRLS_BIA_HUH[2]);
+                    break;
+                }
+                case "talk_responseMSG2": {
+                    this.a(I18n.format("bia.dialogue.iuhm", new Object[0]));
+                    this.a(ModSounds.GIRLS_BIA_BREATH[1]);
+                    break;
+                }
+                case "talk_responseMSG3": {
+                    this.a(I18n.format("bia.dialogue.yes", new Object[0]));
+                    this.a(ModSounds.GIRLS_BIA_GIGGLE[0]);
+                    break;
+                }
+                case "talk_responseDone": {
+                    if (this.isOwnedByLocalPlayer()) {
+                        this.s();
+                    }
+                    this.U();
+                    break;
+                }
+                case "anal_prepareMSG1": {
+                    this.a(ModSounds.MISC_PLOB[0]);
+                    break;
+                }
+                case "anal_prepareMSG2": {
+                    this.a(ModSounds.MISC_BEDRUSTLE[0]);
+                    break;
+                }
+                case "anal_prepareDone": {
+                    this.setCurrentAction(GirlAnimationState.ANAL_WAIT);
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.resetProgress();
+                    break;
+                }
+                case "anal_startMSG1": {
+                    this.a(ModSounds.GIRLS_BIA_MMM[3]);
+                    this.a(ModSounds.MISC_POUNDING[34]);
+                    break;
+                }
+                case "anal_fastMSG1": {
+                    if (this.isOwnedByLocalPlayer()) {
+                        GuiHud.addProgress(0.02);
+                    }
+                }
+                case "anal_slowMSG1": 
+                case "anal_startMSG2": {
+                    if (this.isOwnedByLocalPlayer()) {
+                        GuiHud.addProgress(0.02);
+                    }
+                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.5f);
+                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_BIA_AHH));
+                    break;
+                }
+                case "anal_fastDone": {
+                    if (!this.isOwnedByLocalPlayer() || AnimationInputLock.SneakPressed) break;
+                }
+                case "anal_startDone": {
+                    this.setCurrentAction(GirlAnimationState.ANAL_SLOW);
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.showHud();
+                    break;
+                }
+                case "anal_cumMSG2": {
+                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_BIA_AHH));
+                    break;
+                }
+                case "blackScreen": 
+                case "anal_cumBlackScreen": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiTransitionScreen.startTransition();
+                    break;
+                }
+                case "doggy_cumDone": 
+                case "anal_cumDone": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.resetProgress();
+                    this.resetAimTarget();
+                    break;
+                }
+                case "headpatMSG1": {
+                    this.a(I18n.format("bia.dialogue.headpats", new Object[0]));
+                    this.a(ModSounds.GIRLS_BIA_BREATH[0]);
+                    break;
+                }
+                case "headpatMSG2": {
+                    this.a(I18n.format("bia.dialogue.hmm", new Object[0]));
+                    this.a(ModSounds.GIRLS_BIA_MMM[0]);
+                    break;
+                }
+                case "headpatMSG3": {
+                    this.a(I18n.format("bia.dialogue.huh2", new Object[0]));
+                    this.a(ModSounds.GIRLS_BIA_HUH[0]);
+                    break;
+                }
+                case "headpatMSG4": {
+                    this.a(I18n.format("bia.dialogue.thankyou", new Object[0]));
+                    this.a(ModSounds.GIRLS_BIA_GIGGLE[1]);
+                    break;
+                }
+                case "headpatDone": {
+                    this.resetAimTarget();
+                    break;
+                }
+                case "sitdownMSG1": {
+                    this.a("come here big boy~");
+                    this.a(ModSounds.GIRLS_BIA_BREATH, new int[0]);
+                    break;
+                }
+                case "sitdownDone": {
+                    this.setCurrentAction(GirlAnimationState.SITDOWNIDLE);
+                    break;
+                }
+                case "slide": {
+                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_SLIDE));
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.addProgress(0.005);
+                    break;
+                }
+                case "pound": {
+                    this.a(ModSounds.MISC_POUNDING, new int[0]);
+                    break;
+                }
+                case "doggyMoan": {
+                    this.a(this.getRNG().nextBoolean() ? ModSounds.GIRLS_BIA_AHH : ModSounds.GIRLS_BIA_MMM, new int[0]);
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.addProgress(0.04);
+                    break;
+                }
+                case "doggySwitch": {
+                    if (!this.isOwnedByLocalPlayer() || !AnimationInputLock.SneakPressed) break;
+                    this.setCurrentAction(GirlAnimationState.PRONE_DOGGY_HARD);
+                    break;
+                }
+                case "doggyReset": {
+                    if (!this.isOwnedByLocalPlayer() || !AnimationInputLock.SneakPressed) break;
+                    this.N();
+                    break;
+                }
+                case "cum": {
+                    this.a(ModSounds.MISC_INSERTS, 6.0f);
+                    break;
+                }
+                case "orgasm1": {
+                    this.a(ModSounds.GIRLS_BIA_MMM[6]);
+                    break;
+                }
+                case "orgasm2": {
+                    this.a(ModSounds.GIRLS_BIA_MMM[7]);
+                }
+            }
         };
         this.ActionController.registerSoundListener(iSoundListener);
         animationData.addAnimationController(this.ActionController);

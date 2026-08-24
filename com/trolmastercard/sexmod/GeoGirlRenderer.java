@@ -9,36 +9,46 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.UUID;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.vecmath.Matrix4f;
 import javax.vecmath.Vector4f;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityHanging;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import org.lwjgl.opengl.GL11;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.geo.render.built.GeoBone;
 import software.bernie.geckolib3.geo.render.built.GeoCube;
@@ -1531,27 +1541,39 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
 
 
    protected void b(BufferBuilder bufferBuilder, GeoBone bone) {
-        /*
-         * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
-         * 
-         * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [1[TRYBLOCK]], but top level block is 3[SWITCH]
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
-         *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
-         *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1055)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
-         *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
-         *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
-         *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
-         *     at org.benf.cfr.reader.Main.main(Main.java:54)
-         */
-        throw new IllegalStateException("Decompilation failed");
-    }
+      ItemStack itemStack = this.a();
+      if (itemStack == null) {
+         return;
+      }
+
+      ItemRenderer itemRenderer = Minecraft.getMinecraft().getItemRenderer();
+
+      for (int i = 0; i < itemStack.getCount(); i++) {
+         GlStateManager.pushMatrix();
+         Tessellator.getInstance().draw();
+         MatrixUtil.applyGeoBoneTransform(MATRIX_STACK, bone);
+         GL11.glEnable(2896);
+         GL11.glRotated((double)((double)bone.getRotationX() + 2.5), 0.0, 0.0, 1.0);
+         GL11.glRotated((double)bone.getRotationY(), 0.0, 1.0, 0.0);
+         GL11.glRotated((double)bone.getRotationZ(), 1.0, 0.0, 0.0);
+         switch (i) {
+            case 1:
+               GL11.glRotated(-15.0, 0.0, 0.0, 1.0);
+               GlStateManager.translate(0.0, 0.0, -0.025);
+               break;
+            case 2:
+               GL11.glRotated(15.0, 0.0, 0.0, 1.0);
+               GlStateManager.translate(0.0, 0.0, 0.025);
+         }
+
+         GlStateManager.scale(this.RenderEntity.n, this.RenderEntity.n, this.RenderEntity.n);
+         itemRenderer.renderItem((EntityLivingBase)this.RenderEntity, new ItemStack(itemStack.getItem(), 1), ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND);
+         this.bindTexture(Objects.requireNonNull(this.getEntityTexture(this.RenderEntity)));
+         bufferBuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
+         GL11.glDisable(2896);
+         GlStateManager.popMatrix();
+      }
+   }
 
    protected ItemStack a(@Nullable ItemStack stack) {
       return stack;
@@ -1661,27 +1683,121 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
 
 
    RayTraceResult a(Vec3d vec3d, Vec3d vec3d2, World world) {
-        /*
-         * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
-         * 
-         * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [54[UNCONDITIONALDOLOOP]], but top level block is 25[TRYBLOCK]
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
-         *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
-         *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1055)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
-         *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
-         *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
-         *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
-         *     at org.benf.cfr.reader.Main.main(Main.java:54)
-         */
-        throw new IllegalStateException("Decompilation failed");
-    }
+      if (Double.isNaN(vec3d.x) || Double.isNaN(vec3d.y) || Double.isNaN(vec3d.z)) {
+         return null;
+      }
+
+      if (Double.isNaN(vec3d2.x) || Double.isNaN(vec3d2.y) || Double.isNaN(vec3d2.z)) {
+         return null;
+      }
+
+      int endX = MathHelper.floor(vec3d2.x);
+      int endY = MathHelper.floor(vec3d2.y);
+      int endZ = MathHelper.floor(vec3d2.z);
+      int curX = MathHelper.floor(vec3d.x);
+      int curY = MathHelper.floor(vec3d.y);
+      int curZ = MathHelper.floor(vec3d.z);
+      BlockPos blockPos = new BlockPos(curX, curY, curZ);
+      IBlockState blockState = world.getBlockState(blockPos);
+      if (blockState.getCollisionBoundingBox(world, blockPos) != Block.NULL_AABB && blockState.getBlock().getRenderLayer() == BlockRenderLayer.SOLID) {
+         return blockState.collisionRayTrace(world, blockPos, vec3d, vec3d2);
+      }
+
+      int stepsLeft = 200;
+
+      while (stepsLeft-- >= 0) {
+         IBlockState nextState;
+         EnumFacing facing;
+         if (Double.isNaN(vec3d.x) || Double.isNaN(vec3d.y) || Double.isNaN(vec3d.z)) {
+            return null;
+         }
+
+         if (curX == endX && curY == endY && curZ == endZ) {
+            return null;
+         }
+
+         boolean stepX = true;
+         boolean stepY = true;
+         boolean stepZ = true;
+         double boundX = 999.0;
+         double boundY = 999.0;
+         double boundZ = 999.0;
+         if (endX > curX) {
+            boundX = (double)curX + 1.0;
+         } else if (endX < curX) {
+            boundX = (double)curX + 0.0;
+         } else {
+            stepX = false;
+         }
+
+         if (endY > curY) {
+            boundY = (double)curY + 1.0;
+         } else if (endY < curY) {
+            boundY = (double)curY + 0.0;
+         } else {
+            stepY = false;
+         }
+
+         if (endZ > curZ) {
+            boundZ = (double)curZ + 1.0;
+         } else if (endZ < curZ) {
+            boundZ = (double)curZ + 0.0;
+         } else {
+            stepZ = false;
+         }
+
+         double distX = 999.0;
+         double distY = 999.0;
+         double distZ = 999.0;
+         double dirX = vec3d2.x - vec3d.x;
+         double dirY = vec3d2.y - vec3d.y;
+         double dirZ = vec3d2.z - vec3d.z;
+         if (stepX) {
+            distX = (boundX - vec3d.x) / dirX;
+         }
+
+         if (stepY) {
+            distY = (boundY - vec3d.y) / dirY;
+         }
+
+         if (stepZ) {
+            distZ = (boundZ - vec3d.z) / dirZ;
+         }
+
+         if (distX == -0.0) {
+            distX = -1.0E-4;
+         }
+
+         if (distY == -0.0) {
+            distY = -1.0E-4;
+         }
+
+         if (distZ == -0.0) {
+            distZ = -1.0E-4;
+         }
+
+         if (distX < distY && distX < distZ) {
+            facing = endX > curX ? EnumFacing.WEST : EnumFacing.EAST;
+            vec3d = new Vec3d(boundX, vec3d.y + dirY * distX, vec3d.z + dirZ * distX);
+         } else if (distY < distZ) {
+            facing = endY > curY ? EnumFacing.DOWN : EnumFacing.UP;
+            vec3d = new Vec3d(vec3d.x + dirX * distY, boundY, vec3d.z + dirZ * distY);
+         } else {
+            facing = endZ > curZ ? EnumFacing.NORTH : EnumFacing.SOUTH;
+            vec3d = new Vec3d(vec3d.x + dirX * distZ, vec3d.y + dirY * distZ, boundZ);
+         }
+
+         curX = MathHelper.floor(vec3d.x) - (facing == EnumFacing.EAST ? 1 : 0);
+         curY = MathHelper.floor(vec3d.y) - (facing == EnumFacing.UP ? 1 : 0);
+         curZ = MathHelper.floor(vec3d.z) - (facing == EnumFacing.SOUTH ? 1 : 0);
+         blockPos = new BlockPos(curX, curY, curZ);
+         nextState = world.getBlockState(blockPos);
+         if (nextState.getMaterial() != Material.PORTAL && nextState.getCollisionBoundingBox(world, blockPos) == Block.NULL_AABB || nextState.getBlock().getRenderLayer() != BlockRenderLayer.SOLID) continue;
+         return nextState.collisionRayTrace(world, blockPos, vec3d, vec3d2);
+      }
+
+      return null;
+   }
 
    private static Exception rethrow(Exception error) {
       return error;

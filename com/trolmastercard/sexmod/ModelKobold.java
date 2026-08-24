@@ -8,6 +8,7 @@ import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.AnimationProcessor;
 import software.bernie.geckolib3.core.processor.IBone;
+import software.bernie.geckolib3.model.provider.data.EntityModelData;
 
 public class ModelKobold extends GirlGeoModel {
    static final float g = 1.2F;
@@ -33,27 +34,43 @@ public class ModelKobold extends GirlGeoModel {
    @Override
 
    public void a(GirlEntity girl, Integer i, AnimationEvent animEvent) {
-        /*
-         * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
-         * 
-         * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [5[TRYBLOCK]], but top level block is 6[SWITCH]
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
-         *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
-         *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1055)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
-         *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
-         *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
-         *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
-         *     at org.benf.cfr.reader.Main.main(Main.java:54)
-         */
-        throw new IllegalStateException("Decompilation failed");
-    }
+      super.a(girl, i, animEvent);
+      if (girl.world instanceof PreviewWorld) {
+         return;
+      }
+
+      AnimationProcessor animationProcessor = this.getAnimationProcessor();
+      if (!girl.isTracked() && girl instanceof KoboldNpc) {
+         animationProcessor.getBone("crown").setHidden(girl.getDataManager().get(KoboldNpc.aZ) == false);
+         animationProcessor.getBone("egg").setHidden(!((KoboldNpc)girl).Q);
+      } else {
+         animationProcessor.getBone("crown").setHidden(true);
+         animationProcessor.getBone("egg").setHidden(true);
+      }
+
+      String[] stringArray = GirlEffectEntity.getAttributeStrings(girl);
+      this.setUpperHorns(animationProcessor, stringArray[0]);
+      this.setLowerHorns(animationProcessor, stringArray[1]);
+      this.applyBoneScale(animationProcessor, stringArray[2], 0.75F, 1.35F, "boobL", "boobR", "armorBoobs");
+      this.applyBoneScale(animationProcessor, stringArray[3], 1.0F, 1.2F, "eyeL", "eyeR");
+      this.applyEyeBlink(animationProcessor, stringArray[3], 1.0F, 1.2F);
+      this.applyArmFreckles(animationProcessor, stringArray[4]);
+      this.applyHeadFreckles(animationProcessor, stringArray[5]);
+      this.applyBackpackState(girl, animationProcessor, stringArray[6]);
+
+      switch (girl.getCurrentAction()) {
+         case STARTBLOWJOB:
+         case SUCKBLOWJOB_BLINK:
+         case THRUSTBLOWJOB:
+         case CUMBLOWJOB:
+            animationProcessor.getBone("tounge").setHidden(false);
+            break;
+         default:
+            animationProcessor.getBone("tounge").setHidden(true);
+      }
+
+      this.applyBodyPositioning(girl, animationProcessor);
+   }
 
    void applyBodyPositioning(GirlEntity girl, AnimationProcessor animationProcessor) {
       try {
@@ -375,27 +392,28 @@ public class ModelKobold extends GirlGeoModel {
    @Override
 
    protected void a(GirlEntity girl, AnimationProcessor animationProcessor, AnimationEvent animEvent) {
-        /*
-         * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
-         * 
-         * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [2[TRYBLOCK]], but top level block is 7[SWITCH]
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
-         *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
-         *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1055)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
-         *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
-         *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
-         *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
-         *     at org.benf.cfr.reader.Main.main(Main.java:54)
-         */
-        throw new IllegalStateException("Decompilation failed");
-    }
+      if (girl.world instanceof PreviewWorld) {
+         return;
+      }
+
+      label28: {
+         switch (girl.getCurrentAction()) {
+            case NULL:
+               if (Math.abs(girl.prevPosX - girl.posX) + Math.abs(girl.prevPosZ - girl.posZ) < 0.0 || girl.onGround && Math.abs(Math.abs(girl.prevPosY) - Math.abs(girl.posY)) > (double)0.1F || !((BooleanCheck)girl).a()) {
+                  break label28;
+               }
+            default:
+               return;
+         }
+      }
+
+      EntityModelData entityModelData = (EntityModelData)animEvent.getExtraDataOfType(EntityModelData.class).get(0);
+      IBone head = animationProcessor.getBone("head");
+      head.setRotationY(entityModelData.netHeadYaw * ((float)Math.PI / 180));
+      head.setRotationX(entityModelData.headPitch * ((float)Math.PI / 180));
+      IBone body = animationProcessor.getBone("body") == null ? animationProcessor.getBone("dd") : animationProcessor.getBone("body");
+      body.setRotationY(0.0F);
+   }
 
    @Override
    public String[] getHelmetBones() {

@@ -12,9 +12,14 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import org.lwjgl.opengl.GL11;
+import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.geo.render.built.GeoBone;
 import software.bernie.geckolib3.geo.render.built.GeoCube;
 import software.bernie.geckolib3.geo.render.built.GeoModel;
@@ -589,27 +594,102 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
    @Override
 
    protected void a(BufferBuilder bufferBuilder, String string, GeoBone bone) {
-        /*
-         * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
-         * 
-         * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 13[SWITCH]
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
-         *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
-         *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1055)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
-         *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
-         *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
-         *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
-         *     at org.benf.cfr.reader.Main.main(Main.java:54)
-         */
-        throw new IllegalStateException("Decompilation failed");
-    }
+      switch (string) {
+         case "hairBack": {
+            if (Mc.isGamePaused()) break;
+            IBone head = ((GirlEntity)this.RenderEntity).b().getBone("head");
+            float f = AngleMath.radToDegrees(head.getRotationX());
+            if (f < 0.0F) {
+               bone.setRotationX(AngleMath.degToRadians(-f));
+               break;
+            }
+
+            float f2 = Math.min(1.0F, f / 45.0F);
+            bone.setRotationX(AngleMath.degToRadians(-f));
+            bone.setPositionY(bone.getPositionY() + f2 * 1.5F);
+            break;
+         }
+         case "hairDownSideL":
+         case "hairDownSideR": {
+            if (Mc.isGamePaused()) break;
+            IBone head = ((GirlEntity)this.RenderEntity).b().getBone("head");
+            float f = AngleMath.radToDegrees(head.getRotationX());
+            if (f < 0.0F) {
+               bone.setRotationX(AngleMath.degToRadians(-f / 2.0F));
+               break;
+            }
+
+            float f3 = Math.min(1.0F, f / 45.0F);
+            bone.setRotationX(AngleMath.degToRadians(-f));
+            bone.setPositionY(bone.getPositionY() + f3);
+            break;
+         }
+         case "head": {
+            this.c(bone);
+            GirlAnimationState girlAnimationState = ((GalathNpc)this.RenderEntity).getCurrentAction();
+            EntityLivingBase target = null;
+            if (girlAnimationState == GirlAnimationState.FLY || girlAnimationState == GirlAnimationState.ATTACK_SWORD) {
+               target = ((GalathNpc)this.RenderEntity).getTargetEntity();
+            }
+
+            if (target == null) break;
+            float f4 = Mc.getRenderPartialTicks();
+            Vec3d vec3d = LerpMath.lerpVec3d(new Vec3d(((GalathNpc)this.RenderEntity).lastTickPosX, ((GalathNpc)this.RenderEntity).lastTickPosY, ((GalathNpc)this.RenderEntity).lastTickPosZ), ((GalathNpc)this.RenderEntity).getPositionVector(), (double)f4);
+            Vec3d vec3d2 = LerpMath.lerpVec3d(new Vec3d(target.lastTickPosX, target.lastTickPosY, target.lastTickPosZ), ((GalathNpc)this.RenderEntity).getPositionVector(), (double)f4);
+            Vec3d vec3d3 = vec3d.subtract(vec3d2);
+            float f5 = (float)VectorMath.rotateYaw(vec3d3, (float)((GalathNpc)this.RenderEntity).renderYawOffset).z;
+            float f6 = (float)Math.atan2(vec3d3.y, f5);
+            break;
+         }
+         case "weapon": {
+            if (!((GalathNpc)this.RenderEntity).ap) break;
+            GlStateManager.pushMatrix();
+            Tessellator.getInstance().draw();
+            MatrixUtil.applyGeoBoneTransform(MATRIX_STACK, bone);
+            GL11.glEnable(2896);
+            GlStateManager.scale(1.5, 1.0, 2.0);
+            GlStateManager.translate(0.0, 0.0, 0.05);
+            GlStateManager.rotate(110.0F, 1.0F, 0.0F, 0.0F);
+            Minecraft.getMinecraft().getItemRenderer().renderItem(this.RenderEntity, new ItemStack(Items.IRON_SWORD), ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND);
+            this.bindTexture(Objects.requireNonNull(this.getEntityTexture(this.RenderEntity)));
+            bufferBuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
+            GL11.glDisable(2896);
+            GlStateManager.popMatrix();
+            break;
+         }
+         case "tongue":
+            this.e(bufferBuilder, bone);
+            break;
+         case "mangTongue":
+            this.c(bufferBuilder, bone);
+            break;
+         case "head3":
+            this.d(bone);
+            break;
+         case "irisL":
+         case "irisR":
+            this.a(bone);
+            break;
+         case "irsisFaceR2":
+         case "irsisFaceR3":
+            this.b(bone);
+            break;
+         case "armL":
+         case "armR": {
+            EntityLivingBase target = ((GalathNpc)this.RenderEntity).getTargetEntity();
+            if (((GalathNpc)this.RenderEntity).getCurrentAction() != GirlAnimationState.RAPE_CHARGE || target == null) break;
+            float f7 = (float)((GalathNpc)this.RenderEntity).renderYawOffset;
+            Vec3d vec3d4 = target.getPositionVector().subtract(((GalathNpc)this.RenderEntity).getPositionVector());
+            vec3d4 = VectorMath.rotateYaw(vec3d4, f7);
+            double d = -MathUtils.clamp(vec3d4.x, -1.0, 1.0);
+            bone.setRotationZ(bone.getRotationZ() + AngleMath.degToRadians((double)(45.0F * (float)d)));
+         }
+      }
+
+      if (((GalathNpc)this.RenderEntity).b()) {
+         ManglelieNpcRenderer.applyModelPartColor(this.RenderEntity, string, bone, true);
+      }
+   }
 
    void e(BufferBuilder bufferBuilder, GeoBone bone) {
       try {

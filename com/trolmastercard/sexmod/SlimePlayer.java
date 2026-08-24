@@ -10,8 +10,10 @@
 package com.trolmastercard.sexmod;
 
 import java.util.UUID;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -232,31 +234,121 @@ extends PlayerGirlEntity {
         entityPlayer2.capabilities.isFlying = true;
     }
 
-    /*
-     * Exception decompiling
-     */
     @Override
     protected <E extends IAnimatable> PlayState a(AnimationEvent<E> animEvent) {
-        /*
-         * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
-         * 
-         * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 17[SWITCH]
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
-         *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
-         *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1055)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
-         *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
-         *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
-         *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
-         *     at org.benf.cfr.reader.Main.main(Main.java:54)
-         */
-        throw new IllegalStateException("Decompilation failed");
+        block5 : switch (animEvent.getController().getName()) {
+            case "eyes": {
+                if (this.getCurrentAction() == GirlAnimationState.NULL || !this.getCurrentAction().autoBlink) {
+                    this.a("animation.slime.null", true, animEvent);
+                    break;
+                }
+                this.a("animation.slime.fhappy", true, animEvent);
+                break;
+            }
+            case "movement": {
+                if (this.getCurrentAction() != GirlAnimationState.NULL) {
+                    this.a("animation.slime.null", true, animEvent);
+                    break;
+                }
+                if (this.ak) {
+                    this.a("animation.slime.sit", true, animEvent);
+                    break;
+                }
+                if (this.MovementController.getCurrentAnimation() != null && this.MovementController.getCurrentAnimation().animationName.contains("fly") && this.af) {
+                    boolean bl = this.ap = !this.ap;
+                }
+                if (!this.af) {
+                    this.a("animation.slime.fly" + (this.ap ? "2" : ""), true, animEvent);
+                    break;
+                }
+                if (Math.abs(this.ao.x) + Math.abs(this.ao.y) > 0.0f) {
+                    if (this.aj) {
+                        this.a("animation.slime.run", true, animEvent);
+                        break;
+                    }
+                    if (this.ao.y >= -0.1f) {
+                        this.a("animation.slime.walk", true, animEvent);
+                        break;
+                    }
+                    this.a("animation.slime.backwards_walk", true, animEvent);
+                    break;
+                }
+                this.a("animation.slime.idle", true, animEvent);
+                break;
+            }
+            case "action": {
+                if (this.getCurrentAction() == GirlAnimationState.NULL) {
+                    this.a("animation.slime.null", true, animEvent);
+                    break;
+                }
+                switch (this.getCurrentAction()) {
+                    case UNDRESS: {
+                        this.a("animation.slime.undress", false, animEvent);
+                        break block5;
+                    }
+                    case DRESS: {
+                        this.a("animation.slime.dress", false, animEvent);
+                        break block5;
+                    }
+                    case STRIP: {
+                        this.a("animation.slime.strip", false, animEvent);
+                        break block5;
+                    }
+                    case SUCKBLOWJOB: {
+                        this.a("animation.slime.blowjobsuck", true, animEvent);
+                        break block5;
+                    }
+                    case THRUSTBLOWJOB: {
+                        this.a("animation.slime.blowjobthrust", true, animEvent);
+                        break block5;
+                    }
+                    case CUMBLOWJOB: {
+                        this.a("animation.slime.blowjobcum", false, animEvent);
+                        break block5;
+                    }
+                    case STARTDOGGY: {
+                        this.a("animation.slime.doggygoonbed", false, animEvent);
+                        break block5;
+                    }
+                    case WAITDOGGY: {
+                        this.a("animation.slime.doggywait", true, animEvent);
+                        break block5;
+                    }
+                    case DOGGYSTART: {
+                        this.a("animation.slime.doggystart", false, animEvent);
+                        break block5;
+                    }
+                    case DOGGYSLOW: {
+                        this.a("animation.slime.doggyslow", true, animEvent);
+                        break block5;
+                    }
+                    case DOGGYFAST: {
+                        this.a("animation.slime.doggyfast", true, animEvent);
+                        break block5;
+                    }
+                    case DOGGYCUM: {
+                        this.a("animation.slime.doggycum", false, animEvent);
+                        break block5;
+                    }
+                    case ATTACK: {
+                        this.a("animation.slime.attack" + this.S, false, animEvent);
+                        break block5;
+                    }
+                    case BOW: {
+                        this.a("animation.slime.bowcharge", false, animEvent);
+                        break block5;
+                    }
+                    case RIDE: {
+                        this.a("animation.slime.ride", true, animEvent);
+                        break block5;
+                    }
+                    case SIT: {
+                        this.a("animation.slime.sit", true, animEvent);
+                    }
+                }
+            }
+        }
+        return PlayState.CONTINUE;
     }
 
     @Override
@@ -270,26 +362,188 @@ extends PlayerGirlEntity {
             throw SlimePlayer.rethrow(runtimeException);
         }
         AnimationController.ISoundListener iSoundListener = arg1 -> {
-            /*
-             * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
-             * 
-             * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 25[SWITCH]
-             *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
-             *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
-             *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
-             *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
-             *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
-             *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
-             *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
-             *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
-             *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1050)
-             *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
-             *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
-             *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
-             *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
-             *     at org.benf.cfr.reader.Main.main(Main.java:54)
-             */
-            throw new IllegalStateException("Decompilation failed");
+            String string;
+            switch (string = arg1.sound) {
+                case "attackDone": {
+                    if (++this.S != 3) break;
+                    this.S = 0;
+                    break;
+                }
+                case "undress": {
+                    if (!this.isLocalPlayerNearby()) break;
+                    this.DataManager.set(GirlEntity.OutfitIndexKey, (Object)0);
+                    this.resetAimTarget();
+                    break;
+                }
+                case "dress": {
+                    if (!this.isLocalPlayerNearby()) break;
+                    this.DataManager.set(GirlEntity.OutfitIndexKey, (Object)1);
+                    this.b((GirlAnimationState)null);
+                    this.resetAimTarget();
+                    break;
+                }
+                case "sexUiOn": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.showHud();
+                    break;
+                }
+                case "bjiMSG10": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    this.a(-0.4, -0.8, -0.2, 60.0f, -3.0f);
+                    break;
+                }
+                case "bjiMSG11": {
+                    this.a(SoundEvents.ENTITY_SLIME_SQUISH, 0.5f);
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.addProgress(0.02);
+                    break;
+                }
+                case "bjiMSG12": {
+                    if (ModConstants.Random.nextInt(5) == 0) {
+                        this.a(SoundEvents.ENTITY_SLIME_JUMP, 0.5f);
+                    }
+                    this.a(SoundEvents.ENTITY_SLIME_SQUISH, 0.5f);
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.addProgress(0.02);
+                    break;
+                }
+                case "bjtMSG1": {
+                    this.a(SoundEvents.BLOCK_SLIME_HIT);
+                    this.a(SoundEvents.ENTITY_SLIME_DEATH);
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.addProgress(0.04);
+                    break;
+                }
+                case "bjiDone": {
+                    this.b(GirlAnimationState.SUCKBLOWJOB);
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.showHud();
+                    break;
+                }
+                case "bjtDone": {
+                    this.b(GirlAnimationState.SUCKBLOWJOB);
+                    break;
+                }
+                case "doggyfastReady": {
+                    if (!this.isOwnedByLocalPlayer() || !AnimationInputLock.SneakPressed) break;
+                    this.N();
+                    break;
+                }
+                case "bjtReady": {
+                    if (!this.isOwnedByLocalPlayer() || !AnimationInputLock.SneakPressed) break;
+                    this.N();
+                    break;
+                }
+                case "bjcMSG1": {
+                    this.a(SoundEvents.ENTITY_SLIME_JUMP);
+                    break;
+                }
+                case "bjcMSG2": {
+                    this.a(SoundEvents.ENTITY_SLIME_JUMP);
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.forceShowHud();
+                    break;
+                }
+                case "doggyslowMSG2": {
+                    this.a(SoundEvents.BLOCK_SLIME_HIT);
+                    break;
+                }
+                case "bjcBlackScreen": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiTransitionScreen.startTransition();
+                    break;
+                }
+                case "bjcDone":
+                case "doggyCumDone": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.resetProgress();
+                    this.resetAimTarget();
+                    break;
+                }
+                case "doggyGoOnBedMSG1": {
+                    this.a(SoundEvents.ENTITY_SLIME_SQUISH);
+                    this.AimYaw = this.rotationYaw;
+                    break;
+                }
+                case "doggyGoOnBedDone": {
+                    NetworkHandler.channel.sendToServer((IMessage)new PacketSetPlayerForGirl(this.getGirlUuid(), Minecraft.getMinecraft().player.getPersistentID()));
+                    this.b(GirlAnimationState.WAITDOGGY);
+                    break;
+                }
+                case "doggystartMSG1": {
+                    this.a(ModSounds.MISC_TOUCH[0]);
+                    break;
+                }
+                case "doggystartMSG2": {
+                    this.a(ModSounds.MISC_TOUCH[1]);
+                    break;
+                }
+                case "doggystartMSG3": {
+                    this.a(SoundEvents.ENTITY_SLIME_SQUISH, 0.25f);
+                    break;
+                }
+                case "doggystartMSG4": {
+                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_SMALLINSERTS), 1.5f);
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.resetProgress();
+                    break;
+                }
+                case "doggystartMSG5": {
+                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.33f);
+                    this.a(SoundEvents.BLOCK_SLIME_HIT);
+                    break;
+                }
+                case "doggystartDone": {
+                    this.b(GirlAnimationState.DOGGYSLOW);
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.showHud();
+                    break;
+                }
+                case "doggyslowMSG1": {
+                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.33f);
+                    int n = ModConstants.Random.nextInt(4);
+                    if (n == 0) {
+                        n = ModConstants.Random.nextInt(2);
+                        if (n == 0) {
+                            this.a(SoundEvents.ENTITY_SLIME_JUMP);
+                        } else {
+                            this.a(SoundEvents.ENTITY_SLIME_SQUISH);
+                        }
+                    } else {
+                        this.a(SoundEvents.BLOCK_SLIME_HIT);
+                    }
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.addProgress(0.00666);
+                    break;
+                }
+                case "doggyfastMSG1": {
+                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.75f);
+                    if (this.isOwnedByLocalPlayer()) {
+                        GuiHud.addProgress(0.02);
+                    }
+                    ++this.aq;
+                    if (this.aq % 2 == 0) {
+                        int n = ModConstants.Random.nextInt(2);
+                        if (n == 0) {
+                            this.a(SoundEvents.ENTITY_SLIME_JUMP);
+                            break;
+                        }
+                        this.a(SoundEvents.ENTITY_SLIME_SQUISH);
+                        break;
+                    }
+                    this.a(SoundEvents.BLOCK_SLIME_HIT);
+                    break;
+                }
+                case "doggyfastDone": {
+                    this.b(GirlAnimationState.DOGGYSLOW);
+                    break;
+                }
+                case "doggycumMSG1": {
+                    this.a(ModSounds.MISC_CUMINFLATION[0], 4.0f);
+                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 2.0f);
+                    this.a(SoundEvents.ENTITY_SLIME_DEATH);
+                }
+            }
         };
         this.ActionController.registerSoundListener(iSoundListener);
         animationData.addAnimationController(this.ActionController);

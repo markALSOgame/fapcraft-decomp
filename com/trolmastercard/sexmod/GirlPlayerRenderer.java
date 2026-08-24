@@ -8,10 +8,15 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.GlStateManager.DestFactor;
 import net.minecraft.client.renderer.GlStateManager.SourceFactor;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBow;
+import net.minecraft.item.ItemShield;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import org.lwjgl.opengl.GL11;
 import software.bernie.geckolib3.core.util.Color;
 import software.bernie.geckolib3.geo.render.built.GeoBone;
@@ -456,27 +461,45 @@ public class GirlPlayerRenderer extends GeoGirlRenderer {
 
 
    void a(BufferBuilder bufferBuilder, GeoBone bone, boolean flag) {
-        /*
-         * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
-         * 
-         * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [1[TRYBLOCK]], but top level block is 5[SWITCH]
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
-         *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
-         *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1055)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
-         *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
-         *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
-         *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
-         *     at org.benf.cfr.reader.Main.main(Main.java:54)
-         */
-        throw new IllegalStateException("Decompilation failed");
-    }
+      ItemRenderer itemRenderer = Minecraft.getMinecraft().getItemRenderer();
+      GlStateManager.pushMatrix();
+      Tessellator.getInstance().draw();
+      MatrixUtil.applyGeoBoneTransform(IGeoRenderer.MATRIX_STACK, bone);
+      GL11.glEnable(2896);
+      GlStateManager.enableBlend();
+      GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
+      ItemStack stack = flag ? this.OffHandStack : this.MainHandStack;
+      switch (stack.getItem().getItemUseAction(stack)) {
+         case BOW:
+            this.a(flag);
+            break;
+         case BLOCK:
+            this.a(flag, this.u);
+      }
+
+      if (this.u && !flag && stack.getItem() instanceof ItemBow) {
+         this.t += 0.015F;
+         this.RenderEntity.d(Math.round(-this.t * 20.0F + (float)stack.getMaxItemUseDuration()));
+         this.RenderEntity.a(stack);
+         this.RenderEntity.setActiveHand(EnumHand.MAIN_HAND);
+         this.RenderEntity.W();
+      } else {
+         this.t = 0.0F;
+         this.RenderEntity.d(0);
+         this.RenderEntity.a(ItemStack.EMPTY);
+         this.RenderEntity.W();
+      }
+
+      this.a(flag, stack);
+      GlStateManager.scale(0.75F, 0.75F, 0.75F);
+      itemRenderer.renderItem(this.RenderEntity, stack, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND);
+      bufferBuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
+      this.bindTexture(Objects.requireNonNull(this.getEntityTexture(this.RenderEntity)));
+      GL11.glDisable(2896);
+      GlStateManager.popMatrix();
+      GlStateManager.enableBlend();
+      GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
+   }
 
    protected void a(boolean flag, ItemStack stack) {
       float f;

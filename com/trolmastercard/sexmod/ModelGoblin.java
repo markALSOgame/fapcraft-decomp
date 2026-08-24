@@ -4,6 +4,7 @@ import java.util.UUID;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -360,27 +361,53 @@ public class ModelGoblin extends GirlGeoModel {
 
 
    void a(GirlEntity girl, IBone iBone) {
-        /*
-         * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
-         * 
-         * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [2[TRYBLOCK]], but top level block is 7[SWITCH]
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
-         *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
-         *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1055)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
-         *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
-         *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
-         *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
-         *     at org.benf.cfr.reader.Main.main(Main.java:54)
-         */
-        throw new IllegalStateException("Decompilation failed");
-    }
+      EntityPlayer player = girl.world.getClosestPlayerToEntity(girl, 15.0);
+      if (player == null) {
+         return;
+      }
+
+      Vec3d vec3d = player.getPositionVector();
+      Vec3d vec3d2 = girl.getPositionVector();
+      Vec3d vec3d3 = vec3d.subtract(vec3d2);
+      float f = girl.rotationYaw;
+      boolean flag = false;
+      switch ((int)f) {
+         case 0:
+            flag = vec3d.z > vec3d2.z;
+            break;
+         case 180:
+            flag = vec3d.z < vec3d2.z;
+            break;
+         case 90:
+            flag = vec3d.x < vec3d2.x;
+            break;
+         case -90:
+            flag = vec3d.x > vec3d2.x;
+            break;
+      }
+
+      if (!flag) {
+         iBone.setRotationY(0.0F);
+         return;
+      }
+
+      float f2 = 0.0F;
+      switch ((int)f) {
+         case 180:
+            f2 = 90.0F;
+            break;
+         case 90:
+            f2 = 180.0F;
+            break;
+         case 0:
+            f2 = -90.0F;
+      }
+
+      float f3 = (float)(-(MathHelper.atan2(vec3d3.z, vec3d3.x) * (double)57.29577951308232 + (double)f2));
+      float f4 = MathUtils.clamp((float)((double)player.getEyeHeight() + vec3d.y - ((double)girl.getEyeHeight() + vec3d2.y)), -0.75F, 0.75F);
+      iBone.setRotationY(AngleMath.degToRadians(f3));
+      iBone.setRotationX(f4);
+   }
 
    void faceNearestPlayer(GirlEntity girl, IBone iBone, IBone iBone2) {
       EntityPlayer player = girl.world.getClosestPlayerToEntity(girl, 15.0);

@@ -64,6 +64,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 
@@ -1416,31 +1417,65 @@ extends GirlEntity {
         return false;
     }
 
-    /*
-     * Exception decompiling
-     */
     @Override
     protected <E extends IAnimatable> PlayState a(AnimationEvent<E> animEvent) {
-        /*
-         * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
-         * 
-         * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [7[TRYBLOCK]], but top level block is 10[SWITCH]
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
-         *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
-         *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1055)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
-         *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
-         *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
-         *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
-         *     at org.benf.cfr.reader.Main.main(Main.java:54)
-         */
-        throw new IllegalStateException("Decompilation failed");
+        AnimationController animationController = animEvent.getController();
+        if (this.EyesController == animationController) {
+            if (this.getTargetEntity() == null) {
+                return PlayState.STOP;
+            }
+            this.a("animation.manglelie.angry_face", true, animEvent);
+            return PlayState.CONTINUE;
+        }
+        if (this.MovementController == animationController) {
+            if (this.getCurrentAction() != GirlAnimationState.NULL || this.isClaimed()) {
+                return PlayState.STOP;
+            }
+            if (Math.abs(this.prevPosX - this.posX) + Math.abs(this.prevPosZ - this.posZ) > 0.0) {
+                if ((Boolean)this.DataManager.get(FleeingKey)) {
+                    this.a("animation.manglelie.scared_run", true, animEvent);
+                } else {
+                    this.a("animation.manglelie.walk", true, animEvent);
+                }
+                this.rotationYaw = this.rotationYawHead;
+                return PlayState.CONTINUE;
+            }
+            this.a("animation.manglelie.idle", true, animEvent);
+            return PlayState.CONTINUE;
+        }
+        switch (this.getCurrentAction()) {
+            default: {
+                return PlayState.STOP;
+            }
+            case RUN: {
+                this.a("animation.manglelie.running", true, animEvent);
+                break;
+            }
+            case RIDE_MOMMY_HEAD: {
+                this.a("animation.manglelie.sit_on_galath", true, animEvent);
+                break;
+            }
+            case THREESOME_SLOW: {
+                if (this.M) {
+                    this.a("animation.shared.double_holding_back", true, animEvent);
+                    break;
+                }
+                this.a("animation.shared.double_holding_slow", 4, 0.33f, animEvent);
+                break;
+            }
+            case THREESOME_FAST: {
+                if (this.Y) {
+                    this.a("animation.shared.double_holding_hard", 3, 0.33f, animEvent);
+                    break;
+                }
+                this.a("animation.shared.double_holding_soft", true, animEvent);
+                break;
+            }
+            case THREESOME_CUM: {
+                this.a("animation.shared.double_holding_cum", true, animEvent);
+            }
+        }
+        return PlayState.CONTINUE;
     }
 
     @Override
@@ -1448,26 +1483,47 @@ extends GirlEntity {
         animationData.addAnimationController(this.MovementController);
         animationData.addAnimationController(this.EyesController);
         this.ActionController.registerSoundListener(arg1 -> {
-            /*
-             * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
-             * 
-             * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 5[SWITCH]
-             *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
-             *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
-             *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
-             *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
-             *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
-             *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
-             *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
-             *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
-             *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1050)
-             *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
-             *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
-             *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
-             *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
-             *     at org.benf.cfr.reader.Main.main(Main.java:54)
-             */
-            throw new IllegalStateException("Decompilation failed");
+            switch (arg1.sound) {
+                case "pound": {
+                    this.a(ModSounds.MISC_POUNDING, new int[0]);
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.addProgress(0.02);
+                    break;
+                }
+                case "cs0": {
+                    this.an = 0;
+                    break;
+                }
+                case "cs1": {
+                    this.an = 1;
+                    break;
+                }
+                case "cs2": {
+                    this.an = 2;
+                    break;
+                }
+                case "sexui": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.showHud();
+                    break;
+                }
+                case "doubleSemen0": {
+                    this.a(ModSounds.MISC_INSERTS, 6.0f);
+                    this.a(ModSounds.MISC_POUNDING, new int[0]);
+                }
+                case "doubleSemen": {
+                    GuiCumOverlay.addParticles(new ParticleEmitter(10, girl -> {
+                        Vec3d vec3d = girl.d("semenEmitter");
+                        Vec3d vec3d2 = girl.d("semenDir");
+                        return vec3d.subtract(vec3d2).normalize();
+                    }, girl -> girl.getModelBone("semenEmitter").add(girl.getTargetPos()), (GirlEntity)this, 0.3f, 0.3f));
+                    break;
+                }
+                case "blackScreen": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiTransitionScreen.startTransition();
+                }
+            }
         });
         animationData.addAnimationController(this.ActionController);
     }

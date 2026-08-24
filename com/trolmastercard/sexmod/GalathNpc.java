@@ -146,10 +146,12 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.MovementInput;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.text.ITextComponent;
@@ -1131,30 +1133,28 @@ LeftBallActiveKey {
         }
     }
 
-    /*
-     * Exception decompiling
-     */
     void C() {
-        /*
-         * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
-         * 
-         * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [1[TRYBLOCK]], but top level block is 2[SWITCH]
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
-         *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
-         *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1055)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
-         *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
-         *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
-         *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
-         *     at org.benf.cfr.reader.Main.main(Main.java:54)
-         */
-        throw new IllegalStateException("Decompilation failed");
+        if (((Boolean)this.DataManager.get(IsParalyzedKey)).booleanValue()) {
+            this.bb = true;
+            return;
+        }
+        switch (this.getCurrentAction()) {
+            case RAPE_INTRO:
+            case RAPE_ON_GOING:
+            case RAPE_CUM:
+            case RAPE_CHARGE:
+            case RAPE_CUM_IDLE:
+            case CORRUPT_SLOW:
+            case CORRUPT_FAST:
+            case CORRUPT_CUM:
+            case MASTERBATE: {
+                this.bb = true;
+            }
+            case RAPE_PREPARE: {
+                return;
+            }
+        }
+        this.bb = false;
     }
 
     @Override
@@ -2667,32 +2667,24 @@ LeftBallActiveKey {
         entityPlayer.setPositionAndUpdate(vec3d.x, vec3d.y, vec3d.z);
     }
 
-    /*
-     * Exception decompiling
-     */
     @Override
     @SideOnly(value=Side.CLIENT)
     public float v() {
-        /*
-         * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
-         * 
-         * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [2[TRYBLOCK]], but top level block is 3[SWITCH]
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
-         *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
-         *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1055)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
-         *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
-         *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
-         *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
-         *     at org.benf.cfr.reader.Main.main(Main.java:54)
-         */
-        throw new IllegalStateException("Decompilation failed");
+        Minecraft minecraft = Minecraft.getMinecraft();
+        if (minecraft.gameSettings.thirdPersonView != 0) {
+            return 1.0f;
+        }
+        switch (this.getCurrentAction()) {
+            case CORRUPT_INTRO: {
+                if (!this.U) break;
+            }
+            case CORRUPT_SLOW:
+            case CORRUPT_FAST:
+            case CORRUPT_CUM: {
+                return 0.5f;
+            }
+        }
+        return 1.0f;
     }
 
     @Override
@@ -3114,30 +3106,33 @@ LeftBallActiveKey {
         }
     }
 
-    /*
-     * Exception decompiling
-     */
     void z() {
-        /*
-         * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
-         * 
-         * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [14[DOLOOP]], but top level block is 6[TRYBLOCK]
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
-         *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
-         *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1055)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
-         *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
-         *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
-         *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
-         *     at org.benf.cfr.reader.Main.main(Main.java:54)
-         */
-        throw new IllegalStateException("Decompilation failed");
+        DeadClass deadClass;
+        if (((Boolean)this.DataManager.get(IsKnockedOutKey)).booleanValue()) {
+            return;
+        }
+        DeadClass deadClass2 = this.CurrentDeathEvent;
+        if (this.getSexPlayerUuid() != null) {
+            if (deadClass2 != null) {
+                deadClass2.tick(this);
+            }
+            this.CurrentDeathEvent = null;
+            return;
+        }
+        if (deadClass2 != null && deadClass2.applyAttackCoolDown) {
+            deadClass2.tick(this);
+            this.CurrentDeathEvent = DeadClass.CHANGE_POSITION;
+            this.CurrentDeathEvent.start(this);
+            return;
+        }
+        DeadClass[] deadClassArray = DeadClass.values();
+        while (!this.a(deadClass = deadClassArray[this.getRNG().nextInt(deadClassArray.length)])) {
+        }
+        this.CurrentDeathEvent = deadClass;
+        if (deadClass2 != null) {
+            deadClass2.tick(this);
+        }
+        this.CurrentDeathEvent.start(this);
     }
 
     boolean a(DeadClass dead) {
@@ -4166,31 +4161,170 @@ LeftBallActiveKey {
         return 1.0f - f2;
     }
 
-    /*
-     * Exception decompiling
-     */
     @Override
     protected <E extends IAnimatable> PlayState a(AnimationEvent<E> animEvent) {
-        /*
-         * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
-         * 
-         * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [9[TRYBLOCK]], but top level block is 17[SWITCH]
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
-         *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
-         *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1055)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
-         *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
-         *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
-         *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
-         *     at org.benf.cfr.reader.Main.main(Main.java:54)
-         */
-        throw new IllegalStateException("Decompilation failed");
+        if (this.isTracked()) {
+            this.a("animation.galath.idle", true, animEvent);
+            return PlayState.CONTINUE;
+        }
+        GirlAnimationState girlAnimationState = this.getCurrentAction();
+        AnimationController animationController = animEvent.getController();
+        animationController.setAnimationSpeed(1.0);
+        if (animationController.equals(this.EyesController)) {
+            if (!girlAnimationState.autoBlink || girlAnimationState == GirlAnimationState.GALATH_DE_SUMMON) {
+                return PlayState.STOP;
+            }
+            this.a("animation.galath.blink", true, animEvent);
+            return PlayState.CONTINUE;
+        }
+        if (animationController.equals(this.MovementController)) {
+            if (girlAnimationState != GirlAnimationState.NULL) {
+                return PlayState.STOP;
+            }
+            if (!this.onGround) {
+                this.a("animation.galath.controlled_flight", true, animEvent);
+                return PlayState.CONTINUE;
+            }
+            Vec3d vec3d = this.getPositionVector().subtract(new Vec3d(this.lastTickPosX, this.lastTickPosY, this.lastTickPosZ));
+            if (vec3d.equals(Vec3d.ZERO)) {
+                this.a("animation.galath.idle", true, animEvent);
+                return PlayState.CONTINUE;
+            }
+            this.rotationYaw = this.rotationYawHead;
+            this.a("animation.galath." + ((Boolean)this.DataManager.get(bT) != false ? "run" : "walk"), true, animEvent);
+            return PlayState.CONTINUE;
+        }
+        switch (this.getCurrentAction()) {
+            case NULL: {
+                return PlayState.STOP;
+            }
+            case FLY: {
+                this.a("animation.galath.idle_flying", true, animEvent);
+                break;
+            }
+            case SUMMON_SKELETON: {
+                this.a("animation.galath.summon_skeleton" + ((Boolean)this.DataManager.get(FlipSideKey) != false ? "Mirrored" : ""), true, animEvent);
+                break;
+            }
+            case ATTACK_SWORD: {
+                this.a("animation.galath.attack", true, animEvent);
+                break;
+            }
+            case KNOCK_OUT_FLY: {
+                animationController.setAnimationSpeed(1.5);
+                this.a("animation.galath.knockout_air", true, animEvent);
+                break;
+            }
+            case KNOCK_OUT_GROUND: {
+                this.a("animation.galath.knocked_out", true, animEvent);
+                break;
+            }
+            case KNOCK_OUT_STAND_UP: {
+                this.a("animation.galath.knocked_out_stand_up", true, animEvent);
+                break;
+            }
+            case RAPE_PREPARE: {
+                this.a("animation.galath.rape_prepare", true, animEvent);
+                break;
+            }
+            case RAPE_CHARGE: {
+                this.a("animation.galath.rape_charge", true, animEvent);
+                break;
+            }
+            case RAPE_INTRO: {
+                this.a("animation.galath.rape_intro", true, animEvent);
+                break;
+            }
+            case RAPE_ON_GOING: {
+                this.a("animation.galath.rape" + this.i7, true, animEvent);
+                break;
+            }
+            case RAPE_CUM: {
+                this.a("animation.galath.rape_cum", true, animEvent);
+                break;
+            }
+            case RAPE_CUM_IDLE: {
+                this.a("animation.galath.rape_cum_idle", true, animEvent);
+                break;
+            }
+            case CORRUPT_FAST: {
+                this.a("animation.galath.corrupt_" + (this.aT ? "hard" : "soft"), true, animEvent);
+                break;
+            }
+            case CORRUPT_SLOW: {
+                this.a("animation.galath.corrupt_slow", true, animEvent);
+                break;
+            }
+            case CORRUPT_INTRO: {
+                this.a("animation.galath.corrupt_intro", true, animEvent);
+                break;
+            }
+            case CORRUPT_CUM: {
+                this.a("animation.galath.corrupt_cum", true, animEvent);
+                break;
+            }
+            case CONTROLLED_FLIGHT: {
+                this.a("animation.galath.controlled_flight", true, animEvent);
+                break;
+            }
+            case BOOST: {
+                this.a("animation.galath.boost", true, animEvent);
+                break;
+            }
+            case GALATH_SUMMON: {
+                this.a("animation.galath.summon", false, animEvent);
+                break;
+            }
+            case GALATH_DE_SUMMON: {
+                this.a("animation.galath.desummon" + (this.onGround ? "_standing" : ""), true, animEvent);
+                break;
+            }
+            case GIVE_COIN: {
+                this.a("animation.galath.give_coin", true, animEvent);
+                break;
+            }
+            case MASTERBATE: {
+                this.a("animation.galath.masterbate", true, animEvent);
+                break;
+            }
+            case RUN: {
+                animationController.setAnimationSpeed(0.7);
+                this.a("animation.galath.running", true, animEvent);
+                break;
+            }
+            case HUG_MANG: {
+                this.a("animation.galath.hug_mang", true, animEvent);
+                break;
+            }
+            case PUSSY_LICKING: {
+                this.a(this.flag ? "animation.galath.pussy_licking_forward" : "animation.galath.pussy_licking", true, animEvent);
+                break;
+            }
+            case MASTERBATE_SITTING: {
+                this.a(this.bx ? "animation.galath.pussy_licking_back" : "animation.galath.masterbating_sitting", true, animEvent);
+                break;
+            }
+            case MASTERBATE_SITTING_CUM: {
+                this.a("animation.galath.masterbating_sitting_cum", true, animEvent);
+                break;
+            }
+            case MORNING_BLOWJOB_SLOW: {
+                this.a(this.bt ? "animation.shared.bed_back" : "animation.shared.bed_slow", true, animEvent);
+                break;
+            }
+            case MORNING_BLOWJOB_FAST: {
+                if (this.aD) {
+                    this.a("animation.shared.bed_soft", true, animEvent);
+                    break;
+                }
+                this.a("animation.shared.bed_fast", 4, 0.75f, animEvent);
+                break;
+            }
+            case MORNING_BLOWJOB_CUM: {
+                this.a("animation.shared.bed_cum", true, animEvent);
+            }
+        }
+        return PlayState.CONTINUE;
     }
 
     @Override
@@ -4200,26 +4334,294 @@ LeftBallActiveKey {
         this.MovementController = new AnimationController<GalathNpc>(this, "movement", 5.0f, this::a);
         this.EyesController = new AnimationController<GalathNpc>(this, "eyes", 10.0f, this::a);
         this.ActionController.registerSoundListener(arg1 -> {
-            /*
-             * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
-             * 
-             * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 36[SWITCH]
-             *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
-             *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
-             *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
-             *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
-             *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
-             *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
-             *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
-             *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
-             *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1050)
-             *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
-             *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
-             *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
-             *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
-             *     at org.benf.cfr.reader.Main.main(Main.java:54)
-             */
-            throw new IllegalStateException("Decompilation failed");
+            switch (arg1.sound) {
+                case "goodTiming": {
+                    this.a(ModSounds.GIRLS_GALATH_DIALOG[4]);
+                    this.a("Good timing boy~");
+                    break;
+                }
+                case "huh": {
+                    this.a(ModSounds.GIRLS_GALATH_HUH, new int[0]);
+                    break;
+                }
+                case "giggle": {
+                    Vec3d vec3d = this.A();
+                    this.world.playSound(vec3d.x, vec3d.y, vec3d.z, ModSounds.pickRandomSound(ModSounds.GIRLS_GALATH_GIGGLE), SoundCategory.HOSTILE, 1.0f, 1.0f, false);
+                    break;
+                }
+                case "dialog1": {
+                    this.a(ModSounds.GIRLS_GALATH_DIALOG[1]);
+                    break;
+                }
+                case "moan": {
+                    this.a(ModSounds.GIRLS_GALATH_MOAN, new int[0]);
+                    break;
+                }
+                case "breath": {
+                    this.a(ModSounds.GIRLS_GALATH_BREATHING, new int[0]);
+                    break;
+                }
+                case "dialog5": {
+                    this.a(ModSounds.GIRLS_GALATH_DIALOG[5]);
+                    break;
+                }
+                case "switchmoan": {
+                    if (this.flag2) {
+                        this.a(ModSounds.GIRLS_GALATH_BREATHING, new int[0]);
+                    } else {
+                        this.a(this.getRNG().nextBoolean() ? ModSounds.GIRLS_GALATH_MOAN : ModSounds.GIRLS_GALATH_AHH, new int[0]);
+                    }
+                    this.flag2 = !this.flag2;
+                    break;
+                }
+                case "lightcharge": {
+                    Vec3d vec3d = this.A();
+                    this.world.playSound(vec3d.x, vec3d.y, vec3d.z, ModSounds.pickRandomSound(ModSounds.GIRLS_GALATH_LIGHTCHARGE), SoundCategory.HOSTILE, 1.0f, 1.0f, false);
+                    break;
+                }
+                case "strongcharge": {
+                    this.a(ModSounds.GIRLS_GALATH_STRONGCHARGE, new int[0]);
+                    break;
+                }
+                case "hmph": {
+                    this.a(ModSounds.GIRLS_GALATH_HMPH, new int[0]);
+                    break;
+                }
+                case "cum": {
+                    this.a(ModSounds.MISC_SMALLINSERTS, 2.0f);
+                    break;
+                }
+                case "giggle0": {
+                    this.a(ModSounds.GIRLS_GALATH_GIGGLE[0]);
+                    break;
+                }
+                case "orgasm": {
+                    this.a(ModSounds.GIRLS_GALATH_ORGASM, new int[0]);
+                    break;
+                }
+                case "pound": {
+                    this.a(ModSounds.MISC_POUNDING, new int[0]);
+                    break;
+                }
+                case "flap": {
+                    Vec3d vec3d = this.A();
+                    this.world.playSound(vec3d.x, vec3d.y, vec3d.z, ModSounds.pickRandomSound(ModSounds.MISC_FLAP), SoundCategory.HOSTILE, 1.0f, 1.0f, false);
+                    break;
+                }
+                case "startRenderSword": {
+                    this.ap = true;
+                    this.bu = true;
+                    break;
+                }
+                case "stopFadeInParticles": {
+                    this.bu = false;
+                    break;
+                }
+                case "stopRenderSword": {
+                    this.ap = false;
+                    this.bu = false;
+                    break;
+                }
+                case "dontDrawStars": {
+                    this.aL = false;
+                    break;
+                }
+                case "setNude": {
+                    this.bb = true;
+                    Vec3d vec3d = this.getPositionVector();
+                    Vec3d vec3d2 = this.getModelBone("slipR").add(vec3d);
+                    Vec3d vec3d3 = this.getModelBone("slipL").add(vec3d);
+                    Vec3d vec3d4 = this.getModelBone("turnable").add(vec3d);
+                    this.world.spawnParticle(EnumParticleTypes.DRAGON_BREATH, vec3d2.x, vec3d2.y, vec3d2.z, 0.0, 0.0, 0.0, new int[0]);
+                    this.world.spawnParticle(EnumParticleTypes.DRAGON_BREATH, vec3d3.x, vec3d3.y, vec3d3.z, 0.0, 0.0, 0.0, new int[0]);
+                    this.world.spawnParticle(EnumParticleTypes.DRAGON_BREATH, vec3d4.x, vec3d4.y, vec3d4.z, 0.0, 0.0, 0.0, new int[0]);
+                    break;
+                }
+                case "rapeIntroDone": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    this.setCurrentAction(GirlAnimationState.RAPE_ON_GOING);
+                    break;
+                }
+                case "rape_switch": {
+                    EntityPlayerSP entityPlayerSP;
+                    Random random = this.getRNG();
+                    int i = this.i7;
+                    do {
+                        this.i7 = random.nextInt(3);
+                    } while (this.i7 == i);
+                    if (this.J() || !this.isOwnedByLocalPlayer() || !(0.0f >= (entityPlayerSP = Minecraft.getMinecraft().player).getHealth() - 1.0f)) break;
+                    this.setCurrentAction(GirlAnimationState.RAPE_CUM);
+                    break;
+                }
+                case "poundRape": {
+                    this.a(ModSounds.MISC_POUNDING, new int[0]);
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    if (this.J()) {
+                        GuiHud.addProgress(0.03f);
+                        break;
+                    }
+                    NetworkHandler.channel.sendToServer((IMessage)new PacketGalathRapePounce(true));
+                    break;
+                }
+                case "rapeHurt": {
+                    if (this.J() || !this.isOwnedByLocalPlayer()) break;
+                    NetworkHandler.channel.sendToServer((IMessage)new PacketGalathRapePounce(false));
+                    break;
+                }
+                case "enableRapeUI": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    if (this.J()) {
+                        GuiHud.showHudWithForce(false);
+                        break;
+                    }
+                    GuiEscapeMinigame.a();
+                    break;
+                }
+                case "removeUI": {
+                    if (!this.isOwnedByLocalPlayer() || this.J()) break;
+                    GuiEscapeMinigame.d();
+                    break;
+                }
+                case "reloadRenderer": {
+                    if (!this.isOwnedByLocalPlayer()) {
+                        return;
+                    }
+                    Minecraft minecraft = Minecraft.getMinecraft();
+                    if (minecraft.gameSettings.thirdPersonView == 0) break;
+                    minecraft.renderGlobal.loadRenderers();
+                    break;
+                }
+                case "corruptSwitch": {
+                    if (!this.isOwnedByLocalPlayer() || !AnimationInputLock.SneakPressed) break;
+                    this.setCurrentAction(GirlAnimationState.CORRUPT_FAST);
+                    break;
+                }
+                case "corrupt_hard": {
+                    if (!this.isOwnedByLocalPlayer() || !AnimationInputLock.SneakPressed) break;
+                    this.aT = true;
+                    this.N();
+                    break;
+                }
+                case "corrupt_hard_end": {
+                    this.setCurrentAction(GirlAnimationState.CORRUPT_SLOW);
+                    this.aT = false;
+                    break;
+                }
+                case "addCum": {
+                    GuiHud.addProgress(0.03);
+                    break;
+                }
+                case "clearcum": {
+                    GuiCumOverlay.removeParticlesForGirl(this);
+                    break;
+                }
+                case "setCamCorrupt": {
+                    if (!this.isOwnedByLocalPlayer()) {
+                        return;
+                    }
+                    this.U = true;
+                    EntityPlayerSP entityPlayerSP = Minecraft.getMinecraft().player;
+                    float f = this.I().floatValue() + 220.0f;
+                    Vec3d vec3d = VectorMath.rotateYaw(new Vec3d(0.5, 0.5f - entityPlayerSP.getEyeHeight(), 0.4f), this.I().floatValue()).add(this.getTargetPos());
+                    NetworkHandler.channel.sendToServer((IMessage)new PacketTeleportPlayer(entityPlayerSP.getPersistentID().toString(), vec3d, f, 15.0f));
+                    GuiHud.showHud();
+                    break;
+                }
+                case "enableBoyCam": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    this.U = false;
+                    break;
+                }
+                case "masterbateCumming": {
+                    if (!CommandFuta.Enabled) break;
+                    GuiCumOverlay.addParticles(new ParticleEmitter(90, girl -> {
+                        Vec3d vec3d = girl.d("futaCockTip");
+                        Vec3d vec3d2 = girl.d("futaCockTipDirHelp");
+                        return vec3d.subtract(vec3d2).normalize();
+                    }, girl -> girl.getModelBone("futaCockTip").add(girl.getTargetPos()), (GirlEntity)this, 0.3f, 0.3f));
+                    break;
+                }
+                case "creampie": {
+                    GuiCumOverlay.addParticles(new ParticleEmitter(100, girl -> VectorMath.rotateYaw(new Vec3d(0.0, 0.0, (double)0.6f), this.I().floatValue()), girl -> girl.getModelBone("creampiePos").add(girl.getTargetPos()), (GirlEntity)this, 0.6f, 0.5f));
+                }
+                case "creampieGalath": {
+                    if (CommandFuta.Enabled) {
+                        GuiCumOverlay.addParticles(new ParticleEmitter(130, girl -> {
+                            Vec3d vec3d = girl.d("futaCockTip");
+                            Vec3d vec3d2 = girl.d("futaCockTipDirHelp");
+                            return vec3d.subtract(vec3d2).normalize();
+                        }, girl -> girl.getModelBone("futaCockTip").add(girl.getTargetPos()), (GirlEntity)this, 0.3f, 0.3f));
+                    }
+                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_SMALLINSERTS), 3.0f);
+                    break;
+                }
+                case "blackScreenTamed": {
+                    if (!this.J()) break;
+                }
+                case "blackScreen": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiTransitionScreen.startTransition();
+                    break;
+                }
+                case "blackScreenMaster": {
+                    if (!Minecraft.getMinecraft().player.getPersistentID().equals(this.O())) break;
+                    GuiTransitionScreen.startTransition();
+                    AnimationInputLock.setAnimationLocked(false);
+                    break;
+                }
+                case "flapControlled": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiGalathFlight.startFlight();
+                    this.a(ModSounds.MISC_FLAP, new int[0]);
+                    Minecraft minecraft = Minecraft.getMinecraft();
+                    EntityPlayerSP entityPlayerSP = minecraft.player;
+                    MovementInput movementInput = entityPlayerSP.movementInput;
+                    Vec2f vec2f = movementInput.getMoveVector();
+                    if (vec2f.x == 0.0f && vec2f.y == 0.0f) break;
+                    Vec3d vec3d = VectorMath.rotatePitchYaw(new Vec3d(-vec2f.x, 0.0, vec2f.y), LerpMath.lerp(entityPlayerSP.prevRotationPitch, entityPlayerSP.rotationPitch, minecraft.getRenderPartialTicks()), LerpMath.lerp(entityPlayerSP.prevRotationYawHead, entityPlayerSP.rotationYawHead, minecraft.getRenderPartialTicks()));
+                    NetworkHandler.channel.sendToServer((IMessage)new PacketUpdateVelocity(vec3d, this.getGirlUuid()));
+                    break;
+                }
+                case "clap": {
+                    this.a(ModSounds.MISC_CLAP, new int[0]);
+                    break;
+                }
+                case "energysound": {
+                    this.a(ModSounds.MISC_BEEW[1]);
+                    break;
+                }
+                case "energy2": {
+                    this.a(ModSounds.MISC_BEEW[2]);
+                    break;
+                }
+                case "tpSound": {
+                    this.a(ModSounds.MISC_WEOWEO[2]);
+                    break;
+                }
+                case "lick": {
+                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_LIPSOUND));
+                    break;
+                }
+                case "setCoinLook": {
+                    float f;
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    EntityPlayerSP entityPlayerSP = Minecraft.getMinecraft().player;
+                    entityPlayerSP.rotationYaw = f = this.I().floatValue() + 180.0f;
+                    entityPlayerSP.prevRotationYaw = f;
+                    entityPlayerSP.rotationPitch = 0.0f;
+                    entityPlayerSP.prevRotationPitch = 0.0f;
+                    break;
+                }
+                case "sexui": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.showHud();
+                    break;
+                }
+                case "boostSound": {
+                    Minecraft.getMinecraft().player.playSound(ModSounds.pickRandomSound(ModSounds.GIRLS_GALATH_LIGHTCHARGE), 1.0f, 1.0f);
+                    Minecraft.getMinecraft().player.playSound(ModSounds.pickRandomSound(ModSounds.MISC_FLAP), 1.0f, 1.0f);
+                }
+            }
         });
         animationData.addAnimationController(this.ActionController);
         animationData.addAnimationController(this.EyesController);

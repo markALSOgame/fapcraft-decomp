@@ -22,6 +22,7 @@ package com.trolmastercard.sexmod;
 
 import java.util.UUID;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -390,31 +391,98 @@ extends GirlEntity {
         entityPlayer.setPositionAndUpdate(vec3d.x, vec3d.y, vec3d.z);
     }
 
-    /*
-     * Exception decompiling
-     */
     @Override
     protected <E extends IAnimatable> PlayState a(AnimationEvent<E> animEvent) {
-        /*
-         * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
-         * 
-         * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [1[TRYBLOCK]], but top level block is 6[SWITCH]
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
-         *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
-         *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1055)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
-         *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
-         *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
-         *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
-         *     at org.benf.cfr.reader.Main.main(Main.java:54)
-         */
-        throw new IllegalStateException("Decompilation failed");
+        if (this.world instanceof PreviewWorld) {
+            return PlayState.STOP;
+        }
+        block5: switch (animEvent.getController().getName()) {
+            case "eyes": {
+                if (this.getCurrentAction() == GirlAnimationState.NULL && this.getCurrentAction().autoBlink) break;
+                this.a("animation.allie.null", true, animEvent);
+                break;
+            }
+            case "movement": {
+                this.a("animation.allie.tail", true, animEvent);
+                break;
+            }
+            case "action": {
+                switch (this.getCurrentAction()) {
+                    case SUMMON: {
+                        this.a("animation.allie.summon", false, animEvent);
+                        break block5;
+                    }
+                    case SUMMON_NORMAL: {
+                        this.a("animation.allie.summon_normal", false, animEvent);
+                        break block5;
+                    }
+                    case SUMMON_NORMAL_WAIT: {
+                        this.a("animation.allie.summon_normal_wait", true, animEvent);
+                        break block5;
+                    }
+                    case SUMMON_WAIT: {
+                        this.a("animation.allie.summon_wait", true, animEvent);
+                        break block5;
+                    }
+                    case ALLIE_PREPARE_FIRST_TIME: {
+                        this.a("animation.allie.deepthroat_prepare", false, animEvent);
+                        break block5;
+                    }
+                    case ALLIE_PREPARE_NORMAL: {
+                        this.a("animation.allie.deepthroat_normal_prepare", false, animEvent);
+                        break block5;
+                    }
+                    case DEEPTHROAT_START: {
+                        this.a("animation.allie.deepthroat_start", false, animEvent);
+                        break block5;
+                    }
+                    case DEEPTHROAT_SLOW: {
+                        this.a("animation.allie.deepthroat_slow", true, animEvent);
+                        break block5;
+                    }
+                    case DEEPTHROAT_FAST: {
+                        this.a("animation.allie.deepthroat_fast", true, animEvent);
+                        break block5;
+                    }
+                    case DEEPTHROAT_CUM: {
+                        this.a("animation.allie.deepthroat_cum", false, animEvent);
+                        break block5;
+                    }
+                    case RICH_FIRST_TIME: {
+                        this.a("animation.allie.rich", false, animEvent);
+                        break block5;
+                    }
+                    case RICH_NORMAL: {
+                        this.a("animation.allie.rich_normal", false, animEvent);
+                        break block5;
+                    }
+                    case SUMMON_SAND: {
+                        this.a("animation.allie.summon_sand", false, animEvent);
+                        break block5;
+                    }
+                    case REVERSE_COWGIRL_START: {
+                        this.a("animation.allie.reverse_cowgirl_start", true, animEvent);
+                        break block5;
+                    }
+                    case REVERSE_COWGIRL_SLOW: {
+                        this.a("animation.allie.reverse_cowgirl_slow" + this.T, true, animEvent);
+                        break block5;
+                    }
+                    case REVERSE_COWGIRL_FAST_CONTINUES: {
+                        this.a("animation.allie.reverse_cowgirl_fastc" + this.L, true, animEvent);
+                        break block5;
+                    }
+                    case REVERSE_COWGIRL_FAST_START: {
+                        this.a("animation.allie.reverse_cowgirl_fasts", true, animEvent);
+                        break block5;
+                    }
+                    case REVERSE_COWGIRL_CUM: {
+                        this.a("animation.allie.reverse_cowgirl_cum", true, animEvent);
+                    }
+                }
+            }
+        }
+        return PlayState.CONTINUE;
     }
 
     @Override
@@ -429,26 +497,257 @@ extends GirlEntity {
             throw AllieNpc.rethrow(runtimeException);
         }
         AnimationController.ISoundListener iSoundListener = arg1 -> {
-            /*
-             * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
-             * 
-             * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 26[SWITCH]
-             *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
-             *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
-             *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
-             *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
-             *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
-             *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
-             *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
-             *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
-             *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1050)
-             *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
-             *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
-             *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
-             *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
-             *     at org.benf.cfr.reader.Main.main(Main.java:54)
-             */
-            throw new IllegalStateException("Decompilation failed");
+            switch (arg1.sound) {
+                case "summonMSG1": {
+                    this.a(I18n.format("allie.dialogue.summon1", new Object[0]));
+                    this.a(ModSounds.GIRLS_ALLIE_SCAWY[0], 0.5f);
+                    break;
+                }
+                case "summonMSG2": {
+                    this.a(I18n.format("allie.dialogue.summon2", new Object[0]));
+                    this.a(ModSounds.GIRLS_ALLIE_GIGGLE[this.getRNG().nextInt(4)]);
+                    break;
+                }
+                case "summonMSG3": {
+                    this.a(I18n.format("allie.dialogue.summon3", new Object[0]));
+                    break;
+                }
+                case "summonMSG4": {
+                    this.a(I18n.format("allie.dialogue.summon4", new Object[0]));
+                    this.a(ModSounds.GIRLS_ALLIE_LIGHTBREATHING[2]);
+                    break;
+                }
+                case "summonMSG5": {
+                    this.a(I18n.format("allie.dialogue.summon5", new Object[0]));
+                    this.a(ModSounds.GIRLS_ALLIE_HMPH[4]);
+                    break;
+                }
+                case "summonMSG6": {
+                    this.a(I18n.format("allie.dialogue.summon6", new Object[0]));
+                    this.a(ModSounds.GIRLS_ALLIE_GIGGLE[3]);
+                    break;
+                }
+                case "summonMSG7": {
+                    this.a(I18n.format("allie.dialogue.summon7", new Object[0]));
+                    break;
+                }
+                case "summonMSG8": {
+                    this.a(I18n.format("allie.dialogue.summon8", new Object[0]));
+                    this.a(ModSounds.GIRLS_ALLIE_HUH, new int[0]);
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    this.openActionMenu(this.world.getPlayerEntityByUUID(this.getSexPlayerUuid()));
+                    break;
+                }
+                case "summonDone": {
+                    this.setCurrentAction(GirlAnimationState.SUMMON_WAIT);
+                    break;
+                }
+                case "deepthroat_prepareMSG1": {
+                    this.a(I18n.format("allie.dialogue.hihi", new Object[0]));
+                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_GIGGLE));
+                    break;
+                }
+                case "deepthroat_prepareMSG2": {
+                    this.a(I18n.format("allie.dialogue.boys", new Object[0]));
+                    this.a(ModSounds.GIRLS_ALLIE_SIGH[0]);
+                    break;
+                }
+                case "scream": {
+                    this.a(ModSounds.MISC_SCREAM, new int[0]);
+                    break;
+                }
+                case "blackscreen": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiTransitionScreen.startTransition();
+                    break;
+                }
+                case "deepthroat_prepareDone": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    if ("reverse_cowgirl".equals(this.DataManager.get(BlowjobStageKey))) {
+                        this.rotationPitch = 30.0f;
+                        this.setCurrentAction(GirlAnimationState.REVERSE_COWGIRL_START);
+                        break;
+                    }
+                    this.setCurrentAction(GirlAnimationState.DEEPTHROAT_START);
+                    NetworkHandler.channel.sendToServer((IMessage)new PacketSexPromptReply(this.getGirlUuid(), this.getSexPlayerUuid(), false, true));
+                    this.AimYaw = this.rotationYaw + 180.0f;
+                    this.a(0.0, 0.0, (double)1.35f, 0.0f, 30.0f);
+                    GuiHud.resetProgress();
+                    break;
+                }
+                case "deepthroat_fastDone": {
+                    if (!this.isOwnedByLocalPlayer() || AnimationInputLock.SneakPressed) break;
+                    this.setCurrentAction(GirlAnimationState.DEEPTHROAT_SLOW);
+                    break;
+                }
+                case "deepthroat_startDone": {
+                    this.setCurrentAction(GirlAnimationState.DEEPTHROAT_SLOW);
+                    break;
+                }
+                case "deepthroat_fastMSG1": {
+                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_BJMOAN));
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.showHud();
+                    GuiHud.addProgress(0.04f);
+                    break;
+                }
+                case "deepthroat_slowMSG1": {
+                    if (this.getRNG().nextFloat() > 0.33f) {
+                        this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_LIPSOUND));
+                    } else {
+                        this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_BJMOAN));
+                    }
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.showHud();
+                    GuiHud.addProgress(0.02f);
+                    break;
+                }
+                case "deepthroat_cumMSG1": {
+                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_MOAN));
+                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_LIPSOUND));
+                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_CUMINFLATION), 1.5f);
+                    break;
+                }
+                case "cowgirl_cumDone": 
+                case "deepthroat_cumDone": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    this.resetAimTarget();
+                    NetworkHandler.channel.sendToServer((IMessage)new PacketUploadInventory(this.getGirlUuid()));
+                    break;
+                }
+                case "summon_normalMSG1": {
+                    this.a(I18n.format("allie.dialogue.sup", new Object[0]));
+                    this.a(ModSounds.GIRLS_ALLIE_GIGGLE[this.getRNG().nextInt(4)]);
+                    break;
+                }
+                case "summon_normalMSG2": {
+                    this.a(I18n.format("allie.dialogue.youhave", new Object[0]));
+                    break;
+                }
+                case "summon_normalMSG3": {
+                    if (this.DataManager.get(SpawnItemStack).getTagCompound().getInteger("sexmodUses") == 2) {
+                        this.a(I18n.format("allie.dialogue.2wishes", new Object[0]));
+                    } else {
+                        this.a(I18n.format("allie.dialogue.1wish", new Object[0]));
+                    }
+                    this.a(ModSounds.GIRLS_ALLIE_HMPH[4]);
+                    break;
+                }
+                case "summon_normalMSG4": {
+                    this.a("So...");
+                    break;
+                }
+                case "summon_normalMSG5": {
+                    this.a(I18n.format("allie.dialogue.tellme", new Object[0]));
+                    this.a(ModSounds.GIRLS_ALLIE_HUH, new int[0]);
+                    break;
+                }
+                case "summon_normalDone": {
+                    this.setCurrentAction(GirlAnimationState.SUMMON_NORMAL_WAIT);
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    this.openActionMenu(Minecraft.getMinecraft().player);
+                    break;
+                }
+                case "deepthroat_normal_prepareMSG1": {
+                    this.a(I18n.format("allie.dialogue.alright", new Object[0]));
+                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_GIGGLE));
+                    break;
+                }
+                case "rich_MSG1": {
+                    this.a(I18n.format("allie.dialogue.wishgranted", new Object[0]));
+                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_PLOB));
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    NetworkHandler.channel.sendToServer((IMessage)new PacketMakeRichWish(this.getPositionVector()));
+                    break;
+                }
+                case "disappear": {
+                    this.ConversionTimer = 0.99f;
+                    break;
+                }
+                case "summon_sandMSG1": {
+                    this.a(I18n.format("allie.dialogue.nooo", new Object[0]));
+                    this.a(ModSounds.GIRLS_ALLIE_SCAWY[2]);
+                    break;
+                }
+                case "summon_sandMSG2": {
+                    if (!this.isLocalPlayerNearby()) break;
+                    this.b(I18n.format("allie.dialogue.phobia", new Object[0]), true);
+                    break;
+                }
+                case "giggle": {
+                    this.a(ModSounds.GIRLS_ALLIE_GIGGLE, new int[0]);
+                    break;
+                }
+                case "pounding": {
+                    this.a(ModSounds.MISC_POUNDING, new int[0]);
+                    break;
+                }
+                case "moan": {
+                    this.a(ModSounds.GIRLS_ALLIE_MOAN, new int[0]);
+                    break;
+                }
+                case "mmm": {
+                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_MMM));
+                    break;
+                }
+                case "slide": {
+                    this.a(ModSounds.MISC_SLIDE, 0, 1, 4, 6);
+                    break;
+                }
+                case "slowMoan": {
+                    if (this.getRNG().nextBoolean()) {
+                        this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_AHH));
+                    }
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.addProgress(0.02f);
+                    break;
+                }
+                case "cowgirlSlowDone": {
+                    int n = this.T;
+                    do {
+                        this.T = this.getRNG().nextInt(3) + 1;
+                    } while (this.T == n);
+                    break;
+                }
+                case "fastMoan": {
+                    if (this.isOwnedByLocalPlayer()) {
+                        GuiHud.addProgress(0.04f);
+                    }
+                    if (!this.M) {
+                        this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_MOAN));
+                        this.M = true;
+                        break;
+                    }
+                    this.M = false;
+                    break;
+                }
+                case "fastSwitch": {
+                    if (!this.isOwnedByLocalPlayer() || !AnimationInputLock.SneakPressed) break;
+                    GirlAnimationState girlAnimationState = this.getCurrentAction();
+                    if (girlAnimationState == GirlAnimationState.REVERSE_COWGIRL_FAST_START) {
+                        this.setCurrentAction(GirlAnimationState.REVERSE_COWGIRL_FAST_CONTINUES);
+                        break;
+                    }
+                    this.N();
+                    int n = this.L;
+                    do {
+                        this.L = this.getRNG().nextInt(3) + 1;
+                    } while (this.L == n);
+                    break;
+                }
+                case "openSexUi": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.showHud();
+                    break;
+                }
+                case "cum": {
+                    this.a(ModSounds.MISC_INSERTS, 6.0f);
+                    break;
+                }
+                case "aftermoan": {
+                    this.a(ModSounds.GIRLS_ALLIE_AFTERSESSIONMOAN, new int[0]);
+                }
+            }
         };
         this.ActionController.registerSoundListener(iSoundListener);
         animationData.addAnimationController(this.ActionController);

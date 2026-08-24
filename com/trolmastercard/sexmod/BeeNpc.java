@@ -555,32 +555,46 @@ extends ChestGirlEntity {
         this.Inventory.deserializeNBT(nBTTagCompound.getCompoundTag("inventory"));
     }
 
-    /*
-     * Exception decompiling
-     */
     @Override
     @SideOnly(value=Side.CLIENT)
     protected <E extends IAnimatable> PlayState a(AnimationEvent<E> animEvent) {
-        /*
-         * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
-         * 
-         * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [1[TRYBLOCK]], but top level block is 6[SWITCH]
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
-         *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
-         *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1055)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
-         *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
-         *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
-         *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
-         *     at org.benf.cfr.reader.Main.main(Main.java:54)
-         */
-        throw new IllegalStateException("Decompilation failed");
+        if (this.world instanceof PreviewWorld) {
+            return PlayState.STOP;
+        }
+        block4: switch (animEvent.getController().getName()) {
+            case "movement": {
+                if (this.getCurrentAction() != GirlAnimationState.NULL) {
+                    this.a("animation.bee.null", true, animEvent);
+                    break;
+                }
+                this.a("animation.bee." + (((Boolean)this.DataManager.get(K)).booleanValue() ? "idle_has_chest" : "idle"), true, animEvent);
+                break;
+            }
+            case "action": {
+                switch (this.getCurrentAction()) {
+                    case CITIZEN_START: {
+                        this.a("animation.bee.sex_start", false, animEvent);
+                        break block4;
+                    }
+                    case CITIZEN_SLOW: {
+                        this.a("animation.bee.sex_slow", true, animEvent);
+                        break block4;
+                    }
+                    case CITIZEN_FAST: {
+                        this.a("animation.bee.sex_fast", true, animEvent);
+                        break block4;
+                    }
+                    case CITIZEN_CUM: {
+                        this.a("animation.bee.sex_cum", false, animEvent);
+                        break block4;
+                    }
+                    case THROW_PEARL: {
+                        this.a("animation.bee.throw_pearl", true, animEvent);
+                    }
+                }
+            }
+        }
+        return PlayState.CONTINUE;
     }
 
     @Override
@@ -594,26 +608,59 @@ extends ChestGirlEntity {
             throw BeeNpc.rethrow(runtimeException);
         }
         AnimationController.ISoundListener iSoundListener = arg1 -> {
-            /*
-             * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
-             * 
-             * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 14[SWITCH]
-             *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
-             *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
-             *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
-             *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
-             *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
-             *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
-             *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
-             *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
-             *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1050)
-             *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
-             *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
-             *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
-             *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
-             *     at org.benf.cfr.reader.Main.main(Main.java:54)
-             */
-            throw new IllegalStateException("Decompilation failed");
+            switch (arg1.sound) {
+                case "pearl": {
+                    if (!this.isLocalPlayerNearby() || this.getCurrentAction() != GirlAnimationState.THROW_PEARL) break;
+                    NetworkHandler.channel.sendToServer((IMessage)new PacketSendCompanionHome(this.getGirlUuid()));
+                    break;
+                }
+                case "resetCumPercentage": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.resetProgress();
+                    break;
+                }
+                case "sex_fastMSG1": {
+                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING));
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.addProgress(0.04f);
+                    break;
+                }
+                case "sex_startMSG1": {
+                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING));
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.addProgress(0.02f);
+                    break;
+                }
+                case "sex_fastDone": {
+                    if (!this.isOwnedByLocalPlayer() || AnimationInputLock.SneakPressed) break;
+                }
+                case "sex_startDone": {
+                    this.setCurrentAction(GirlAnimationState.CITIZEN_SLOW);
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.showHud();
+                    break;
+                }
+                case "sex_cumMSG1": {
+                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_CUMINFLATION), 2.0f);
+                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING));
+                    break;
+                }
+                case "blackscreen": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiTransitionScreen.startTransition();
+                    break;
+                }
+                case "sex_cumDone": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.resetProgress();
+                    this.resetAimTarget();
+                    break;
+                }
+                case "sex_fastReady": {
+                    if (!this.isOwnedByLocalPlayer() || !AnimationInputLock.SneakPressed) break;
+                    this.N();
+                }
+            }
         };
         this.ActionController.registerSoundListener(iSoundListener);
         animationData.addAnimationController(this.ActionController);

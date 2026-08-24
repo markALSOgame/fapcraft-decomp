@@ -28,6 +28,7 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.datasync.DataParameter;
@@ -37,9 +38,11 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -47,6 +50,7 @@ import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.resource.GeckoLibCache;
 import software.bernie.geckolib3.util.MatrixStack;
 
 /*
@@ -87,31 +91,33 @@ implements BooleanCheck {
         return new AxisAlignedBB(entityPlayer.posX - (double)f3, entityPlayer.posY, entityPlayer.posZ - (double)f3, entityPlayer.posX + (double)f3, entityPlayer.posY + (double)f2, entityPlayer.posZ + (double)f3);
     }
 
-    /*
-     * Exception decompiling
-     */
     @Override
     public void a(List<Integer> list) {
-        /*
-         * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
-         * 
-         * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 2[SWITCH]
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
-         *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
-         *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1055)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
-         *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
-         *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
-         *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
-         *     at org.benf.cfr.reader.Main.main(Main.java:54)
-         */
-        throw new IllegalStateException("Decompilation failed");
+        StringBuilder stringBuilder = new StringBuilder();
+        block5: for (int i = 0; i < list.size(); ++i) {
+            int n = list.get(i);
+            switch (i) {
+                case 0: {
+                    this.DataManager.set(BodySizeKey, (Object)Float.valueOf((float)n / 100.0f * 0.25f));
+                    continue block5;
+                }
+                case 1: {
+                    this.DataManager.set(TribeColorKey, (Object)EyeAndKoboldColor.values()[n].toString());
+                    continue block5;
+                }
+                case 2: {
+                    this.DataManager.set(HomePosKey, (Object)new BlockPos(EyeAndKoboldColor.values()[n].getMainColor()));
+                    continue block5;
+                }
+                default: {
+                    GirlEffectEntity.appendZeroPaddedNumber(stringBuilder, n);
+                }
+            }
+        }
+        this.DataManager.set(AttributeStringKey, (Object)stringBuilder.toString());
+        if (this.world.isRemote) {
+            KoboldPlayerRenderer.clearColorCache();
+        }
     }
 
     @Override
@@ -403,31 +409,143 @@ implements BooleanCheck {
         super.b(girlAnimationState);
     }
 
-    /*
-     * Exception decompiling
-     */
     @Override
     protected <E extends IAnimatable> PlayState a(AnimationEvent<E> animEvent) {
-        /*
-         * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
-         * 
-         * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [1[TRYBLOCK]], but top level block is 19[SWITCH]
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
-         *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
-         *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1055)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
-         *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
-         *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
-         *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
-         *     at org.benf.cfr.reader.Main.main(Main.java:54)
-         */
-        throw new IllegalStateException("Decompilation failed");
+        if (this.world instanceof PreviewWorld) {
+            return PlayState.STOP;
+        }
+        float f = 0.25f - ((Float)this.DataManager.get(BodySizeKey)).floatValue();
+        GeckoLibCache.getInstance().parser.setValue("size", f);
+        block5 : switch (animEvent.getController().getName()) {
+            case "eyes": {
+                if (this.getCurrentAction() != GirlAnimationState.NULL || !this.getCurrentAction().autoBlink) {
+                    this.a("animation.kobold.null", true, animEvent);
+                    break;
+                }
+                this.a("animation.kobold.blink", true, animEvent);
+                break;
+            }
+            case "movement": {
+                if (this.getCurrentAction() != GirlAnimationState.NULL) {
+                    this.a("animation.kobold.null", true, animEvent);
+                    break;
+                }
+                if (this.ak) {
+                    this.a("animation.kobold.sit", true, animEvent);
+                    break;
+                }
+                if (this.MovementController.getCurrentAnimation() != null && this.MovementController.getCurrentAnimation().animationName.contains("fly") && this.af) {
+                    boolean bl = this.aB = !this.aB;
+                }
+                if (!this.af) {
+                    this.a("animation.kobold.fly" + (this.aB ? "2" : ""), true, animEvent);
+                    break;
+                }
+                if (Math.abs(this.ao.x) + Math.abs(this.ao.y) > 0.0f) {
+                    if (this.aj) {
+                        this.MovementController.setAnimationSpeed(1.2f);
+                        this.a("animation.kobold.run", true, animEvent);
+                        break;
+                    }
+                    if (this.ao.y >= -0.1f) {
+                        this.MovementController.setAnimationSpeed(2.0);
+                        this.a("animation.kobold.walk", true, animEvent);
+                        break;
+                    }
+                    this.MovementController.setAnimationSpeed(1.75);
+                    this.a("animation.kobold.backwards_walk", true, animEvent);
+                    break;
+                }
+                this.a("animation.kobold.idle", true, animEvent);
+                break;
+            }
+            case "action": {
+                switch (this.getCurrentAction()) {
+                    case NULL: {
+                        this.a("animation.kobold.null", true, animEvent);
+                        break block5;
+                    }
+                    case STRIP: {
+                        this.a("animation.kobold.strip", false, animEvent);
+                        break block5;
+                    }
+                    case ATTACK: {
+                        this.a("animation.kobold.attack" + this.S, false, animEvent);
+                        break block5;
+                    }
+                    case BOW: {
+                        this.a("animation.kobold.bowcharge", false, animEvent);
+                        break block5;
+                    }
+                    case SIT: {
+                        this.a("animation.kobold.sit", true, animEvent);
+                        break block5;
+                    }
+                    case MINE: {
+                        this.a("animation.kobold.fall_tree", true, animEvent);
+                        break block5;
+                    }
+                    case PAYMENT: {
+                        this.a("animation.kobold.paymentBackpack", true, animEvent);
+                        break block5;
+                    }
+                    case STARTBLOWJOB: {
+                        this.a("animation.kobold.blowjobStart", false, animEvent);
+                        break block5;
+                    }
+                    case SUCKBLOWJOB_BLINK: {
+                        String string = this.az ? "R" : "L";
+                        String string2 = this.ay ? "Switch" : "";
+                        this.a("animation.kobold.blowjobSlow" + string + string2, true, animEvent);
+                        break block5;
+                    }
+                    case THRUSTBLOWJOB: {
+                        this.a("animation.kobold.blowjobFast", true, animEvent);
+                        break block5;
+                    }
+                    case CUMBLOWJOB: {
+                        this.a("animation.kobold.blowjobCum", false, animEvent);
+                        break block5;
+                    }
+                    case KOBOLD_ANAL_START: {
+                        this.a("animation.kobold.analStart", false, animEvent);
+                        break block5;
+                    }
+                    case KOBOLD_ANAL_SLOW: {
+                        this.a("animation.kobold.analSoft", true, animEvent);
+                        break block5;
+                    }
+                    case KOBOLD_ANAL_FAST: {
+                        this.a("animation.kobold.analHard", true, animEvent);
+                        break block5;
+                    }
+                    case KOBOLD_ANAL_CUM: {
+                        this.a("animation.kobold.analCum", true, animEvent);
+                        break block5;
+                    }
+                    case SLEEP: {
+                        this.a("animation.kobold.sleep", true, animEvent);
+                        break block5;
+                    }
+                    case MATING_PRESS_START: {
+                        this.a("animation.kobold.mating_press_start", false, animEvent);
+                        break block5;
+                    }
+                    case MATING_PRESS_SOFT: {
+                        this.a("animation.kobold.mating_press_soft", true, animEvent);
+                        break block5;
+                    }
+                    case MATING_PRESS_HARD: {
+                        this.a("animation.kobold.mating_press_hard", true, animEvent);
+                        break block5;
+                    }
+                    case MATING_PRESS_CUM: {
+                        this.a("animation.kobold.mating_press_cum", true, animEvent);
+                    }
+                }
+            }
+        }
+        return PlayState.CONTINUE;
     }
 
     void b(SoundEvent soundEvent) {
@@ -461,26 +579,247 @@ implements BooleanCheck {
             throw KoboldPlayer.rethrow(runtimeException);
         }
         AnimationController.ISoundListener iSoundListener = arg1 -> {
-            /*
-             * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
-             * 
-             * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 34[SWITCH]
-             *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
-             *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
-             *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
-             *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
-             *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
-             *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
-             *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
-             *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
-             *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1050)
-             *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
-             *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
-             *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
-             *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
-             *     at org.benf.cfr.reader.Main.main(Main.java:54)
-             */
-            throw new IllegalStateException("Decompilation failed");
+            switch (arg1.sound) {
+                case "attackDone": {
+                    if (++this.S != 3) break;
+                    this.S = 0;
+                    break;
+                }
+                case "paymentMSG1": {
+                    this.a(this.getSexPlayerUuid(), "I'd like to use ur services owo");
+                    this.b(ModSounds.MISC_PLOB);
+                    break;
+                }
+                case "plob": {
+                    this.b(ModSounds.MISC_PLOB);
+                    break;
+                }
+                case "blackScreen": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiTransitionScreen.startTransition();
+                    break;
+                }
+                case "paymentDone": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    this.U();
+                    break;
+                }
+                case "blowjobStartMSG1": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    EntityPlayerSP entityPlayerSP = Minecraft.getMinecraft().player;
+                    Vec3d vec3d = VectorMath.rotateYaw(new Vec3d(0.0, 0.625 - (double)entityPlayerSP.getEyeHeight(), -1.0), this.I().floatValue() + 180.0f);
+                    NetworkHandler.channel.sendToServer((IMessage)new PacketTeleportPlayer(this.getSexPlayerUuid().toString(), this.getPositionVector().add(vec3d), this.I().floatValue() + 180.0f, 0.0f));
+                    break;
+                }
+                case "blowjobStartMSG2": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    EntityPlayerSP entityPlayerSP = Minecraft.getMinecraft().player;
+                    Vec3d vec3d = VectorMath.rotateYaw(new Vec3d(0.5, 0.5 - (double)entityPlayerSP.getEyeHeight(), -0.6875), this.I().floatValue() + 180.0f);
+                    NetworkHandler.channel.sendToServer((IMessage)new PacketTeleportPlayer(this.getSexPlayerUuid().toString(), this.getPositionVector().add(vec3d), this.I().floatValue() + 180.0f - 40.0f, 0.0f));
+                    break;
+                }
+                case "lipsound": {
+                    if (this.getRNG().nextBoolean()) {
+                        this.a(ModSounds.GIRLS_ALLIE_LIPSOUND, 1.5f);
+                    } else {
+                        this.a(ModSounds.GIRLS_JENNY_LIPSOUND, 1.5f);
+                    }
+                    GuiHud.addProgress(0.02f);
+                    break;
+                }
+                case "touch": {
+                    this.b(ModSounds.MISC_TOUCH);
+                    break;
+                }
+                case "blowjobStartDone": {
+                    this.b(GirlAnimationState.SUCKBLOWJOB_BLINK);
+                    this.ay = false;
+                    this.az = true;
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.showHud();
+                    break;
+                }
+                case "switch": {
+                    this.ay = this.getRNG().nextBoolean();
+                    this.ActionController.clearAnimationCache();
+                    break;
+                }
+                case "endSwitch": {
+                    this.ay = false;
+                    this.az = !this.az;
+                    this.ActionController.clearAnimationCache();
+                    break;
+                }
+                case "blowjobFastDone": {
+                    if (!this.isOwnedByLocalPlayer() || AnimationInputLock.SneakPressed) break;
+                    this.b(GirlAnimationState.SUCKBLOWJOB_BLINK);
+                    break;
+                }
+                case "cumLoud": {
+                    this.a(ModSounds.MISC_SMALLINSERTS, 3.0f);
+                    break;
+                }
+                case "cumQuiet": {
+                    this.a(ModSounds.MISC_SMALLINSERTS, 1.5f);
+                    break;
+                }
+                case "analCumDone":
+                case "blowjobCumDone": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    this.resetAimTarget();
+                    GuiHud.forceShowHud();
+                    break;
+                }
+                case "analStartDone": {
+                    this.b(GirlAnimationState.KOBOLD_ANAL_SLOW);
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.showHud();
+                    break;
+                }
+                case "analStartCam": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    EntityPlayerSP entityPlayerSP = Minecraft.getMinecraft().player;
+                    Vec3d vec3d = VectorMath.rotateYaw(new Vec3d(0.0, 0.5625 - (double)entityPlayerSP.getEyeHeight(), 0.5625), this.I().floatValue() + 180.0f);
+                    NetworkHandler.channel.sendToServer((IMessage)new PacketTeleportPlayer(this.getSexPlayerUuid().toString(), this.getPositionVector().add(vec3d), this.I().floatValue(), 0.0f));
+                    break;
+                }
+                case "pounding": {
+                    this.b(ModSounds.MISC_POUNDING);
+                    break;
+                }
+                case "analFastRapid": {
+                    if (!this.isOwnedByLocalPlayer() || !AnimationInputLock.SneakPressed) break;
+                    if (this.getCurrentAction() == GirlAnimationState.KOBOLD_ANAL_FAST) {
+                        this.N();
+                        break;
+                    }
+                    this.b(GirlAnimationState.KOBOLD_ANAL_FAST);
+                    break;
+                }
+                case "analDone": {
+                    if (this.getCurrentAction() != GirlAnimationState.KOBOLD_ANAL_FAST) break;
+                    this.b(GirlAnimationState.KOBOLD_ANAL_SLOW);
+                    break;
+                }
+                case "analHard": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.addProgress(0.04f);
+                    break;
+                }
+                case "analSoft": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    GuiHud.addProgress(0.02f);
+                    break;
+                }
+                case "cum": {
+                    this.a(ModSounds.MISC_SMALLINSERTS, 2.0f);
+                    break;
+                }
+                case "giggle": {
+                    this.b(ModSounds.GIRLS_KOBOLD_GIGGLE);
+                    break;
+                }
+                case "moan": {
+                    this.b(ModSounds.GIRLS_KOBOLD_MOAN);
+                    break;
+                }
+                case "moanMating": {
+                    --this.ax;
+                    if (this.ax > 0) break;
+                    this.ax = 3;
+                    this.b(ModSounds.GIRLS_KOBOLD_MOAN);
+                    break;
+                }
+                case "analHardMSG1": {
+                    --this.ax;
+                    if (this.ax > 0) break;
+                    this.ax = 4;
+                    this.b(ModSounds.GIRLS_KOBOLD_MOAN);
+                    break;
+                }
+                case "orgasm": {
+                    this.b(ModSounds.GIRLS_KOBOLD_ORGASM);
+                    break;
+                }
+                case "breath": {
+                    this.b(ModSounds.GIRLS_KOBOLD_LIGHTBREATHING, 0.5f);
+                    break;
+                }
+                case "haa": {
+                    this.b(ModSounds.GIRLS_KOBOLD_HAA, 0.7f);
+                    break;
+                }
+                case "interested": {
+                    this.b(ModSounds.GIRLS_KOBOLD_INTERESTED);
+                    break;
+                }
+                case "yep": {
+                    this.b(ModSounds.GIRLS_KOBOLD_YEP);
+                    break;
+                }
+                case "bjmoan": {
+                    this.b(ModSounds.pickRandomSound(ModSounds.GIRLS_KOBOLD_BJMOAN));
+                    break;
+                }
+                case "blowjobStartbreath": {
+                    int n = this.getRNG().nextInt(3);
+                    this.b(ModSounds.GIRLS_KOBOLD_LIGHTBREATHING[n]);
+                    break;
+                }
+                case "matingCam": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    EntityPlayerSP entityPlayerSP = Minecraft.getMinecraft().player;
+                    Vec3d vec3d = new Vec3d(0.0, 0.4375 - (double)entityPlayerSP.eyeHeight, -0.6875);
+                    vec3d = VectorMath.rotateYaw(vec3d, this.I().floatValue() + 180.0f);
+                    vec3d = vec3d.add(this.getPositionVector());
+                    NetworkHandler.channel.sendToServer((IMessage)new PacketTeleportPlayer(entityPlayerSP.getPersistentID().toString(), vec3d, this.I().floatValue() + 180.0f, 10.0f));
+                    break;
+                }
+                case "mating_press_startDone": {
+                    if (this.isOwnedByLocalPlayer()) {
+                        GuiHud.showHud();
+                    }
+                }
+                case "mating_press_hardDone": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    this.b(GirlAnimationState.MATING_PRESS_SOFT);
+                    break;
+                }
+                case "mating_press_softReady": {
+                    if (this.isOwnedByLocalPlayer()) {
+                        GuiHud.addProgress(0.04f);
+                    }
+                    if (!this.isOwnedByLocalPlayer() || !AnimationInputLock.SneakPressed) break;
+                    this.b(GirlAnimationState.MATING_PRESS_HARD);
+                    break;
+                }
+                case "mating_press_hardReady": {
+                    if (this.isOwnedByLocalPlayer()) {
+                        GuiHud.addProgress(0.04f);
+                    }
+                    if (!this.isOwnedByLocalPlayer() || !AnimationInputLock.SneakPressed) break;
+                    this.N();
+                    break;
+                }
+                case "mating_cum_cam": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    EntityPlayerSP entityPlayerSP = Minecraft.getMinecraft().player;
+                    Vec3d vec3d = new Vec3d(0.0, 1.1875 - (double)entityPlayerSP.eyeHeight, 0.125);
+                    vec3d = VectorMath.rotateYaw(vec3d, this.I().floatValue() + 180.0f);
+                    vec3d = vec3d.add(this.getPositionVector());
+                    NetworkHandler.channel.sendToServer((IMessage)new PacketTeleportPlayer(entityPlayerSP.getPersistentID().toString(), vec3d, this.I().floatValue() + 180.0f, 70.0f));
+                    break;
+                }
+                case "cumMsg": {
+                    this.a("I.. hope I am satisfying you sir");
+                    this.b(ModSounds.GIRLS_KOBOLD_SAD[this.getRNG().nextInt(1)]);
+                    break;
+                }
+                case "mating_press_cumDone": {
+                    if (!this.isOwnedByLocalPlayer()) break;
+                    this.resetAimTarget();
+                }
+            }
         };
         this.MovementController.transitionLengthTicks = 3.0;
         this.ActionController.registerSoundListener(iSoundListener);

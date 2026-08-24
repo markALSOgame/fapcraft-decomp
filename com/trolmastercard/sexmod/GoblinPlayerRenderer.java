@@ -1,12 +1,15 @@
 package com.trolmastercard.sexmod;
 
 import java.util.HashSet;
+import java.util.UUID;
 import javax.annotation.Nullable;
 import javax.vecmath.Vector4f;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
@@ -632,27 +635,57 @@ public class GoblinPlayerRenderer extends CustomColorGirlRenderer {
    @Override
 
    protected Vec3f getTexture(GirlEntity girl) {
-        /*
-         * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
-         * 
-         * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [8[TRYBLOCK]], but top level block is 9[SWITCH]
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
-         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
-         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
-         *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
-         *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1055)
-         *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
-         *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
-         *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
-         *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
-         *     at org.benf.cfr.reader.Main.main(Main.java:54)
-         */
-        throw new IllegalStateException("Decompilation failed");
-    }
+      if (!this.D) {
+         return null;
+      }
+
+      if (!(girl instanceof GoblinPlayer)) {
+         return null;
+      }
+
+      GoblinPlayer goblin = (GoblinPlayer)girl;
+      UUID uuid = goblin.getBoundPlayerUuid();
+      EntityPlayerSP mcPlayer = Mc.player;
+      if (uuid == null || Mc.gameSettings.thirdPersonView == 0 && mcPlayer.getPersistentID().equals(uuid)) {
+         return null;
+      }
+
+      EntityPlayer player = goblin.getBoundPlayer();
+      if (player == null) {
+         return null;
+      }
+
+      ItemStack stack = goblin.getDataManager().get(InventoryGirlEntity.ChestKey);
+      if (stack.isEmpty()) {
+         return null;
+      }
+
+      if (!(stack.getItem() instanceof ItemArmor)) {
+         return null;
+      }
+
+      ItemArmor armor = (ItemArmor)stack.getItem();
+
+      label52: {
+         switch (armor.getArmorMaterial()) {
+            case GOLD:
+               return new Vec3f(99.0F, 98.0F, 14.0F);
+            case CHAIN:
+            case IRON:
+               return new Vec3f(85.0F, 85.0F, 85.0F);
+            case LEATHER:
+               break label52;
+            default:
+               return new Vec3f(23.0F, 100.0F, 93.0F);
+         }
+      }
+
+      int colorValue = armor.getColor(stack);
+      float f = colorValue >> 16 & 0xFF;
+      float f2 = colorValue >> 8 & 0xFF;
+      float f3 = colorValue & 0xFF;
+      return new Vec3f(f, f2, f3);
+   }
 
    @Override
    protected void applyModelScale() {
