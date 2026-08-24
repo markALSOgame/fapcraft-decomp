@@ -25,13 +25,13 @@ public class ContainerLunaEquipment extends Container {
          IItemHandler handler = luna.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH);
          this.LunaGirl = luna;
          this.Slots = new Slot[]{
-            new EquipmentSlot(EquipmentSlot.SlotType.WEAPON, handler, EquipmentSlot.SlotType.WEAPON.id, 41, 60),
-            new EquipmentSlot(EquipmentSlot.SlotType.BOW, handler, EquipmentSlot.SlotType.BOW.id, 59, 60),
-            new EquipmentSlot(EquipmentSlot.SlotType.HELMET, handler, EquipmentSlot.SlotType.HELMET.id, 81, 60),
-            new EquipmentSlot(EquipmentSlot.SlotType.CHEST_PLATE, handler, EquipmentSlot.SlotType.CHEST_PLATE.id, 100, 60),
-            new EquipmentSlot(EquipmentSlot.SlotType.PANTS, handler, EquipmentSlot.SlotType.PANTS.id, 119, 60),
-            new EquipmentSlot(EquipmentSlot.SlotType.SHOES, handler, EquipmentSlot.SlotType.SHOES.id, 138, 60),
-            new EquipmentSlot(EquipmentSlot.SlotType.ROD, handler, EquipmentSlot.SlotType.ROD.id, 22, 60)
+            new EquipmentSlot(EquipmentSlot.SlotType.WEAPON, handler, EquipmentSlot.SlotType.WEAPON.SlotIndex, 41, 60),
+            new EquipmentSlot(EquipmentSlot.SlotType.BOW, handler, EquipmentSlot.SlotType.BOW.SlotIndex, 59, 60),
+            new EquipmentSlot(EquipmentSlot.SlotType.HELMET, handler, EquipmentSlot.SlotType.HELMET.SlotIndex, 81, 60),
+            new EquipmentSlot(EquipmentSlot.SlotType.CHEST_PLATE, handler, EquipmentSlot.SlotType.CHEST_PLATE.SlotIndex, 100, 60),
+            new EquipmentSlot(EquipmentSlot.SlotType.PANTS, handler, EquipmentSlot.SlotType.PANTS.SlotIndex, 119, 60),
+            new EquipmentSlot(EquipmentSlot.SlotType.SHOES, handler, EquipmentSlot.SlotType.SHOES.SlotIndex, 138, 60),
+            new EquipmentSlot(EquipmentSlot.SlotType.ROD, handler, EquipmentSlot.SlotType.ROD.SlotIndex, 22, 60)
          };
          ArrayList list = new ArrayList();
 

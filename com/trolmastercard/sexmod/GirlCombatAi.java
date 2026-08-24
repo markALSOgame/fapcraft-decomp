@@ -116,188 +116,92 @@ public class GirlCombatAi extends GirlAiBase {
     }
 
    @Override
-
    protected void executeState(GirlAiBase.State state) {
-        switch (GirlCombatAi.b.EventHandler[state.ordinal()]) {
-            case 1: {
-                this.Girl.getLookHelper().setLookPositionWithEntity((Entity)this.Target, 30.0f, 30.0f);
-                f = this.Girl.getDistance((Entity)this.Target);
-                try {
-                    try {
-                        this.Navigation.clearPath();
-                        if (f < 1.9 && --this.AttackCooldownTicks <= 0) {
-                        }
-                        ** GOTO lbl17
-                    }
-                    catch (RuntimeException error) {
-                        throw GirlCombatAi.rethrow(error);
-                    }
-                    this.meleeAttack();
-                    break;
-                }
-                catch (RuntimeException error2) {
-                    throw GirlCombatAi.rethrow(error2);
-                }
-lbl17:
-                // 1 sources
-
-                try {
-                    try {
-                        try {
-                            try {
-                                try {
-                                    if (this.Girl.Inventory.getStackInSlot(1).getItem() instanceof ItemBow && this.Girl.getEntitySenses().canSee((Entity)this.Target)) {
-                                    }
-                                    ** GOTO lbl53
-                                }
-                                catch (RuntimeException error3) {
-                                    throw GirlCombatAi.rethrow(error3);
-                                }
-                                if (++this.BowChargeTicks > 0) {
-                                }
-                                ** GOTO lbl53
-                            }
-                            catch (RuntimeException error4) {
-                                throw GirlCombatAi.rethrow(error4);
-                            }
-                            if (f > 6.0) {
-                            }
-                            ** GOTO lbl53
-                        }
-                        catch (RuntimeException error5) {
-                            throw GirlCombatAi.rethrow(error5);
-                        }
-                        this.DataManager.set(InventoryGirlEntity.ModeKey, (Object)2);
-                        this.Girl.setCurrentAction(GirlAnimationState.BOW);
-                        if (++this.BowChargeTicks >= 32) {
-                        }
-                        ** GOTO lbl50
-                    }
-                    catch (RuntimeException error6) {
-                        throw GirlCombatAi.rethrow(error6);
-                    }
-                    this.BowChargeTicks = -20;
-                    this.shootArrow();
-                    this.Girl.setCurrentAction(GirlAnimationState.NULL);
-                }
-                catch (RuntimeException error7) {
-                    throw GirlCombatAi.rethrow(error7);
-                }
-lbl50:
-                // 2 sources
-
-                this.DistanceToPlayer = this.Girl.getDistance((Entity)this.Player);
-                this.PlayerPos = this.Player.getPositionVector();
-                return;
-lbl53:
-                // 3 sources
-
-                try {
-                    if (f < 2.0) {
-                        this.DataManager.set(InventoryGirlEntity.ModeKey, (Object)1);
-                        this.Navigation.tryMoveToEntityLiving((Entity)this.Target, 0.5);
-                        this.Girl.a(GirlEntity.WalkState.WALK);
-                        break;
-                    }
-                }
-                catch (RuntimeException error8) {
-                    throw GirlCombatAi.rethrow(error8);
-                }
-                this.DataManager.set(InventoryGirlEntity.ModeKey, (Object)1);
-                this.Navigation.tryMoveToEntityLiving((Entity)this.Target, 0.7);
-                this.Girl.a(GirlEntity.WalkState.RUN);
-                break;
+      switch (state) {
+         case ATTACK: {
+            this.Girl.getLookHelper().setLookPositionWithEntity((Entity)this.Target, 30.0f, 30.0f);
+            double d = this.Girl.getDistance((Entity)this.Target);
+            this.Navigation.clearPath();
+            if (d < 1.9 && --this.AttackCooldownTicks <= 0) {
+               this.meleeAttack();
+               break;
             }
-            case 2: {
-                this.DataManager.set(InventoryGirlEntity.ModeKey, (Object)0);
-                f2 = this.Girl.getDistance((Entity)this.Player);
-                try {
-                    try {
-                        if (!((double)this.Navigation.getPathSearchRange() > f2)) ** GOTO lbl86
-                        this.Navigation.clearPath();
-                        if (!this.Girl.IsDowned) {
-                        }
-                        ** GOTO lbl87
-                    }
-                    catch (RuntimeException error9) {
-                        throw GirlCombatAi.rethrow(error9);
-                    }
-                    this.Navigation.tryMoveToEntityLiving((Entity)this.Player, 0.5);
-                    this.getState();
-                    ** GOTO lbl87
-                }
-                catch (RuntimeException error10) {
-                    throw GirlCombatAi.rethrow(error10);
-                }
-lbl86:
-                // 1 sources
-
-                this.moveToRandomNearbyPos();
-lbl87:
-                // 3 sources
-
-                this.RandomMoveTimer = 300;
-                this.getMoveSpeed();
-                break;
+            if (this.Girl.Inventory.getStackInSlot(1).getItem() instanceof ItemBow && this.Girl.getEntitySenses().canSee((Entity)this.Target) && ++this.BowChargeTicks > 0 && d > 6.0) {
+               this.DataManager.set(InventoryGirlEntity.ModeKey, (Object)2);
+               this.Girl.setCurrentAction(GirlAnimationState.BOW);
+               if (++this.BowChargeTicks >= 32) {
+                  this.BowChargeTicks = -20;
+                  this.shootArrow();
+                  this.Girl.setCurrentAction(GirlAnimationState.NULL);
+               }
+               this.DistanceToPlayer = this.Girl.getDistance((Entity)this.Player);
+               this.PlayerPos = this.Player.getPositionVector();
+               return;
             }
-            case 3: {
-                try {
-                    this.DataManager.set(InventoryGirlEntity.ModeKey, (Object)0);
-                    if (this.Girl.IsDowned) ** GOTO lbl109
-                    if (++this.RandomMoveTimer > 200 + ModConstants.Random.nextInt(100)) {
-                    }
-                    ** GOTO lbl106
-                }
-                catch (RuntimeException error11) {
-                    throw GirlCombatAi.rethrow(error11);
-                }
-                this.RandomMoveTimer = 0;
-                vec3d = this.Player.getPositionVector();
-                vec3d2 = new Vec3d(vec3d.x + 1.0 + (double)(ModConstants.Random.nextFloat() * 3.0f), vec3d.y, vec3d.z + 1.0 + (double)(ModConstants.Random.nextFloat() * 3.0f));
-                this.Navigation.clearPath();
-                this.Navigation.tryMoveToXYZ(vec3d2.x, vec3d2.y, vec3d2.z, 0.5);
-lbl106:
-                // 2 sources
-
-                this.getMoveSpeed();
-                break;
-lbl109:
-                // 1 sources
-
-                try {
-                    if (!(this.Girl.getDistance((Entity)this.Player) > 10.0f)) break;
-                    this.moveToRandomNearbyPos();
-                    break;
-                }
-                catch (RuntimeException error12) {
-                    throw GirlCombatAi.rethrow(error12);
-                }
+            if (d < 2.0) {
+               this.DataManager.set(InventoryGirlEntity.ModeKey, (Object)1);
+               this.Navigation.tryMoveToEntityLiving((Entity)this.Target, 0.5);
+               this.Girl.a(GirlEntity.WalkState.WALK);
+               break;
             }
-            case 4: {
-                try {
-                    if (this.Girl.isRiding()) {
-                        this.Girl.setCurrentAction(GirlAnimationState.SIT);
-                        break;
-                    }
-                }
-                catch (RuntimeException error13) {
-                    throw GirlCombatAi.rethrow(error13);
-                }
-                this.Girl.setNoGravity(true);
-                this.Girl.noClip = true;
-                vec3d3 = this.Player.getPositionVector().subtract(this.RideMount.getLookVec().x * 0.5, 0.0, this.RideMount.getLookVec().z * 0.5);
-                this.Girl.setPositionAndRotation(vec3d3.x, vec3d3.y, vec3d3.z, 0.0f, 0.0f);
-                this.Girl.motionX = 0.0;
-                this.Girl.motionY = 0.0;
-                this.Girl.motionZ = 0.0;
-                this.Girl.setCurrentAction(GirlAnimationState.RIDE);
-                break;
+            this.DataManager.set(InventoryGirlEntity.ModeKey, (Object)1);
+            this.Navigation.tryMoveToEntityLiving((Entity)this.Target, 0.7);
+            this.Girl.a(GirlEntity.WalkState.RUN);
+            break;
+         }
+         case FOLLOW: {
+            this.DataManager.set(InventoryGirlEntity.ModeKey, (Object)0);
+            double d = this.Girl.getDistance((Entity)this.Player);
+            if ((double)this.Navigation.getPathSearchRange() > d) {
+               this.Navigation.clearPath();
+               if (!this.Girl.IsDowned) {
+                  this.Navigation.tryMoveToEntityLiving((Entity)this.Player, 0.5);
+                  this.airDash();
+               }
+            } else {
+               this.moveToRandomNearbyPos();
             }
-            case 5: {
-                this.Navigation.clearPath();
+            this.RandomMoveTimer = 300;
+            this.getMoveSpeed();
+            break;
+         }
+         case IDLE: {
+            this.DataManager.set(InventoryGirlEntity.ModeKey, (Object)0);
+            if (!this.Girl.IsDowned) {
+               if (++this.RandomMoveTimer > 200 + ModConstants.Random.nextInt(100)) {
+                  this.RandomMoveTimer = 0;
+                  Vec3d vec3d = this.Player.getPositionVector();
+                  Vec3d vec3d2 = new Vec3d(vec3d.x + 1.0 + (double)(ModConstants.Random.nextFloat() * 3.0f), vec3d.y, vec3d.z + 1.0 + (double)(ModConstants.Random.nextFloat() * 3.0f));
+                  this.Navigation.clearPath();
+                  this.Navigation.tryMoveToXYZ(vec3d2.x, vec3d2.y, vec3d2.z, 0.5);
+               }
+               this.getMoveSpeed();
+               break;
             }
-        }
-    }
+            if (!(this.Girl.getDistance((Entity)this.Player) > 10.0f)) break;
+            this.moveToRandomNearbyPos();
+            break;
+         }
+         case RIDE: {
+            if (this.Girl.isRiding()) {
+               this.Girl.setCurrentAction(GirlAnimationState.SIT);
+               break;
+            }
+            this.Girl.setNoGravity(true);
+            this.Girl.noClip = true;
+            Vec3d vec3d3 = this.Player.getPositionVector().subtract(this.RideMount.getLookVec().x * 0.5, 0.0, this.RideMount.getLookVec().z * 0.5);
+            this.Girl.setPositionAndRotation(vec3d3.x, vec3d3.y, vec3d3.z, 0.0f, 0.0f);
+            this.Girl.motionX = 0.0;
+            this.Girl.motionY = 0.0;
+            this.Girl.motionZ = 0.0;
+            this.Girl.setCurrentAction(GirlAnimationState.RIDE);
+            break;
+         }
+         case DOWNED: {
+            this.Navigation.clearPath();
+         }
+      }
+   }
 
    @Override
 
@@ -524,7 +428,7 @@ lbl109:
     }
 
    public void shootArrow() {
-      EntityArrow entityArrow = this.getMoveSpeed();
+      EntityArrow entityArrow = this.b();
       double d = this.Target.posX - this.Girl.posX;
       double d2 = this.Target.getEntityBoundingBox().minY + this.Target.height / 3.0F - entityArrow.posY;
       double d3 = this.Target.posZ - this.Girl.posZ;
@@ -636,7 +540,7 @@ lbl109:
     }
 
    @Override
-   protected double b() {
+   protected double getMoveSpeed() {
       double d = super.getMoveSpeed();
       if (this.Girl.IsDowned) {
          d = 0.0;
@@ -654,227 +558,14 @@ lbl109:
    }
 
 
-   void getState() {
-        boolean flag;
-        block62: {
-            block60: {
-                block61: {
-                    boolean flag2;
-                    DamageSource damageSource;
-                    Entity entity;
-                    block59: {
-                        block57: {
-                            try {
-                                try {
-                                    --this.ForcedAttackTicks;
-                                    if (this.Girl.IsDowned) return GirlAiBase.State.DOWNED;
-                                    if (this.Girl.getSexPlayerUuid() != null) {
-                                        return GirlAiBase.State.DOWNED;
-                                    }
-                                }
-                                catch (RuntimeException runtimeException) {
-                                    throw GirlCombatAi.rethrow(runtimeException);
-                                }
-                            }
-                            catch (RuntimeException runtimeException) {
-                                throw GirlCombatAi.rethrow(runtimeException);
-                            }
-                            if (this.Player.isRiding()) {
-                                entity = this.Player.getRidingEntity();
-                                try {
-                                    block56: {
-                                        try {
-                                            try {
-                                                try {
-                                                    if (this.Girl.isRiding() || this.Girl.startRiding(entity)) break block56;
-                                                }
-                                                catch (RuntimeException runtimeException) {
-                                                    throw GirlCombatAi.rethrow(runtimeException);
-                                                }
-                                                if (!(entity instanceof EntityHorse)) break block57;
-                                            }
-                                            catch (RuntimeException runtimeException) {
-                                                throw GirlCombatAi.rethrow(runtimeException);
-                                            }
-                                            if (!((EntityHorse)entity).isHorseSaddled()) break block57;
-                                        }
-                                        catch (RuntimeException runtimeException) {
-                                            throw GirlCombatAi.rethrow(runtimeException);
-                                        }
-                                    }
-                                    this.RideMount = entity;
-                                    return GirlAiBase.State.RIDE;
-                                }
-                                catch (RuntimeException runtimeException) {
-                                    throw GirlCombatAi.rethrow(runtimeException);
-                                }
-                            }
-                            try {
-                                block58: {
-                                    try {
-                                        try {
-                                            try {
-                                                if (!this.Player.isRiding() && this.Girl.isRiding()) break block58;
-                                            }
-                                            catch (RuntimeException runtimeException) {
-                                                throw GirlCombatAi.rethrow(runtimeException);
-                                            }
-                                            if (this.State != GirlAiBase.State.RIDE) break block57;
-                                        }
-                                        catch (RuntimeException runtimeException) {
-                                            throw GirlCombatAi.rethrow(runtimeException);
-                                        }
-                                        if (this.Player.isRiding()) break block57;
-                                    }
-                                    catch (RuntimeException runtimeException) {
-                                        throw GirlCombatAi.rethrow(runtimeException);
-                                    }
-                                }
-                                this.Girl.setCurrentAction(GirlAnimationState.NULL);
-                                this.Girl.dismountRidingEntity();
-                                this.Girl.noClip = false;
-                                this.Girl.setNoGravity(false);
-                            }
-                            catch (RuntimeException runtimeException) {
-                                throw GirlCombatAi.rethrow(runtimeException);
-                            }
-                        }
-                        try {
-                            if (this.isValidTarget(this.Target)) {
-                                return GirlAiBase.State.ATTACK;
-                            }
-                        }
-                        catch (RuntimeException runtimeException) {
-                            throw GirlCombatAi.rethrow(runtimeException);
-                        }
-                        damageSource = this.Girl.getLastDamageSource();
-                        if (damageSource != null) {
-                            entity = (EntityLivingBase)damageSource.getTrueSource();
-                            try {
-                                if (this.isValidTarget((EntityLivingBase)entity)) {
-                                    this.Target = entity;
-                                    return GirlAiBase.State.ATTACK;
-                                }
-                            }
-                            catch (RuntimeException runtimeException) {
-                                throw GirlCombatAi.rethrow(runtimeException);
-                            }
-                        }
-                        entity = this.Player.getLastAttackedEntity();
-                        try {
-                            try {
-                                if (this.Player.ticksExisted - this.Player.getLastAttackedEntityTime() >= 140 || !this.isValidTarget((EntityLivingBase)entity)) break block59;
-                            }
-                            catch (RuntimeException runtimeException) {
-                                throw GirlCombatAi.rethrow(runtimeException);
-                            }
-                            this.Target = entity;
-                            return GirlAiBase.State.ATTACK;
-                        }
-                        catch (RuntimeException runtimeException) {
-                            throw GirlCombatAi.rethrow(runtimeException);
-                        }
-                    }
-                    if (this.State != GirlAiBase.State.FOLLOW) {
-                        damageSource = this.Player.getLastDamageSource();
-                        if (damageSource != null) {
-                            entity = (EntityLivingBase)damageSource.getTrueSource();
-                            try {
-                                if (this.isValidTarget((EntityLivingBase)entity)) {
-                                    this.Target = entity;
-                                    return GirlAiBase.State.ATTACK;
-                                }
-                            }
-                            catch (RuntimeException runtimeException) {
-                                throw GirlCombatAi.rethrow(runtimeException);
-                            }
-                        }
-                        Vec3d vec3d = this.Girl.getPositionVector();
-                        AxisAlignedBB axisAlignedBB = new AxisAlignedBB(vec3d.x - 5.0, vec3d.y - 2.0, vec3d.z - 5.0, vec3d.x + 5.0, vec3d.y + 2.0, vec3d.z + 5.0);
-                        List list = this.Girl.world.getEntitiesWithinAABB(EntityMob.class, axisAlignedBB);
-                        list.sort((entityMob, entityMob2) -> {
-                            int i;
-                            double d = entityMob.getDistance((Entity)this.Girl);
-                            double d2 = entityMob2.getDistance((Entity)this.Girl);
-                            try {
-                                if (d == d2) {
-                                    return 0;
-                                }
-                            }
-                            catch (RuntimeException runtimeException) {
-                                throw GirlCombatAi.rethrow(runtimeException);
-                            }
-                            try {
-                                i = d < d2 ? -1 : 1;
-                            }
-                            catch (RuntimeException runtimeException) {
-                                throw GirlCombatAi.rethrow(runtimeException);
-                            }
-                            return i;
-                        });
-                        for (EntityMob entityMob3 : list) {
-                            try {
-                                try {
-                                    if (!this.isValidTarget((EntityLivingBase)entityMob3) || entityMob3 instanceof EntityCreeper) continue;
-                                }
-                                catch (RuntimeException runtimeException) {
-                                    throw GirlCombatAi.rethrow(runtimeException);
-                                }
-                                this.Target = entityMob3;
-                                return GirlAiBase.State.ATTACK;
-                            }
-                            catch (RuntimeException runtimeException) {
-                                throw GirlCombatAi.rethrow(runtimeException);
-                            }
-                        }
-                    }
-                    float f = this.Girl.getDistance((Entity)this.Player);
-                    try {
-                        flag2 = f > 5.0f;
-                    }
-                    catch (RuntimeException runtimeException) {
-                        throw GirlCombatAi.rethrow(runtimeException);
-                    }
-                    flag = flag2;
-                    try {
-                        try {
-                            if (flag || this.State != GirlAiBase.State.FOLLOW) break block60;
-                        }
-                        catch (RuntimeException runtimeException) {
-                            throw GirlCombatAi.rethrow(runtimeException);
-                        }
-                        if (++this.FollowTimer <= 60) break block61;
-                    }
-                    catch (RuntimeException runtimeException) {
-                        throw GirlCombatAi.rethrow(runtimeException);
-                    }
-                    flag = false;
-                    this.FollowTimer = 0;
-                    break block60;
-                }
-                flag = true;
-            }
-            try {
-                try {
-                    if (!flag || this.State != GirlAiBase.State.ATTACK) break block62;
-                }
-                catch (RuntimeException runtimeException) {
-                    throw GirlCombatAi.rethrow(runtimeException);
-                }
-                this.ForcedAttackTicks = 60;
-            }
-            catch (RuntimeException runtimeException) {
-                throw GirlCombatAi.rethrow(runtimeException);
-            }
-        }
-        try {
-            if (!flag) return GirlAiBase.State.IDLE;
-            return GirlAiBase.State.FOLLOW;
-        }
-        catch (RuntimeException runtimeException) {
-            throw GirlCombatAi.rethrow(runtimeException);
-        }
-    }
+   void airDash() {
+      if (this.Girl.onGround || this.Girl.isInWater() || this.Girl.motionX + this.Girl.motionZ != 0.0 || this.Girl.motionY <= 0.0) {
+         return;
+      }
+      Vec3d vec3d = VectorMath.rotateYaw(new Vec3d(0.0, 0.0, (double)0.1f), this.Girl.rotationYaw);
+      this.Girl.motionX = vec3d.x;
+      this.Girl.motionZ = vec3d.z;
+   }
 
    private static RuntimeException rethrow(RuntimeException error) {
       return error;

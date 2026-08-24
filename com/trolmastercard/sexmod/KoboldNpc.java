@@ -3250,196 +3250,98 @@ dr {
         GirlHomeBuilder.updateKoboldEntity(uuid);
     }
 
-    /*
-     * Could not resolve type clashes
-     * Loose catch block
-     */
     void a(UUID uUID, BlockPos blockPos, TreeCluster treeCluster) {
-        block58: {
-            Object object2;
+        if (this.getCurrentAction() != GirlAnimationState.MINE) {
+            this.a(blockPos, uUID);
+            return;
+        }
+        --this.W;
+        if (this.W > 0) {
+            return;
+        }
+        if (this.W == 0) {
+            NetworkHandler.channel.sendToAllAround((IMessage)new PacketResetController(this.getGirlUuid()), this.P());
+        }
+        if (this.world.getBlockState(blockPos).getBlock() == Blocks.AIR) {
+            this.a(uUID, treeCluster, blockPos);
+            return;
+        }
+        --this.aR;
+        if (this.aR >= 0) {
+            return;
+        }
+        this.aR = 24;
+        this.W = 78;
+        HashSet<BlockPos> hashSet = new HashSet<BlockPos>();
+        EntityPlayer entityPlayer = this.getSexPlayer();
+        for (BlockPos object2 : treeCluster.getLogPositions()) {
+            if (this.world.getBlockState(object2).getBlock() == Blocks.AIR) {
+                hashSet.add(object2);
+                continue;
+            }
+            if (object2.getX() == blockPos.getX() && object2.getZ() == blockPos.getZ()) continue;
             try {
-                if (this.getCurrentAction() != GirlAnimationState.MINE) {
-                    this.a(blockPos, uUID);
-                    return;
-                }
-            }
-            catch (IllegalArgumentException illegalArgumentException) {
-                throw KoboldNpc.rethrow(illegalArgumentException);
-            }
-            try {
-                --this.W;
-                if (this.W > 0) {
-                    return;
-                }
-            }
-            catch (IllegalArgumentException illegalArgumentException) {
-                throw KoboldNpc.rethrow(illegalArgumentException);
-            }
-            try {
-                if (this.W == 0) {
-                    NetworkHandler.channel.sendToAllAround((IMessage)new PacketResetController(this.getGirlUuid()), this.P());
-                }
-            }
-            catch (IllegalArgumentException illegalArgumentException) {
-                throw KoboldNpc.rethrow(illegalArgumentException);
-            }
-            try {
-                if (this.world.getBlockState(blockPos).getBlock() == Blocks.AIR) {
-                    this.a(uUID, treeCluster, blockPos);
-                    return;
-                }
-            }
-            catch (IllegalArgumentException illegalArgumentException) {
-                throw KoboldNpc.rethrow(illegalArgumentException);
-            }
-            try {
-                --this.aR;
-                if (this.aR >= 0) {
-                    return;
-                }
-            }
-            catch (IllegalArgumentException illegalArgumentException) {
-                throw KoboldNpc.rethrow(illegalArgumentException);
-            }
-            this.aR = 24;
-            this.W = 78;
-            HashSet<BlockPos> hashSet = new HashSet<BlockPos>();
-            EntityPlayer entityPlayer = this.getSexPlayer();
-            for (Object object2 : treeCluster.getLogPositions()) {
-                block55: {
-                    try {
-                        if (this.world.getBlockState((BlockPos)object2).getBlock() == Blocks.AIR) {
-                            hashSet.add((BlockPos)object2);
-                            continue;
-                        }
-                    }
-                    catch (IllegalArgumentException illegalArgumentException) {
-                        throw KoboldNpc.rethrow(illegalArgumentException);
-                    }
-                    if (object2.getX() != blockPos.getX()) break block55;
-                    try {
-                        if (object2.getZ() == blockPos.getZ()) {
-                            continue;
-                        }
-                        break block55;
-                        catch (IllegalArgumentException illegalArgumentException) {
-                            throw KoboldNpc.rethrow(illegalArgumentException);
-                        }
-                    }
-                    catch (IllegalArgumentException illegalArgumentException) {
-                        throw KoboldNpc.rethrow(illegalArgumentException);
-                    }
-                }
-                try {
-                    ItemStack itemStack = this.world.getBlockState((BlockPos)object2).getBlock().getItem(this.world, blockPos, this.world.getBlockState(blockPos));
-                    try {
-                        if (itemStack.getItem() != Items.AIR) {
-                            this.b(itemStack);
-                        }
-                    }
-                    catch (IllegalArgumentException illegalArgumentException) {
-                        throw KoboldNpc.rethrow(illegalArgumentException);
-                    }
-                }
-                catch (IllegalArgumentException illegalArgumentException) {
-                    Main.LOGGER.error("Couldn't get an item out of the block that a kobold just destroyed when falling a tree. As a result, the block wasn't added into the kobolds inventory. If you see this message, pls tell trol about it and send her the following stacktrace. Do you maybe remember what block the kobold just removed? Stacktrace follwing:");
-                    Main.LOGGER.warn("block in question: " + this.world.getBlockState((BlockPos)object2).getBlock().getTranslationKey());
-                    Main.LOGGER.error(illegalArgumentException.getMessage());
-                }
-                try {
-                    this.CarriedItem = this.a((BlockPos)object2);
-                    this.world.destroyBlock((BlockPos)object2, false);
-                    treeCluster.removeLogPos((BlockPos)object2);
-                    treeCluster.removeAllLogPos(hashSet);
-                    hashSet.add((BlockPos)object2);
-                    if (entityPlayer != null) {
-                        NetworkHandler.channel.sendTo((IMessage)new PacketSendBlocks(hashSet, false), (EntityPlayerMP)entityPlayer);
-                    }
-                }
-                catch (IllegalArgumentException illegalArgumentException) {
-                    throw KoboldNpc.rethrow(illegalArgumentException);
-                }
-                return;
-            }
-            try {
-                ItemStack itemStack = this.world.getBlockState(blockPos).getBlock().getItem(this.world, blockPos, this.world.getBlockState(blockPos));
-                try {
-                    if (itemStack.getItem() != Items.AIR) {
-                        this.b(itemStack);
-                    }
-                }
-                catch (IllegalArgumentException illegalArgumentException) {
-                    throw KoboldNpc.rethrow(illegalArgumentException);
+                ItemStack itemStack = this.world.getBlockState(object2).getBlock().getItem(this.world, blockPos, this.world.getBlockState(blockPos));
+                if (itemStack.getItem() != Items.AIR) {
+                    this.b(itemStack);
                 }
             }
             catch (IllegalArgumentException illegalArgumentException) {
                 Main.LOGGER.error("Couldn't get an item out of the block that a kobold just destroyed when falling a tree. As a result, the block wasn't added into the kobolds inventory. If you see this message, pls tell trol about it and send her the following stacktrace. Do you maybe remember what block the kobold just removed? Stacktrace follwing:");
-                Main.LOGGER.warn("block in question: " + this.world.getBlockState(blockPos).getBlock().getTranslationKey());
+                Main.LOGGER.warn("block in question: " + this.world.getBlockState(object2).getBlock().getTranslationKey());
                 Main.LOGGER.error(illegalArgumentException.getMessage());
             }
-            this.CarriedItem = this.a(blockPos);
-            this.world.destroyBlock(blockPos, false);
-            int i = 0;
-            for (BlockPos blockPos2 : treeCluster.getLogPositions()) {
-                try {
-                    if (!(this.world.getBlockState(blockPos2).getBlock() instanceof BlockLog)) continue;
-                    ++i;
-                }
-                catch (IllegalArgumentException illegalArgumentException) {
-                    throw KoboldNpc.rethrow(illegalArgumentException);
-                }
+            this.CarriedItem = this.a(object2);
+            this.world.destroyBlock(object2, false);
+            treeCluster.removeLogPos(object2);
+            treeCluster.removeAllLogPos(hashSet);
+            hashSet.add(object2);
+            if (entityPlayer != null) {
+                NetworkHandler.channel.sendTo((IMessage)new PacketSendBlocks(hashSet, false), (EntityPlayerMP)entityPlayer);
             }
-            object2 = new HashSet();
-            try {
-                for (int i3 = 0; i3 < i; ++i3) {
-                    ((HashSet)object2).add(blockPos.add(0, i3, 0));
-                }
+            return;
+        }
+        try {
+            ItemStack itemStack = this.world.getBlockState(blockPos).getBlock().getItem(this.world, blockPos, this.world.getBlockState(blockPos));
+            if (itemStack.getItem() != Items.AIR) {
+                this.b(itemStack);
             }
-            catch (IllegalArgumentException illegalArgumentException) {
-                throw KoboldNpc.rethrow(illegalArgumentException);
-            }
-            HashSet<BlockPos> hashSet2 = new HashSet<BlockPos>();
-            for (BlockPos blockPos3 : treeCluster.getLogPositions()) {
-                try {
-                    if (((HashSet)object2).contains(blockPos3)) continue;
-                    hashSet2.add(blockPos3);
-                }
-                catch (IllegalArgumentException illegalArgumentException) {
-                    throw KoboldNpc.rethrow(illegalArgumentException);
-                }
-            }
-            try {
-                try {
-                    if (hashSet2.isEmpty() || entityPlayer == null) break block58;
-                }
-                catch (IllegalArgumentException illegalArgumentException) {
-                    throw KoboldNpc.rethrow(illegalArgumentException);
-                }
-                NetworkHandler.channel.sendTo((IMessage)new PacketSendBlocks(hashSet2, false), (EntityPlayerMP)entityPlayer);
-            }
-            catch (IllegalArgumentException illegalArgumentException) {
-                throw KoboldNpc.rethrow(illegalArgumentException);
-            }
+        }
+        catch (IllegalArgumentException illegalArgumentException) {
+            Main.LOGGER.error("Couldn't get an item out of the block that a kobold just destroyed when falling a tree. As a result, the block wasn't added into the kobolds inventory. If you see this message, pls tell trol about it and send her the following stacktrace. Do you maybe remember what block the kobold just removed? Stacktrace follwing:");
+            Main.LOGGER.warn("block in question: " + this.world.getBlockState(blockPos).getBlock().getTranslationKey());
+            Main.LOGGER.error(illegalArgumentException.getMessage());
+        }
+        this.CarriedItem = this.a(blockPos);
+        this.world.destroyBlock(blockPos, false);
+        int i = 0;
+        for (BlockPos blockPos2 : treeCluster.getLogPositions()) {
+            if (!(this.world.getBlockState(blockPos2).getBlock() instanceof BlockLog)) continue;
+            ++i;
+        }
+        HashSet<BlockPos> hashSet2 = new HashSet<BlockPos>();
+        for (int i3 = 0; i3 < i; ++i3) {
+            hashSet2.add(blockPos.add(0, i3, 0));
+        }
+        HashSet<BlockPos> hashSet3 = new HashSet<BlockPos>();
+        for (BlockPos blockPos3 : treeCluster.getLogPositions()) {
+            if (hashSet2.contains(blockPos3)) continue;
+            hashSet3.add(blockPos3);
+        }
+        if (!hashSet3.isEmpty() && entityPlayer != null) {
+            NetworkHandler.channel.sendTo((IMessage)new PacketSendBlocks(hashSet3, false), (EntityPlayerMP)entityPlayer);
         }
         int i4 = 1;
         while (true) {
-            BlockPos blockPos3;
-            blockPos3 = blockPos.add(0, i4, 0);
-            IBlockState iBlockState = this.world.getBlockState(blockPos3);
-            if (this.world.getBlockState(blockPos3).getBlock() instanceof BlockLog) {
-                this.world.destroyBlock(blockPos3, false);
-                EntityFallingBlock entityFallingBlock = new EntityFallingBlock(this.world, (double)blockPos3.getX() + 0.5, (double)blockPos3.getY(), (double)blockPos3.getZ() + 0.5, iBlockState);
+            BlockPos blockPos4 = blockPos.add(0, i4, 0);
+            IBlockState iBlockState = this.world.getBlockState(blockPos4);
+            if (this.world.getBlockState(blockPos4).getBlock() instanceof BlockLog) {
+                this.world.destroyBlock(blockPos4, false);
+                EntityFallingBlock entityFallingBlock = new EntityFallingBlock(this.world, (double)blockPos4.getX() + 0.5, (double)blockPos4.getY(), (double)blockPos4.getZ() + 0.5, iBlockState);
                 entityFallingBlock.fallTime = 1;
                 this.world.spawnEntity((Entity)entityFallingBlock);
             }
-            try {
-                if (!treeCluster.getLogPositions().contains(blockPos3)) {
-                    break;
-                }
-            }
-            catch (IllegalArgumentException illegalArgumentException) {
-                throw KoboldNpc.rethrow(illegalArgumentException);
-            }
+            if (!treeCluster.getLogPositions().contains(blockPos4)) break;
             ++i4;
         }
     }

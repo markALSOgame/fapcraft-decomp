@@ -423,7 +423,7 @@ public enum DeadClass {
         f_2.e(vec3d);
         Vec3d vec3d2 = f_2.M().getPositionVector();
         Vec2d vec2d = new Vec2d(vec3d2.x - vec3d.x, vec3d2.z - vec3d.z);
-        double d = AngleMath.radToDegrees(Math.atan2(vec2d.a, vec2d.b)) - 90.0;
+        double d = AngleMath.radToDegrees(Math.atan2(vec2d.Y, vec2d.X)) - 90.0;
         f_2.a(true);
         f_2.c(vec3d);
         f_2.b((float)d);
@@ -435,7 +435,7 @@ public enum DeadClass {
         if (MathUtils.isInRange((double)i7, 24.0, 32.0)) {
             Vec3d vec3d = entityLivingBase.getPositionVector().add(0.0, (double)entityLivingBase.getEyeHeight(), 0.0);
             Vec2d vec2d = new Vec2d(vec3d.x - f_2.posX, vec3d.z - f_2.posZ);
-            double d = AngleMath.radToDegrees(Math.atan2(vec2d.a, vec2d.b)) - 90.0;
+            double d = AngleMath.radToDegrees(Math.atan2(vec2d.Y, vec2d.X)) - 90.0;
             f_2.b((float)d);
             Vec3d vec3d2 = VectorMath.rotateYaw(new Vec3d(0.0, 0.0, 3.0), (float)(d + 180.0));
             Vec3d vec3d3 = f_2.B();

@@ -10,7 +10,7 @@ public class JennyPlayerRenderer extends GirlPlayerRenderer {
    }
 
    @Override
-   protected void c() {
+   protected void void_c() {
       GlStateManager.translate(0.0F, -1.25F, 0.0F);
       GlStateManager.scale(0.8F, 0.8F, 0.8F);
    }

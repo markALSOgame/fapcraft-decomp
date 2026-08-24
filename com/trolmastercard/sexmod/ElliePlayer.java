@@ -126,14 +126,14 @@ extends PlayerGirlEntity {
             throw ElliePlayer.rethrow(runtimeException);
         }
         try {
-            if (!((Optional)this.DataManager.get(ai)).isPresent()) {
+            if (!((Optional)this.DataManager.get(BoundPlayerKey)).isPresent()) {
                 return;
             }
         }
         catch (RuntimeException runtimeException) {
             throw ElliePlayer.rethrow(runtimeException);
         }
-        NetworkHandler.channel.sendToServer((IMessage)new PacketSexPrompt(string, uUID, (UUID)((Optional)this.DataManager.get(ai)).get(), this.Accept));
+        NetworkHandler.channel.sendToServer((IMessage)new PacketSexPrompt(string, uUID, (UUID)((Optional)this.DataManager.get(BoundPlayerKey)).get(), this.Accept));
         this.Accept = true;
     }
 
@@ -306,7 +306,7 @@ extends PlayerGirlEntity {
                 entityPlayer = this.getRenderPosition();
                 try {
                     try {
-                        if (entityPlayer != null && !(entityPlayer.getDistance(this.getCustomName().x, this.getCustomName().y, this.getCustomName().z) > 1.0)) break block12;
+                        if (entityPlayer != null && !(entityPlayer.getDistance(this.getPositionVector().x, this.getPositionVector().y, this.getPositionVector().z) > 1.0)) break block12;
                     }
                     catch (RuntimeException runtimeException) {
                         throw ElliePlayer.rethrow(runtimeException);
@@ -320,7 +320,7 @@ extends PlayerGirlEntity {
             this.DataManager.set(GirlEntity.BlowjobStageKey, (Object)"");
             this.DataManager.set(GirlEntity.OutfitIndexKey, (Object)0);
             this.hasGirl(entityPlayer.getPersistentID());
-            EntityPlayerMP entityPlayerMP = (EntityPlayerMP)this.world.getPlayerEntityByUUID((UUID)((Optional)this.DataManager.get(ai)).get());
+            EntityPlayerMP entityPlayerMP = (EntityPlayerMP)this.world.getPlayerEntityByUUID((UUID)((Optional)this.DataManager.get(BoundPlayerKey)).get());
             NetworkHandler.channel.sendTo((IMessage)new PacketSetPlayerMovement(false), (EntityPlayerMP)entityPlayer);
             NetworkHandler.channel.sendTo((IMessage)new PacketSetPlayerMovement(false), entityPlayerMP);
             entityPlayer.moveRelative(0.0f, 0.0f, 0.0f, 0.0f);

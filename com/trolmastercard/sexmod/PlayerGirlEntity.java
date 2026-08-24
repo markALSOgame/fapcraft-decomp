@@ -248,7 +248,7 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
       mcPlayer.setInvisible(false);
       mcPlayer.setNoGravity(false);
       mcPlayer.noClip = false;
-      this.DataManager.set(G, false);
+      this.DataManager.set(BusyKey, false);
       NetworkHandler.channel.sendToServer(new PacketResetGirl(this.isBoundToLocalPlayer()));
    }
 
@@ -347,8 +347,8 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
          if (player == null) {
             player = player2;
          } else {
-            double d = player.getDistanceSq(this.getCustomName().x, this.getCustomName().y, this.getCustomName().z);
-            double d2 = player2.getDistanceSq(this.getCustomName().x, this.getCustomName().y, this.getCustomName().z);
+            double d = player.getDistanceSq(this.w().x, this.w().y, this.w().z);
+            double d2 = player2.getDistanceSq(this.w().x, this.w().y, this.w().z);
             if (d2 < d) {
                player = player2;
             }
@@ -395,7 +395,7 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
       serverPlayer.capabilities.isFlying = true;
       serverPlayer2.capabilities.isFlying = true;
       this.teleportPlayerInFront(uuid);
-      this.DataManager.set(G, true);
+      this.DataManager.set(BusyKey, true);
       this.setTargetPos(vec3d);
       this.b(0.0F);
    }
@@ -490,8 +490,8 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
                 }
                 this.d(entityPlayer);
                 if (this.Q()) {
-                    object = this.getTargetPos();
-                    this.setPositionAndUpdate(object.x, object.y, object.z);
+                    Vec3d vec3d = this.getTargetPos();
+                    this.setPositionAndUpdate(vec3d.x, vec3d.y, vec3d.z);
                 } else {
                     this.setPositionAndUpdate(entityPlayer.posX, entityPlayer.posY + 0.0, entityPlayer.posZ);
                 }
@@ -674,15 +674,15 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
     }
 
    void syncEquipment(EntityPlayer player) {
-      this.DataManager.set(X, ItemStack.EMPTY);
-      this.DataManager.set(T, ItemStack.EMPTY);
-      this.DataManager.set(U, ItemStack.EMPTY);
-      this.DataManager.set(W, ItemStack.EMPTY);
+      this.DataManager.set(HelmetKey, ItemStack.EMPTY);
+      this.DataManager.set(ChestKey, ItemStack.EMPTY);
+      this.DataManager.set(PantsKey, ItemStack.EMPTY);
+      this.DataManager.set(BootsKey, ItemStack.EMPTY);
 
       for (ItemStack stack : player.getArmorInventoryList()) {
          try {
-            if (stack.getItem() instanceof ItemElytra) {
-               this.DataManager.set(T, stack);
+          if (stack.getItem() instanceof ItemElytra) {
+             this.DataManager.set(ChestKey, stack);
                continue;
             }
          } catch (ConcurrentModificationException error) {
@@ -704,7 +704,7 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
                try {
                   switch (armor.getEquipmentSlot()) {
                      case HEAD:
-                        this.DataManager.set(X, stack);
+                        this.DataManager.set(HelmetKey, stack);
                         continue;
                      case CHEST:
                         break label43;
@@ -719,15 +719,15 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
                   throw rethrow(error3);
                }
 
-               this.DataManager.set(W, stack);
+               this.DataManager.set(BootsKey, stack);
                continue;
             }
 
-            this.DataManager.set(U, stack);
+            this.DataManager.set(PantsKey, stack);
             continue;
          }
 
-         this.DataManager.set(T, stack);
+          this.DataManager.set(ChestKey, stack);
       }
    }
 

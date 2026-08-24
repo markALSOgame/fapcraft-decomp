@@ -22,6 +22,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.datafix.DataFixer;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
@@ -134,30 +135,10 @@ public class SlimeRainEntity extends EntityLiving {
         ArrayList<SlimeRainEntity> arrayList = new ArrayList<SlimeRainEntity>();
         try {
             for (SlimeRainEntity slimeRainEntity : ActiveRains) {
-                try {
-                    if (slimeRainEntity == null) {
-                        continue;
-                    }
-                }
-                catch (Exception exception) {
-                    throw SlimeRainEntity.rethrow(exception);
-                }
+                if (slimeRainEntity == null) continue;
                 double d2 = Math.abs(slimeRainEntity.prevPosX - vec3d.x) + Math.abs(slimeRainEntity.prevPosY - vec3d.y) + Math.abs(slimeRainEntity.prevPosZ - vec3d.z);
-                if (slimeRainEntity.world == null) continue;
-                try {
-                    block10: {
-                        if (!(d2 < d)) continue;
-                        break block10;
-                        catch (Exception exception) {
-                            throw SlimeRainEntity.rethrow(exception);
-                        }
-                    }
-                    arrayList.add(slimeRainEntity);
-                }
-                catch (Exception exception) {
-                    throw SlimeRainEntity.rethrow(exception);
-                    return arrayList;
-                }
+                if (slimeRainEntity.world == null || !(d2 < d)) continue;
+                arrayList.add(slimeRainEntity);
             }
         }
         catch (Exception exception) {
@@ -189,88 +170,43 @@ public class SlimeRainEntity extends EntityLiving {
 
 
    public void onUpdate() {
-        block21: {
-            block20: {
-                block19: {
-                    block17: {
-                        block18: {
-                            try {
-                                try {
-                                    this.dataManager.set(SlimeRainEntity.RandomHopAi, (Object)((Integer)this.dataManager.get(SlimeRainEntity.RandomHopAi) + 1));
-                                    if (!this.world.isRemote) break block17;
-                                    if (!((double)((Integer)this.dataManager.get(SlimeRainEntity.RandomHopAi)).intValue() > (double)SlimeRainEntity.SlimeMoveHelper * 0.95)) break block18;
-                                }
-                                catch (RuntimeException error) {
-                                    throw SlimeRainEntity.rethrow(error);
-                                }
-                                this.spawnParticle(EnumParticleTypes.CLOUD);
-                                break block19;
-                            }
-                            catch (RuntimeException error2) {
-                                throw SlimeRainEntity.rethrow(error2);
-                            }
-                        }
-                        try {
-                            try {
-                                if (!((double)((Integer)this.dataManager.get(SlimeRainEntity.RandomHopAi)).intValue() > (double)SlimeRainEntity.SlimeMoveHelper * 0.7) || this.ticksExisted % 10 != 0) ** GOTO lbl32
-                            }
-                            catch (RuntimeException error3) {
-                                throw SlimeRainEntity.rethrow(error3);
-                            }
-                            this.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY);
-                        }
-                        catch (RuntimeException error4) {
-                            throw SlimeRainEntity.rethrow(error4);
-                        }
-                    }
-                    if ((Integer)this.dataManager.get(SlimeRainEntity.RandomHopAi) > SlimeRainEntity.SlimeMoveHelper) {
-                        slime = new SlimeNpc(this.world);
-                        slime.setPositionAndRotation(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
-                        this.world.spawnEntity((Entity)slime);
-                        slime.a(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP);
-                        this.world.removeEntity((Entity)this);
-                    }
-                }
-                try {
-                    this.SquishFactor += (this.SquishTarget - this.SquishFactor) * 0.5f;
-                    this.PrevSquishFactor = this.SquishFactor;
-                    super.onUpdate();
-                    if (!this.onGround || this.WasOnGround) break block20;
-                }
-                catch (RuntimeException error5) {
-                    throw SlimeRainEntity.rethrow(error5);
-                }
-                i = this.getSlimeSize();
-                if (this.isParticleSuppressed()) {
-                    i = 0;
-                }
-                for (i2 = 0; i2 < i * 8; ++i2) {
-                    f = this.rand.nextFloat() * 6.2831855f;
-                    f2 = this.rand.nextFloat() * 0.5f + 0.5f;
-                    f3 = MathHelper.sin((float)f) * (float)i * 0.5f * f2;
-                    f4 = MathHelper.cos((float)f) * (float)i * 0.5f * f2;
-                    world2 = this.world;
-                    particle = this.getParticleType();
-                    d = this.posX + (double)f3;
-                    d2 = this.posZ + (double)f4;
-                    world2.spawnParticle(particle, d, this.getEntityBoundingBox().minY, d2, 0.0, 0.0, 0.0, new int[0]);
-                }
-                this.playSound(this.getJumpSound(), this.getSoundVolume(), ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2f + 1.0f) / 0.8f);
-                this.SquishTarget = -0.5f;
-                break block21;
+        this.dataManager.set(SizeKey, this.dataManager.get(SizeKey) + 1);
+        if (this.world.isRemote) {
+            if ((double)this.dataManager.get(SizeKey).intValue() > (double)RainDurationTicks * 0.95) {
+                this.spawnParticle(EnumParticleTypes.CLOUD);
+            } else if ((double)this.dataManager.get(SizeKey).intValue() > (double)RainDurationTicks * 0.7 && this.ticksExisted % 10 == 0) {
+                this.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY);
             }
-            try {
-                try {
-                    if (this.onGround || !this.WasOnGround) break block21;
-                }
-                catch (RuntimeException error6) {
-                    throw SlimeRainEntity.rethrow(error6);
-                }
-                this.SquishTarget = 1.0f;
+        } else if ((Integer)this.dataManager.get(SizeKey) > RainDurationTicks) {
+            SlimeNpc slime = new SlimeNpc(this.world);
+            slime.setPositionAndRotation(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
+            this.world.spawnEntity(slime);
+            slime.a(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP);
+            this.world.removeEntity(this);
+        }
+        this.SquishFactor += (this.SquishTarget - this.SquishFactor) * 0.5f;
+        this.PrevSquishFactor = this.SquishFactor;
+        super.onUpdate();
+        if (this.onGround && !this.WasOnGround) {
+            int i = this.getSlimeSize();
+            if (this.isParticleSuppressed()) {
+                i = 0;
             }
-            catch (RuntimeException error7) {
-                throw SlimeRainEntity.rethrow(error7);
+            for (int i2 = 0; i2 < i * 8; ++i2) {
+                float f = this.rand.nextFloat() * ((float)Math.PI * 2);
+                float f2 = this.rand.nextFloat() * 0.5f + 0.5f;
+                float f3 = MathHelper.sin(f) * (float)i * 0.5f * f2;
+                float f4 = MathHelper.cos(f) * (float)i * 0.5f * f2;
+                World world2 = this.world;
+                EnumParticleTypes particle = this.getParticleType();
+                double d = this.posX + (double)f3;
+                double d2 = this.posZ + (double)f4;
+                world2.spawnParticle(particle, d, this.getEntityBoundingBox().minY, d2, 0.0, 0.0, 0.0, new int[0]);
             }
+            this.playSound(this.getJumpSound(), this.getSoundVolume(), ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2f + 1.0f) / 0.8f);
+            this.SquishTarget = -0.5f;
+        } else if (!this.onGround && this.WasOnGround) {
+            this.SquishTarget = 1.0f;
         }
         this.WasOnGround = this.onGround;
         this.updateSquish();
@@ -290,24 +226,13 @@ public class SlimeRainEntity extends EntityLiving {
 
 
    public void notifyDataManagerChange(DataParameter<?> dataParam) {
-        block5: {
-            if (TimerKey.equals(dataParam)) {
-                int i = this.getSlimeSize();
-                try {
-                    try {
-                        this.setSize(0.51000005f * (float)i, 0.51000005f * (float)i);
-                        this.rotationYaw = this.rotationYawHead;
-                        this.renderYawOffset = this.rotationYawHead;
-                        if (!this.isInWater() || this.rand.nextInt(20) != 0) break block5;
-                    }
-                    catch (RuntimeException runtimeException) {
-                        throw SlimeRainEntity.rethrow(runtimeException);
-                    }
-                    this.doWaterSplashEffect();
-                }
-                catch (RuntimeException runtimeException) {
-                    throw SlimeRainEntity.rethrow(runtimeException);
-                }
+        if (TimerKey.equals(dataParam)) {
+            int i = this.getSlimeSize();
+            this.setSize(0.51000005f * (float)i, 0.51000005f * (float)i);
+            this.rotationYaw = this.rotationYawHead;
+            this.renderYawOffset = this.rotationYawHead;
+            if (this.isInWater() && this.rand.nextInt(20) == 0) {
+                this.doWaterSplashEffect();
             }
         }
         super.notifyDataManagerChange(dataParam);
@@ -315,44 +240,22 @@ public class SlimeRainEntity extends EntityLiving {
 
 
    public void setDead() {
-        block11: {
-            int i = this.getSlimeSize();
-            try {
-                try {
-                    if (this.world.isRemote || i <= 1) break block11;
-                }
-                catch (RuntimeException runtimeException) {
-                    throw SlimeRainEntity.rethrow(runtimeException);
-                }
-                if (!(this.getHealth() <= 0.0f)) break block11;
-            }
-            catch (RuntimeException runtimeException) {
-                throw SlimeRainEntity.rethrow(runtimeException);
-            }
-            int i3 = 2 + this.rand.nextInt(3);
-            for (int i4 = 0; i4 < i3; ++i4) {
-                float f = ((float)(i4 % 2) - 0.5f) * (float)i / 4.0f;
-                float f2 = ((float)(i4 / 2) - 0.5f) * (float)i / 4.0f;
+        int i = this.getSlimeSize();
+        if (!this.world.isRemote && i > 1 && this.getHealth() <= 0.0f) {
+            int i2 = 2 + this.rand.nextInt(3);
+            for (int i3 = 0; i3 < i2; ++i3) {
+                float f = ((float)(i3 % 2) - 0.5f) * (float)i / 4.0f;
+                float f2 = ((float)(i3 / 2) - 0.5f) * (float)i / 4.0f;
                 SlimeRainEntity slimeRainEntity = this.createInstance();
-                try {
-                    if (this.hasCustomName()) {
-                        slimeRainEntity.setCustomNameTag(this.getCustomNameTag());
-                    }
+                if (this.hasCustomName()) {
+                    slimeRainEntity.setCustomNameTag(this.getCustomNameTag());
                 }
-                catch (RuntimeException runtimeException) {
-                    throw SlimeRainEntity.rethrow(runtimeException);
-                }
-                try {
-                    if (this.isNoDespawnRequired()) {
-                        slimeRainEntity.enablePersistence();
-                    }
-                }
-                catch (RuntimeException runtimeException) {
-                    throw SlimeRainEntity.rethrow(runtimeException);
+                if (this.isNoDespawnRequired()) {
+                    slimeRainEntity.enablePersistence();
                 }
                 slimeRainEntity.setSlimeSize(i / 2, true);
                 slimeRainEntity.setLocationAndAngles(this.posX + (double)f, this.posY + 0.5, this.posZ + (double)f2, this.rand.nextFloat() * 360.0f, 0.0f);
-                this.world.spawnEntity((Entity)slimeRainEntity);
+                this.world.spawnEntity(slimeRainEntity);
             }
         }
         super.setDead();
@@ -474,12 +377,12 @@ public class SlimeRainEntity extends EntityLiving {
       return error;
    }
 
-   static class RandomHopAi extends EntityAIBase {
+   static class RandomLookAi extends EntityAIBase {
       private final SlimeRainEntity RainDurationTicks;
       private float SquishTarget;
       private int TimerKey;
 
-      public RandomHopAi(SlimeRainEntity slimeRainEntity) {
+      public RandomLookAi(SlimeRainEntity slimeRainEntity) {
          this.RainDurationTicks = slimeRainEntity;
          this.setMutexBits(2);
       }
@@ -531,62 +434,34 @@ public class SlimeRainEntity extends EntityLiving {
 
 
       public void onUpdateMoveHelper() {
-            block11: {
-                block12: {
-                    block13: {
-                        block10: {
-                            try {
-                                this.entity.rotationYawHead = this.entity.rotationYaw = this.limitAngle(this.entity.rotationYaw, this.RainDurationTicks, 90.0f);
-                                this.entity.renderYawOffset = this.entity.rotationYaw;
-                                if (this.action == EntityMoveHelper.Action.MOVE_TO) break block10;
-                                this.entity.setMoveForward(0.0f);
-                                return;
-                            }
-                            catch (RuntimeException runtimeException) {
-                                throw SlimeRainEntity.SlimeMoveHelper.rethrow(runtimeException);
-                            }
-                        }
-                        try {
-                            try {
-                                try {
-                                    this.action = EntityMoveHelper.Action.WAIT;
-                                    if (!this.entity.onGround) break block11;
-                                    this.entity.setAIMoveSpeed((float)(this.speed * this.entity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue()));
-                                    if (this.TimerKey-- > 0) break block12;
-                                }
-                                catch (RuntimeException runtimeException) {
-                                    throw SlimeRainEntity.SlimeMoveHelper.rethrow(runtimeException);
-                                }
-                                this.TimerKey = this.SizeKey.a();
-                                if (!this.SquishTarget) break block13;
-                            }
-                            catch (RuntimeException runtimeException) {
-                                throw SlimeRainEntity.SlimeMoveHelper.rethrow(runtimeException);
-                            }
+            this.entity.rotationYawHead = this.entity.rotationYaw = this.limitAngle(this.entity.rotationYaw, this.RainDurationTicks, 90.0f);
+            this.entity.renderYawOffset = this.entity.rotationYaw;
+            if (this.action != EntityMoveHelper.Action.MOVE_TO) {
+                this.entity.setMoveForward(0.0f);
+            } else {
+                this.action = EntityMoveHelper.Action.WAIT;
+                if (this.entity.onGround) {
+                    this.entity.setAIMoveSpeed((float)(this.speed * this.entity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue()));
+                    if (this.TimerKey-- <= 0) {
+                        this.TimerKey = this.SizeKey.getRandomJumpDelay();
+                        if (this.SquishTarget) {
                             this.TimerKey /= 3;
                         }
-                        catch (RuntimeException runtimeException) {
-                            throw SlimeRainEntity.SlimeMoveHelper.rethrow(runtimeException);
-                        }
-                    }
-                    float f = ModConstants.Random.nextInt(360);
-                    try {
-                        ((RainDurationTicks)this.SizeKey.getMoveHelper()).a(f, false);
+                        float f = ModConstants.Random.nextInt(360);
+                        ((SlimeRainEntity.SlimeMoveHelper)this.SizeKey.getMoveHelper()).a(f, false);
                         this.SizeKey.getJumpHelper().setJumping();
-                        if (!this.SizeKey.i()) return;
-                        this.SizeKey.playSound(this.SizeKey.c(), this.SizeKey.getSoundVolume(), ((this.SizeKey.getRNG().nextFloat() - this.SizeKey.getRNG().nextFloat()) * 0.2f + 1.0f) * 0.8f);
-                        return;
+                        if (this.SizeKey.hasSlimeSize()) {
+                            this.SizeKey.playSound(this.SizeKey.getSquishSound(), this.SizeKey.getSoundVolume(), ((this.SizeKey.getRNG().nextFloat() - this.SizeKey.getRNG().nextFloat()) * 0.2f + 1.0f) * 0.8f);
+                        }
+                    } else {
+                        this.SizeKey.moveStrafing = 0.0f;
+                        this.SizeKey.moveForward = 0.0f;
+                        this.entity.setAIMoveSpeed(0.0f);
                     }
-                    catch (RuntimeException runtimeException) {
-                        throw SlimeRainEntity.SlimeMoveHelper.rethrow(runtimeException);
-                    }
+                } else {
+                    this.entity.setAIMoveSpeed((float)(this.speed * this.entity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue()));
                 }
-                this.SizeKey.moveStrafing = 0.0f;
-                this.SizeKey.moveForward = 0.0f;
-                this.entity.setAIMoveSpeed(0.0f);
-                return;
             }
-            this.entity.setAIMoveSpeed((float)(this.speed * this.entity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue()));
         }
 
       private static RuntimeException rethrow(RuntimeException error) {

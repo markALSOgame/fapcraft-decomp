@@ -199,7 +199,7 @@ public class AlliePlayerRenderer extends GirlPlayerRenderer {
          this.SwayAmount = MathUtils.clamp((float)this.SwayAmount, 0.0F, 1.0F);
          bone.setPositionY((float)LerpMath.cosineLerp(5.0, 0.0, LerpMath.lerp(this.PrevSwayAmount, this.SwayAmount, this.RenderTick)));
          if (this.CurrentGirl instanceof AlliePlayer) {
-            ((AlliePlayer)this.CurrentGirl).aq = (float)LerpMath.cosineLerp(0.3F, 0.0, LerpMath.lerp(this.PrevSwayAmount, this.SwayAmount, this.RenderTick));
+            ((AlliePlayer)this.CurrentGirl).HeightOffset = (float)LerpMath.cosineLerp(0.3F, 0.0, LerpMath.lerp(this.PrevSwayAmount, this.SwayAmount, this.RenderTick));
          }
       } catch (RuntimeException error) {
          throw rethrow(error);

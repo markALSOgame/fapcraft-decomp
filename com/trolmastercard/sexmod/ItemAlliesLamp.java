@@ -312,101 +312,48 @@ public class ItemAlliesLamp extends Item implements IAnimatable {
       @SubscribeEvent
 
       public void a(RightClickItem rightClickItem) {
-            GirlEntity girl;
-            EntityPlayer entityPlayer;
-            block28: {
-                ItemStack itemStack;
-                block27: {
-                    entityPlayer = rightClickItem.getEntityPlayer();
-                    EnumHand enumHand = rightClickItem.getHand();
-                    itemStack = entityPlayer.getHeldItem(enumHand);
-                    try {
-                        if (PlayerGirlEntity.isPlayerGirl(entityPlayer)) {
-                            return;
-                        }
-                    }
-                    catch (ConcurrentModificationException concurrentModificationException) {
-                        throw ItemAlliesLamp.a.rethrow(concurrentModificationException);
-                    }
-                    if (!entityPlayer.world.isRemote) break block27;
-                    try {
-                        block29: {
-                            if (AnimationInputLock.isAnimationLocked()) break block27;
-                            break block29;
-                            catch (ConcurrentModificationException concurrentModificationException) {
-                                throw ItemAlliesLamp.a.rethrow(concurrentModificationException);
-                            }
-                        }
-                        return;
-                    }
-                    catch (ConcurrentModificationException concurrentModificationException) {
-                        throw ItemAlliesLamp.a.rethrow(concurrentModificationException);
-                    }
-                }
-                if (!entityPlayer.world.isRemote) {
-                    try {
-                        for (GirlEntity girl2 : GirlEntity.getAllGirls()) {
-                            try {
-                                if (girl2.isDead) {
-                                    continue;
-                                }
-                            }
-                            catch (ConcurrentModificationException concurrentModificationException) {
-                                throw ItemAlliesLamp.a.rethrow(concurrentModificationException);
-                            }
-                            try {
-                                if (!(girl2 instanceof AllieNpc)) {
-                                    continue;
-                                }
-                            }
-                            catch (ConcurrentModificationException concurrentModificationException) {
-                                throw ItemAlliesLamp.a.rethrow(concurrentModificationException);
-                            }
-                            AllieNpc allie = (AllieNpc)girl2;
-                            ItemStack itemStack2 = (ItemStack)allie.getDataManager().get(AllieNpc.SpawnItemStack);
-                            if (!itemStack.equals(itemStack2)) continue;
-                            return;
-                        }
-                    }
-                    catch (ConcurrentModificationException concurrentModificationException) {
-                        // empty catch block
-                    }
-                }
-                try {
-                    if (itemStack.getItem() != Instance) {
-                        return;
-                    }
-                }
-                catch (ConcurrentModificationException concurrentModificationException) {
-                    throw ItemAlliesLamp.a.rethrow(concurrentModificationException);
-                }
-                NBTTagCompound nBTTagCompound = itemStack.getTagCompound();
-                try {
-                    try {
-                        if (nBTTagCompound == null || nBTTagCompound.getInteger(ItemAlliesLamp.UsesTag) < 3) break block28;
-                    }
-                    catch (ConcurrentModificationException concurrentModificationException) {
-                        throw ItemAlliesLamp.a.rethrow(concurrentModificationException);
-                    }
-                    return;
-                }
-                catch (ConcurrentModificationException concurrentModificationException) {
-                    throw ItemAlliesLamp.a.rethrow(concurrentModificationException);
-                }
+         EntityPlayer entityPlayer = rightClickItem.getEntityPlayer();
+         EnumHand enumHand = rightClickItem.getHand();
+         ItemStack itemStack = entityPlayer.getHeldItem(enumHand);
+         try {
+            if (PlayerGirlEntity.isPlayerGirl(entityPlayer)) {
+               return;
             }
-            girl2 = entityPlayer.getEntityData();
-            boolean flag = girl2.getBoolean(ItemAlliesLamp.InUseTag);
+         }
+         catch (ConcurrentModificationException concurrentModificationException) {
+            throw ItemAlliesLamp.a.rethrow(concurrentModificationException);
+         }
+         if (entityPlayer.world.isRemote && !AnimationInputLock.isAnimationLocked()) {
+            return;
+         }
+         if (!entityPlayer.world.isRemote) {
             try {
-                if (flag) {
-                    return;
-                }
+               for (GirlEntity girl2 : GirlEntity.getAllGirls()) {
+                  AllieNpc allie;
+                  ItemStack itemStack2;
+                  if (girl2.isDead || !(girl2 instanceof AllieNpc) || !itemStack.equals(itemStack2 = (allie = (AllieNpc)girl2).getDataManager().get(AllieNpc.SpawnItemStack))) continue;
+                  return;
+               }
             }
             catch (ConcurrentModificationException concurrentModificationException) {
-                throw ItemAlliesLamp.a.rethrow(concurrentModificationException);
+               // empty catch block
             }
-            girl2.setBoolean(ItemAlliesLamp.InUseTag, true);
-            girl2.setInteger(ItemAlliesLamp.InUseTicksTag, 0);
-        }
+         }
+         if (itemStack.getItem() != Instance) {
+            return;
+         }
+         NBTTagCompound nBTTagCompound = itemStack.getTagCompound();
+         if (nBTTagCompound != null && nBTTagCompound.getInteger(ItemAlliesLamp.UsesTag) >= 3) {
+            return;
+         }
+         NBTTagCompound playerData = entityPlayer.getEntityData();
+         boolean flag = playerData.getBoolean(ItemAlliesLamp.InUseTag);
+         if (flag) {
+            return;
+         }
+         playerData.setBoolean(ItemAlliesLamp.InUseTag, true);
+         playerData.setInteger(ItemAlliesLamp.InUseTicksTag, 0);
+      }
 
       private static ConcurrentModificationException rethrow(ConcurrentModificationException error) {
          return error;

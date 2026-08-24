@@ -177,270 +177,204 @@ public class ModelManglelie extends GirlGeoModel {
 
 
    void d(GirlEntity girl) {
-        a a10;
-        IBone iBone;
-        IBone iBone2;
-        IBone iBone3;
-        IBone iBone4;
-        IBone iBone5;
-        IBone iBone6;
-        block37: {
-            double d;
-            a a11;
-            a a12;
-            AnimationProcessor animationProcessor;
-            GalathNpc f_2;
-            ManglelieNpc manglelie;
-            block34: {
-                a a13;
-                block36: {
-                    block35: {
-                        boolean flag;
-                        block33: {
-                            float f;
-                            block32: {
-                                boolean flag2;
-                                try {
-                                    if (ClientProxy.IS_PRELOADING) {
-                                        return;
-                                    }
-                                }
-                                catch (RuntimeException runtimeException) {
-                                    throw ModelManglelie.rethrow(runtimeException);
-                                }
-                                try {
-                                    if (ModelManglelie.isInThreesomeAnimation(girl)) {
-                                        return;
-                                    }
-                                }
-                                catch (RuntimeException runtimeException) {
-                                    throw ModelManglelie.rethrow(runtimeException);
-                                }
-                                try {
-                                    if (this.Mc.isGamePaused()) {
-                                        return;
-                                    }
-                                }
-                                catch (RuntimeException runtimeException) {
-                                    throw ModelManglelie.rethrow(runtimeException);
-                                }
-                                manglelie = (ManglelieNpc)girl;
-                                try {
-                                    if (!manglelie.isClaimed()) {
-                                        return;
-                                    }
-                                }
-                                catch (RuntimeException runtimeException) {
-                                    throw ModelManglelie.rethrow(runtimeException);
-                                }
-                                f_2 = manglelie.getMommy(false);
-                                try {
-                                    if (f_2 == null) {
-                                        return;
-                                    }
-                                }
-                                catch (RuntimeException runtimeException) {
-                                    throw ModelManglelie.rethrow(runtimeException);
-                                }
-                                animationProcessor = this.getAnimationProcessor();
-                                iBone6 = animationProcessor.getBone("armL");
-                                iBone5 = animationProcessor.getBone("armR");
-                                iBone4 = animationProcessor.getBone("lowerArmL");
-                                iBone3 = animationProcessor.getBone("lowerArmR");
-                                iBone2 = animationProcessor.getBone("elbowR");
-                                iBone = animationProcessor.getBone("elbowL");
-                                Entity entity = manglelie.getTargetEntity();
-                                try {
-                                    flag2 = entity == null;
-                                }
-                                catch (RuntimeException runtimeException) {
-                                    throw ModelManglelie.rethrow(runtimeException);
-                                }
-                                flag = flag2;
-                                try {
-                                    if (!flag) {
-                                        manglelie.R = this.a(entity);
-                                    }
-                                }
-                                catch (RuntimeException runtimeException) {
-                                    throw ModelManglelie.rethrow(runtimeException);
-                                }
-                                f = Minecraft.getDebugFPS();
-                                if (f == 0.0f) {
-                                    f = 1.0f;
-                                }
-                                try {
-                                    if (manglelie.aj != flag) break block32;
-                                    manglelie.V = 0.0f;
-                                    break block33;
-                                }
-                                catch (RuntimeException runtimeException) {
-                                    throw ModelManglelie.rethrow(runtimeException);
-                                }
-                            }
-                            manglelie.V += 1.5f / f;
-                        }
-                        try {
-                            if (manglelie.V >= 1.0f) {
-                                manglelie.V = 0.0f;
-                                manglelie.aj = flag;
-                            }
-                        }
-                        catch (RuntimeException runtimeException) {
-                            throw ModelManglelie.rethrow(runtimeException);
-                        }
-                        try {
-                            try {
-                                if (manglelie.V != 0.0f) break block34;
-                                if (!flag) break block35;
-                            }
-                            catch (RuntimeException runtimeException) {
-                                throw ModelManglelie.rethrow(runtimeException);
-                            }
-                            i = this.a(f_2, iBone5, iBone6, iBone4, iBone3);
-                            break block36;
-                        }
-                        catch (RuntimeException runtimeException) {
-                            throw ModelManglelie.rethrow(runtimeException);
-                        }
-                    }
-                    i = this.a(manglelie, f_2, iBone3, iBone4, animationProcessor);
-                }
-                gui = i;
-                break block37;
+      try {
+         if (ClientProxy.IS_PRELOADING) {
+            return;
+         }
+      } catch (RuntimeException error) {
+         throw rethrow(error);
+      }
+
+      try {
+         if (isInThreesomeAnimation(girl)) {
+            return;
+         }
+      } catch (RuntimeException error2) {
+         throw rethrow(error2);
+      }
+
+      try {
+         if (this.Mc.isGamePaused()) {
+            return;
+         }
+      } catch (RuntimeException error3) {
+         throw rethrow(error3);
+      }
+
+      ManglelieNpc manglelie = (ManglelieNpc)girl;
+
+      try {
+         if (!manglelie.isClaimed()) {
+            return;
+         }
+      } catch (RuntimeException error4) {
+         throw rethrow(error4);
+      }
+
+      GalathNpc galath = manglelie.getMommy(false);
+
+      try {
+         if (galath == null) {
+            return;
+         }
+      } catch (RuntimeException error5) {
+         throw rethrow(error5);
+      }
+
+      AnimationProcessor animationProcessor = this.getAnimationProcessor();
+      IBone armL = animationProcessor.getBone("armL");
+      IBone armR = animationProcessor.getBone("armR");
+      IBone lowerArmL = animationProcessor.getBone("lowerArmL");
+      IBone lowerArmR = animationProcessor.getBone("lowerArmR");
+      IBone elbowR = animationProcessor.getBone("elbowR");
+      IBone elbowL = animationProcessor.getBone("elbowL");
+      Entity entity = manglelie.getTargetEntity();
+      boolean flag = entity == null;
+
+      try {
+         if (!flag) {
+            manglelie.R = this.a(entity);
+         }
+      } catch (RuntimeException error6) {
+         throw rethrow(error6);
+      }
+
+      float fps = Minecraft.getDebugFPS();
+      if (fps == 0.0F) {
+         fps = 1.0F;
+      }
+
+      try {
+         if (manglelie.aj != flag) {
+            manglelie.V += 1.5F / fps;
+         } else {
+            manglelie.V = 0.0F;
+         }
+
+         if (manglelie.V >= 1.0F) {
+            manglelie.V = 0.0F;
+            manglelie.aj = flag;
+         }
+      } catch (RuntimeException error7) {
+         throw rethrow(error7);
+      }
+
+      a pose;
+      if (manglelie.V != 0.0F) {
+         pose = a.a(
+            this.a(galath, armR, armL, lowerArmL, lowerArmR),
+            this.a(manglelie, galath, lowerArmR, lowerArmL, animationProcessor),
+            (float)(manglelie.aj ? LerpMath.EaseOutBack(manglelie.V) : 1.0 - LerpMath.EaseOutBack(manglelie.V))
+         );
+      } else {
+         try {
+            if (flag) {
+               pose = this.a(galath, armR, armL, lowerArmL, lowerArmR);
+            } else {
+               pose = this.a(manglelie, galath, lowerArmR, lowerArmL, animationProcessor);
             }
-            try {
-                a12 = this.a(f_2, iBone5, iBone6, iBone4, iBone3);
-                a11 = this.a(manglelie, f_2, iBone3, iBone4, animationProcessor);
-                d = manglelie.aj ? LerpMath.EaseOutBack(manglelie.V) : 1.0 - LerpMath.EaseOutBack(manglelie.V);
-            }
-            catch (RuntimeException runtimeException) {
-                throw ModelManglelie.rethrow(runtimeException);
-            }
-            gui = ModelManglelie.a.a(a12, a11, (float)d);
-        }
-        iBone5.setRotationX(((a)gui).c.a);
-        iBone5.setRotationY(((a)gui).c.c);
-        iBone5.setRotationZ(((a)gui).c.b);
-        iBone6.setRotationX(((a)gui).g.EventHandler);
-        iBone6.setRotationY(((a)gui).g.Navigation);
-        iBone6.setRotationZ(((a)gui).g.FollowDistance);
-        iBone4.setRotationX(((a)gui).b.Mc);
-        iBone4.setRotationY(((a)gui).b.PreviewEntity);
-        iBone4.setRotationZ(((a)gui).b.WhitelistEntry);
-        iBone3.setRotationX(((a)gui).h.Player);
-        iBone3.setRotationY(((a)gui).h.Navigation);
-        iBone3.setRotationZ(((a)gui).h.FollowDistance);
-        iBone6.setScaleY(gui.a);
-        iBone5.setScaleY(gui.MagicSlotsDirty);
-        iBone2.setRotationY(gui.SelectedSlot);
-        iBone.setRotationY(gui.e);
-    }
+         } catch (RuntimeException error8) {
+            throw rethrow(error8);
+         }
+      }
+
+      armR.setRotationX(pose.c.X);
+      armR.setRotationY(pose.c.Y);
+      armR.setRotationZ(pose.c.Z);
+      armL.setRotationX(pose.g.X);
+      armL.setRotationY(pose.g.Y);
+      armL.setRotationZ(pose.g.Z);
+      lowerArmL.setRotationX(pose.b.X);
+      lowerArmL.setRotationY(pose.b.Y);
+      lowerArmL.setRotationZ(pose.b.Z);
+      lowerArmR.setRotationX(pose.h.X);
+      lowerArmR.setRotationY(pose.h.Y);
+      lowerArmR.setRotationZ(pose.h.Z);
+      armL.setScaleY(pose.a);
+      armR.setScaleY(pose.f);
+      elbowR.setRotationY(pose.d);
+      elbowL.setRotationY(pose.e);
+   }
 
 
-   ModelManglelie.Mc a(@Nonnull ManglelieNpc manglelie, @Nonnull GalathNpc galath, IBone iBone, IBone iBone2, AnimationProcessor animationProcessor) {
-        block20: {
-            block21: {
-                block18: {
-                    block19: {
-                        gui = new a();
-                        ModelManglelie.a.access$202(gui, new Vec3f(ModelManglelie.m, 0.0f, iBone.getRotationZ()));
-                        ModelManglelie.a.access$302(gui, new Vec3f(ModelManglelie.l, 0.0f, iBone2.getRotationZ()));
-                        string = galath.aE + animationProcessor.getBone("upperBody").getRotationX();
-                        f = this.Mc.getRenderPartialTicks();
-                        vec3d = ManglelieNpcRenderer.a(galath, f);
-                        girl = manglelie.b("armR").add(vec3d);
-                        girl2 = manglelie.b("armL").add(vec3d);
-                        vec2f = MathUtils.rotationBetween(girl, manglelie.R);
-                        vec2f2 = MathUtils.rotationBetween(girl2, manglelie.R);
-                        manglelie2 = GalathNpc.rotateToTarget(galath, f);
-                        try {
-                            i = manglelie2 == null ? LerpMath.lerpAngleDegrees(galath.prevRotationYawHead, galath.rotationYawHead, (double)f) : manglelie2.floatValue();
-                        }
-                        catch (RuntimeException error) {
-                            throw ModelManglelie.rethrow(error);
-                        }
-                        i2 = i;
-                        var16_16 = AngleMath.degToRadians(i2);
-                        girl3 = manglelie.b(f);
-                        f2 = (float)LerpMath.EaseOutQuart(Math.min(1.0f, girl3));
-                        if (f2 != 1.0f) {
-                            f3 = 0.0f;
-                        } else {
-                            f3 = (girl3 * 28.0f - 28.0f) / 32.0f;
-                            f3 = Math.max(0.0f, f3 - 0.5f) * 2.0f;
-                        }
-                        f4 = (float)LerpMath.EaseInOutSine(f3);
-                        f5 = AngleMath.degToRadians(LerpMath.a(0.0f, 90.0f, f2));
-                        vec3d2 = manglelie.a(manglelie.R, f);
-                        try {
-                            try {
-                                if (!vec3d2) break block18;
-                                ModelManglelie.a.access$002(gui, new Vec3f(-string + vec2f.a + AngleMath.degToRadians(90.0f), vec2f.c, 0.0f));
-                                ModelManglelie.a.access$102(gui, new Vec3f(-string + vec2f2.a + AngleMath.degToRadians(90.0f), (float)((double)vec2f2.c + (double)AngleMath.degToRadians(-20.0f) * Math.cos(vec2f.c + var16_16 * 1.0f) + (double)LerpMath.a(f5 / 2.0f, 0.0f, f4)), 0.0f));
-                                ModelManglelie.a.access$402(gui, 1.0f + Math.abs(Math.abs(vec2f.c) - Math.abs(var16_16)) * 0.1909f);
-                                ModelManglelie.a.access$702(gui, AngleMath.degToRadians(90.0f));
-                                ModelManglelie.a.access$200((a)gui).b = LerpMath.a(f5, 0.0f, f4);
-                                if (!((double)f3 > 0.5)) break block19;
-                            }
-                            catch (RuntimeException error2) {
-                                throw ModelManglelie.rethrow(error2);
-                            }
-                            ModelManglelie.a.access$200((a)gui).a = ModelManglelie.m + (float)LerpMath.lerp((double)ModelManglelie.g, 0.0, LerpMath.EaseInOutSine((f3 - 0.5f) * 2.0f));
-                            break block20;
-                        }
-                        catch (RuntimeException error3) {
-                            throw ModelManglelie.rethrow(error3);
-                        }
-                    }
-                    try {
-                        try {
-                            if (f3 == 0.0f || !((double)f3 < 0.5)) ** GOTO lbl88
-                        }
-                        catch (RuntimeException error4) {
-                            throw ModelManglelie.rethrow(error4);
-                        }
-                        ModelManglelie.a.access$200((a)gui).a = ModelManglelie.m + (float)LerpMath.lerp(0.0, (double)ModelManglelie.g, LerpMath.EaseInOutSine(f3 * 2.0f));
-                    }
-                    catch (RuntimeException error5) {
-                        throw ModelManglelie.rethrow(error5);
-                    }
-                }
-                try {
-                    ModelManglelie.a.access$102(gui, new Vec3f(-string + vec2f2.a + AngleMath.degToRadians(90.0f), vec2f2.c, 0.0f));
-                    ModelManglelie.a.access$002(gui, new Vec3f(-string + vec2f.a + AngleMath.degToRadians(90.0f), (float)((double)vec2f.c + (double)AngleMath.degToRadians(20.0f) * Math.cos(vec2f2.c + var16_16 * 1.0f)) - LerpMath.a(f5 / 2.0f, 0.0f, f4), 0.0f));
-                    ModelManglelie.a.access$502(gui, 1.0f + Math.abs(Math.abs(vec2f2.c) - Math.abs(var16_16)) * 0.1909f);
-                    ModelManglelie.a.access$602(gui, AngleMath.degToRadians(90.0f));
-                    ModelManglelie.a.access$300((a)gui).b = -LerpMath.a(f5, 0.0f, f4);
-                    if (!((double)f3 > 0.5)) break block21;
-                    ModelManglelie.a.access$300((a)gui).a = ModelManglelie.l + (float)LerpMath.lerp((double)ModelManglelie.g, 0.0, LerpMath.EaseInOutSine((f3 - 0.5f) * 2.0f));
-                    break block20;
-                }
-                catch (RuntimeException error6) {
-                    throw ModelManglelie.rethrow(error6);
-                }
-            }
-            try {
-                try {
-                    if (f3 == 0.0f || !((double)f3 < 0.5)) break block20;
-                }
-                catch (RuntimeException error7) {
-                    throw ModelManglelie.rethrow(error7);
-                }
-                ModelManglelie.a.access$300((a)gui).a = ModelManglelie.l + (float)LerpMath.lerp(0.0, (double)ModelManglelie.g, LerpMath.EaseInOutSine(f3 * 2.0f));
-            }
-            catch (RuntimeException error8) {
-                throw ModelManglelie.rethrow(error8);
-            }
-        }
-        ModelManglelie.a.access$000((a)gui).c += var16_16;
-        ModelManglelie.a.access$100((a)gui).c += var16_16;
-        return gui;
-    }
+   a a(@Nonnull ManglelieNpc manglelie, @Nonnull GalathNpc galath, IBone iBone, IBone iBone2, AnimationProcessor animationProcessor) {
+      a gui = new a();
+      gui.b = new Vec3f(m, 0.0F, iBone.getRotationZ());
+      gui.h = new Vec3f(l, 0.0F, iBone2.getRotationZ());
+      float f = galath.aE + animationProcessor.getBone("upperBody").getRotationX();
+      float f2 = this.Mc.getRenderPartialTicks();
+      Vec3d vec3d = ManglelieNpcRenderer.a(galath, f2);
+      Vec3d vec3d2 = manglelie.b("armR").add(vec3d);
+      Vec3d vec3d3 = manglelie.b("armL").add(vec3d);
+      Vec2f vec2f = MathUtils.rotationBetween(vec3d2, manglelie.R);
+      Vec2f vec2f2 = MathUtils.rotationBetween(vec3d3, manglelie.R);
+      Float f3 = GalathNpc.rotateToTarget(galath, f2);
 
-   ModelManglelie.Mc a(GalathNpc galath, IBone iBone, IBone iBone2, IBone iBone3, IBone iBone4) {
+      float i2;
+      try {
+         i2 = f3 == null ? LerpMath.lerpAngleDegrees(galath.prevRotationYawHead, galath.rotationYawHead, (double)f2) : f3.floatValue();
+      } catch (RuntimeException error) {
+         throw rethrow(error);
+      }
+
+      float f4 = AngleMath.degToRadians(i2);
+      float f5 = manglelie.b(f2);
+      float f6 = (float)LerpMath.EaseOutQuart(Math.min(1.0F, f5));
+      float f7;
+      if (f6 != 1.0F) {
+         f7 = 0.0F;
+      } else {
+         f7 = (f5 * 28.0F - 28.0F) / 32.0F;
+         f7 = Math.max(0.0F, f7 - 0.5F) * 2.0F;
+      }
+
+      float f8 = (float)LerpMath.EaseInOutSine(f7);
+      float f9 = AngleMath.degToRadians(LerpMath.lerp(0.0F, 90.0F, f6));
+
+      try {
+         if (manglelie.a(manglelie.R, f2)) {
+            gui.c = new Vec3f(-f + vec2f.X + AngleMath.degToRadians(90.0F), vec2f.Y, 0.0F);
+            gui.g = new Vec3f(
+               -f + vec2f2.X + AngleMath.degToRadians(90.0F),
+               (float)((double)vec2f2.Y + (double)AngleMath.degToRadians(-20.0F) * Math.cos(vec2f.Y + f4 * 1.0F) + (double)LerpMath.lerp(f9 / 2.0F, 0.0F, f8)),
+               0.0F
+            );
+            gui.a = 1.0F + Math.abs(Math.abs(vec2f.Y) - Math.abs(f4)) * 0.1909F;
+            gui.e = AngleMath.degToRadians(90.0F);
+            gui.b.Z = LerpMath.lerp(f9, 0.0F, f8);
+            if ((double)f7 > 0.5) {
+               gui.b.X = m + (float)LerpMath.lerp((double)g, 0.0, LerpMath.EaseInOutSine((f7 - 0.5F) * 2.0F));
+            } else if (f7 != 0.0F && (double)f7 < 0.5) {
+               gui.b.X = m + (float)LerpMath.lerp(0.0, (double)g, LerpMath.EaseInOutSine(f7 * 2.0F));
+            }
+         } else {
+            gui.g = new Vec3f(-f + vec2f2.X + AngleMath.degToRadians(90.0F), vec2f2.Y, 0.0F);
+            gui.c = new Vec3f(
+               -f + vec2f.X + AngleMath.degToRadians(90.0F),
+               (float)((double)vec2f.Y + (double)AngleMath.degToRadians(20.0F) * Math.cos(vec2f2.Y + f4 * 1.0F)) - LerpMath.lerp(f9 / 2.0F, 0.0F, f8),
+               0.0F
+            );
+            gui.f = 1.0F + Math.abs(Math.abs(vec2f2.Y) - Math.abs(f4)) * 0.1909F;
+            gui.d = AngleMath.degToRadians(90.0F);
+            gui.h.Z = -LerpMath.lerp(f9, 0.0F, f8);
+            if ((double)f7 > 0.5) {
+               gui.h.X = l + (float)LerpMath.lerp((double)g, 0.0, LerpMath.EaseInOutSine((f7 - 0.5F) * 2.0F));
+            } else if (f7 != 0.0F && (double)f7 < 0.5) {
+               gui.h.X = l + (float)LerpMath.lerp(0.0, (double)g, LerpMath.EaseInOutSine(f7 * 2.0F));
+            }
+         }
+      } catch (RuntimeException error2) {
+         throw rethrow(error2);
+      }
+
+      gui.c.Y += f4;
+      gui.g.Y += f4;
+      return gui;
+   }
+
+   a a(GalathNpc galath, IBone iBone, IBone iBone2, IBone iBone3, IBone iBone4) {
       float f = galath.aE;
-      ModelManglelie.Mc mc = new ModelManglelie.a();
+      a mc = new a();
 
       try {
          if (f > 0.0F) {
@@ -716,14 +650,14 @@ public class ModelManglelie extends GirlGeoModel {
       private a() {
       }
 
-      static ModelManglelie.Mc a(ModelManglelie.Mc mc, ModelManglelie.Mc mc2, float f2) {
-         ModelManglelie.Mc mc3 = new ModelManglelie.a();
-         mc3.c = LerpMath.a(mc.c, mc2.c, f2);
-         mc3.g = LerpMath.a(mc.g, mc2.g, f2);
-         mc3.h = LerpMath.lerp(mc.h, mc2.h, f2);
-         mc3.b = LerpMath.lerp(mc.b, mc2.b, f2);
-         mc3.f = LerpMath.a(mc.f, mc2.f, f2);
-         mc3.a = LerpMath.a(mc.a, mc2.a, f2);
+      static a a(a mc, a mc2, float f2) {
+         a mc3 = new a();
+         mc3.c = LerpMath.lerpVec3f(mc.c, mc2.c, (double)f2);
+         mc3.g = LerpMath.lerpVec3f(mc.g, mc2.g, (double)f2);
+         mc3.h = LerpMath.lerpVec3f(mc.h, mc2.h, (double)f2);
+         mc3.b = LerpMath.lerpVec3f(mc.b, mc2.b, (double)f2);
+         mc3.f = LerpMath.lerp(mc.f, mc2.f, f2);
+         mc3.a = LerpMath.lerp(mc.a, mc2.a, f2);
          mc3.e = LerpMath.lerp(mc.e, mc2.e, f2);
          mc3.d = LerpMath.lerp(mc.d, mc2.d, f2);
          return mc3;

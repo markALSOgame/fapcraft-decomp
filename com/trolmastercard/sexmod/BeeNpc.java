@@ -270,7 +270,7 @@ extends ChestGirlEntity {
         if (entityPlayer.getDistance((Entity)this) < 1.5f) {
             this.WildTimer = 0.0f;
             this.handleGirlUuidEvent(entityPlayer.getPersistentID());
-            this.DataManager.set(G, (Object)true);
+            this.DataManager.set(BusyKey, (Object)true);
             this.setTargetPos(this.getPlayerFrontPos());
             this.b(entityPlayer.rotationYaw - 180.0f);
             this.Navigation.clearPath();

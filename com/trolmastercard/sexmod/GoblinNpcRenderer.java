@@ -234,280 +234,120 @@ public class GoblinNpcRenderer extends ScaledGirlGeoRenderer<GoblinNpc> {
 
 
    public void a(GoblinNpc goblin, double d, double d2, double d3, float f, float f2) {
-        block78: {
-            block77: {
-                block74: {
-                    block68: {
-                        block72: {
-                            block73: {
-                                block69: {
-                                    block70: {
-                                        block66: {
-                                            block67: {
-                                                block65: {
-                                                    block64: {
-                                                        block63: {
-                                                            block62: {
-                                                                try {
-                                                                    try {
-                                                                        this.RenderEntity = goblin;
-                                                                        renderer = this;
-                                                                        if (-420.69f != f || goblin.getCurrentAction() != GirlAnimationState.SHOULDER_IDLE) break block62;
-                                                                    }
-                                                                    catch (RuntimeException error) {
-                                                                        throw GoblinNpcRenderer.rethrow(error);
-                                                                    }
-                                                                    flag = true;
-                                                                    break block63;
-                                                                }
-                                                                catch (RuntimeException error2) {
-                                                                    throw GoblinNpcRenderer.rethrow(error2);
-                                                                }
-                                                            }
-                                                            flag = false;
-                                                        }
-                                                        try {
-                                                            try {
-                                                                renderer.u = flag;
-                                                                renderer2 = this;
-                                                                if (-420.69f != f || goblin.getCurrentAction() != GirlAnimationState.PICK_UP) break block64;
-                                                            }
-                                                            catch (RuntimeException error3) {
-                                                                throw GoblinNpcRenderer.rethrow(error3);
-                                                            }
-                                                            flag2 = true;
-                                                            break block65;
-                                                        }
-                                                        catch (RuntimeException error4) {
-                                                            throw GoblinNpcRenderer.rethrow(error4);
-                                                        }
-                                                    }
-                                                    flag2 = false;
-                                                }
-                                                renderer2.F = flag2;
-                                                this.LightLevel = goblin.world.getLight(goblin.getPosition(), true);
-                                                this.LastPartialTicks = f2;
-                                                GoblinNpcRenderer.B = f;
-                                                girlAnimationState = goblin.getCurrentAction();
-                                                uuid = goblin.e();
-                                                if (goblin.isTracked()) {
-                                                    vec3d = GoblinNpcRenderer.a(goblin.world, goblin, uuid, d, d2, d3);
-                                                    d = vec3d.x;
-                                                    d2 = vec3d.y;
-                                                    d3 = vec3d.z;
-                                                }
-                                                try {
-                                                    try {
-                                                        try {
-                                                            try {
-                                                                try {
-                                                                    if (girlAnimationState != GirlAnimationState.THROWN && girlAnimationState != GirlAnimationState.START_THROWING) break block66;
-                                                                }
-                                                                catch (RuntimeException error5) {
-                                                                    throw GoblinNpcRenderer.rethrow(error5);
-                                                                }
-                                                                if (GoblinNpcRenderer.Mc.gameSettings.thirdPersonView != 0) break block67;
-                                                            }
-                                                            catch (RuntimeException error6) {
-                                                                throw GoblinNpcRenderer.rethrow(error6);
-                                                            }
-                                                            if (f != -420.69f) break block67;
-                                                        }
-                                                        catch (RuntimeException error7) {
-                                                            throw GoblinNpcRenderer.rethrow(error7);
-                                                        }
-                                                        if (goblin.isTracked()) break block67;
-                                                    }
-                                                    catch (RuntimeException error8) {
-                                                        throw GoblinNpcRenderer.rethrow(error8);
-                                                    }
-                                                    return;
-                                                }
-                                                catch (RuntimeException error9) {
-                                                    throw GoblinNpcRenderer.rethrow(error9);
-                                                }
-                                            }
-                                            if (!goblin.isTracked()) {
-                                                goblin.prevRenderYawOffset = d4 = goblin.I().floatValue();
-                                                goblin.renderYawOffset = d4;
-                                            }
-                                        }
-                                        try {
-                                            try {
-                                                try {
-                                                    if (!GoblinNpcRenderer.a((GirlEntity)goblin, girlAnimationState)) break block68;
-                                                    if (!GoblinNpcRenderer.Mc.player.getPersistentID().equals(uuid)) break block69;
-                                                }
-                                                catch (RuntimeException error10) {
-                                                    throw GoblinNpcRenderer.rethrow(error10);
-                                                }
-                                                if (-420.69f == f) break block70;
-                                            }
-                                            catch (RuntimeException error11) {
-                                                throw GoblinNpcRenderer.rethrow(error11);
-                                            }
-                                            return;
-                                        }
-                                        catch (RuntimeException error12) {
-                                            throw GoblinNpcRenderer.rethrow(error12);
-                                        }
-                                    }
-                                    goblin.renderYawOffset = GoblinNpcRenderer.Mc.player.rotationYaw + 180.0f;
-                                    goblin.prevRenderYawOffset = GoblinNpcRenderer.Mc.player.rotationYaw + 180.0f;
-                                    vec3d2 = GoblinNpcRenderer.Mc.player.getLookVec();
-                                    GlStateManager.pushMatrix();
-                                    GlStateManager.translate((double)vec3d2.x, (double)(vec3d2.y + (double)GoblinNpcRenderer.Mc.player.getEyeHeight()), (double)vec3d2.z);
-                                    vec3d3 = GoblinNpc.rotateVec3dYaw(new Vec3d((double)(-Math.abs(GoblinNpcRenderer.Mc.player.rotationPitch)), 0.0, 0.0), GoblinNpcRenderer.Mc.player.rotationYaw);
-                                    GlStateManager.rotate((float)GoblinNpcRenderer.Mc.player.rotationPitch, (float)((float)vec3d3.x), (float)0.0f, (float)((float)vec3d3.z));
-                                    d = 0.0;
-                                    d2 = 0.0;
-                                    d3 = 0.0;
-                                    break block77;
-                                }
-                                try {
-                                    try {
-                                        block71: {
-                                            try {
-                                                try {
-                                                    if (!goblin.isTracked() || uuid == null) break block71;
-                                                }
-                                                catch (RuntimeException error13) {
-                                                    throw GoblinNpcRenderer.rethrow(error13);
-                                                }
-                                                if (!GoblinNpcRenderer.Mc.player.getPersistentID().equals(uuid)) break block72;
-                                            }
-                                            catch (RuntimeException error14) {
-                                                throw GoblinNpcRenderer.rethrow(error14);
-                                            }
-                                        }
-                                        if (uuid == null) break block73;
-                                    }
-                                    catch (RuntimeException error15) {
-                                        throw GoblinNpcRenderer.rethrow(error15);
-                                    }
-                                    if (GoblinNpcRenderer.Mc.player.getPersistentID().equals(uuid)) break block73;
-                                }
-                                catch (RuntimeException error16) {
-                                    throw GoblinNpcRenderer.rethrow(error16);
-                                }
-                                player2 = goblin.world.getPlayerEntityByUUID(uuid);
-                                try {
-                                    if (player2 == null) ** GOTO lbl131
-                                    goblin.renderYawOffset = player2.rotationYaw;
-                                    goblin.prevRenderYawOffset = player2.rotationYaw;
-                                }
-                                catch (RuntimeException error17) {
-                                    throw GoblinNpcRenderer.rethrow(error17);
-                                }
-                            }
-                            goblin.renderYawOffset = GoblinNpcRenderer.Mc.player.rotationYaw;
-                            goblin.prevRenderYawOffset = GoblinNpcRenderer.Mc.player.rotationYaw;
-                        }
-                        vec3d4 = GoblinNpcRenderer.getThrowAimOffset((GirlEntity)goblin, goblin.e(), f2);
-                        d = vec3d4.x;
-                        d2 = vec3d4.y;
-                        d3 = vec3d4.z;
-                        break block77;
-                    }
-                    if (this.Initialized) {
-                        GoblinNpcRenderer.rotateCameraToGirl(f2);
-                        vec3d5 = new Vec3d((double)LerpMath.a(-0.1f, 0.2f, GoblinNpcRenderer.Mc.gameSettings.fovSetting / 110.0f), 0.0, 0.0);
-                        vec3d5 = GoblinNpc.rotateVec3dYaw(vec3d5, GoblinNpcRenderer.Mc.player.rotationYaw);
-                        d = vec3d5.x;
-                        d2 = vec3d5.y;
-                        d3 = vec3d5.z;
-                        goblin.renderYawOffset = GoblinNpcRenderer.Mc.player.rotationYaw;
-                        goblin.prevRenderYawOffset = GoblinNpcRenderer.Mc.player.prevRotationYaw;
-                        if (GoblinNpcRenderer.Mc.player.isSneaking()) {
-                            d2 -= 0.075;
-                        }
-                    } else {
-                        block76: {
-                            block75: {
-                                try {
-                                    try {
-                                        if (girlAnimationState != GirlAnimationState.SHOULDER_IDLE) break block74;
-                                        if (uuid != null) break block75;
-                                    }
-                                    catch (RuntimeException error18) {
-                                        throw GoblinNpcRenderer.rethrow(error18);
-                                    }
-                                    return;
-                                }
-                                catch (RuntimeException error19) {
-                                    throw GoblinNpcRenderer.rethrow(error19);
-                                }
-                            }
-                            try {
-                                try {
-                                    if (!GoblinNpcRenderer.Mc.player.getPersistentID().equals(uuid) || GoblinNpcRenderer.Mc.gameSettings.thirdPersonView != 0) break block76;
-                                }
-                                catch (RuntimeException error20) {
-                                    throw GoblinNpcRenderer.rethrow(error20);
-                                }
-                                return;
-                            }
-                            catch (RuntimeException error21) {
-                                throw GoblinNpcRenderer.rethrow(error21);
-                            }
-                        }
-                        player3 = goblin.world.getPlayerEntityByUUID(uuid);
-                        try {
-                            if (player3 == null) {
-                                return;
-                            }
-                        }
-                        catch (RuntimeException error22) {
-                            throw GoblinNpcRenderer.rethrow(error22);
-                        }
-                        vector4f = GoblinNpcRenderer.renderGirlBox(player3, f2);
-                        d = vector4f.x;
-                        d2 = vector4f.y;
-                        d3 = vector4f.z;
-                        goblin.renderYawOffset = vector4f.w;
-                        if (player3.isSneaking()) {
-                            d2 -= 0.32;
-                        }
-                    }
-                    break block77;
-                }
-                try {
-                    if (girlAnimationState != GirlAnimationState.PICK_UP || uuid == null) break block77;
-                }
-                catch (RuntimeException error23) {
-                    throw GoblinNpcRenderer.rethrow(error23);
-                }
-                player4 = goblin.world.getPlayerEntityByUUID(uuid);
-                try {
-                    if (player4 != null) {
-                        goblin.prevRenderYawOffset = player4.prevRotationYawHead;
-                        goblin.renderYawOffset = player4.rotationYawHead;
-                    }
-                }
-                catch (RuntimeException error24) {
-                    throw GoblinNpcRenderer.rethrow(error24);
-                }
+      this.RenderEntity = goblin;
+      this.Initialized = -420.69F == f && goblin.getCurrentAction() == GirlAnimationState.SHOULDER_IDLE;
+      this.F = -420.69F == f && goblin.getCurrentAction() == GirlAnimationState.PICK_UP;
+      this.LightLevel = goblin.world.getLight(goblin.getPosition(), true);
+      this.LastPartialTicks = f2;
+      B = f;
+      GirlAnimationState girlAnimationState = goblin.getCurrentAction();
+      UUID uuid = goblin.e();
+
+      if (goblin.isTracked()) {
+         Vec3d vec3d = GoblinNpcRenderer.a(goblin.world, goblin, uuid, d, d2, d3);
+         d = vec3d.x;
+         d2 = vec3d.y;
+         d3 = vec3d.z;
+      }
+
+      if (girlAnimationState == GirlAnimationState.THROWN || girlAnimationState == GirlAnimationState.START_THROWING) {
+         if (Mc.gameSettings.thirdPersonView == 0 && f == -420.69F && !goblin.isTracked()) {
+            return;
+         }
+
+         if (!goblin.isTracked()) {
+            float f3 = goblin.I().floatValue();
+            goblin.prevRenderYawOffset = f3;
+            goblin.renderYawOffset = f3;
+         }
+      }
+
+      if (isInCatchThrowAnimation(goblin, girlAnimationState)) {
+         if (Mc.player.getPersistentID().equals(uuid)) {
+            if (-420.69F != f) {
+               return;
             }
-            try {
-                try {
-                    try {
-                        super.a(goblin, d, d2, d3, f, f2);
-                        if (!GoblinNpcRenderer.a((GirlEntity)goblin, girlAnimationState) || GoblinNpcRenderer.Mc.gameSettings.thirdPersonView != 0) break block78;
-                    }
-                    catch (RuntimeException error25) {
-                        throw GoblinNpcRenderer.rethrow(error25);
-                    }
-                    if (!GoblinNpcRenderer.Mc.player.getPersistentID().equals(uuid)) break block78;
-                }
-                catch (RuntimeException error26) {
-                    throw GoblinNpcRenderer.rethrow(error26);
-                }
-                GlStateManager.popMatrix();
+
+            goblin.renderYawOffset = Mc.player.rotationYaw + 180.0F;
+            goblin.prevRenderYawOffset = Mc.player.rotationYaw + 180.0F;
+            Vec3d lookVec = Mc.player.getLookVec();
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(lookVec.x, lookVec.y + (double)Mc.player.getEyeHeight(), lookVec.z);
+            Vec3d vec3d2 = GoblinNpc.rotateVec3dYaw(new Vec3d(-Math.abs(Mc.player.rotationPitch), 0.0, 0.0), Mc.player.rotationYaw);
+            GlStateManager.rotate(Mc.player.rotationPitch, (float)vec3d2.x, 0.0F, (float)vec3d2.z);
+            d = 0.0;
+            d2 = 0.0;
+            d3 = 0.0;
+         } else {
+            if (!goblin.isTracked() || uuid == null || Mc.player.getPersistentID().equals(uuid)) {
+               if (uuid != null && !Mc.player.getPersistentID().equals(uuid)) {
+                  EntityPlayer player2 = goblin.world.getPlayerEntityByUUID(uuid);
+                  if (player2 != null) {
+                     goblin.renderYawOffset = player2.rotationYaw;
+                     goblin.prevRenderYawOffset = player2.rotationYaw;
+                  }
+               } else {
+                  goblin.renderYawOffset = Mc.player.rotationYaw;
+                  goblin.prevRenderYawOffset = Mc.player.rotationYaw;
+               }
             }
-            catch (RuntimeException error27) {
-                throw GoblinNpcRenderer.rethrow(error27);
-            }
-        }
+
+            Vec3d vec3d3 = GoblinNpcRenderer.getThrowAimOffset(goblin, uuid, f2);
+            d = vec3d3.x;
+            d2 = vec3d3.y;
+            d3 = vec3d3.z;
+         }
+      } else if (this.Initialized) {
+         rotateCameraToGirl(f2);
+         Vec3d vec3d4 = new Vec3d(LerpMath.lerp(-0.1F, 0.2F, Mc.gameSettings.fovSetting / 110.0F), 0.0, 0.0);
+         vec3d4 = GoblinNpc.rotateVec3dYaw(vec3d4, Mc.player.rotationYaw);
+         d = vec3d4.x;
+         d2 = vec3d4.y;
+         d3 = vec3d4.z;
+         goblin.renderYawOffset = Mc.player.rotationYaw;
+         goblin.prevRenderYawOffset = Mc.player.prevRotationYaw;
+
+         if (Mc.player.isSneaking()) {
+            d2 -= 0.075;
+         }
+      } else if (girlAnimationState == GirlAnimationState.SHOULDER_IDLE) {
+         if (uuid == null) {
+            return;
+         }
+
+         if (Mc.player.getPersistentID().equals(uuid) && Mc.gameSettings.thirdPersonView == 0) {
+            return;
+         }
+
+         EntityPlayer player3 = goblin.world.getPlayerEntityByUUID(uuid);
+
+         if (player3 == null) {
+            return;
+         }
+
+         Vector4f vector4f = a(player3, f2);
+         d = vector4f.x;
+         d2 = vector4f.y;
+         d3 = vector4f.z;
+         goblin.renderYawOffset = vector4f.w;
+
+         if (player3.isSneaking()) {
+            d2 -= 0.32;
+         }
+      } else if (girlAnimationState == GirlAnimationState.PICK_UP && uuid != null) {
+         EntityPlayer player4 = goblin.world.getPlayerEntityByUUID(uuid);
+
+         if (player4 != null) {
+            goblin.prevRenderYawOffset = player4.prevRotationYawHead;
+            goblin.renderYawOffset = player4.rotationYawHead;
+         }
+      }
+
+      super.a(goblin, d, d2, d3, f, f2);
+
+      if (isInCatchThrowAnimation(goblin, girlAnimationState) && Mc.gameSettings.thirdPersonView == 0 && Mc.player.getPersistentID().equals(uuid)) {
+         GlStateManager.popMatrix();
+      }
     }
 
 

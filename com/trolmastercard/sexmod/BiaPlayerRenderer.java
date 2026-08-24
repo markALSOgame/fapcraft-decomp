@@ -11,7 +11,7 @@ public class BiaPlayerRenderer extends GirlPlayerRenderer {
    }
 
    @Override
-   protected void c() {
+   protected void void_c() {
       GlStateManager.translate(0.0, -1.0, -0.05);
       GlStateManager.scale(0.65F, 0.65F, 0.65F);
    }

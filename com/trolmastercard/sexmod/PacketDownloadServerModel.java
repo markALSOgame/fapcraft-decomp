@@ -1,16 +1,23 @@
 package com.trolmastercard.sexmod;
 
 import io.netty.buffer.ByteBuf;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.Minecraft;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.commons.io.FileUtils;
 
 public class PacketDownloadServerModel implements IMessage {
    boolean Loaded;
@@ -43,49 +50,27 @@ public class PacketDownloadServerModel implements IMessage {
 
 
    public void fromBytes(ByteBuf buf) {
-        block10: {
-            block11: {
-                try {
-                    try {
-                        if (!(Main.proxy instanceof ClientProxy)) break block10;
-                        if (FilePersistence.isServerWhitelisted()) break block11;
-                    }
-                    catch (RuntimeException runtimeException) {
-                        throw PacketDownloadServerModel.rethrow(runtimeException);
-                    }
-                    return;
-                }
-                catch (RuntimeException runtimeException) {
-                    throw PacketDownloadServerModel.rethrow(runtimeException);
-                }
-            }
-            this.ModelName = ByteBufUtils.readUTF8String((ByteBuf)buf);
-            this.FileType = PacketDownloadServerModel.Type.valueOf(ByteBufUtils.readUTF8String((ByteBuf)buf));
-            this.Id = buf.readInt();
-            int i = buf.readInt();
-            this.Data = new byte[i];
-            try {
-                for (int i4 = 0; i4 < i; ++i4) {
-                    this.Data[i4] = buf.readByte();
-                }
-            }
-            catch (RuntimeException runtimeException) {
-                throw PacketDownloadServerModel.rethrow(runtimeException);
-            }
-            this.Loaded = true;
+      if (Main.proxy instanceof ClientProxy) {
+         if (!FilePersistence.isServerWhitelisted()) {
             return;
-        }
-        int i5 = buf.readInt();
-        try {
-            for (int i6 = 0; i6 < i5; ++i6) {
-                this.ModelNames.add(ByteBufUtils.readUTF8String((ByteBuf)buf));
-            }
-        }
-        catch (RuntimeException runtimeException) {
-            throw PacketDownloadServerModel.rethrow(runtimeException);
-        }
-        this.Loaded = true;
-    }
+         }
+         this.ModelName = ByteBufUtils.readUTF8String(buf);
+         this.FileType = PacketDownloadServerModel.Type.valueOf(ByteBufUtils.readUTF8String(buf));
+         this.Id = buf.readInt();
+         int i = buf.readInt();
+         this.Data = new byte[i];
+         for (int i2 = 0; i2 < i; ++i2) {
+            this.Data[i2] = buf.readByte();
+         }
+         this.Loaded = true;
+         return;
+      }
+      int i3 = buf.readInt();
+      for (int i4 = 0; i4 < i3; ++i4) {
+         this.ModelNames.add(ByteBufUtils.readUTF8String(buf));
+      }
+      this.Loaded = true;
+   }
 
    public void toBytes(ByteBuf buf) {
       if (Main.proxy instanceof ClientProxy) {
@@ -125,127 +110,62 @@ public class PacketDownloadServerModel implements IMessage {
 
 
       public IMessage handle(PacketDownloadServerModel packet, MessageContext ctx) {
-            block27: {
-                block34: {
-                    int i;
-                    int i2;
-                    String string;
-                    block33: {
-                        String string2;
-                        block29: {
-                            block28: {
-                                try {
-                                    if (!packet.Loaded) {
-                                        System.out.println("received an invalid Message @DownloadServerModel :(");
-                                        return null;
-                                    }
-                                }
-                                catch (Throwable throwable) {
-                                    throw PacketDownloadServerModel.Handler.rethrow(throwable);
-                                }
-                                if (!ctx.side.isClient()) break block27;
-                                try {
-                                    block35: {
-                                        if (FilePersistence.isServerWhitelisted()) break block28;
-                                        break block35;
-                                        catch (Throwable throwable) {
-                                            throw PacketDownloadServerModel.Handler.rethrow(throwable);
-                                        }
-                                    }
-                                    return null;
-                                }
-                                catch (Throwable throwable) {
-                                    throw PacketDownloadServerModel.Handler.rethrow(throwable);
-                                }
-                            }
-                            string = packet.ModelName;
-                            Type type = packet.FileType;
-                            byte[] byArray = packet.Data;
-                            string2 = FilePersistence.getModelsPath() + "/" + string;
-                            File file = new File(string2);
-                            file.mkdirs();
-                            File file2 = new File(string2 + "/" + string + type.ending);
-                            try {
-                                Throwable throwable;
-                                FileOutputStream fileOutputStream;
-                                block30: {
-                                    fileOutputStream = new FileOutputStream(file2);
-                                    throwable = null;
-                                    fileOutputStream.write(byArray);
-                                    if (fileOutputStream == null) break block29;
-                                    if (throwable == null) break block30;
-                                    try {
-                                        fileOutputStream.close();
-                                    }
-                                    catch (Throwable throwable2) {
-                                        throwable.addSuppressed(throwable2);
-                                    }
-                                    break block29;
-                                }
-                                fileOutputStream.close();
-                                break block29;
-                                catch (Throwable throwable3) {
-                                    try {
-                                        throwable = throwable3;
-                                        throw throwable3;
-                                    }
-                                    catch (Throwable throwable4) {
-                                        block31: {
-                                            block32: {
-                                                try {
-                                                    if (fileOutputStream == null) break block31;
-                                                    if (throwable == null) break block32;
-                                                }
-                                                catch (Throwable throwable5) {
-                                                    throw PacketDownloadServerModel.Handler.rethrow(throwable5);
-                                                }
-                                                try {
-                                                    fileOutputStream.close();
-                                                }
-                                                catch (Throwable throwable6) {
-                                                    throwable.addSuppressed(throwable6);
-                                                }
-                                                break block31;
-                                            }
-                                            fileOutputStream.close();
-                                        }
-                                        throw throwable4;
-                                    }
-                                }
-                            }
-                            catch (IOException iOException) {
-                                iOException.printStackTrace();
-                            }
-                        }
-                        i2 = 0;
-                        i = PacketDownloadServerModel.Type.values().length;
-                        for (Type type2 : PacketDownloadServerModel.Type.values()) {
-                            try {
-                                if (!new File(string2 + "/" + string + type2.ending).exists()) continue;
-                                ++i2;
-                            }
-                            catch (Throwable throwable) {
-                                throw PacketDownloadServerModel.Handler.rethrow(throwable);
-                            }
-                        }
-                        try {
-                            if (i2 != i) break block33;
-                            this.handle(String.format("%sSuccessfully downloaded the custom model '%s%s%s'!", TextFormatting.GREEN, TextFormatting.YELLOW, string, TextFormatting.GREEN));
-                            break block34;
-                        }
-                        catch (Throwable throwable) {
-                            throw PacketDownloadServerModel.Handler.rethrow(throwable);
-                        }
-                    }
-                    this.handle(String.format("%sdownloading custom model '%s%s%s' (%s/%s)...", TextFormatting.GRAY, TextFormatting.YELLOW, string, TextFormatting.GRAY, i2, i));
+            if (!packet.Loaded) {
+                System.out.println("received an invalid Message @DownloadServerModel :(");
+                return null;
+            }
+            if (ctx.side.isClient()) {
+                if (!FilePersistence.isServerWhitelisted()) {
+                    return null;
                 }
+                String string = packet.ModelName;
+                Type type = packet.FileType;
+                byte[] byArray = packet.Data;
+                String string2 = FilePersistence.getModelsPath() + "/" + string;
+                File file = new File(string2);
+                file.mkdirs();
+                File file2 = new File(string2 + "/" + string + type.ending);
                 try {
-                    if (++Id < packet.Id) {
-                        return null;
+                    FileOutputStream fileOutputStream = new FileOutputStream(file2);
+                    Throwable throwable = null;
+                    try {
+                        fileOutputStream.write(byArray);
+                    }
+                    catch (Throwable throwable2) {
+                        throwable = throwable2;
+                        throw throwable2;
+                    }
+                    finally {
+                        if (fileOutputStream != null) {
+                            if (throwable != null) {
+                                try {
+                                    fileOutputStream.close();
+                                }
+                                catch (Throwable throwable3) {
+                                    throwable.addSuppressed(throwable3);
+                                }
+                            } else {
+                                fileOutputStream.close();
+                            }
+                        }
                     }
                 }
-                catch (Throwable throwable) {
-                    throw PacketDownloadServerModel.Handler.rethrow(throwable);
+                catch (IOException iOException) {
+                    iOException.printStackTrace();
+                }
+                int i = 0;
+                int i2 = PacketDownloadServerModel.Type.values().length;
+                for (Type type2 : PacketDownloadServerModel.Type.values()) {
+                    if (!new File(string2 + "/" + string + type2.ending).exists()) continue;
+                    ++i;
+                }
+                if (i == i2) {
+                    this.handle(String.format("%sSuccessfully downloaded the custom model '%s%s%s'!", TextFormatting.GREEN, TextFormatting.YELLOW, string, TextFormatting.GREEN));
+                } else {
+                    this.handle(String.format("%sdownloading custom model '%s%s%s' (%s/%s)...", TextFormatting.GRAY, TextFormatting.YELLOW, string, TextFormatting.GRAY, i, i2));
+                }
+                if (++Id < packet.Id) {
+                    return null;
                 }
                 Id = 0;
                 this.handle();
@@ -259,30 +179,18 @@ public class PacketDownloadServerModel implements IMessage {
                     String string = "sexmod_custom_models/" + object;
                     for (Type type3 : PacketDownloadServerModel.Type.values()) {
                         File file = new File(string + "/" + object + type3.ending);
-                        try {
-                            if (!file.exists()) {
-                                System.out.println(file.getAbsolutePath() + " doesnt exist lol");
-                                continue;
-                            }
-                        }
-                        catch (IOException iOException) {
-                            throw PacketDownloadServerModel.Handler.rethrow(iOException);
+                        if (!file.exists()) {
+                            System.out.println(file.getAbsolutePath() + " doesnt exist lol");
+                            continue;
                         }
                         byte[] byArray = null;
                         try {
-                            byArray = FileUtils.readFileToByteArray((File)file);
+                            byArray = FileUtils.readFileToByteArray(file);
                         }
                         catch (IOException iOException) {
                             throw new RuntimeException(iOException);
                         }
-                        try {
-                            if (byArray == null) {
-                                continue;
-                            }
-                        }
-                        catch (IOException iOException) {
-                            throw PacketDownloadServerModel.Handler.rethrow(iOException);
-                        }
+                        if (byArray == null) continue;
                         arrayList.add(new PacketDownloadServerModel(byArray, type3, object));
                     }
                 }

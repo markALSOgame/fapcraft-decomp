@@ -1054,135 +1054,78 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
 
 
    public void renderRecursively(BufferBuilder bufferBuilder, GeoBone bone, float f, float f2, float f3, float f4) {
-        String string;
-        block35: {
-            block34: {
-                block33: {
-                    block32: {
-                        block31: {
-                            try {
-                                if (((GirlEntity)this.RenderEntity).world instanceof PreviewWorld) {
-                                    return;
-                                }
-                            }
-                            catch (IllegalStateException illegalStateException) {
-                                throw GeoGirlRenderer.rethrow(illegalStateException);
-                            }
-                            string = bone.getName();
-                            if (!string.equals("weapon")) break block31;
-                            try {
-                                block36: {
-                                    if (!(this.RenderEntity instanceof InventoryGirlEntity)) break block31;
-                                    break block36;
-                                    catch (IllegalStateException illegalStateException) {
-                                        throw GeoGirlRenderer.rethrow(illegalStateException);
-                                    }
-                                }
-                                this.a(bufferBuilder, bone);
-                            }
-                            catch (IllegalStateException illegalStateException) {
-                                throw GeoGirlRenderer.rethrow(illegalStateException);
-                            }
-                        }
-                        if (!string.equals("itemRenderer")) break block32;
-                        try {
-                            block37: {
-                                if (((GirlEntity)this.RenderEntity).y() != GirlAnimationState.PAYMENT) break block32;
-                                break block37;
-                                catch (IllegalStateException illegalStateException) {
-                                    throw GeoGirlRenderer.rethrow(illegalStateException);
-                                }
-                            }
-                            this.b(bufferBuilder, bone);
-                        }
-                        catch (IllegalStateException illegalStateException) {
-                            throw GeoGirlRenderer.rethrow(illegalStateException);
-                        }
-                    }
-                    if (string.equals("ballL")) break block33;
-                    try {
-                        block38: {
-                            if (string.equals("ballR")) break block33;
-                            break block38;
-                            catch (IllegalStateException illegalStateException) {
-                                throw GeoGirlRenderer.rethrow(illegalStateException);
-                            }
-                        }
-                        if (!string.equals("cock")) break block34;
-                    }
-                    catch (IllegalStateException illegalStateException) {
-                        throw GeoGirlRenderer.rethrow(illegalStateException);
-                    }
-                }
-                f4 = 1.0f;
-            }
-            n = bufferBuilder;
-            this.a(bufferBuilder, string, bone);
-            MATRIX_STACK.push();
-            MATRIX_STACK.translate(bone);
-            MATRIX_STACK.moveToPivot(bone);
-            MATRIX_STACK.rotate(bone);
-            MATRIX_STACK.scale(bone);
-            MATRIX_STACK.moveBackFromPivot(bone);
-            if (!"Head2".equals(string)) break block35;
-            try {
-                block39: {
-                    if (this.c()) break block35;
-                    break block39;
-                    catch (IllegalStateException illegalStateException) {
-                        throw GeoGirlRenderer.rethrow(illegalStateException);
-                    }
-                }
-                MATRIX_STACK.pop();
-                return;
-            }
-            catch (IllegalStateException illegalStateException) {
-                throw GeoGirlRenderer.rethrow(illegalStateException);
-            }
-        }
-        try {
-            if (!this.b(string)) {
-                MATRIX_STACK.pop();
-                return;
-            }
-        }
-        catch (IllegalStateException illegalStateException) {
-            throw GeoGirlRenderer.rethrow(illegalStateException);
-        }
-        if (!bone.isHidden) {
-            Vector4f vector4f = this.a(string, f, f2, f3);
-            f = vector4f.x;
-            f2 = vector4f.y;
-            f3 = vector4f.z;
-            double d = vector4f.w;
-            if (!this.ProcessedBones.contains(string)) {
-                for (Object object : bone.childCubes) {
-                    MATRIX_STACK.push();
-                    this.CachedBone = bone;
-                    this.a(bufferBuilder, (GeoCube)object, f, f2, f3, f4, d);
-                    MATRIX_STACK.pop();
-                }
-            }
-            for (Object object : bone.childBones) {
-                try {
-                    if (d == 0.0) {
-                        this.renderRecursively(bufferBuilder, (GeoBone)object, f, f2, f3, f4);
-                        continue;
-                    }
-                }
-                catch (IllegalStateException illegalStateException) {
-                    throw GeoGirlRenderer.rethrow(illegalStateException);
-                }
-                this.a(bufferBuilder, (GeoBone)object, f, f2, f3, f4, d);
-            }
-        }
-        try {
+      if (((GirlEntity)this.RenderEntity).world instanceof PreviewWorld) {
+         return;
+      }
+
+      String string = bone.getName();
+      if (string.equals("weapon") && this.RenderEntity instanceof InventoryGirlEntity) {
+         this.a(bufferBuilder, bone);
+      }
+
+      if (string.equals("itemRenderer") && ((GirlEntity)this.RenderEntity).y() == GirlAnimationState.PAYMENT) {
+         this.b(bufferBuilder, bone);
+      }
+
+      if (string.equals("ballL") || string.equals("ballR") || string.equals("cock")) {
+         f4 = 1.0F;
+      }
+
+      n = bufferBuilder;
+      this.a(bufferBuilder, string, bone);
+      MATRIX_STACK.push();
+      MATRIX_STACK.translate(bone);
+      MATRIX_STACK.moveToPivot(bone);
+      MATRIX_STACK.rotate(bone);
+      MATRIX_STACK.scale(bone);
+      MATRIX_STACK.moveBackFromPivot(bone);
+      if ("Head2".equals(string) && !this.c()) {
+         MATRIX_STACK.pop();
+         return;
+      }
+
+      try {
+         if (!this.b(string)) {
             MATRIX_STACK.pop();
-        }
-        catch (IllegalStateException illegalStateException) {
-            // empty catch block
-        }
-    }
+            return;
+         }
+      }
+      catch (IllegalStateException error) {
+         throw rethrow(error);
+      }
+
+      if (!bone.isHidden) {
+         Vector4f vector4f = this.a(string, f, f2, f3);
+         f = vector4f.x;
+         f2 = vector4f.y;
+         f3 = vector4f.z;
+         double d = vector4f.w;
+         if (!this.ProcessedBones.contains(string)) {
+            for (GeoCube cube : bone.childCubes) {
+               MATRIX_STACK.push();
+               this.CachedBone = bone;
+               this.a(bufferBuilder, cube, f, f2, f3, f4, d);
+               MATRIX_STACK.pop();
+            }
+         }
+
+         for (GeoBone bone2 : bone.childBones) {
+            if (d == 0.0) {
+               this.renderRecursively(bufferBuilder, bone2, f, f2, f3, f4);
+               continue;
+            }
+
+            this.a(bufferBuilder, bone2, f, f2, f3, f4, d);
+         }
+      }
+
+      try {
+         MATRIX_STACK.pop();
+      }
+      catch (IllegalStateException illegalStateException) {
+         // empty catch block
+      }
+   }
 
    protected Vector4f a(float f, float f2, float f3) {
       return new Vector4f(f, f2, f3, 0.0F);

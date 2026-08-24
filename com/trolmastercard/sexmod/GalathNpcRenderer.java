@@ -295,8 +295,8 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
       Tessellator tessellator = Tessellator.getInstance();
       BufferBuilder bufferBuilder = tessellator.getBuffer();
       GlStateManager.pushMatrix();
-      VectorUtil.drawGirlBones(i, girl, f);
-      KoboldEggEntity.getTextureManager().bindTexture(e);
+      VectorUtil.drawGirlBones(Mc, girl, f);
+      KoboldEggEntity.getTextureManager().bindTexture(LineTexture);
       GlStateManager.disableCull();
       GlStateManager.disableLighting();
       a(girl, bufferBuilder, tessellator, LerpMath.lerp(girl.prevRenderYawOffset, girl.renderYawOffset, f));
@@ -344,7 +344,7 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
       GlStateManager.rotate(f4, 0.0F, 0.0F, 1.0F);
       float f6 = AngleMath.degToRadians(9.0);
       Vec3f vec3f = GalathNpc.BodyColor;
-      KoboldEggEntity.getTextureManager().bindTexture(e);
+      KoboldEggEntity.getTextureManager().bindTexture(LineTexture);
       bufferBuilder.begin(3, DefaultVertexFormats.POSITION_TEX_COLOR);
       GlStateManager.glLineWidth(a(girl, f, 1.0F, 3.0F));
 
@@ -427,27 +427,27 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
    static void a(BufferBuilder bufferBuilder, Tessellator tessellator, Vec3d[] vec3dArray) {
       bufferBuilder.begin(4, DefaultVertexFormats.POSITION_TEX_COLOR);
       bufferBuilder.pos(vec3dArray[0].x, vec3dArray[0].y, vec3dArray[0].z)
-         .tex(C.c, C.a)
-         .color(255, 255, 255, 255)
-         .endVertex();
-      bufferBuilder.pos(vec3dArray[1].x, vec3dArray[1].y, vec3dArray[1].z)
-         .tex(C.c + 0.125F, C.a)
-         .color(255, 255, 255, 255)
-         .endVertex();
-      bufferBuilder.pos(vec3dArray[2].x, vec3dArray[2].y, vec3dArray[2].z)
-         .tex(C.c + 0.125F, C.a + 0.125F)
-         .color(255, 255, 255, 255)
-         .endVertex();
-      bufferBuilder.pos(vec3dArray[11].x, vec3dArray[11].y, vec3dArray[11].z)
-         .tex(C.c, C.a)
-         .color(255, 255, 255, 255)
-         .endVertex();
-      bufferBuilder.pos(vec3dArray[12].x, vec3dArray[12].y, vec3dArray[12].z)
-         .tex(C.c + 0.125F, C.a)
-         .color(255, 255, 255, 255)
-         .endVertex();
-      bufferBuilder.pos(vec3dArray[13].x, vec3dArray[13].y, vec3dArray[13].z)
-         .tex(C.c + 0.125F, C.a + 0.125F)
+          .tex(C.X, C.Y)
+          .color(255, 255, 255, 255)
+          .endVertex();
+       bufferBuilder.pos(vec3dArray[1].x, vec3dArray[1].y, vec3dArray[1].z)
+          .tex(C.X + 0.125F, C.Y)
+          .color(255, 255, 255, 255)
+          .endVertex();
+       bufferBuilder.pos(vec3dArray[2].x, vec3dArray[2].y, vec3dArray[2].z)
+          .tex(C.X + 0.125F, C.Y + 0.125F)
+          .color(255, 255, 255, 255)
+          .endVertex();
+       bufferBuilder.pos(vec3dArray[11].x, vec3dArray[11].y, vec3dArray[11].z)
+          .tex(C.X, C.Y)
+          .color(255, 255, 255, 255)
+          .endVertex();
+       bufferBuilder.pos(vec3dArray[12].x, vec3dArray[12].y, vec3dArray[12].z)
+          .tex(C.X + 0.125F, C.Y)
+          .color(255, 255, 255, 255)
+          .endVertex();
+       bufferBuilder.pos(vec3dArray[13].x, vec3dArray[13].y, vec3dArray[13].z)
+          .tex(C.X + 0.125F, C.Y + 0.125F)
          .color(255, 255, 255, 255)
          .endVertex();
       tessellator.draw();
@@ -923,8 +923,8 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
       }
 
       QuadRenderHelper.QuadConfig quadConfig = G.a();
-      quadConfig.SegmentLength = LerpMath.lerp(G.g, 0.0F, f);
-      quadConfig.RotationAngle = LerpMath.lerp(G.e, 0.0F, f);
+      quadConfig.SegmentLength = LerpMath.lerp(G.SegmentLength, 0.0F, f);
+      quadConfig.RotationAngle = LerpMath.lerp(G.RotationAngle, 0.0F, f);
       this.a(bufferBuilder, bone, quadConfig);
    }
 
@@ -933,8 +933,8 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
       Tessellator.getInstance().draw();
       MatrixUtil.applyGeoBoneTransform(MATRIX_STACK, bone);
       GlStateManager.disableCull();
-      this.bindTexture(e);
-      QuadRenderHelper.drawQuad(bufferBuilder, Tessellator.getInstance(), i, quadConfig);
+      this.bindTexture(LineTexture);
+      QuadRenderHelper.a(bufferBuilder, Tessellator.getInstance(), Mc, quadConfig);
       this.bindTexture(Objects.requireNonNull(this.getEntityTexture(this.RenderEntity)));
       bufferBuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
       GlStateManager.enableCull();

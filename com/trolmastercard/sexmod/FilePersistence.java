@@ -698,7 +698,7 @@ public class FilePersistence {
             }
             return null;
         }
-        return whitelist.g;
+        return whitelist.AllowedGirls;
     }
 
 
@@ -766,11 +766,11 @@ public class FilePersistence {
             Object object;
             String string = (String)entry.getKey();
             object = (WhitelistFile)entry.getValue();
-            GirlBodySlot girlBodySlot = ((WhitelistFile)object).d;
+            GirlBodySlot girlBodySlot = ((WhitelistFile)object).BodySlot;
             List<String> list = hashMap.get((Object)girlBodySlot);
             try {
                 try {
-                    if (!((WhitelistFile)object).g.isEmpty() && !((WhitelistFile)object).g.contains((Object)GirlRegistry.getByEntity((Entity)girl))) {
+                    if (!((WhitelistFile)object).AllowedGirls.isEmpty() && !((WhitelistFile)object).AllowedGirls.contains((Object)GirlRegistry.getByEntity((Entity)girl))) {
                         continue;
                     }
                 }
@@ -908,219 +908,134 @@ public class FilePersistence {
 
 
       public WhitelistFile(File file, String string) {
-            block57: {
-                block56: {
-                    block55: {
-                        block54: {
-                            block53: {
-                                block52: {
-                                    block51: {
-                                        block50: {
-                                            block49: {
-                                                super();
-                                                this.AllowedGirls = new HashSet<E>();
-                                                this.AllowedNames = new HashSet<E>();
-                                                this.BaseScale = 1.0f;
-                                                this.HeightOffset = 0.0f;
-                                                this.Error = null;
-                                                if (string.contains(" ")) ** GOTO lbl15
-                                                if (string.contains("#")) ** GOTO lbl15
-                                                try {
-                                                    block58: {
-                                                        if (!string.contains("$")) break block49;
-                                                        break block58;
-                                                        catch (FileNotFoundException error) {
-                                                            throw FilePersistence.WhitelistFile.rethrow(error);
-                                                        }
-                                                    }
-                                                    this.Error = String.format("You cannot call your custom model '%s'. '#', '$' and spaces are illegal characters", new Object[]{string});
-                                                    return;
-                                                }
-                                                catch (FileNotFoundException error2) {
-                                                    throw FilePersistence.WhitelistFile.rethrow(error2);
-                                                }
-                                            }
-                                            try {
-                                                if ("cross".equalsIgnoreCase(string)) {
-                                                    this.Error = "You cannot call your custom model 'cross'. Im sorry, but I need that specific name for internal stuff";
-                                                    return;
-                                                }
-                                            }
-                                            catch (FileNotFoundException error3) {
-                                                throw FilePersistence.WhitelistFile.rethrow(error3);
-                                            }
-                                            properties = new Properties();
-                                            try {
-                                                fileInputStream = new FileInputStream(file);
-                                            }
-                                            catch (FileNotFoundException error4) {
-                                                this.Error = String.format("couldn't find cfg File for '%s'. It should have been at '%s'. Are you sure it exists?", new Object[]{string, file.getAbsolutePath()});
-                                                return;
-                                            }
-                                            try {
-                                                properties.load(fileInputStream);
-                                            }
-                                            catch (IOException error5) {
-                                                this.Error = String.format("couldn't read the cfg File for '%s' at '%s'. It appears to be corrupted. Try making a new one", new Object[]{string, file.getAbsolutePath()});
-                                                return;
-                                            }
-                                            string2 = properties.getProperty("wear_type");
-                                            try {
-                                                if (string2 == null) {
-                                                    this.Error = String.format("The cfg File for the model '%s' at '%s' is missing the 'wear_type'. Go to the bottom of the cfg File and write 'wear_type=HEAD'. Check the cfg files of my examples to see what values for 'wear_type' are possible", new Object[]{string, file.getAbsolutePath()});
-                                                    return;
-                                                }
-                                            }
-                                            catch (FileNotFoundException error6) {
-                                                throw FilePersistence.WhitelistFile.rethrow(error6);
-                                            }
-                                            try {
-                                                string2 = string2.replace(" ", "");
-                                                this.BodySlot = GirlBodySlot.valueOf(string2);
-                                            }
-                                            catch (IllegalArgumentException error7) {
-                                                this.Error = String.format("you entered '%s' into the 'wear_type' field of the %s's cfg file at '%s'. This is not a valid value. Check my examples on what valid values are to enter into the field 'wear_type", new Object[]{string2, string, file.getAbsolutePath()});
-                                                return;
-                                            }
-                                            if (!GirlBodySlot.CUSTOM_BONE.equals((Object)this.BodySlot)) break block50;
-                                            try {
-                                                block59: {
-                                                    this.FileName = properties.getProperty("custom_bone");
-                                                    if (!"".equals(this.FileName)) break block50;
-                                                    break block59;
-                                                    catch (FileNotFoundException error8) {
-                                                        throw FilePersistence.WhitelistFile.rethrow(error8);
-                                                    }
-                                                }
-                                                this.Error = String.format("You selected CUSTOM_BONE as the 'wear_type' in the cfg file for '%s' at '%s', yet you left the 'custom_bone' field right underneath it empty. If you want ur model to be parented to a specific bone, you have to enter the name of that bone at the field 'custom_bone'.", new Object[]{string, file.getAbsolutePath()});
-                                                return;
-                                            }
-                                            catch (FileNotFoundException error9) {
-                                                throw FilePersistence.WhitelistFile.rethrow(error9);
-                                            }
-                                        }
-                                        string3 = properties.getProperty("which_girls");
-                                        string3 = string3.replace(" ", "");
-                                        stringArray = string3.split(",");
-                                        for (String[] stringArray2 : stringArray) {
-                                            try {
-                                                if ("".equals(stringArray2)) {
-                                                    continue;
-                                                }
-                                            }
-                                            catch (FileNotFoundException error10) {
-                                                throw FilePersistence.WhitelistFile.rethrow(error10);
-                                            }
-                                            try {
-                                                this.AllowedGirls.add(GirlRegistry.valueOf((String)stringArray2));
-                                            }
-                                            catch (IllegalArgumentException error11) {
-                                                this.Error = String.format("you entered '%s' as one of the girls, you put into the 'which_girls' field of the %s's cfg file at '%s'. This is not a valid value. Check my examples on what valid values are to enter into the field 'which_girls'.", new Object[]{stringArray2, string, file.getAbsolutePath()});
-                                                return;
-                                            }
-                                        }
-                                        string4 = properties.getProperty("which_lighting");
-                                        try {
-                                            if (string4 == null) {
-                                                this.Error = String.format("The %s's cfg file at '%s' doesn't contain the field 'which_lighting'. Go to the bottom of the cfg file and write either 'which_lighting=DEFAULT', 'which_lighting=SEXMOD', or 'which_lighting=NONE'.", new Object[]{string, file.getAbsolutePath()});
-                                                return;
-                                            }
-                                        }
-                                        catch (FileNotFoundException error12) {
-                                            throw FilePersistence.WhitelistFile.rethrow(error12);
-                                        }
-                                        string4 = string4.replace(" ", "");
-                                        try {
-                                            this.RenderMode = RenderMode.valueOf((String)string4);
-                                        }
-                                        catch (IllegalArgumentException error13) {
-                                            this.Error = String.format("you entered '%s' into the 'which_lighting' field of the %s's cfg file at '%s'. This is not a valid value. Check my examples on what valid values are to enter into the field 'which_lighting'.", new Object[]{string4, string, file.getAbsolutePath()});
-                                        }
-                                        string5 = properties.getProperty("author");
-                                        if (string5 == null) ** GOTO lbl109
-                                        try {
-                                            block60: {
-                                                if (!"".equals(string5)) break block51;
-                                                break block60;
-                                                catch (FileNotFoundException error14) {
-                                                    throw FilePersistence.WhitelistFile.rethrow(error14);
-                                                }
-                                            }
-                                            this.ModelName = "anon";
-                                            break block52;
-                                        }
-                                        catch (FileNotFoundException error15) {
-                                            throw FilePersistence.WhitelistFile.rethrow(error15);
-                                        }
-                                    }
-                                    this.ModelName = string5;
-                                }
-                                i = properties.getProperty("bones_to_hide");
-                                try {
-                                    if (i == null || "".equals(i)) break block53;
-                                }
-                                catch (FileNotFoundException error16) {
-                                    throw FilePersistence.WhitelistFile.rethrow(error16);
-                                }
-                                i = i.replace(" ", "");
-                                stringArray2 = i.split(",");
-                                this.AllowedNames.addAll(Arrays.asList(stringArray2));
-                            }
-                            stringArray2 = properties.getProperty("enable_when_nude");
-                            try {
-                                if (stringArray2 != null) break block54;
-                                this.IsValid = false;
-                                break block55;
-                            }
-                            catch (FileNotFoundException error17) {
-                                throw FilePersistence.WhitelistFile.rethrow(error17);
-                            }
-                        }
-                        stringArray2 = stringArray2.replace(" ", "");
-                        this.IsValid = stringArray2.equalsIgnoreCase("yes");
-                    }
-                    i2 = properties.getProperty("gui_size_factor");
-                    try {
-                        if (i2 == null || "".equals(i2)) break block56;
-                    }
-                    catch (FileNotFoundException error18) {
-                        throw FilePersistence.WhitelistFile.rethrow(error18);
-                    }
-                    i2 = i2.replace(" ", "");
-                    i2 = i2.replace(",", ".");
-                    try {
-                        this.BaseScale = Float.parseFloat(i2);
-                    }
-                    catch (NumberFormatException error19) {
-                        this.Error = String.format("you entered '%s' into the 'gui_size_factor' field of the %s's cfg file at '%s'. This is not a valid value. Check my examples on what valid values are to enter into the field 'gui_size_factor'.", new Object[]{i2, string, file.getAbsolutePath()});
-                    }
-                }
-                i3 = properties.getProperty("gui_vertical_positioning");
-                try {
-                    if (i3 == null || "".equals(i3)) break block57;
-                }
-                catch (FileNotFoundException error20) {
-                    throw FilePersistence.WhitelistFile.rethrow(error20);
-                }
-                i3 = i3.replace(" ", "");
-                i3 = i3.replace(",", ".");
-                try {
-                    this.HeightOffset = Float.parseFloat(i3);
-                }
-                catch (NumberFormatException error21) {
-                    this.Error = String.format("you entered '%s' into the 'gui_vertical_positioning' field of the %s's cfg file at '%s'. This is not a valid value. Check my examples on what valid values are to enter into the field 'gui_vertical_positioning'.", new Object[]{i3, string, file.getAbsolutePath()});
-                }
+         this.AllowedGirls = new HashSet();
+         this.AllowedNames = new HashSet();
+         this.BaseScale = 1.0f;
+         this.HeightOffset = 0.0f;
+         this.Error = null;
+         if (string.contains(" ") || string.contains("#") || string.contains("$")) {
+            this.Error = String.format("You cannot call your custom model '%s'. '#', '$' and spaces are illegal characters", new Object[]{string});
+            return;
+         }
+         if ("cross".equalsIgnoreCase(string)) {
+            this.Error = "You cannot call your custom model 'cross'. Im sorry, but I need that specific name for internal stuff";
+            return;
+         }
+         Properties properties = new Properties();
+         FileInputStream fileInputStream;
+         try {
+            fileInputStream = new FileInputStream(file);
+         }
+         catch (FileNotFoundException error) {
+            this.Error = String.format("couldn't find cfg File for '%s'. It should have been at '%s'. Are you sure it exists?", new Object[]{string, file.getAbsolutePath()});
+            return;
+         }
+         try {
+            properties.load(fileInputStream);
+         }
+         catch (IOException error5) {
+            this.Error = String.format("couldn't read the cfg File for '%s' at '%s'. It appears to be corrupted. Try making a new one", new Object[]{string, file.getAbsolutePath()});
+            return;
+         }
+         String wearType = properties.getProperty("wear_type");
+         try {
+            if (wearType == null) {
+               this.Error = String.format("The cfg File for the model '%s' at '%s' is missing the 'wear_type'. Go to the bottom of the cfg File and write 'wear_type=HEAD'. Check the cfg files of my examples to see what values for 'wear_type' are possible", new Object[]{string, file.getAbsolutePath()});
+               return;
             }
-            i4 = properties.getProperty("version");
-            i4 = i4.replace(" ", "");
-            i4 = i4.replace(",", ".");
+         }
+         catch (FileNotFoundException error6) {
+            throw FilePersistence.WhitelistFile.rethrow(error6);
+         }
+         try {
+            wearType = wearType.replace(" ", "");
+            this.BodySlot = GirlBodySlot.valueOf(wearType);
+         }
+         catch (IllegalArgumentException error7) {
+            this.Error = String.format("you entered '%s' into the 'wear_type' field of the %s's cfg file at '%s'. This is not a valid value. Check my examples on what valid values are to enter into the field 'wear_type", new Object[]{wearType, string, file.getAbsolutePath()});
+            return;
+         }
+         if (GirlBodySlot.CUSTOM_BONE.equals((Object)this.BodySlot)) {
+            this.FileName = properties.getProperty("custom_bone");
+            if ("".equals(this.FileName)) {
+               this.Error = String.format("You selected CUSTOM_BONE as the 'wear_type' in the cfg file for '%s' at '%s', yet you left the 'custom_bone' field right underneath it empty. If you want ur model to be parented to a specific bone, you have to enter the name of that bone at the field 'custom_bone'.", new Object[]{string, file.getAbsolutePath()});
+               return;
+            }
+         }
+         String[] girls = properties.getProperty("which_girls").replace(" ", "").split(",");
+         for (String girl : girls) {
             try {
-                this.AspectRatio = Float.parseFloat(i4);
+               if ("".equals(girl)) continue;
+               this.AllowedGirls.add(GirlRegistry.valueOf(girl));
             }
-            catch (NumberFormatException error22) {
-                this.Error = String.format("you entered '%s' into the 'versionString' field of the %s's cfg file at '%s'. This is not a valid value. Check my examples on what valid values are to enter into the field 'versionString'.", new Object[]{i4, string, file.getAbsolutePath()});
+            catch (IllegalArgumentException error11) {
+               this.Error = String.format("you entered '%s' as one of the girls, you put into the 'which_girls' field of the %s's cfg file at '%s'. This is not a valid value. Check my examples on what valid values are to enter into the field 'which_girls'.", new Object[]{girl, string, file.getAbsolutePath()});
+               return;
             }
-        }
+         }
+         String lighting = properties.getProperty("which_lighting");
+         try {
+            if (lighting == null) {
+               this.Error = String.format("The %s's cfg file at '%s' doesn't contain the field 'which_lighting'. Go to the bottom of the cfg file and write either 'which_lighting=DEFAULT', 'which_lighting=SEXMOD', or 'which_lighting=NONE'.", new Object[]{string, file.getAbsolutePath()});
+               return;
+            }
+         }
+         catch (FileNotFoundException error12) {
+            throw FilePersistence.WhitelistFile.rethrow(error12);
+         }
+         lighting = lighting.replace(" ", "");
+         try {
+            this.RenderMode = RenderMode.valueOf(lighting);
+         }
+         catch (IllegalArgumentException error13) {
+            this.Error = String.format("you entered '%s' into the 'which_lighting' field of the %s's cfg file at '%s'. This is not a valid value. Check my examples on what valid values are to enter into the field 'which_lighting'.", new Object[]{lighting, string, file.getAbsolutePath()});
+         }
+         String author = properties.getProperty("author");
+         this.ModelName = author == null || "".equals(author) ? "anon" : author;
+         String bonesToHide = properties.getProperty("bones_to_hide");
+         if (bonesToHide != null && !"".equals(bonesToHide)) {
+            bonesToHide = bonesToHide.replace(" ", "");
+            this.AllowedNames.addAll(Arrays.asList(bonesToHide.split(",")));
+         }
+         String enableWhenNude = properties.getProperty("enable_when_nude");
+         if (enableWhenNude == null) {
+            this.IsValid = false;
+         } else {
+            enableWhenNude = enableWhenNude.replace(" ", "");
+            this.IsValid = enableWhenNude.equalsIgnoreCase("yes");
+         }
+         String sizeFactor = properties.getProperty("gui_size_factor");
+         if (sizeFactor != null && !"".equals(sizeFactor)) {
+            sizeFactor = sizeFactor.replace(" ", "");
+            sizeFactor = sizeFactor.replace(",", ".");
+            try {
+               this.BaseScale = Float.parseFloat(sizeFactor);
+            }
+            catch (NumberFormatException error19) {
+               this.Error = String.format("you entered '%s' into the 'gui_size_factor' field of the %s's cfg file at '%s'. This is not a valid value. Check my examples on what valid values are to enter into the field 'gui_size_factor'.", new Object[]{sizeFactor, string, file.getAbsolutePath()});
+            }
+         }
+         String verticalPositioning = properties.getProperty("gui_vertical_positioning");
+         if (verticalPositioning != null && !"".equals(verticalPositioning)) {
+            verticalPositioning = verticalPositioning.replace(" ", "");
+            verticalPositioning = verticalPositioning.replace(",", ".");
+            try {
+               this.HeightOffset = Float.parseFloat(verticalPositioning);
+            }
+            catch (NumberFormatException error21) {
+               this.Error = String.format("you entered '%s' into the 'gui_vertical_positioning' field of the %s's cfg file at '%s'. This is not a valid value. Check my examples on what valid values are to enter into the field 'gui_vertical_positioning'.", new Object[]{verticalPositioning, string, file.getAbsolutePath()});
+            }
+         }
+         String version = properties.getProperty("version");
+         version = version.replace(" ", "");
+         version = version.replace(",", ".");
+         try {
+            this.AspectRatio = Float.parseFloat(version);
+         }
+         catch (NumberFormatException error22) {
+            this.Error = String.format("you entered '%s' into the 'versionString' field of the %s's cfg file at '%s'. This is not a valid value. Check my examples on what valid values are to enter into the field 'versionString'.", new Object[]{version, string, file.getAbsolutePath()});
+         }
+      }
 
       public String b() {
          return this.FileName;

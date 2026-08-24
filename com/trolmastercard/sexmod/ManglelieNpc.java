@@ -1245,7 +1245,7 @@ extends GirlEntity {
             if (this.isClaimed()) {
                 this.setAnimationState(GirlAnimationState.RIDE_MOMMY_HEAD);
                 this.b(0.0f);
-                this.DataManager.setDirty(w);
+                this.DataManager.setDirty(RotationYawKey);
             }
         }
         catch (RuntimeException runtimeException) {

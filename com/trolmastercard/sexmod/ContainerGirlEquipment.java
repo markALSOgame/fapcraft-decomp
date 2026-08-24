@@ -25,12 +25,12 @@ public class ContainerGirlEquipment extends Container {
          IItemHandler handler = (IItemHandler)girl.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH);
          this.Girl = girl;
          this.Slots = new Slot[]{
-            new EquipmentSlot(EquipmentSlot.SlotType.WEAPON, handler, EquipmentSlot.SlotType.WEAPON.id, 31, 60),
-            new EquipmentSlot(EquipmentSlot.SlotType.BOW, handler, EquipmentSlot.SlotType.BOW.id, 50, 60),
-            new EquipmentSlot(EquipmentSlot.SlotType.HELMET, handler, EquipmentSlot.SlotType.HELMET.id, 72, 60),
-            new EquipmentSlot(EquipmentSlot.SlotType.CHEST_PLATE, handler, EquipmentSlot.SlotType.CHEST_PLATE.id, 91, 60),
-            new EquipmentSlot(EquipmentSlot.SlotType.PANTS, handler, EquipmentSlot.SlotType.PANTS.id, 110, 60),
-            new EquipmentSlot(EquipmentSlot.SlotType.SHOES, handler, EquipmentSlot.SlotType.SHOES.id, 129, 60)
+            new EquipmentSlot(EquipmentSlot.SlotType.WEAPON, handler, EquipmentSlot.SlotType.WEAPON.SlotIndex, 31, 60),
+            new EquipmentSlot(EquipmentSlot.SlotType.BOW, handler, EquipmentSlot.SlotType.BOW.SlotIndex, 50, 60),
+            new EquipmentSlot(EquipmentSlot.SlotType.HELMET, handler, EquipmentSlot.SlotType.HELMET.SlotIndex, 72, 60),
+            new EquipmentSlot(EquipmentSlot.SlotType.CHEST_PLATE, handler, EquipmentSlot.SlotType.CHEST_PLATE.SlotIndex, 91, 60),
+            new EquipmentSlot(EquipmentSlot.SlotType.PANTS, handler, EquipmentSlot.SlotType.PANTS.SlotIndex, 110, 60),
+            new EquipmentSlot(EquipmentSlot.SlotType.SHOES, handler, EquipmentSlot.SlotType.SHOES.SlotIndex, 129, 60)
          };
          ArrayList list = new ArrayList();
 

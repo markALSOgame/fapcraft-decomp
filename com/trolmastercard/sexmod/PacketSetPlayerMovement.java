@@ -1,9 +1,11 @@
 package com.trolmastercard.sexmod;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class PacketSetPlayerMovement implements IMessage {
    boolean Loaded;
@@ -31,37 +33,19 @@ public class PacketSetPlayerMovement implements IMessage {
    public static class Handler implements IMessageHandler<PacketSetPlayerMovement, IMessage> {
 
       public IMessage handle(PacketSetPlayerMovement packet, MessageContext ctx) {
-            block9: {
-                if (!packet.Loaded) ** GOTO lbl8
-                try {
-                    block10: {
-                        if (ctx.side == Side.CLIENT) break block9;
-                        break block10;
-                        catch (Exception error) {
-                            throw PacketSetPlayerMovement.Handler.rethrow(error);
-                        }
-                    }
-                    System.out.println("received an invalid message @SetPlayerMovement :(");
-                    return null;
-                }
-                catch (Exception error2) {
-                    throw PacketSetPlayerMovement.Handler.rethrow(error2);
-                }
+            if (!packet.Loaded || ctx.side != Side.CLIENT) {
+                System.out.println("received an invalid message @SetPlayerMovement :(");
+                return null;
             }
             AnimationInputLock.setAnimationLocked(packet.MovementActive);
             try {
                 Minecraft.getMinecraft().player.setVelocity(0.0, 0.0, 0.0);
             }
-            catch (Exception error3) {
+            catch (Exception error) {
                 // empty catch block
             }
-            try {
-                if (packet.MovementActive) {
-                    GuiHud.forceShowHud();
-                }
-            }
-            catch (Exception error4) {
-                throw PacketSetPlayerMovement.Handler.rethrow(error4);
+            if (packet.MovementActive) {
+                GuiHud.forceShowHud();
             }
             return null;
         }

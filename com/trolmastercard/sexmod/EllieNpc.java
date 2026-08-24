@@ -185,7 +185,7 @@ implements VoidCallback {
             throw EllieNpc.rethrow(runtimeException);
         }
         try {
-            if ((Integer)this.DataManager.get(D) == 0) {
+            if ((Integer)this.DataManager.get(OutfitIndexKey) == 0) {
                 EllieNpc.openActionMenu(entityPlayer, this, new String[]{"action.names.dressup"}, true);
                 return true;
             }
@@ -489,9 +489,9 @@ implements VoidCallback {
         Vec3d vec3d2;
         EntityPlayer entityPlayer;
         UUID uUID;
-        String string = (String)this.DataManager.get(h);
+        String string = (String)this.DataManager.get(BlowjobStageKey);
         if ("Missionary".equals(string)) {
-            this.DataManager.set(D, (Object)0);
+            this.DataManager.set(OutfitIndexKey, (Object)0);
             this.setCurrentAction(GirlAnimationState.MISSIONARY_START);
             uUID = this.getSexPlayerUuid();
             try {
@@ -522,7 +522,7 @@ implements VoidCallback {
             NetworkHandler.channel.sendTo((IMessage)new PacketSetPlayerMovement(false), (EntityPlayerMP)entityPlayer);
         }
         if ("cowgirl".equals(string)) {
-            this.DataManager.set(D, (Object)0);
+            this.DataManager.set(OutfitIndexKey, (Object)0);
             this.setCurrentAction(GirlAnimationState.COWGIRLSTART);
             uUID = this.getSexPlayerUuid();
             try {
@@ -643,7 +643,7 @@ implements VoidCallback {
         }
         try {
             this.IsSitting = true;
-            this.DataManager.set(G, (Object)false);
+            this.DataManager.set(BusyKey, (Object)false);
             this.setCurrentAction(GirlAnimationState.NULL);
             this.noClip = false;
             this.setNoGravity(false);
@@ -691,7 +691,7 @@ implements VoidCallback {
         this.setTargetPos(vec3d);
         this.b(i);
         this.setCurrentAction(GirlAnimationState.SITDOWN);
-        this.DataManager.set(G, (Object)true);
+        this.DataManager.set(BusyKey, (Object)true);
         this.SitCountdown = 109;
         this.noClip = true;
         this.setNoGravity(true);
@@ -771,7 +771,7 @@ implements VoidCallback {
         float f = (float)(Math.atan2(this.posZ - entityPlayer.posZ, this.posX - entityPlayer.posX) * 57.29577951308232);
         this.b(f);
         this.setTargetPos(this.getPositionVector());
-        this.DataManager.set(G, (Object)true);
+        this.DataManager.set(BusyKey, (Object)true);
         this.setCurrentAction(GirlAnimationState.DASH);
         this.DashCountdown = 16;
         this.setNoGravity(true);
@@ -821,7 +821,7 @@ implements VoidCallback {
     }
 
     void f() {
-        this.DataManager.set(G, (Object)false);
+        this.DataManager.set(BusyKey, (Object)false);
         this.setCurrentAction(GirlAnimationState.NULL);
         this.updateCarryIntro((UUID)null);
         this.noClip = false;

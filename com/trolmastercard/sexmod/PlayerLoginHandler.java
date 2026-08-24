@@ -1,12 +1,20 @@
 package com.trolmastercard.sexmod;
 
 import java.util.ConcurrentModificationException;
+import java.util.HashSet;
+import java.util.List;
 import java.util.UUID;
+import java.util.function.Predicate;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class PlayerLoginHandler {
    static final UUID BiaPlayerOwnerUuid = UUID.fromString("b91e6484-8911-4def-ab04-9fa3452fca5f");
@@ -15,79 +23,41 @@ public class PlayerLoginHandler {
    @SubscribeEvent
 
    public void onPlayerLoggedIn(PlayerLoggedInEvent playerLoggedInEvent) {
-        Object object2;
-        EntityPlayerMP entityPlayerMP;
-        block19: {
-            entityPlayerMP = playerLoggedInEvent.player.world.getMinecraftServer().getPlayerList().getPlayerByUUID(playerLoggedInEvent.player.getPersistentID());
-            try {
-                try {
-                    entityPlayerMP.setInvisible(false);
-                    entityPlayerMP.setNoGravity(false);
-                    entityPlayerMP.noClip = false;
-                    if (entityPlayerMP.capabilities.isCreativeMode || !entityPlayerMP.capabilities.isFlying) break block19;
-                }
-                catch (ConcurrentModificationException concurrentModificationException) {
-                    throw PlayerLoginHandler.rethrow(concurrentModificationException);
-                }
-                entityPlayerMP.capabilities.isFlying = false;
-            }
-            catch (ConcurrentModificationException concurrentModificationException) {
-                throw PlayerLoginHandler.rethrow(concurrentModificationException);
-            }
+        EntityPlayerMP serverPlayer = playerLoggedInEvent.player.world.getMinecraftServer().getPlayerList().getPlayerByUUID(playerLoggedInEvent.player.getPersistentID());
+        serverPlayer.setInvisible(false);
+        serverPlayer.setNoGravity(false);
+        serverPlayer.noClip = false;
+        if (!serverPlayer.capabilities.isCreativeMode && serverPlayer.capabilities.isFlying) {
+            serverPlayer.capabilities.isFlying = false;
         }
-        NetworkHandler.channel.sendTo((IMessage)new PacketSetPlayerMovement(true), entityPlayerMP);
-        NetworkHandler.channel.sendTo((IMessage)new PacketInformOfOwnership(GalathOwnershipData.hasOwnershipData(entityPlayerMP.getPersistentID())), entityPlayerMP);
-        for (Object object2 : entityPlayerMP.inventory.mainInventory) {
-            try {
-                try {
-                    if (object2.getItem() != ItemAlliesLamp.Instance || !object2.hasTagCompound()) continue;
-                }
-                catch (ConcurrentModificationException concurrentModificationException) {
-                    throw PlayerLoginHandler.rethrow(concurrentModificationException);
-                }
-                object2.getTagCompound().setUniqueId("user", UUID.randomUUID());
-            }
-            catch (ConcurrentModificationException concurrentModificationException) {
-                throw PlayerLoginHandler.rethrow(concurrentModificationException);
-            }
+        NetworkHandler.channel.sendTo((IMessage)new PacketSetPlayerMovement(true), serverPlayer);
+        NetworkHandler.channel.sendTo((IMessage)new PacketInformOfOwnership(GalathOwnershipData.hasOwnershipData(serverPlayer.getPersistentID())), serverPlayer);
+        for (ItemStack itemStack : serverPlayer.inventory.mainInventory) {
+            if (itemStack.getItem() != ItemAlliesLamp.Instance || !itemStack.hasTagCompound()) continue;
+            itemStack.getTagCompound().setUniqueId("user", UUID.randomUUID());
         }
-        UUID uUID = GirlHomeBuilder.findTribeUuid(entityPlayerMP.getPersistentID());
-        if (uUID != null) {
-            object2 = GirlHomeBuilder.getTribeAreaPositions(uUID);
-            NetworkHandler.channel.sendTo((IMessage)new PacketSendBlocks((HashSet<BlockPos>)object2, true), entityPlayerMP);
+        UUID tribeUuid = GirlHomeBuilder.findTribeUuid(serverPlayer.getPersistentID());
+        if (tribeUuid != null) {
+            HashSet<BlockPos> tribePositions = GirlHomeBuilder.getTribeAreaPositions(tribeUuid);
+            NetworkHandler.channel.sendTo((IMessage)new PacketSendBlocks(tribePositions, true), serverPlayer);
         }
         PlayerGirlEntity.C();
-        object2 = PlayerGirlEntity.getByUuid(playerLoggedInEvent.player.getPersistentID());
+        PlayerGirlEntity playerGirl = PlayerGirlEntity.getByUuid(playerLoggedInEvent.player.getPersistentID());
         World world = FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld();
-        try {
-            this.removePlayerGirls(world, (EntityPlayer)entityPlayerMP, (PlayerGirlEntity)object2);
-            if (object2 != null) {
-                ((GirlEntity)object2).a(false);
-                ((PlayerGirlEntity)object2).b(GirlAnimationState.NULL);
-                PacketResetGirl.Handler.openGui((GirlEntity)object2);
-            }
+        this.removePlayerGirls(world, (EntityPlayer)serverPlayer, playerGirl);
+        if (playerGirl != null) {
+            playerGirl.setShouldBeAtTargetPos(false);
+            playerGirl.setCurrentAction(GirlAnimationState.NULL);
+            PacketResetGirl.Handler.handle(playerGirl);
         }
-        catch (ConcurrentModificationException concurrentModificationException) {
-            throw PlayerLoginHandler.rethrow(concurrentModificationException);
+        UUID uuid = playerLoggedInEvent.player.getPersistentID();
+        if (uuid.equals(BiaPlayerOwnerUuid)) {
+            this.spawnBiaPlayer(world, (EntityPlayer)serverPlayer, uuid);
         }
-        UUID uUID2 = playerLoggedInEvent.player.getPersistentID();
-        try {
-            if (uUID2.equals(BiaPlayerOwnerUuid)) {
-                this.spawnBiaPlayer(world, (EntityPlayer)entityPlayerMP, uUID2);
-            }
+        if (uuid.equals(ElliePlayerOwnerUuid)) {
+            this.spawnElliePlayer(world, (EntityPlayer)serverPlayer, uuid);
         }
-        catch (ConcurrentModificationException concurrentModificationException) {
-            throw PlayerLoginHandler.rethrow(concurrentModificationException);
-        }
-        try {
-            if (uUID2.equals(ElliePlayerOwnerUuid)) {
-                this.spawnElliePlayer(world, (EntityPlayer)entityPlayerMP, uUID2);
-            }
-        }
-        catch (ConcurrentModificationException concurrentModificationException) {
-            throw PlayerLoginHandler.rethrow(concurrentModificationException);
-        }
-        GalathNpc.getByPlayer((EntityPlayer)entityPlayerMP);
+        GalathNpc.getByPlayer((EntityPlayer)serverPlayer);
     }
 
    void spawnBiaPlayer(World world, EntityPlayer player, UUID uuid) {
@@ -119,88 +89,30 @@ public class PlayerLoginHandler {
         Predicate<PlayerGirlEntity> predicate = arg1 -> true;
         List list = world.getEntities(PlayerGirlEntity.class, predicate::test);
         for (PlayerGirlEntity playerGirl2 : list) {
-            try {
-                if (!playerGirl2.getBoundPlayerUuid().equals(player.getPersistentID())) {
-                    continue;
-                }
-            }
-            catch (ConcurrentModificationException concurrentModificationException) {
-                throw PlayerLoginHandler.rethrow(concurrentModificationException);
-            }
-            try {
-                try {
-                    if (playerGirl != null && playerGirl2.getEntityId() == playerGirl.getEntityId()) {
-                        continue;
-                    }
-                }
-                catch (ConcurrentModificationException concurrentModificationException) {
-                    throw PlayerLoginHandler.rethrow(concurrentModificationException);
-                }
-            }
-            catch (ConcurrentModificationException concurrentModificationException) {
-                throw PlayerLoginHandler.rethrow(concurrentModificationException);
-            }
-            world.removeEntity((Entity)playerGirl2);
+            if (!playerGirl2.getBoundPlayerUuid().equals(player.getPersistentID()) || playerGirl != null && playerGirl2.getEntityId() == playerGirl.getEntityId()) continue;
+            world.removeEntity(playerGirl2);
         }
     }
 
    @SubscribeEvent
 
    public void onPlayerLoggedOut(PlayerLoggedOutEvent playerLoggedOutEvent) {
-        serverPlayer = playerLoggedOutEvent.player;
+        EntityPlayer serverPlayer = playerLoggedOutEvent.player;
         try {
             for (GirlEntity girl : GirlEntity.getAllGirls()) {
-                block17: {
-                    try {
-                        if (girl instanceof PlayerGirlEntity) {
-                            ((PlayerGirlEntity)girl).b(serverPlayer);
-                        }
-                    }
-                    catch (ConcurrentModificationException error) {
-                        throw PlayerLoginHandler.rethrow(error);
-                    }
-                    try {
-                        if (girl.getSexPlayerUuid() == null) {
-                            continue;
-                        }
-                    }
-                    catch (ConcurrentModificationException error2) {
-                        throw PlayerLoginHandler.rethrow(error2);
-                    }
-                    if (girl.getSexPlayerUuid().equals(serverPlayer.getPersistentID())) ** GOTO lbl23
-                    try {
-                        block18: {
-                            if (!girl.getSexPlayerUuid().equals(serverPlayer.getUniqueID())) break block17;
-                            break block18;
-                            catch (ConcurrentModificationException error3) {
-                                throw PlayerLoginHandler.rethrow(error3);
-                            }
-                        }
-                        PacketResetGirl.Handler.openGui(girl);
-                        girl.setShouldBeAtTargetPos(false);
-                        girl.setCurrentAction(GirlAnimationState.NULL);
-                    }
-                    catch (ConcurrentModificationException error4) {
-                        throw PlayerLoginHandler.rethrow(error4);
-                    }
+                if (girl instanceof PlayerGirlEntity) {
+                    ((PlayerGirlEntity)girl).startInteraction(serverPlayer);
                 }
-                if (!(girl instanceof PlayerGirlEntity)) continue;
-                try {
-                    block19: {
-                        if (!((PlayerGirlEntity)girl).m().equals(serverPlayer.getPersistentID())) continue;
-                        break block19;
-                        catch (ConcurrentModificationException error5) {
-                            throw PlayerLoginHandler.rethrow(error5);
-                        }
-                    }
-                    if (girl.getSexPlayerUuid() == null) continue;
+                if (girl.getSexPlayerUuid() == null) continue;
+                if (girl.getSexPlayerUuid().equals(serverPlayer.getPersistentID()) || girl.getSexPlayerUuid().equals(serverPlayer.getUniqueID())) {
+                    PacketResetGirl.Handler.handle(girl);
+                    girl.setShouldBeAtTargetPos(false);
+                    girl.setCurrentAction(GirlAnimationState.NULL);
                 }
-                catch (ConcurrentModificationException error6) {
-                    throw PlayerLoginHandler.rethrow(error6);
-                }
-                serverPlayer2 = (EntityPlayerMP)playerLoggedOutEvent.player.world.getPlayerEntityByUUID(girl.getSexPlayerUuid());
+                if (!(girl instanceof PlayerGirlEntity) || !((PlayerGirlEntity)girl).getBoundPlayerUuid().equals(serverPlayer.getPersistentID()) || girl.getSexPlayerUuid() == null) continue;
+                EntityPlayerMP serverPlayer2 = (EntityPlayerMP)playerLoggedOutEvent.player.world.getPlayerEntityByUUID(girl.getSexPlayerUuid());
                 NetworkHandler.channel.sendTo((IMessage)new PacketSetPlayerMovement(true), serverPlayer2);
-                PacketResetGirl.Handler.openGui(serverPlayer2);
+                PacketResetGirl.Handler.handle(serverPlayer2);
                 serverPlayer.setInvisible(false);
                 girl.handleGirlUuidEvent((UUID)null);
             }

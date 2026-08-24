@@ -15,7 +15,7 @@ public class ClientChatHandler {
 
    public void a() {
       try {
-         if (Instance.b == null) {
+         if (Instance.PendingEntry == null) {
             return;
          }
       } catch (RuntimeException error) {
@@ -23,7 +23,7 @@ public class ClientChatHandler {
       }
 
       try {
-         if (--Instance.b.e <= 0.0F) {
+         if (--Instance.PendingEntry.e <= 0.0F) {
             Minecraft.getMinecraft()
                .player
                .sendMessage(new TextComponentString(TextFormatting.DARK_PURPLE + I18n.format("genderswap.sexpromt.timeout", new Object[0])));
@@ -35,11 +35,11 @@ public class ClientChatHandler {
    }
 
    public ClientChatHandler.Entry b() {
-      return Instance.b;
+      return Instance.PendingEntry;
    }
 
    void c() {
-      Instance.b = null;
+      Instance.PendingEntry = null;
    }
 
 

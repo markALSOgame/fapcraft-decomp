@@ -112,186 +112,113 @@ public class GirlRenderHandler {
    @SubscribeEvent
 
    public void onRenderThrowingGirl(RenderWorldLastEvent renderWorldLastEvent) {
-        Minecraft minecraft = Minecraft.getMinecraft();
-        try {
-            if (minecraft.player == null) {
-                return;
+      Minecraft mc = Minecraft.getMinecraft();
+
+      try {
+         if (mc.player == null) {
+            return;
+         }
+      } catch (ConcurrentModificationException error) {
+         throw rethrow(error);
+      }
+
+      UUID uuid = mc.player.getPersistentID();
+
+      try {
+         for (GirlEntity girl : GirlEntity.getAllGirls()) {
+            if (!girl.world.isRemote || girl.isDead || !(girl instanceof GirlMaster)) {
+               continue;
             }
-        }
-        catch (ConcurrentModificationException concurrentModificationException) {
-            throw GirlRenderHandler.rethrow(concurrentModificationException);
-        }
-        UUID uUID = minecraft.player.getPersistentID();
-        try {
-            for (GirlEntity girl : GirlEntity.getAllGirls()) {
-                float f;
-                double d;
-                double d2;
-                double d3;
-                GirlEntity girl2;
-                RenderManager renderManager;
-                block20: {
-                    block19: {
-                        try {
-                            if (!girl.world.isRemote) {
-                                continue;
-                            }
-                        }
-                        catch (ConcurrentModificationException concurrentModificationException) {
-                            throw GirlRenderHandler.rethrow(concurrentModificationException);
-                        }
-                        try {
-                            if (girl.isDead) {
-                                continue;
-                            }
-                        }
-                        catch (ConcurrentModificationException concurrentModificationException) {
-                            throw GirlRenderHandler.rethrow(concurrentModificationException);
-                        }
-                        try {
-                            if (!(girl instanceof GirlMaster)) {
-                                continue;
-                            }
-                        }
-                        catch (ConcurrentModificationException concurrentModificationException) {
-                            throw GirlRenderHandler.rethrow(concurrentModificationException);
-                        }
-                        GirlMaster girlMaster = (GirlMaster)((Object)girl);
-                        if (girl.getCurrentAction() != GirlAnimationState.START_THROWING) continue;
-                        try {
-                            block21: {
-                                girl.setTracked(true);
-                                renderManager = minecraft.getRenderManager();
-                                girl2 = girl;
-                                d3 = 0.0;
-                                d2 = 0.0;
-                                d = 0.0;
-                                if (!uUID.equals(girlMaster.getGirlUuid())) break block19;
-                                break block21;
-                                catch (ConcurrentModificationException concurrentModificationException) {
-                                    throw GirlRenderHandler.rethrow(concurrentModificationException);
-                                }
-                            }
-                            f = -420.69f;
-                            break block20;
-                        }
-                        catch (ConcurrentModificationException concurrentModificationException) {
-                            throw GirlRenderHandler.rethrow(concurrentModificationException);
-                        }
-                    }
-                    f = 0.0f;
-                }
-                renderManager.renderEntity((Entity)girl2, d3, d2, d, f, minecraft.getRenderPartialTicks(), false);
-                girl.setTracked(false);
-                return;
+
+            GirlMaster girlMaster = (GirlMaster)girl;
+
+            if (girl.getCurrentAction() != GirlAnimationState.START_THROWING) {
+               continue;
             }
-        }
-        catch (ConcurrentModificationException concurrentModificationException) {
-            // empty catch block
-        }
-        GlStateManager.enableLighting();
-        GlStateManager.enableDepth();
-        GlStateManager.enableAlpha();
-    }
+
+            girl.setTracked(true);
+            mc.getRenderManager()
+               .renderEntity(
+                  girl,
+                  0.0,
+                  0.0,
+                  0.0,
+                  uuid.equals(girlMaster.getGirlUuid()) ? -420.69F : 0.0F,
+                  mc.getRenderPartialTicks(),
+                  false
+               );
+            girl.setTracked(false);
+            return;
+         }
+      } catch (ConcurrentModificationException error2) {
+      }
+
+      GlStateManager.enableLighting();
+      GlStateManager.enableDepth();
+      GlStateManager.enableAlpha();
+   }
 
    @SideOnly(Side.CLIENT)
    @SubscribeEvent
 
    public void onRenderHand(RenderHandEvent renderHandEvent) {
-        Minecraft minecraft = Minecraft.getMinecraft();
-        UUID uUID = minecraft.player.getPersistentID();
-        try {
-            for (GirlEntity girl : GirlEntity.getAllGirls()) {
-                block13: {
-                    try {
-                        if (!(girl instanceof GirlMaster)) {
-                            continue;
-                        }
-                    }
-                    catch (ConcurrentModificationException concurrentModificationException) {
-                        throw GirlRenderHandler.rethrow(concurrentModificationException);
-                    }
-                    GirlAnimationState girlAnimationState = girl.getCurrentAction();
-                    if (girlAnimationState == GirlAnimationState.PICK_UP) break block13;
-                    try {
-                        if (girlAnimationState != GirlAnimationState.START_THROWING) {
-                            continue;
-                        }
-                        break block13;
-                        catch (ConcurrentModificationException concurrentModificationException) {
-                            throw GirlRenderHandler.rethrow(concurrentModificationException);
-                        }
-                    }
-                    catch (ConcurrentModificationException concurrentModificationException) {
-                        throw GirlRenderHandler.rethrow(concurrentModificationException);
-                    }
-                }
-                GirlMaster girlMaster = (GirlMaster)((Object)girl);
-                UUID uUID2 = girlMaster.getGirlUuid();
-                try {
-                    if (!uUID.equals(uUID2)) continue;
-                    renderHandEvent.setCanceled(true);
-                    return;
-                }
-                catch (ConcurrentModificationException concurrentModificationException) {
-                    throw GirlRenderHandler.rethrow(concurrentModificationException);
-                    return;
-                }
+      Minecraft mc = Minecraft.getMinecraft();
+      UUID uuid = mc.player.getPersistentID();
+
+      try {
+         for (GirlEntity girl : GirlEntity.getAllGirls()) {
+            if (!(girl instanceof GirlMaster)) {
+               continue;
             }
-        }
-        catch (ConcurrentModificationException concurrentModificationException) {
-            // empty catch block
-        }
-    }
+
+            GirlAnimationState girlAnimationState = girl.getCurrentAction();
+
+            if (girlAnimationState != GirlAnimationState.PICK_UP && girlAnimationState != GirlAnimationState.START_THROWING) {
+               continue;
+            }
+
+            UUID girlUuid = ((GirlMaster)girl).getGirlUuid();
+
+            if (!uuid.equals(girlUuid)) {
+               continue;
+            }
+
+            renderHandEvent.setCanceled(true);
+            break;
+         }
+      } catch (ConcurrentModificationException error) {
+      }
+   }
 
    @SideOnly(Side.CLIENT)
    @SubscribeEvent
 
    public void onRenderPlayerPre(Pre pre) {
-        UUID uUID = pre.getEntityPlayer().getPersistentID();
-        try {
-            for (GirlEntity girl : GirlEntity.getAllGirls()) {
-                GirlMaster girlMaster;
-                block13: {
-                    try {
-                        if (!(girl instanceof GirlMaster)) {
-                            continue;
-                        }
-                    }
-                    catch (ConcurrentModificationException concurrentModificationException) {
-                        throw GirlRenderHandler.rethrow(concurrentModificationException);
-                    }
-                    girlMaster = (GirlMaster)((Object)girl);
-                    GirlAnimationState girlAnimationState = girl.getCurrentAction();
-                    if (girlAnimationState == GirlAnimationState.PICK_UP) break block13;
-                    try {
-                        if (girlAnimationState != GirlAnimationState.START_THROWING) {
-                            continue;
-                        }
-                        break block13;
-                        catch (ConcurrentModificationException concurrentModificationException) {
-                            throw GirlRenderHandler.rethrow(concurrentModificationException);
-                        }
-                    }
-                    catch (ConcurrentModificationException concurrentModificationException) {
-                        throw GirlRenderHandler.rethrow(concurrentModificationException);
-                    }
-                }
-                try {
-                    if (!uUID.equals(girlMaster.getGirlUuid())) continue;
-                    pre.setCanceled(true);
-                    return;
-                }
-                catch (ConcurrentModificationException concurrentModificationException) {
-                    throw GirlRenderHandler.rethrow(concurrentModificationException);
-                    return;
-                }
+      UUID uuid = pre.getEntityPlayer().getPersistentID();
+
+      try {
+         for (GirlEntity girl : GirlEntity.getAllGirls()) {
+            if (!(girl instanceof GirlMaster)) {
+               continue;
             }
-        }
-        catch (ConcurrentModificationException concurrentModificationException) {
-            // empty catch block
-        }
-    }
+
+            GirlMaster girlMaster = (GirlMaster)girl;
+            GirlAnimationState girlAnimationState = girl.getCurrentAction();
+
+            if (girlAnimationState != GirlAnimationState.PICK_UP && girlAnimationState != GirlAnimationState.START_THROWING) {
+               continue;
+            }
+
+            if (!uuid.equals(girlMaster.getGirlUuid())) {
+               continue;
+            }
+
+            pre.setCanceled(true);
+            break;
+         }
+      } catch (ConcurrentModificationException error) {
+      }
+   }
 
    private static ConcurrentModificationException rethrow(ConcurrentModificationException error) {
       return error;

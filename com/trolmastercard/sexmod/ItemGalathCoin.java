@@ -244,66 +244,20 @@ public class ItemGalathCoin extends Item implements IAnimatable {
    @SideOnly(Side.CLIENT)
 
    void b(EntityPlayer player, long l, long l2) {
-        int i;
-        GirlEntity girl;
-        GirlEntity girl2;
-        block27: {
-            try {
-                if (l2 == 0L) {
-                    return;
-                }
-            }
-            catch (ConcurrentModificationException concurrentModificationException) {
-                throw ItemGalathCoin.rethrow(concurrentModificationException);
-            }
-            if (l <= l2 + 1000L) return;
-            try {
-                if (l < l2 + 3000L) break block27;
+        try {
+            if (l2 == 0L) {
                 return;
-                catch (ConcurrentModificationException concurrentModificationException) {
-                    throw ItemGalathCoin.rethrow(concurrentModificationException);
-                }
-            }
-            catch (ConcurrentModificationException concurrentModificationException) {
-                throw ItemGalathCoin.rethrow(concurrentModificationException);
             }
         }
-        GalathNpc f_2 = null;
+        catch (ConcurrentModificationException concurrentModificationException) {
+            throw ItemGalathCoin.rethrow(concurrentModificationException);
+        }
+        if (l <= l2 + 1000L || l >= l2 + 3000L) return;
+        GalathNpc galath = null;
         try {
             for (GirlEntity girl3 : GirlEntity.getAllGirls()) {
-                try {
-                    if (girl3.isDead) {
-                        continue;
-                    }
-                }
-                catch (ConcurrentModificationException concurrentModificationException) {
-                    throw ItemGalathCoin.rethrow(concurrentModificationException);
-                }
-                try {
-                    if (!girl3.world.isRemote) {
-                        continue;
-                    }
-                }
-                catch (ConcurrentModificationException concurrentModificationException) {
-                    throw ItemGalathCoin.rethrow(concurrentModificationException);
-                }
-                try {
-                    if (!(girl3 instanceof GalathNpc)) {
-                        continue;
-                    }
-                }
-                catch (ConcurrentModificationException concurrentModificationException) {
-                    throw ItemGalathCoin.rethrow(concurrentModificationException);
-                }
-                try {
-                    if (!player.equals((Object)girl3.getSexPlayer())) {
-                        continue;
-                    }
-                }
-                catch (ConcurrentModificationException concurrentModificationException) {
-                    throw ItemGalathCoin.rethrow(concurrentModificationException);
-                }
-                f_2 = (GalathNpc)girl3;
+                if (girl3.isDead || !girl3.world.isRemote || !(girl3 instanceof GalathNpc) || !player.equals((Object)girl3.getSexPlayer())) continue;
+                galath = (GalathNpc)girl3;
                 break;
             }
         }
@@ -311,27 +265,21 @@ public class ItemGalathCoin extends Item implements IAnimatable {
             // empty catch block
         }
         try {
-            if (f_2 == null) {
+            if (galath == null) {
                 return;
             }
         }
         catch (ConcurrentModificationException concurrentModificationException) {
             throw ItemGalathCoin.rethrow(concurrentModificationException);
         }
-        Vec3d vec3d = f_2.getTargetPos().add(0.0, 1.5, 0.0);
-        girl3 = player.getPositionVector().add(0.0, (double)player.getEyeHeight(), 0.0);
-        try {
-            girl = girl3;
-            i = player.getHeldItemMainhand().getItem().equals(Instance) ? 1 : -1;
-        }
-        catch (ConcurrentModificationException concurrentModificationException) {
-            throw ItemGalathCoin.rethrow(concurrentModificationException);
-        }
-        Vec3d vec3d2 = girl.add(VectorMath.rotatePitch((float)i * 0.1f, (double)(-0.01f + player.rotationPitch * 0.0015f), 0.0, player.renderYawOffset));
+        Vec3d vec3d = galath.getTargetPos().add(0.0, 1.5, 0.0);
+        Vec3d vec3d2 = player.getPositionVector().add(0.0, (double)player.getEyeHeight(), 0.0);
+        int i = player.getHeldItemMainhand().getItem().equals(Instance) ? 1 : -1;
+        Vec3d vec3d3 = vec3d2.add(VectorMath.rotatePitch((float)i * 0.1f, (double)(-0.01f + player.rotationPitch * 0.0015f), 0.0, player.renderYawOffset));
         float f = (float)(l - l2 - 1000L) / 2000.0f;
-        Vec3d vec3d3 = LerpMath.lerpVec3d(vec3d, vec3d2, (double)f);
+        Vec3d vec3d4 = LerpMath.lerpVec3d(vec3d, vec3d3, (double)f);
         DragonBreathParticles.ParticleScale = 0.2f;
-        Minecraft.getMinecraft().effectRenderer.addEffect((Particle)new DragonBreathParticles(player.world, vec3d3.x, vec3d3.y, vec3d3.z));
+        Minecraft.getMinecraft().effectRenderer.addEffect((Particle)new DragonBreathParticles(player.world, vec3d4.x, vec3d4.y, vec3d4.z));
     }
 
    @SideOnly(Side.CLIENT)

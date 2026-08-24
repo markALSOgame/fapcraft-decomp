@@ -386,7 +386,7 @@ fg {
                                 }
                                 this.ay = false;
                                 this.ak = 0;
-                                this.DataManager.set(G, (Object)true);
+                                this.DataManager.set(BusyKey, (Object)true);
                                 this.noClip = true;
                                 this.setNoGravity(true);
                                 this.motionX = 0.0;
@@ -434,7 +434,7 @@ fg {
                     this.ac = false;
                     this.aw = 0;
                     this.b(this.world.getMinecraftServer().getPlayerList().getPlayerByUUID((UUID)this.getSexPlayerUuid()).rotationYaw + 180.0f);
-                    this.DataManager.set(G, (Object)true);
+                    this.DataManager.set(BusyKey, (Object)true);
                     this.getNavigator().clearPath();
                     this.U();
                     break block32;
@@ -526,7 +526,7 @@ fg {
                     entityPlayer.prevRotationYaw = this.I().floatValue() + 180.0f;
                     this.AimYaw = this.I().floatValue() + 180.0f;
                     this.a(0.0, -0.075f, -0.7109375, 0.0f, 0.0f);
-                    this.DataManager.set(D, (Object)0);
+                    this.DataManager.set(OutfitIndexKey, (Object)0);
                 }
             }
             catch (RuntimeException runtimeException) {
@@ -570,7 +570,7 @@ fg {
         block9: {
             BlockPos blockPos;
             block8: {
-                this.DataManager.set(G, (Object)false);
+                this.DataManager.set(BusyKey, (Object)false);
                 this.setCurrentAction(GirlAnimationState.NULL);
                 this.ar = true;
                 blockPos = this.a(this.getPosition());
@@ -643,7 +643,7 @@ fg {
             this.at = 0;
             this.as = 0;
             this.am = false;
-            this.DataManager.set(G, (Object)false);
+            this.DataManager.set(BusyKey, (Object)false);
             this.DataManager.set(HeldItemStackKey, (Object)ItemStack.EMPTY);
             this.setSilent(false);
             this.setCurrentAction(GirlAnimationState.NULL);
@@ -822,7 +822,7 @@ fg {
                 if (this.getCurrentAction() == GirlAnimationState.NULL) {
                     this.setCurrentAction(GirlAnimationState.FISHING_START);
                     this.setTargetPos(this.getPositionVector());
-                    this.DataManager.set(G, (Object)true);
+                    this.DataManager.set(BusyKey, (Object)true);
                     this.b((float)Math.atan2(this.posZ - (double)this.MoveTargetPos.getZ(), this.posX - (double)this.MoveTargetPos.getX()) * 57.29578f + 90.0f);
                 }
             }

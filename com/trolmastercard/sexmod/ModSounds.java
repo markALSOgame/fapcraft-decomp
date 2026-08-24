@@ -122,24 +122,9 @@ public class ModSounds {
 
    public static void registerAllSounds() {
         for (Field field : ModSounds.class.getDeclaredFields()) {
-            String string;
+            Class<?> clazz = field.getType();
+            if (!clazz.isArray() || clazz.getComponentType() != SoundEvent.class) continue;
             SoundEvent[] soundEventArray;
-            block13: {
-                Class<?> clazz = field.getType();
-                if (!clazz.isArray()) continue;
-                try {
-                    if (clazz.getComponentType() != SoundEvent.class) {
-                        continue;
-                    }
-                    break block13;
-                    catch (Exception exception) {
-                        throw ModSounds.rethrow(exception);
-                    }
-                }
-                catch (Exception exception) {
-                    throw ModSounds.rethrow(exception);
-                }
-            }
             try {
                 soundEventArray = (SoundEvent[])field.get(null);
             }
@@ -147,22 +132,11 @@ public class ModSounds {
                 Main.LOGGER.error("Error registering sound: " + exception.getMessage());
                 continue;
             }
-            String string2 = field.getName().toLowerCase().replace("_", ".");
-            String[] stringArray = string2.split("\\.");
-            try {
-                string = stringArray.length > 2 ? stringArray[2] : stringArray[1];
-            }
-            catch (Exception exception) {
-                throw ModSounds.rethrow(exception);
-            }
-            String string3 = string;
-            try {
-                for (int i = 0; i < soundEventArray.length; ++i) {
-                    soundEventArray[i] = ModSounds.registerSoundEvent(String.format("%s.%s%s", string2, string3, i));
-                }
-            }
-            catch (Exception exception) {
-                throw ModSounds.rethrow(exception);
+            String string = field.getName().toLowerCase().replace("_", ".");
+            String[] stringArray = string.split("\\.");
+            String string2 = stringArray.length > 2 ? stringArray[2] : stringArray[1];
+            for (int i = 0; i < soundEventArray.length; ++i) {
+                soundEventArray[i] = ModSounds.registerSoundEvent(String.format("%s.%s%s", string, string2, i));
             }
         }
     }

@@ -122,7 +122,7 @@ fg {
                         catch (NullPointerException nullPointerException) {
                             throw BiaNpc.rethrow(nullPointerException);
                         }
-                        this.DataManager.set(h, (Object)"");
+                        this.DataManager.set(BlowjobStageKey, (Object)"");
                     }
                     catch (NullPointerException nullPointerException) {
                         throw BiaNpc.rethrow(nullPointerException);
@@ -180,121 +180,58 @@ fg {
         return GirlLootTables.BiaLootTable;
     }
 
-    /*
-     * Unable to fully structure code
-     */
     @Override
     public void updateAITasks() {
-        block25: {
-            block27: {
-                block28: {
-                    block23: {
-                        block24: {
-                            block29: {
-                                try {
-                                    super.updateAITasks();
-                                    if (this.FirstTick) {
-                                        this.setNoGravity(false);
-                                        this.noClip = false;
-                                        this.FirstTick = false;
-                                    }
-                                }
-                                catch (NullPointerException error) {
-                                    throw BiaNpc.rethrow(error);
-                                }
-                                if (!this.SeekingBed) break block23;
-                                ++this.WalkTicks;
-                                if (this.getPositionVector().equals((Object)this.getTargetPos())) ** GOTO lbl24
-                                break block29;
-                                catch (NullPointerException error2) {
-                                    throw BiaNpc.rethrow(error2);
-                                }
-                            }
-                            try {
-                                block30: {
-                                    if (this.WalkTicks <= 40) break block24;
-                                    break block30;
-                                    catch (NullPointerException error3) {
-                                        throw BiaNpc.rethrow(error3);
-                                    }
-                                }
-                                this.SeekingBed = false;
-                                this.WalkTicks = 0;
-                                this.b(this.world.getMinecraftServer().getPlayerList().getPlayerByUUID((UUID)this.getSexPlayerUuid()).rotationYaw + 180.0f);
-                                this.DataManager.set(BiaNpc.BusyKey, (Object)true);
-                                this.getNavigator().clearPath();
-                                this.U();
-                                break block23;
-                            }
-                            catch (NullPointerException error4) {
-                                throw BiaNpc.rethrow(error4);
-                            }
-                        }
-                        this.rotationYaw = this.I().floatValue();
-                        try {
-                            BiaNpc.TargetPosKey.equals(null);
-                        }
-                        catch (NullPointerException error5) {
-                            this.setTargetPos(this.getPlayerFrontPos());
-                        }
-                        this.setNoGravity(false);
-                        vec3d = LerpMath.stepTowards(this.getPositionVector(), this.getTargetPos(), 40 - this.WalkTicks);
-                        this.setPosition(vec3d.x, vec3d.y, vec3d.z);
-                    }
-                    try {
-                        try {
-                            block26: {
-                                try {
-                                    try {
-                                        if (!this.ArrivedAtBed) break block25;
-                                        if (this.getPositionVector().distanceTo(this.getTargetPos()) < 0.6) break block26;
-                                    }
-                                    catch (NullPointerException error6) {
-                                        throw BiaNpc.rethrow(error6);
-                                    }
-                                    if (this.SitTicks <= 200) break block27;
-                                }
-                                catch (NullPointerException error7) {
-                                    throw BiaNpc.rethrow(error7);
-                                }
-                            }
-                            this.ArrivedAtBed = false;
-                            this.DataManager.set(BiaNpc.BusyKey, (Object)true);
-                            this.SitTicks = 0;
-                            this.noClip = true;
-                            this.setNoGravity(true);
-                            this.motionX = 0.0;
-                            this.motionY = 0.0;
-                            this.motionZ = 0.0;
-                            if (!"anal".equals(this.DataManager.get(BiaNpc.BlowjobStageKey))) break block28;
-                        }
-                        catch (NullPointerException error8) {
-                            throw BiaNpc.rethrow(error8);
-                        }
-                        this.setCurrentAction(GirlAnimationState.ANAL_PREPARE);
-                        this.setOutfitIndex(0);
-                        break block25;
-                    }
-                    catch (NullPointerException error9) {
-                        throw BiaNpc.rethrow(error9);
-                    }
-                }
-                this.setCurrentAction(GirlAnimationState.SITDOWN);
-                break block25;
-            }
-            try {
-                try {
-                    ++this.SitTicks;
-                    if (this.SitTicks != 60 && this.SitTicks != 120) break block25;
-                }
-                catch (NullPointerException error10) {
-                    throw BiaNpc.rethrow(error10);
-                }
+        super.updateAITasks();
+        if (this.FirstTick) {
+            this.setNoGravity(false);
+            this.noClip = false;
+            this.FirstTick = false;
+        }
+        if (this.SeekingBed) {
+            ++this.WalkTicks;
+            if (this.getPositionVector().equals((Object)this.getTargetPos()) || this.WalkTicks > 40) {
+                this.SeekingBed = false;
+                this.WalkTicks = 0;
+                this.b(this.world.getMinecraftServer().getPlayerList().getPlayerByUUID((UUID)this.getSexPlayerUuid()).rotationYaw + 180.0f);
+                this.DataManager.set(BiaNpc.BusyKey, (Object)true);
                 this.getNavigator().clearPath();
-                this.getNavigator().tryMoveToXYZ(this.getTargetPos().x, this.getTargetPos().y, this.getTargetPos().z, 0.35);
+                this.U();
+            } else {
+                this.rotationYaw = this.I().floatValue();
+                try {
+                    BiaNpc.TargetPosKey.equals(null);
+                }
+                catch (NullPointerException error5) {
+                    this.setTargetPos(this.getPlayerFrontPos());
+                }
+                this.setNoGravity(false);
+                Vec3d vec3d = LerpMath.stepTowards(this.getPositionVector(), this.getTargetPos(), 40 - this.WalkTicks);
+                this.setPosition(vec3d.x, vec3d.y, vec3d.z);
             }
-            catch (NullPointerException error11) {
-                throw BiaNpc.rethrow(error11);
+        }
+        if (this.ArrivedAtBed) {
+            if (this.getPositionVector().distanceTo(this.getTargetPos()) < 0.6 || this.SitTicks > 200) {
+                this.ArrivedAtBed = false;
+                this.DataManager.set(BiaNpc.BusyKey, (Object)true);
+                this.SitTicks = 0;
+                this.noClip = true;
+                this.setNoGravity(true);
+                this.motionX = 0.0;
+                this.motionY = 0.0;
+                this.motionZ = 0.0;
+                if ("anal".equals(this.DataManager.get(BiaNpc.BlowjobStageKey))) {
+                    this.setCurrentAction(GirlAnimationState.ANAL_PREPARE);
+                    this.setOutfitIndex(0);
+                } else {
+                    this.setCurrentAction(GirlAnimationState.SITDOWN);
+                }
+            } else {
+                ++this.SitTicks;
+                if (this.SitTicks == 60 || this.SitTicks == 120) {
+                    this.getNavigator().clearPath();
+                    this.getNavigator().tryMoveToXYZ(this.getTargetPos().x, this.getTargetPos().y, this.getTargetPos().z, 0.35);
+                }
             }
         }
     }
@@ -369,7 +306,7 @@ fg {
                                     catch (NullPointerException nullPointerException) {
                                         throw BiaNpc.rethrow(nullPointerException);
                                     }
-                                    if (!((String)this.DataManager.get(v)).equals(Minecraft.getMinecraft().player.getPersistentID().toString())) break block8;
+                                    if (!((String)this.DataManager.get(MasterUuidKey)).equals(Minecraft.getMinecraft().player.getPersistentID().toString())) break block8;
                                 }
                                 catch (NullPointerException nullPointerException) {
                                     throw BiaNpc.rethrow(nullPointerException);
@@ -379,7 +316,7 @@ fg {
                             String[] stringArray3 = stringArray2;
                             stringArray = stringArray2;
                             int i = 0;
-                            if ((Integer)this.DataManager.get(D) != 1) break block10;
+                            if ((Integer)this.DataManager.get(OutfitIndexKey) != 1) break block10;
                         }
                         catch (NullPointerException nullPointerException) {
                             throw BiaNpc.rethrow(nullPointerException);
@@ -393,7 +330,7 @@ fg {
                 }
                 string = "action.names.dressup";
             }
-            stringArray3[i] = string;
+            stringArray3[0] = string;
             stringArray[1] = "action.names.talk";
             stringArray[2] = "action.names.headpat";
             String[] stringArray4 = stringArray;
@@ -850,7 +787,7 @@ fg {
     @Override
     public void a() {
         Vector4d vector4d;
-        String string = (String)this.DataManager.get(h);
+        String string = (String)this.DataManager.get(BlowjobStageKey);
         try {
             vector4d = string.equals("anal") ? this.b() : this.a();
         }

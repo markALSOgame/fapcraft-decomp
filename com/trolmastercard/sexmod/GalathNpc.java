@@ -340,7 +340,7 @@ LeftBallActiveKey {
     public GalathNpc(World world, @Nonnull EntityPlayer entityPlayer, Vec3d vec3d, boolean flag) {
         this(world);
         UUID uUID = entityPlayer.getPersistentID();
-        this.DataManager.set(v, (Object)uUID.toString());
+        this.DataManager.set(MasterUuidKey, (Object)uUID.toString());
         this.aO.setVisible(false);
         this.bG = new BlockPos(this.getPositionVector());
         String string = GirlHomeWorldData.getCustomName(uUID, GirlRegistry.GALATH);
@@ -519,7 +519,7 @@ LeftBallActiveKey {
     protected void initEntityAI() {
         this.WatchPlayerAI = new GirlWatchAi((EntityLiving)this, EntityPlayer.class, 3.0f, 1.0f);
         this.tasks.addTask(0, (EntityAIBase)new EntityAISwimming((EntityLiving)this));
-        this.tasks.addTask(2, (EntityAIBase)new EntityAITempt((EntityCreature)this, 0.4, false, new HashSet(I)));
+        this.tasks.addTask(2, (EntityAIBase)new EntityAITempt((EntityCreature)this, 0.4, false, new HashSet<>(PaymentItems)));
         this.tasks.addTask(3, (EntityAIBase)new EntityAIOpenDoor((EntityLiving)this));
         this.tasks.addTask(5, (EntityAIBase)this.WatchPlayerAI);
     }
@@ -3928,7 +3928,7 @@ LeftBallActiveKey {
     public void writeEntityToNBT(NBTTagCompound nBTTagCompound) {
         try {
             super.writeEntityToNBT(nBTTagCompound);
-            nBTTagCompound.setString("sexmod:master", (String)this.DataManager.get(v));
+            nBTTagCompound.setString("sexmod:master", (String)this.DataManager.get(MasterUuidKey));
             if (this.bA) {
                 nBTTagCompound.setBoolean("sexmod:despawned", true);
             }
@@ -3942,7 +3942,7 @@ LeftBallActiveKey {
     public void readEntityFromNBT(NBTTagCompound nBTTagCompound) {
         try {
             super.readEntityFromNBT(nBTTagCompound);
-            this.DataManager.set(v, (Object)nBTTagCompound.getString("sexmod:master"));
+            this.DataManager.set(MasterUuidKey, (Object)nBTTagCompound.getString("sexmod:master"));
             if (nBTTagCompound.getBoolean("sexmod:despawned")) {
                 this.P = true;
             }
@@ -4951,7 +4951,7 @@ LeftBallActiveKey {
                     }
                     Vec3d vec3d3 = LerpMath.lerpVec3d(new Vec3d(girl.lastTickPosX, girl.lastTickPosY, girl.lastTickPosZ), girl.getPositionVector(), (double)f);
                     double d2 = (d - 9.0) / 21.0;
-                    if (((Boolean)girl.getDataManager().get(bN)).booleanValue()) {
+                    if (((Boolean)girl.getDataManager().get(RightBallActiveKey)).booleanValue()) {
                         vec3d2 = girl.getModelBone("energyBallR");
                         vec3d = vec3d3.add(vec3d2);
                         energyBall = new EnergyBallEntity(girl.world, (GalathNpc)girl);
