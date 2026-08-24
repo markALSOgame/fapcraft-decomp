@@ -1,0 +1,19 @@
+# AI assistant notes
+CLAUDE.md
+AGENTS.md
+
+# Decompiler tools (binaries)
+*.jar
+
+# Python cache
+__pycache__/
+*.pyc
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+Thumbs.db
+.DS_Store

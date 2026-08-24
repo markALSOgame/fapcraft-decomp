@@ -1,0 +1,1261 @@
+/*
+ * Decompiled with CFR 0.152.
+ * 
+ * Could not load the following classes:
+ *  javax.annotation.Nullable
+ *  net.minecraft.block.Block
+ *  net.minecraft.client.Minecraft
+ *  net.minecraft.client.entity.EntityPlayerSP
+ *  net.minecraft.client.gui.GuiScreen
+ *  net.minecraft.client.resources.I18n
+ *  net.minecraft.enchantment.EnchantmentHelper
+ *  net.minecraft.entity.Entity
+ *  net.minecraft.entity.EntityCreature
+ *  net.minecraft.entity.EntityLiving
+ *  net.minecraft.entity.EntityLivingBase
+ *  net.minecraft.entity.SharedMonsterAttributes
+ *  net.minecraft.entity.ai.EntityAIAvoidEntity
+ *  net.minecraft.entity.ai.EntityAIBase
+ *  net.minecraft.entity.ai.EntityAIWanderAvoidWater
+ *  net.minecraft.entity.item.EntityItem
+ *  net.minecraft.entity.monster.EntityCreeper
+ *  net.minecraft.entity.player.EntityPlayer
+ *  net.minecraft.init.Biomes
+ *  net.minecraft.init.Blocks
+ *  net.minecraft.init.Items
+ *  net.minecraft.item.Item
+ *  net.minecraft.item.ItemFood
+ *  net.minecraft.item.ItemStack
+ *  net.minecraft.nbt.NBTTagCompound
+ *  net.minecraft.network.datasync.DataParameter
+ *  net.minecraft.network.datasync.DataSerializer
+ *  net.minecraft.network.datasync.DataSerializers
+ *  net.minecraft.network.datasync.EntityDataManager
+ *  net.minecraft.pathfinding.Path
+ *  net.minecraft.pathfinding.PathNavigate
+ *  net.minecraft.pathfinding.PathPoint
+ *  net.minecraft.util.DamageSource
+ *  net.minecraft.util.EnumHand
+ *  net.minecraft.util.SoundEvent
+ *  net.minecraft.util.math.BlockPos
+ *  net.minecraft.util.math.Vec3d
+ *  net.minecraft.world.World
+ *  net.minecraft.world.biome.Biome
+ *  net.minecraftforge.event.entity.EntityJoinWorldEvent
+ *  net.minecraftforge.fml.common.eventhandler.SubscribeEvent
+ *  net.minecraftforge.fml.common.network.simpleimpl.IMessage
+ *  net.minecraftforge.fml.relauncher.Side
+ *  net.minecraftforge.fml.relauncher.SideOnly
+ */
+package com.trolmastercard.sexmod;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.UUID;
+import javax.annotation.Nullable;
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIAvoidEntity;
+import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Biomes;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemFood;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializer;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.pathfinding.Path;
+import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.pathfinding.PathPoint;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
+import software.bernie.geckolib3.core.manager.AnimationData;
+
+/*
+ * Duplicate member names - consider using --renamedupmembers true
+ */
+public class LunaNpc
+extends InventoryGirlEntity
+implements VoidCallback,
+fg {
+    public static double FamiliarSpawnScale = 0.01;
+    public ItemStack HeldRodStack = new ItemStack((Item)ItemLunaRod.Instance);
+    public static final DataParameter<Float> Y = EntityDataManager.createKey(LunaNpc.class, (DataSerializer)DataSerializers.FLOAT).getSerializer().createKey(121);
+    public static final DataParameter<ItemStack> ActiveItemStackKey = EntityDataManager.createKey(LunaNpc.class, (DataSerializer)DataSerializers.ITEM_STACK).getSerializer().createKey(120);
+    public static final DataParameter<Boolean> IsBoundKey = EntityDataManager.createKey(LunaNpc.class, (DataSerializer)DataSerializers.BOOLEAN).getSerializer().createKey(119);
+    public static final DataParameter<ItemStack> HeldItemStackKey = EntityDataManager.createKey(LunaNpc.class, (DataSerializer)DataSerializers.ITEM_STACK).getSerializer().createKey(118);
+    static final float ah = 3.0f;
+    static final float ax = 1200.0f;
+    @Nullable
+    public LunaFamiliarEntity Familiar;
+    public float aa = 1.0f;
+    public float Z = 0.0f;
+    int FamiliarAgeTicks = 8000;
+    public boolean ac = false;
+    int aw = 0;
+    boolean ay = false;
+    int ak = 0;
+    int ab = 0;
+    public BlockPos MoveTargetPos;
+    int at = 0;
+    int as = 0;
+    boolean am;
+    long FamiliarCheckTime = 0L;
+    boolean ar = false;
+    Path CurrentPath = null;
+    int aq = 0;
+    HashSet<BlockPos> VisitedPositions = new HashSet();
+    boolean ae = false;
+    boolean ad = false;
+
+    public LunaNpc(World world) {
+        super(world);
+        this.P = 230;
+        this.O = 150;
+        this.K = 320;
+        this.V = new Vec3d(0.0, -0.05999999718368053, 0.10000001192092894);
+        if (this.Inventory.getStackInSlot(0) == ItemStack.EMPTY) {
+            this.Inventory.setStackInSlot(0, new ItemStack(Items.IRON_AXE));
+        }
+        try {
+            if (this.Inventory.getStackInSlot(6) == ItemStack.EMPTY) {
+                this.Inventory.setStackInSlot(6, new ItemStack((Item)Items.FISHING_ROD));
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw LunaNpc.rethrow(runtimeException);
+        }
+    }
+
+    @Override
+    public String c() {
+        return "Luna";
+    }
+
+    @Override
+    public float i() {
+        return -0.2f;
+    }
+
+    @Override
+    protected void entityInit() {
+        super.entityInit();
+        this.DataManager.register(Y, (Object)Float.valueOf(0.0f));
+        this.DataManager.register(ActiveItemStackKey, (Object)ItemStack.EMPTY);
+        this.DataManager.register(IsBoundKey, (Object)false);
+        this.DataManager.register(HeldItemStackKey, (Object)ItemStack.EMPTY);
+    }
+
+    @Override
+    public void c() {
+        this.a("Love it here owo");
+        this.a(ModSounds.GIRLS_LUNA_OWO, new int[0]);
+    }
+
+    @Override
+    public void b(GirlAnimationState girlAnimationState) {
+        block14: {
+            block12: {
+                try {
+                    block13: {
+                        try {
+                            try {
+                                if (this.getCurrentAction() != GirlAnimationState.COWGIRL_SITTING_CUM) break block12;
+                                if (girlAnimationState == GirlAnimationState.COWGIRL_SITTING_SLOW) break block13;
+                            }
+                            catch (RuntimeException runtimeException) {
+                                throw LunaNpc.rethrow(runtimeException);
+                            }
+                            if (girlAnimationState != GirlAnimationState.COWGIRL_SITTING_FAST) break block12;
+                        }
+                        catch (RuntimeException runtimeException) {
+                            throw LunaNpc.rethrow(runtimeException);
+                        }
+                    }
+                    return;
+                }
+                catch (RuntimeException runtimeException) {
+                    throw LunaNpc.rethrow(runtimeException);
+                }
+            }
+            try {
+                block15: {
+                    try {
+                        try {
+                            if (this.getCurrentAction() != GirlAnimationState.TOUCH_BOOBS_CUM) break block14;
+                            if (girlAnimationState == GirlAnimationState.TOUCH_BOOBS_FAST) break block15;
+                        }
+                        catch (RuntimeException runtimeException) {
+                            throw LunaNpc.rethrow(runtimeException);
+                        }
+                        if (girlAnimationState != GirlAnimationState.TOUCH_BOOBS_SLOW) break block14;
+                    }
+                    catch (RuntimeException runtimeException) {
+                        throw LunaNpc.rethrow(runtimeException);
+                    }
+                }
+                return;
+            }
+            catch (RuntimeException runtimeException) {
+                throw LunaNpc.rethrow(runtimeException);
+            }
+        }
+        super.setCurrentAction(girlAnimationState);
+    }
+
+    @Override
+    public void b() {
+        this.ac = true;
+    }
+
+    public float getEyeHeight() {
+        return 1.34f;
+    }
+
+    public boolean processInteract(EntityPlayer entityPlayer, EnumHand enumHand) {
+        block12: {
+            boolean flag;
+            try {
+                if (super.processInteract(entityPlayer, enumHand)) {
+                    return true;
+                }
+            }
+            catch (RuntimeException runtimeException) {
+                throw LunaNpc.rethrow(runtimeException);
+            }
+            ItemStack itemStack = entityPlayer.getHeldItem(enumHand);
+            try {
+                flag = itemStack.getItem() == Items.NAME_TAG;
+            }
+            catch (RuntimeException runtimeException) {
+                throw LunaNpc.rethrow(runtimeException);
+            }
+            boolean flag2 = flag;
+            try {
+                if (flag2) {
+                    itemStack.interactWithEntity(entityPlayer, (EntityLivingBase)this, enumHand);
+                    return true;
+                }
+            }
+            catch (RuntimeException runtimeException) {
+                throw LunaNpc.rethrow(runtimeException);
+            }
+            try {
+                try {
+                    if (!this.world.isRemote || this.b(entityPlayer)) break block12;
+                }
+                catch (RuntimeException runtimeException) {
+                    throw LunaNpc.rethrow(runtimeException);
+                }
+                this.a(I18n.format((String)"bia.dialogue.busy", (Object[])new Object[0]));
+            }
+            catch (RuntimeException runtimeException) {
+                throw LunaNpc.rethrow(runtimeException);
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean b(EntityPlayer entityPlayer) {
+        String[] stringArray = new String[]{"action.names.sex", "action.names.touchboobs", "action.names.headpat"};
+        ItemStack[] itemStackArray = new ItemStack[]{new ItemStack(Items.FISH, 3, 0), new ItemStack(Items.FISH, 2, 1), null};
+        LunaNpc.openActionMenuWithItems(entityPlayer, (GirlEntity)this, stringArray, itemStackArray);
+        return true;
+    }
+
+    @SideOnly(value=Side.CLIENT)
+    protected static void openActionMenuWithItems(EntityPlayer entityPlayer, GirlEntity girl, String[] stringArray, ItemStack[] itemStackArray) {
+        Minecraft.getMinecraft().displayGuiScreen((GuiScreen)new GuiGirlCommandMenu(girl, entityPlayer, stringArray, itemStackArray, true));
+    }
+
+    public void b(ItemStack itemStack) {
+        this.DataManager.set(HeldItemStackKey, (Object)itemStack);
+    }
+
+    @Override
+    public void g() {
+        this.WanderAI = new EntityAIWanderAvoidWater((EntityCreature)this, 0.35);
+        this.WatchPlayerAI = new GirlWatchAi((EntityLiving)this, EntityPlayer.class, 3.0f, 1.0f);
+        this.tasks.addTask(5, (EntityAIBase)this.WatchPlayerAI);
+        this.tasks.addTask(5, (EntityAIBase)this.WanderAI);
+    }
+
+    @Override
+    public void updateAITasks() {
+        block32: {
+            block34: {
+                block31: {
+                    block29: {
+                        boolean flag;
+                        DataParameter<Boolean> dataParameter;
+                        EntityDataManager entityDataManager;
+                        block28: {
+                            block27: {
+                                block26: {
+                                    block25: {
+                                        try {
+                                            super.updateAITasks();
+                                            if (this.J()) break block25;
+                                            this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(1.0);
+                                            break block26;
+                                        }
+                                        catch (RuntimeException runtimeException) {
+                                            throw LunaNpc.rethrow(runtimeException);
+                                        }
+                                    }
+                                    this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5);
+                                }
+                                try {
+                                    try {
+                                        this.m();
+                                        this.getRenderLabelOffset();
+                                        entityDataManager = this.DataManager;
+                                        dataParameter = IsBoundKey;
+                                        if (this.Familiar == null || this.DataManager.get(HeldItemStackKey) != ItemStack.EMPTY) break block27;
+                                    }
+                                    catch (RuntimeException runtimeException) {
+                                        throw LunaNpc.rethrow(runtimeException);
+                                    }
+                                    flag = true;
+                                    break block28;
+                                }
+                                catch (RuntimeException runtimeException) {
+                                    throw LunaNpc.rethrow(runtimeException);
+                                }
+                            }
+                            flag = false;
+                        }
+                        try {
+                            try {
+                                entityDataManager.set(dataParameter, (Object)flag);
+                                if (this.FamiliarCheckTime != this.world.getTotalWorldTime() || this.Familiar == null) break block29;
+                            }
+                            catch (RuntimeException runtimeException) {
+                                throw LunaNpc.rethrow(runtimeException);
+                            }
+                            this.world.removeEntity((Entity)this.Familiar);
+                            this.Familiar = null;
+                        }
+                        catch (RuntimeException runtimeException) {
+                            throw LunaNpc.rethrow(runtimeException);
+                        }
+                    }
+                    if (this.ay) {
+                        block30: {
+                            double d2 = this.getTargetPos().distanceTo(this.getPositionVector());
+                            try {
+                                try {
+                                    if (!(d2 < 0.5) && this.ak <= 200) break block30;
+                                }
+                                catch (RuntimeException runtimeException) {
+                                    throw LunaNpc.rethrow(runtimeException);
+                                }
+                                this.ay = false;
+                                this.ak = 0;
+                                this.DataManager.set(G, (Object)true);
+                                this.noClip = true;
+                                this.setNoGravity(true);
+                                this.motionX = 0.0;
+                                this.motionY = 0.0;
+                                this.motionZ = 0.0;
+                                this.setCurrentAction(GirlAnimationState.WAIT_CAT);
+                                break block31;
+                            }
+                            catch (RuntimeException runtimeException) {
+                                throw LunaNpc.rethrow(runtimeException);
+                            }
+                        }
+                        try {
+                            try {
+                                if (++this.ak != 60 && this.ak != 120) break block31;
+                            }
+                            catch (RuntimeException runtimeException) {
+                                throw LunaNpc.rethrow(runtimeException);
+                            }
+                            this.getNavigator().clearPath();
+                            this.getNavigator().tryMoveToXYZ(this.getTargetPos().x, this.getTargetPos().y, this.getTargetPos().z, 0.2);
+                        }
+                        catch (RuntimeException runtimeException) {
+                            throw LunaNpc.rethrow(runtimeException);
+                        }
+                    }
+                }
+                try {
+                    block33: {
+                        try {
+                            try {
+                                if (!this.ac) break block32;
+                                ++this.aw;
+                                if (this.getPositionVector().equals((Object)this.getTargetPos())) break block33;
+                            }
+                            catch (RuntimeException runtimeException) {
+                                throw LunaNpc.rethrow(runtimeException);
+                            }
+                            if (this.aw <= 40) break block34;
+                        }
+                        catch (RuntimeException runtimeException) {
+                            throw LunaNpc.rethrow(runtimeException);
+                        }
+                    }
+                    this.ac = false;
+                    this.aw = 0;
+                    this.b(this.world.getMinecraftServer().getPlayerList().getPlayerByUUID((UUID)this.getSexPlayerUuid()).rotationYaw + 180.0f);
+                    this.DataManager.set(G, (Object)true);
+                    this.getNavigator().clearPath();
+                    this.U();
+                    break block32;
+                }
+                catch (RuntimeException runtimeException) {
+                    throw LunaNpc.rethrow(runtimeException);
+                }
+            }
+            this.rotationYaw = this.I().floatValue();
+            this.setNoGravity(false);
+            Vec3d vec3d = LerpMath.stepTowards(this.getPositionVector(), this.getTargetPos(), 40 - this.aw);
+            this.setPosition(vec3d.x, vec3d.y, vec3d.z);
+        }
+        this.d();
+        this.DataManager.set(ActiveItemStackKey, (Object)this.Inventory.getStackInSlot(6));
+    }
+
+    void d() {
+        ItemStack itemStack = this.HeldRodStack;
+        ItemStack itemStack2 = (ItemStack)this.DataManager.get(ActiveItemStackKey);
+        try {
+            if (itemStack2.equals(ItemStack.EMPTY)) {
+                return;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw LunaNpc.rethrow(runtimeException);
+        }
+        Map map = EnchantmentHelper.getEnchantments((ItemStack)itemStack2);
+        EnchantmentHelper.setEnchantments((Map)map, (ItemStack)itemStack);
+    }
+
+    @Override
+    public void onUpdate() {
+        block3: {
+            block2: {
+                try {
+                    super.onUpdate();
+                    if (!GirlAnimationState.WAIT_CAT.equals((Object)this.getCurrentAction())) break block2;
+                    this.getGirlUuid();
+                    break block3;
+                }
+                catch (RuntimeException runtimeException) {
+                    throw LunaNpc.rethrow(runtimeException);
+                }
+            }
+            this.ab = 0;
+        }
+    }
+
+    void f() {
+        block12: {
+            EntityPlayer entityPlayer;
+            block11: {
+                entityPlayer = this.world.getClosestPlayerToEntity((Entity)this, 10.0);
+                try {
+                    if (entityPlayer == null) {
+                        return;
+                    }
+                }
+                catch (RuntimeException runtimeException) {
+                    throw LunaNpc.rethrow(runtimeException);
+                }
+                try {
+                    if (entityPlayer.getDistance((Entity)this) > 1.25f) {
+                        return;
+                    }
+                }
+                catch (RuntimeException runtimeException) {
+                    throw LunaNpc.rethrow(runtimeException);
+                }
+                try {
+                    if (!this.world.isRemote) break block11;
+                    this.a(entityPlayer, this.ab);
+                    break block12;
+                }
+                catch (RuntimeException runtimeException) {
+                    throw LunaNpc.rethrow(runtimeException);
+                }
+            }
+            try {
+                if (this.ab == 25) {
+                    this.handleGirlUuidEvent(entityPlayer.getPersistentID());
+                    entityPlayer.moveRelative(0.0f, 0.0f, 0.0f, 0.0f);
+                    entityPlayer.setPositionAndUpdate(this.getPositionVector().x, this.getPositionVector().y, this.getPositionVector().z);
+                    this.setCurrentAction(GirlAnimationState.COWGIRL_SITTING_INTRO);
+                    entityPlayer.setRotationYawHead(this.I().floatValue() + 180.0f);
+                    entityPlayer.rotationYaw = this.I().floatValue() + 180.0f;
+                    entityPlayer.prevRotationYaw = this.I().floatValue() + 180.0f;
+                    this.AimYaw = this.I().floatValue() + 180.0f;
+                    this.a(0.0, -0.075f, -0.7109375, 0.0f, 0.0f);
+                    this.DataManager.set(D, (Object)0);
+                }
+            }
+            catch (RuntimeException runtimeException) {
+                throw LunaNpc.rethrow(runtimeException);
+            }
+        }
+        ++this.ab;
+    }
+
+    @SideOnly(value=Side.CLIENT)
+    void a(EntityPlayer entityPlayer, int i) {
+        EntityPlayerSP entityPlayerSP;
+        if (i == 0) {
+            entityPlayerSP = Minecraft.getMinecraft().player;
+            try {
+                if (entityPlayerSP.getPersistentID().equals(entityPlayer.getPersistentID())) {
+                    GuiTransitionScreen.startTransition();
+                    entityPlayerSP.setVelocity(0.0, 0.0, 0.0);
+                    AnimationInputLock.setAnimationLocked(false);
+                }
+            }
+            catch (RuntimeException runtimeException) {
+                throw LunaNpc.rethrow(runtimeException);
+            }
+        }
+        if (i == 25) {
+            entityPlayerSP = Minecraft.getMinecraft().player;
+            try {
+                if (entityPlayerSP.getPersistentID().equals(entityPlayer.getPersistentID())) {
+                    Minecraft.getMinecraft().gameSettings.thirdPersonView = 2;
+                }
+            }
+            catch (RuntimeException runtimeException) {
+                throw LunaNpc.rethrow(runtimeException);
+            }
+        }
+    }
+
+    @Override
+    public void a() {
+        block9: {
+            BlockPos blockPos;
+            block8: {
+                this.DataManager.set(G, (Object)false);
+                this.setCurrentAction(GirlAnimationState.NULL);
+                this.ar = true;
+                blockPos = this.a(this.getPosition());
+                try {
+                    if (blockPos != null) break block8;
+                    this.a(ModSounds.GIRLS_LUNA_GIGGLE, new int[0]);
+                    NetworkHandler.channel.sendToAllAround((IMessage)new PacketSendChatMessage("<" + this.getDisplayName() + "> Heh.. there is no bed nearby.. but I already ate the fish so nya~ hehe", this.dimension, this.getGirlUuid()), this.P());
+                    break block9;
+                }
+                catch (RuntimeException runtimeException) {
+                    throw LunaNpc.rethrow(runtimeException);
+                }
+            }
+            Vec3d vec3d = new Vec3d((double)blockPos.getX(), (double)blockPos.getY(), (double)blockPos.getZ());
+            int[] nArray = new int[]{0, 180, -90, 90};
+            Vec3d[][] vec3dArrayArray = new Vec3d[][]{{new Vec3d(0.5, 0.0, -0.5), new Vec3d(0.0, 0.0, -1.0)}, {new Vec3d(0.5, 0.0, 1.5), new Vec3d(0.0, 0.0, 1.0)}, {new Vec3d(-0.5, 0.0, 0.5), new Vec3d(-1.0, 0.0, 0.0)}, {new Vec3d(1.5, 0.0, 0.5), new Vec3d(1.0, 0.0, 0.0)}};
+            int i = -1;
+            for (int i3 = 0; i3 < vec3dArrayArray.length; ++i3) {
+                block10: {
+                    Vec3d vec3d2 = vec3d.add(vec3dArrayArray[i3][1]);
+                    try {
+                        if (this.world.getBlockState(new BlockPos(vec3d2.x, vec3d2.y, vec3d2.z)).getBlock() != Blocks.AIR) continue;
+                        if (i != -1) break block10;
+                    }
+                    catch (RuntimeException runtimeException) {
+                        throw LunaNpc.rethrow(runtimeException);
+                    }
+                    i = i3;
+                    continue;
+                }
+                double d = this.getPosition().distanceSq(vec3d.add((Vec3d)vec3dArrayArray[i][0]).x, vec3d.add((Vec3d)vec3dArrayArray[i][0]).y, vec3d.add((Vec3d)vec3dArrayArray[i][0]).z);
+                double d2 = this.getPosition().distanceSq(vec3d.add((Vec3d)vec3dArrayArray[i3][0]).x, vec3d.add((Vec3d)vec3dArrayArray[i3][0]).y, vec3d.add((Vec3d)vec3dArrayArray[i3][0]).z);
+                if (!(d2 < d)) continue;
+                i = i3;
+            }
+            try {
+                if (i == -1) {
+                    this.a(ModSounds.GIRLS_LUNA_GIGGLE, new int[0]);
+                    this.a("Heh.. the bed is obscured.. but I already ate the fish so nya~ hehe");
+                    return;
+                }
+            }
+            catch (RuntimeException runtimeException) {
+                throw LunaNpc.rethrow(runtimeException);
+            }
+            Vec3d vec3d3 = vec3d.add(vec3dArrayArray[i][0]);
+            this.b(nArray[i]);
+            this.setTargetPos(new Vec3d(vec3d3.x, vec3d3.y, vec3d3.z));
+            this.AimYaw = this.I().floatValue();
+            this.getNavigator().clearPath();
+            this.getNavigator().tryMoveToXYZ(vec3d3.x, vec3d3.y, vec3d3.z, 0.2);
+            this.ay = true;
+            this.ak = 0;
+        }
+    }
+
+    public void j() {
+        EntityItem entityItem = new EntityItem(this.world, this.posX, this.posY, this.posZ, (ItemStack)this.DataManager.get(HeldItemStackKey));
+        Vec3d vec3d = VectorMath.rotateYaw(new Vec3d(0.0, (double)0.2f + Math.random() * (double)0.1f, (double)-0.2f + Math.random() * (double)-0.1f), this.rotationYaw);
+        entityItem.motionX = vec3d.x;
+        entityItem.motionY = vec3d.y;
+        entityItem.motionZ = vec3d.z;
+        this.world.spawnEntity((Entity)entityItem);
+        this.DataManager.set(HeldItemStackKey, (Object)ItemStack.EMPTY);
+    }
+
+    public void q() {
+        try {
+            this.MoveTargetPos = null;
+            this.at = 0;
+            this.as = 0;
+            this.am = false;
+            this.DataManager.set(G, (Object)false);
+            this.DataManager.set(HeldItemStackKey, (Object)ItemStack.EMPTY);
+            this.setSilent(false);
+            this.setCurrentAction(GirlAnimationState.NULL);
+            if (this.Familiar != null) {
+                this.world.removeEntity((Entity)this.Familiar);
+                this.Familiar = null;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw LunaNpc.rethrow(runtimeException);
+        }
+        try {
+            if (this.getSexPlayerUuid() != null) {
+                return;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw LunaNpc.rethrow(runtimeException);
+        }
+        try {
+            this.WatchPlayerAI = new GirlWatchAi((EntityLiving)this, EntityPlayer.class, 3.0f, 1.0f);
+            this.tasks.addTask(5, (EntityAIBase)this.WatchPlayerAI);
+            if (this.J()) {
+                return;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw LunaNpc.rethrow(runtimeException);
+        }
+        this.WanderAI = new EntityAIWanderAvoidWater((EntityCreature)this, 0.35);
+        this.tasks.addTask(5, (EntityAIBase)this.WanderAI);
+    }
+
+    public void h() {
+        try {
+            this.getWalkState();
+            if (++this.aq >= 3) {
+                this.aq = 0;
+                this.FamiliarAgeTicks = 0;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw LunaNpc.rethrow(runtimeException);
+        }
+    }
+
+    void i() {
+        block43: {
+            ItemStack itemStack;
+            block40: {
+                block42: {
+                    block41: {
+                        block38: {
+                            block39: {
+                                try {
+                                    try {
+                                        block37: {
+                                            try {
+                                                try {
+                                                    if (this.J() || this.getSexPlayerUuid() != null) break block37;
+                                                }
+                                                catch (RuntimeException runtimeException) {
+                                                    throw LunaNpc.rethrow(runtimeException);
+                                                }
+                                                if (!this.ar) break block38;
+                                            }
+                                            catch (RuntimeException runtimeException) {
+                                                throw LunaNpc.rethrow(runtimeException);
+                                            }
+                                        }
+                                        if (!((Boolean)this.DataManager.get(IsBoundKey)).booleanValue()) break block39;
+                                    }
+                                    catch (RuntimeException runtimeException) {
+                                        throw LunaNpc.rethrow(runtimeException);
+                                    }
+                                    this.getWalkState();
+                                }
+                                catch (RuntimeException runtimeException) {
+                                    throw LunaNpc.rethrow(runtimeException);
+                                }
+                            }
+                            return;
+                        }
+                        try {
+                            int i;
+                            ++this.FamiliarAgeTicks;
+                            if ((float)i < 1200.0f) {
+                                return;
+                            }
+                        }
+                        catch (RuntimeException runtimeException) {
+                            throw LunaNpc.rethrow(runtimeException);
+                        }
+                        try {
+                            if (this.Familiar == null || this.Familiar.CurrentColor != 15) break block40;
+                        }
+                        catch (RuntimeException runtimeException) {
+                            throw LunaNpc.rethrow(runtimeException);
+                        }
+                        ((ItemLunaRod)this.HeldRodStack.getItem()).a(this.world, this, EnumHand.MAIN_HAND);
+                        this.FamiliarCheckTime = this.world.getTotalWorldTime() + 20L;
+                        itemStack = (ItemStack)this.DataManager.get(HeldItemStackKey);
+                        try {
+                            if (itemStack != ItemStack.EMPTY) break block41;
+                            break block40;
+                        }
+                        catch (RuntimeException runtimeException) {
+                            throw LunaNpc.rethrow(runtimeException);
+                        }
+                    }
+                    try {
+                        if (!(itemStack.getItem() instanceof ItemFood)) break block42;
+                        this.setCurrentAction(GirlAnimationState.FISHING_EAT);
+                        break block40;
+                    }
+                    catch (RuntimeException runtimeException) {
+                        throw LunaNpc.rethrow(runtimeException);
+                    }
+                }
+                this.setCurrentAction(GirlAnimationState.FISHING_THROW_AWAY);
+            }
+            try {
+                if (!this.getCurrentAction().toString().toLowerCase().contains("fishing")) {
+                    this.isOwnedByLocalPlayer();
+                    this.isLocalPlayerNearby();
+                }
+            }
+            catch (RuntimeException runtimeException) {
+                throw LunaNpc.rethrow(runtimeException);
+            }
+            try {
+                try {
+                    try {
+                        try {
+                            if (this.MoveTargetPos == null || this.CurrentPath != null) break block43;
+                        }
+                        catch (RuntimeException runtimeException) {
+                            throw LunaNpc.rethrow(runtimeException);
+                        }
+                        if (this.getNavigator().getPath() != null) break block43;
+                    }
+                    catch (RuntimeException runtimeException) {
+                        throw LunaNpc.rethrow(runtimeException);
+                    }
+                    if (this.inWater) break block43;
+                }
+                catch (RuntimeException runtimeException) {
+                    throw LunaNpc.rethrow(runtimeException);
+                }
+                if (!this.onGround) break block43;
+            }
+            catch (RuntimeException runtimeException) {
+                throw LunaNpc.rethrow(runtimeException);
+            }
+            itemStack = this.world.rayTraceBlocks(this.getPositionVector().add(0.0, (double)this.getEyeHeight(), 0.0), new Vec3d((double)this.MoveTargetPos.getX(), (double)this.MoveTargetPos.getY(), (double)this.MoveTargetPos.getZ()), true);
+            try {
+                this.setSilent(true);
+                if (this.WanderAI != null) {
+                    this.tasks.removeTask((EntityAIBase)this.WanderAI);
+                    this.WanderAI = null;
+                }
+            }
+            catch (RuntimeException runtimeException) {
+                throw LunaNpc.rethrow(runtimeException);
+            }
+            try {
+                if (this.WatchPlayerAI != null) {
+                    this.tasks.removeTask((EntityAIBase)this.WatchPlayerAI);
+                    this.WatchPlayerAI = null;
+                }
+            }
+            catch (RuntimeException runtimeException) {
+                throw LunaNpc.rethrow(runtimeException);
+            }
+            try {
+                if (this.getCurrentAction() == GirlAnimationState.NULL) {
+                    this.setCurrentAction(GirlAnimationState.FISHING_START);
+                    this.setTargetPos(this.getPositionVector());
+                    this.DataManager.set(G, (Object)true);
+                    this.b((float)Math.atan2(this.posZ - (double)this.MoveTargetPos.getZ(), this.posX - (double)this.MoveTargetPos.getX()) * 57.29578f + 90.0f);
+                }
+            }
+            catch (RuntimeException runtimeException) {
+                throw LunaNpc.rethrow(runtimeException);
+            }
+            return;
+        }
+        this.CurrentPath = this.getNavigator().getPath();
+    }
+
+    public void o() {
+        this.VisitedPositions.add(this.MoveTargetPos);
+        this.getWalkState();
+    }
+
+    void e() {
+        try {
+            if (this.MoveTargetPos == null) {
+                return;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw LunaNpc.rethrow(runtimeException);
+        }
+        PathNavigate pathNavigate = this.getNavigator();
+        pathNavigate.tryMoveToXYZ((double)this.MoveTargetPos.getX(), (double)this.MoveTargetPos.getY(), (double)this.MoveTargetPos.getZ(), (double)0.35f);
+        Path path = pathNavigate.getPath();
+        try {
+            if (path == null) {
+                return;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw LunaNpc.rethrow(runtimeException);
+        }
+        if (path.getCurrentPathLength() > path.getCurrentPathIndex() + 1) {
+            PathPoint pathPoint = path.getPathPointFromIndex(path.getCurrentPathIndex() + 1);
+            PathPoint pathPoint2 = path.getPathPointFromIndex(path.getCurrentPathLength() - 1);
+            Vec3d vec3d = new Vec3d((double)pathPoint2.x, (double)pathPoint2.y, (double)pathPoint2.z);
+            BlockPos blockPos = new BlockPos(pathPoint.x, pathPoint.y, pathPoint.z);
+            try {
+                if (this.getPositionVector().distanceTo(vec3d) < 0.75) {
+                    pathNavigate.clearPath();
+                    this.setPosition(vec3d.x, vec3d.y, vec3d.z);
+                }
+            }
+            catch (RuntimeException runtimeException) {
+                throw LunaNpc.rethrow(runtimeException);
+            }
+            try {
+                if (this.world.getBlockState(blockPos.add(0, 1, 0)).getBlock() == Blocks.WATER) {
+                    pathNavigate.clearPath();
+                }
+            }
+            catch (RuntimeException runtimeException) {
+                throw LunaNpc.rethrow(runtimeException);
+            }
+            try {
+                if (this.world.getBlockState(blockPos).getBlock() == Blocks.WATER) {
+                    pathNavigate.clearPath();
+                }
+            }
+            catch (RuntimeException runtimeException) {
+                throw LunaNpc.rethrow(runtimeException);
+            }
+            try {
+                if (this.world.getBlockState(blockPos.add(0, -1, 0)).getBlock() == Blocks.WATER) {
+                    pathNavigate.clearPath();
+                }
+            }
+            catch (RuntimeException runtimeException) {
+                throw LunaNpc.rethrow(runtimeException);
+            }
+        }
+    }
+
+    void n() {
+        block26: {
+            int i;
+            BlockPos blockPos;
+            block25: {
+                block24: {
+                    int i2 = 0;
+                    blockPos = null;
+                    i = 0;
+                    while (++i2 < 50) {
+                        BlockPos blockPos2 = this.a(this.getPosition(), i2 + 1, (Block)Blocks.WATER, 60, 10, new HashSet<Biome>(Arrays.asList(Biomes.RIVER, Biomes.OCEAN, Biomes.DEEP_OCEAN, Biomes.BEACH, Biomes.STONE_BEACH, Biomes.SWAMPLAND, Biomes.MUTATED_SWAMPLAND)));
+                        try {
+                            if (blockPos2 == null) {
+                                break;
+                            }
+                        }
+                        catch (RuntimeException runtimeException) {
+                            throw LunaNpc.rethrow(runtimeException);
+                        }
+                        while (this.world.getBlockState(blockPos2.add(0, 1, 0)).getBlock() == Blocks.WATER) {
+                            blockPos2 = blockPos2.add(0, 1, 0);
+                        }
+                        int i3 = 1;
+                        BlockPos blockPos3 = blockPos2;
+                        while (this.world.getBlockState(blockPos3.add(0, -1, 0)).getBlock() == Blocks.WATER) {
+                            blockPos3 = blockPos3.add(0, -1, 0);
+                            ++i3;
+                        }
+                        try {
+                            if (this.VisitedPositions.contains(blockPos2)) {
+                                continue;
+                            }
+                        }
+                        catch (RuntimeException runtimeException) {
+                            throw LunaNpc.rethrow(runtimeException);
+                        }
+                        if (blockPos == null) {
+                            blockPos = blockPos2;
+                            i = i3;
+                            continue;
+                        }
+                        if (i3 <= i) continue;
+                        blockPos = blockPos2;
+                        i = i3;
+                        try {
+                            if (i < 6) continue;
+                            break;
+                        }
+                        catch (RuntimeException runtimeException) {
+                            throw LunaNpc.rethrow(runtimeException);
+                        }
+                    }
+                    try {
+                        if (blockPos == null) {
+                            return;
+                        }
+                    }
+                    catch (RuntimeException runtimeException) {
+                        throw LunaNpc.rethrow(runtimeException);
+                    }
+                    try {
+                        try {
+                            if (this.MoveTargetPos != null && this.at >= i) break block24;
+                        }
+                        catch (RuntimeException runtimeException) {
+                            throw LunaNpc.rethrow(runtimeException);
+                        }
+                        this.MoveTargetPos = blockPos;
+                        this.at = i;
+                    }
+                    catch (RuntimeException runtimeException) {
+                        throw LunaNpc.rethrow(runtimeException);
+                    }
+                }
+                try {
+                    if (!this.MoveTargetPos.equals(blockPos)) break block25;
+                    this.as = 0;
+                    break block26;
+                }
+                catch (RuntimeException runtimeException) {
+                    throw LunaNpc.rethrow(runtimeException);
+                }
+            }
+            try {
+                if (++this.as > 20) {
+                    this.MoveTargetPos = blockPos;
+                    this.at = i;
+                }
+            }
+            catch (RuntimeException runtimeException) {
+                throw LunaNpc.rethrow(runtimeException);
+            }
+        }
+    }
+
+    void m() {
+        Path path = this.getNavigator().getPath();
+        try {
+            if (path == null) {
+                return;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw LunaNpc.rethrow(runtimeException);
+        }
+        PathPoint pathPoint = path.getFinalPathPoint();
+        PathPoint pathPoint2 = new PathPoint(MathUtils.roundToInt(this.posX), MathUtils.roundToInt(this.posY), MathUtils.roundToInt(this.posZ));
+        try {
+            if (pathPoint == null) {
+                return;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw LunaNpc.rethrow(runtimeException);
+        }
+        this.DataManager.set(Y, (Object)Float.valueOf(pathPoint.distanceTo(pathPoint2)));
+    }
+
+    @Override
+    public void a(String string, UUID uUID) {
+        try {
+            super.a(string, uUID);
+            if ("action.names.touchboobs".equals(string)) {
+                this.handleGirlUuidEvent(uUID);
+                this.a(true, true, uUID);
+                this.a("animationFollowUp", "touch_boobs");
+                this.a("currentModel", "0");
+                AnimationInputLock.setAnimationLocked(false);
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw LunaNpc.rethrow(runtimeException);
+        }
+        try {
+            if ("action.names.sex".equals(string)) {
+                this.handleGirlUuidEvent(uUID);
+                this.a(true, true, uUID);
+                this.a("animationFollowUp", "sex");
+                AnimationInputLock.setAnimationLocked(false);
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw LunaNpc.rethrow(runtimeException);
+        }
+        try {
+            if ("action.names.headpat".equals(string)) {
+                this.handleGirlUuidEvent(uUID);
+                this.a(true, true, uUID);
+                AnimationInputLock.setAnimationLocked(false);
+                this.a("animationFollowUp", "headpat");
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw LunaNpc.rethrow(runtimeException);
+        }
+    }
+
+    @Override
+    protected GirlAnimationState c(GirlAnimationState girlAnimationState) {
+        try {
+            if (girlAnimationState == GirlAnimationState.TOUCH_BOOBS_SLOW) {
+                return GirlAnimationState.TOUCH_BOOBS_FAST;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw LunaNpc.rethrow(runtimeException);
+        }
+        try {
+            if (girlAnimationState == GirlAnimationState.COWGIRL_SITTING_SLOW) {
+                return GirlAnimationState.COWGIRL_SITTING_FAST;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw LunaNpc.rethrow(runtimeException);
+        }
+        return null;
+    }
+
+    @Override
+    protected GirlAnimationState a(GirlAnimationState girlAnimationState) {
+        block9: {
+            block8: {
+                try {
+                    try {
+                        if (girlAnimationState != GirlAnimationState.TOUCH_BOOBS_SLOW && girlAnimationState != GirlAnimationState.TOUCH_BOOBS_FAST) break block8;
+                    }
+                    catch (RuntimeException runtimeException) {
+                        throw LunaNpc.rethrow(runtimeException);
+                    }
+                    return GirlAnimationState.TOUCH_BOOBS_CUM;
+                }
+                catch (RuntimeException runtimeException) {
+                    throw LunaNpc.rethrow(runtimeException);
+                }
+            }
+            try {
+                try {
+                    if (girlAnimationState != GirlAnimationState.COWGIRL_SITTING_FAST && girlAnimationState != GirlAnimationState.COWGIRL_SITTING_SLOW) break block9;
+                }
+                catch (RuntimeException runtimeException) {
+                    throw LunaNpc.rethrow(runtimeException);
+                }
+                return GirlAnimationState.COWGIRL_SITTING_CUM;
+            }
+            catch (RuntimeException runtimeException) {
+                throw LunaNpc.rethrow(runtimeException);
+            }
+        }
+        return null;
+    }
+
+    /*
+     * Exception decompiling
+     */
+    @Override
+    protected void U() {
+        /*
+         * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
+         * 
+         * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 5[SWITCH]
+         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
+         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
+         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
+         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
+         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
+         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
+         *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
+         *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
+         *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1055)
+         *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
+         *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
+         *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
+         *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
+         *     at org.benf.cfr.reader.Main.main(Main.java:54)
+         */
+        throw new IllegalStateException("Decompilation failed");
+    }
+
+    protected void playHurtSound(DamageSource damageSource) {
+        this.a(ModSounds.GIRLS_LUNA_OUU, new int[0]);
+    }
+
+    @Nullable
+    protected SoundEvent getDeathSound() {
+        try {
+            if (this.getRNG().nextFloat() * 100.0f > 95.0f) {
+                return ModSounds.GIRLS_ALLIE_SCAWY[2];
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw LunaNpc.rethrow(runtimeException);
+        }
+        return ModSounds.GIRLS_LUNA_OUU[12];
+    }
+
+    @Override
+    protected void applyEntityAttributes() {
+        super.applyEntityAttributes();
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(1.0);
+    }
+
+    protected float getJumpUpwardsMotion() {
+        float f;
+        try {
+            f = this.isInWater() ? 1.0f : 0.5f;
+        }
+        catch (RuntimeException runtimeException) {
+            throw LunaNpc.rethrow(runtimeException);
+        }
+        return f;
+    }
+
+    /*
+     * Exception decompiling
+     */
+    @Override
+    protected <E extends IAnimatable> PlayState a(AnimationEvent<E> animEvent) {
+        /*
+         * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
+         * 
+         * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [1[TRYBLOCK]], but top level block is 13[SWITCH]
+         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
+         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
+         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
+         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
+         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
+         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
+         *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
+         *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
+         *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1055)
+         *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
+         *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
+         *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
+         *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
+         *     at org.benf.cfr.reader.Main.main(Main.java:54)
+         */
+        throw new IllegalStateException("Decompilation failed");
+    }
+
+    @Override
+    public void registerControllers(AnimationData animationData) {
+        try {
+            if (this.ActionController == null) {
+                this.initAnimationControllers();
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw LunaNpc.rethrow(runtimeException);
+        }
+        AnimationController.ISoundListener iSoundListener = arg1 -> {
+            /*
+             * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
+             * 
+             * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 27[SWITCH]
+             *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
+             *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
+             *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
+             *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
+             *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
+             *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
+             *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
+             *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
+             *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1050)
+             *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
+             *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
+             *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
+             *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
+             *     at org.benf.cfr.reader.Main.main(Main.java:54)
+             */
+            throw new IllegalStateException("Decompilation failed");
+        };
+        this.MovementController.transitionLengthTicks = 10.0;
+        this.ActionController.registerSoundListener(iSoundListener);
+        animationData.addAnimationController(this.ActionController);
+        animationData.addAnimationController(this.MovementController);
+        animationData.addAnimationController(this.EyesController);
+    }
+
+    @Override
+    public void readEntityFromNBT(NBTTagCompound nBTTagCompound) {
+        super.readEntityFromNBT(nBTTagCompound);
+        this.setNoGravity(false);
+    }
+
+    private static RuntimeException rethrow(RuntimeException runtimeException) {
+        return runtimeException;
+    }
+
+    public static class EventHandler {
+        @SubscribeEvent
+        public void onEntityJoinWorld(EntityJoinWorldEvent entityJoinWorldEvent) {
+            Entity entity = entityJoinWorldEvent.getEntity();
+            if (entity instanceof EntityCreeper) {
+                EntityCreeper entityCreeper = (EntityCreeper)entity;
+                entityCreeper.tasks.addTask(3, (EntityAIBase)new EntityAIAvoidEntity((EntityCreature)entityCreeper, LunaNpc.class, 6.0f, 1.0, 1.2));
+            }
+        }
+    }
+}
+

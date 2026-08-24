@@ -1,0 +1,1007 @@
+/*
+ * Decompiled with CFR 0.152.
+ * 
+ * Could not load the following classes:
+ *  net.minecraft.block.Block
+ *  net.minecraft.client.Minecraft
+ *  net.minecraft.entity.Entity
+ *  net.minecraft.entity.ai.EntityAIBase
+ *  net.minecraft.entity.player.EntityPlayer
+ *  net.minecraft.entity.player.EntityPlayerMP
+ *  net.minecraft.init.Blocks
+ *  net.minecraft.util.EnumHand
+ *  net.minecraft.util.ResourceLocation
+ *  net.minecraft.util.SoundCategory
+ *  net.minecraft.util.math.BlockPos
+ *  net.minecraft.util.math.Vec3d
+ *  net.minecraft.world.World
+ *  net.minecraftforge.fml.common.network.simpleimpl.IMessage
+ *  net.minecraftforge.fml.relauncher.Side
+ *  net.minecraftforge.fml.relauncher.SideOnly
+ */
+package com.trolmastercard.sexmod;
+
+import java.util.UUID;
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
+import software.bernie.geckolib3.core.manager.AnimationData;
+
+/*
+ * Duplicate member names - consider using --renamedupmembers true
+ */
+public class EllieNpc
+extends InventoryGirlEntity
+implements VoidCallback {
+    static final float SoundVolume = 10.0f;
+    static final int ao = 16;
+    static final int ap = 79;
+    static final int ag = 109;
+    static final int as = 150;
+    static final int ar = 20;
+    static final int ab = 110;
+    static final int an = 4;
+    int CarryIntroTicks = -1;
+    boolean aq = false;
+    boolean PendingMenu = false;
+    boolean PhysicsInit = false;
+    int StartSexCountdown = -1;
+    int HugCountdown = -1;
+    int SitCountdown = -1;
+    int HugSitCountdown = -1;
+    boolean IsSitting = false;
+    Object[] BedTarget;
+    int DashCountdown = -1;
+    int aa = 1;
+    boolean aj = false;
+
+    public EllieNpc(World world) {
+        super(world);
+        this.P = -85;
+        this.O = -175;
+        this.K = -85;
+        this.V = new Vec3d(-0.1, 0.05, 0.0);
+    }
+
+    @Override
+    public void c() {
+        this.a("Okay, I will be residing here then..");
+        this.a(ModSounds.GIRLS_ELLIE_HUH[0], 6.0f);
+    }
+
+    @Override
+    public String c() {
+        return "Ellie";
+    }
+
+    @Override
+    protected ResourceLocation getLootTable() {
+        return GirlLootTables.EllieLootTable;
+    }
+
+    boolean i() {
+        boolean flag;
+        try {
+            if (this.updateCarryHud()) {
+                return false;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        try {
+            flag = this.world.getBlockState(this.getPosition().add(0, 2, 0)).getBlock() != Blocks.AIR;
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        return flag;
+    }
+
+    public float getEyeHeight() {
+        float f;
+        try {
+            f = this.getRenderLabelOffset() ? 1.53f : 1.9f;
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        return f;
+    }
+
+    @Override
+    public float i() {
+        return 0.4f;
+    }
+
+    @Override
+    public void b() {
+        UUID uUID = this.getSexPlayerUuid();
+        try {
+            if (uUID == null) {
+                this.getGirlUuid();
+                return;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        EntityPlayer entityPlayer = this.world.getPlayerEntityByUUID(uUID);
+        try {
+            if (entityPlayer == null) {
+                this.getGirlUuid();
+                return;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        float f = entityPlayer.rotationYaw - 180.0f;
+        this.b(f);
+        this.setCurrentAction(GirlAnimationState.CARRY_INTRO);
+        this.a(true);
+    }
+
+    @Override
+    public boolean t() {
+        try {
+            if (this.getCurrentAction() == GirlAnimationState.CARRY_INTRO) {
+                return false;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        return true;
+    }
+
+    public boolean a(EntityPlayer entityPlayer, boolean flag) {
+        try {
+            if (flag) {
+                EllieNpc.openActionMenu(entityPlayer, this, new String[]{"action.names.cowgirl", "action.names.missionary"}, false);
+                return true;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        try {
+            if ((Integer)this.DataManager.get(D) == 0) {
+                EllieNpc.openActionMenu(entityPlayer, this, new String[]{"action.names.dressup"}, true);
+                return true;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        EllieNpc.openActionMenu(entityPlayer, this, new String[]{"Face fuck"}, true);
+        return true;
+    }
+
+    @Override
+    public void x() {
+        super.resetMasterAndWalkSpeed();
+        this.a("stay safe darling~");
+        this.a(ModSounds.GIRLS_ELLIE_SIGH[1], 6.0f);
+    }
+
+    /*
+     * Exception decompiling
+     */
+    @Override
+    public void a(String string, UUID uuid) {
+        /*
+         * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
+         * 
+         * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 2[SWITCH]
+         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
+         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
+         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
+         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
+         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
+         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
+         *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
+         *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
+         *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1055)
+         *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
+         *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
+         *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
+         *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
+         *     at org.benf.cfr.reader.Main.main(Main.java:54)
+         */
+        throw new IllegalStateException("Decompilation failed");
+    }
+
+    @Override
+    protected void a(EntityPlayerMP entityPlayerMP, boolean flag) {
+    }
+
+    @Override
+    public void b(GirlAnimationState girlAnimationState) {
+        block30: {
+            GirlAnimationState girlAnimationState2;
+            block28: {
+                block26: {
+                    block25: {
+                        girlAnimationState2 = this.getCurrentAction();
+                        try {
+                            try {
+                                if (girlAnimationState != GirlAnimationState.HUGSELECTED || this.world.isRemote) break block25;
+                            }
+                            catch (RuntimeException runtimeException) {
+                                throw EllieNpc.rethrow(runtimeException);
+                            }
+                            this.HugSitCountdown = 79;
+                        }
+                        catch (RuntimeException runtimeException) {
+                            throw EllieNpc.rethrow(runtimeException);
+                        }
+                    }
+                    try {
+                        block27: {
+                            try {
+                                try {
+                                    if (girlAnimationState2 != GirlAnimationState.MISSIONARY_CUM) break block26;
+                                    if (girlAnimationState == GirlAnimationState.MISSIONARY_FAST) break block27;
+                                }
+                                catch (RuntimeException runtimeException) {
+                                    throw EllieNpc.rethrow(runtimeException);
+                                }
+                                if (girlAnimationState != GirlAnimationState.MISSIONARY_SLOW) break block26;
+                            }
+                            catch (RuntimeException runtimeException) {
+                                throw EllieNpc.rethrow(runtimeException);
+                            }
+                        }
+                        return;
+                    }
+                    catch (RuntimeException runtimeException) {
+                        throw EllieNpc.rethrow(runtimeException);
+                    }
+                }
+                try {
+                    block29: {
+                        try {
+                            try {
+                                if (girlAnimationState2 != GirlAnimationState.COWGIRLCUM) break block28;
+                                if (girlAnimationState == GirlAnimationState.COWGIRLSLOW) break block29;
+                            }
+                            catch (RuntimeException runtimeException) {
+                                throw EllieNpc.rethrow(runtimeException);
+                            }
+                            if (girlAnimationState != GirlAnimationState.COWGIRLFAST) break block28;
+                        }
+                        catch (RuntimeException runtimeException) {
+                            throw EllieNpc.rethrow(runtimeException);
+                        }
+                    }
+                    return;
+                }
+                catch (RuntimeException runtimeException) {
+                    throw EllieNpc.rethrow(runtimeException);
+                }
+            }
+            try {
+                block31: {
+                    try {
+                        try {
+                            if (girlAnimationState2 != GirlAnimationState.CARRY_CUM) break block30;
+                            if (girlAnimationState == GirlAnimationState.CARRY_SLOW) break block31;
+                        }
+                        catch (RuntimeException runtimeException) {
+                            throw EllieNpc.rethrow(runtimeException);
+                        }
+                        if (girlAnimationState != GirlAnimationState.CARRY_FAST) break block30;
+                    }
+                    catch (RuntimeException runtimeException) {
+                        throw EllieNpc.rethrow(runtimeException);
+                    }
+                }
+                return;
+            }
+            catch (RuntimeException runtimeException) {
+                throw EllieNpc.rethrow(runtimeException);
+            }
+        }
+        try {
+            if (girlAnimationState == GirlAnimationState.CARRY_INTRO) {
+                this.CarryIntroTicks = 0;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        super.setCurrentAction(girlAnimationState);
+    }
+
+    @Override
+    @SideOnly(value=Side.CLIENT)
+    public void onUpdate() {
+        try {
+            super.onUpdate();
+            if (this.PendingMenu) {
+                this.a((EntityPlayer)Minecraft.getMinecraft().player, true);
+                this.PendingMenu = false;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        this.m();
+        this.updateCarryHud();
+    }
+
+    void updateCarryHud() {
+        try {
+            if (GuiHud.isHudVisible()) {
+                return;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        try {
+            if (this.getCurrentAction() != GirlAnimationState.CARRY_SLOW) {
+                return;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        GuiHud.showHud();
+    }
+
+    void updateCarryIntro() {
+        try {
+            if (this.CarryIntroTicks == -1) {
+                return;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        try {
+            if (++this.CarryIntroTicks < 110) {
+                return;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        try {
+            this.CarryIntroTicks = -1;
+            if (this.getCurrentAction() != GirlAnimationState.CARRY_INTRO) {
+                return;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        UUID uUID = this.getSexPlayerUuid();
+        try {
+            if (uUID == null) {
+                return;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        EntityPlayer entityPlayer = this.world.getPlayerEntityByUUID(uUID);
+        try {
+            if (entityPlayer == null) {
+                return;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        float f = this.I().floatValue();
+        Vec3d vec3d = this.initPhysics().add(VectorMath.rotateYaw(new Vec3d(0.0, (double)(2.5625f - entityPlayer.getEyeHeight()), -0.3125), 180.0f + f));
+        entityPlayer.setPositionAndUpdate(vec3d.x, vec3d.y, vec3d.z);
+    }
+
+    void m() {
+        try {
+            if (this.getCurrentAction() != GirlAnimationState.SITDOWNIDLE) {
+                return;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        EntityPlayer entityPlayer = this.world.getClosestPlayerToEntity((Entity)this, 10.0);
+        try {
+            if (entityPlayer == null) {
+                return;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        try {
+            if (this.getDistance((Entity)entityPlayer) > 1.5f) {
+                return;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        try {
+            if (entityPlayer.getPersistentID().equals(Minecraft.getMinecraft().player.getPersistentID())) {
+                GuiTransitionScreen.startTransition();
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+    }
+
+    @Override
+    public void updateAITasks() {
+        super.updateAITasks();
+        this.initPhysics();
+        this.d();
+        this.isOwnedByLocalPlayer();
+        this.getWalkState();
+        this.getRenderPosition();
+        this.a();
+        this.t();
+        this.u();
+    }
+
+    void initPhysics() {
+        try {
+            if (this.PhysicsInit) {
+                return;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        this.PhysicsInit = true;
+        this.noClip = false;
+        this.setNoGravity(false);
+    }
+
+    @Override
+    protected void U() {
+        Vec3d vec3d;
+        Vec3d vec3d2;
+        EntityPlayer entityPlayer;
+        UUID uUID;
+        String string = (String)this.DataManager.get(h);
+        if ("Missionary".equals(string)) {
+            this.DataManager.set(D, (Object)0);
+            this.setCurrentAction(GirlAnimationState.MISSIONARY_START);
+            uUID = this.getSexPlayerUuid();
+            try {
+                if (uUID == null) {
+                    return;
+                }
+            }
+            catch (RuntimeException runtimeException) {
+                throw EllieNpc.rethrow(runtimeException);
+            }
+            entityPlayer = this.world.getPlayerEntityByUUID(uUID);
+            try {
+                if (entityPlayer == null) {
+                    this.resetAimTarget();
+                    return;
+                }
+            }
+            catch (RuntimeException runtimeException) {
+                throw EllieNpc.rethrow(runtimeException);
+            }
+            entityPlayer.setNoGravity(true);
+            entityPlayer.noClip = true;
+            vec3d2 = this.initPhysics();
+            entityPlayer.rotationYaw = this.I().floatValue();
+            vec3d = VectorMath.rotateYaw(new Vec3d(0.0, 0.0, 0.1), entityPlayer.rotationYaw);
+            vec3d2 = vec3d2.add(vec3d);
+            entityPlayer.setPositionAndUpdate(vec3d2.x, vec3d2.y, vec3d2.z);
+            NetworkHandler.channel.sendTo((IMessage)new PacketSetPlayerMovement(false), (EntityPlayerMP)entityPlayer);
+        }
+        if ("cowgirl".equals(string)) {
+            this.DataManager.set(D, (Object)0);
+            this.setCurrentAction(GirlAnimationState.COWGIRLSTART);
+            uUID = this.getSexPlayerUuid();
+            try {
+                if (uUID == null) {
+                    return;
+                }
+            }
+            catch (RuntimeException runtimeException) {
+                throw EllieNpc.rethrow(runtimeException);
+            }
+            entityPlayer = this.world.getPlayerEntityByUUID(uUID);
+            try {
+                if (entityPlayer == null) {
+                    this.resetAimTarget();
+                    return;
+                }
+            }
+            catch (RuntimeException runtimeException) {
+                throw EllieNpc.rethrow(runtimeException);
+            }
+            entityPlayer.setNoGravity(true);
+            entityPlayer.noClip = true;
+            vec3d2 = this.initPhysics();
+            entityPlayer.rotationYaw = this.I().floatValue() + 180.0f;
+            vec3d = VectorMath.rotateYaw(new Vec3d(0.0, 1.0 - (double)entityPlayer.eyeHeight, -1.8125), entityPlayer.rotationYaw);
+            vec3d2 = vec3d2.add(vec3d);
+            entityPlayer.setPositionAndUpdate(vec3d2.x, vec3d2.y, vec3d2.z);
+            NetworkHandler.channel.sendTo((IMessage)new PacketSetPlayerMovement(false), (EntityPlayerMP)entityPlayer);
+        }
+    }
+
+    void u() {
+        try {
+            if (--this.StartSexCountdown != 0) {
+                return;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        this.U();
+    }
+
+    void t() {
+        block10: {
+            try {
+                try {
+                    if (this.getCurrentAction() == GirlAnimationState.SITDOWNIDLE && this.StartSexCountdown < 0) break block10;
+                }
+                catch (RuntimeException runtimeException) {
+                    throw EllieNpc.rethrow(runtimeException);
+                }
+                return;
+            }
+            catch (RuntimeException runtimeException) {
+                throw EllieNpc.rethrow(runtimeException);
+            }
+        }
+        EntityPlayer entityPlayer = this.world.getClosestPlayerToEntity((Entity)this, 10.0);
+        try {
+            if (entityPlayer == null) {
+                return;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        try {
+            if (this.getDistance((Entity)entityPlayer) > 1.5f) {
+                return;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        this.StartSexCountdown = 20;
+        this.updateCarryIntro(entityPlayer.getPersistentID());
+    }
+
+    void a() {
+        try {
+            if (--this.HugCountdown != 0) {
+                return;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        this.setCurrentAction(GirlAnimationState.HUGIDLE);
+    }
+
+    void j() {
+        try {
+            if (--this.SitCountdown != 0) {
+                return;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        this.setCurrentAction(GirlAnimationState.SITDOWNIDLE);
+    }
+
+    void q() {
+        block16: {
+            try {
+                try {
+                    if (--this.HugSitCountdown == 0 || this.IsSitting) break block16;
+                }
+                catch (RuntimeException runtimeException) {
+                    throw EllieNpc.rethrow(runtimeException);
+                }
+                return;
+            }
+            catch (RuntimeException runtimeException) {
+                throw EllieNpc.rethrow(runtimeException);
+            }
+        }
+        try {
+            this.IsSitting = true;
+            this.DataManager.set(G, (Object)false);
+            this.setCurrentAction(GirlAnimationState.NULL);
+            this.noClip = false;
+            this.setNoGravity(false);
+            if (this.BedTarget == null) {
+                this.BedTarget = this.noop();
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        try {
+            if (this.BedTarget == null) {
+                this.updateCarryHud("no bed in sight...");
+                this.world.playSound(null, this.getPosition(), ModSounds.GIRLS_ELLIE_SIGH[0], SoundCategory.NEUTRAL, 6.0f, 1.0f);
+                this.s();
+                this.getGirlUuid();
+                return;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        EntityPlayer entityPlayer = this.world.getPlayerEntityByUUID(this.getSexPlayerUuid());
+        try {
+            if (entityPlayer != null) {
+                entityPlayer.setNoGravity(false);
+                entityPlayer.noClip = false;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        Vec3d vec3d = (Vec3d)this.BedTarget[0];
+        int i = (Integer)this.BedTarget[1];
+        try {
+            if (vec3d.distanceTo(this.getPositionVector()) > 1.0) {
+                this.getNavigator().tryMoveToXYZ(vec3d.x, vec3d.y, vec3d.z, (double)0.35f);
+                this.k();
+                return;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        this.setTargetPos(vec3d);
+        this.b(i);
+        this.setCurrentAction(GirlAnimationState.SITDOWN);
+        this.DataManager.set(G, (Object)true);
+        this.SitCountdown = 109;
+        this.noClip = true;
+        this.setNoGravity(true);
+        this.IsSitting = false;
+        this.BedTarget = null;
+    }
+
+    @Override
+    public void g() {
+        super.noop();
+        this.HugCountdown = -1;
+    }
+
+    Object[] g() {
+        Vec3d vec3d;
+        BlockPos blockPos;
+        int i = -1;
+        int i3 = 0;
+        Vec3d[][] vec3dArrayArray = new Vec3d[][]{{new Vec3d(0.5, 0.0, -0.18), new Vec3d(0.0, 0.0, -1.0), new Vec3d(0.0, 0.0, 1.0)}, {new Vec3d(0.5, 0.0, 1.18), new Vec3d(0.0, 0.0, 1.0), new Vec3d(0.0, 0.0, -1.0)}, {new Vec3d(-0.18, 0.0, 0.5), new Vec3d(-1.0, 0.0, 0.0), new Vec3d(1.0, 0.0, 0.0)}, {new Vec3d(1.18, 0.0, 0.5), new Vec3d(1.0, 0.0, 0.0), new Vec3d(-1.0, 0.0, 0.0)}};
+        int[] nArray = new int[]{0, 180, -90, 90};
+        do {
+            if ((blockPos = this.a(this.getPosition(), ++i3)) == null) {
+                return null;
+            }
+            vec3d = new Vec3d((double)blockPos.getX(), (double)blockPos.getY(), (double)blockPos.getZ());
+            for (int i4 = 0; i4 < vec3dArrayArray.length; ++i4) {
+                block7: {
+                    Vec3d vec3d2 = vec3d.add(vec3dArrayArray[i4][1]);
+                    Block block = this.world.getBlockState(new BlockPos(vec3d2.x, vec3d2.y, vec3d2.z)).getBlock();
+                    Vec3d vec3d3 = vec3d.add(vec3dArrayArray[i4][2]);
+                    Block block2 = this.world.getBlockState(new BlockPos(vec3d3.x, vec3d3.y, vec3d3.z)).getBlock();
+                    try {
+                        try {
+                            if (block != Blocks.AIR || block2 != Blocks.BED) continue;
+                        }
+                        catch (RuntimeException runtimeException) {
+                            throw EllieNpc.rethrow(runtimeException);
+                        }
+                        if (i != -1) break block7;
+                    }
+                    catch (RuntimeException runtimeException) {
+                        throw EllieNpc.rethrow(runtimeException);
+                    }
+                    i = i4;
+                    continue;
+                }
+                double d = this.getPosition().distanceSq(vec3d.add((Vec3d)vec3dArrayArray[i][0]).x, vec3d.add((Vec3d)vec3dArrayArray[i][0]).y, vec3d.add((Vec3d)vec3dArrayArray[i][0]).z);
+                double d2 = this.getPosition().distanceSq(vec3d.add((Vec3d)vec3dArrayArray[i4][0]).x, vec3d.add((Vec3d)vec3dArrayArray[i4][0]).y, vec3d.add((Vec3d)vec3dArrayArray[i4][0]).z);
+                if (!(d2 < d)) continue;
+                i = i4;
+            }
+        } while (i == -1);
+        blockPos = vec3d.add(vec3dArrayArray[i][0]);
+        return new Object[]{blockPos, nArray[i]};
+    }
+
+    void d() {
+        try {
+            if (this.getActivePotionEffect(PotionHandler.b) == null) {
+                return;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        EntityPlayer entityPlayer = this.world.getClosestPlayerToEntity((Entity)this, 10.0);
+        try {
+            if (entityPlayer == null) {
+                return;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        this.removeActivePotionEffect(PotionHandler.b);
+        this.updateCarryIntro(entityPlayer.getPersistentID());
+        float f = (float)(Math.atan2(this.posZ - entityPlayer.posZ, this.posX - entityPlayer.posX) * 57.29577951308232);
+        this.b(f);
+        this.setTargetPos(this.getPositionVector());
+        this.DataManager.set(G, (Object)true);
+        this.setCurrentAction(GirlAnimationState.DASH);
+        this.DashCountdown = 16;
+        this.setNoGravity(true);
+        this.noClip = true;
+        NetworkHandler.channel.sendTo((IMessage)new PacketSetPlayerMovement(false), (EntityPlayerMP)entityPlayer);
+        this.tasks.removeTask((EntityAIBase)this.WanderAI);
+        this.tasks.removeTask((EntityAIBase)this.WatchPlayerAI);
+    }
+
+    void n() {
+        try {
+            if (--this.DashCountdown != 0) {
+                return;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        UUID uUID = this.getSexPlayerUuid();
+        try {
+            if (uUID == null) {
+                this.getGirlUuid();
+                return;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        EntityPlayer entityPlayer = this.world.getPlayerEntityByUUID(uUID);
+        try {
+            if (entityPlayer == null) {
+                this.getGirlUuid();
+                return;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        entityPlayer.setNoGravity(true);
+        entityPlayer.noClip = true;
+        Vec3d vec3d = VectorMath.rotateYaw(new Vec3d(0.0, 0.0, -0.5), entityPlayer.rotationYaw);
+        Vec3d vec3d2 = vec3d.add(entityPlayer.getPositionVector());
+        this.setTargetPos(vec3d2);
+        this.b(entityPlayer.rotationYaw);
+        this.setCurrentAction(GirlAnimationState.HUG);
+        this.HugCountdown = 150;
+    }
+
+    void f() {
+        this.DataManager.set(G, (Object)false);
+        this.setCurrentAction(GirlAnimationState.NULL);
+        this.updateCarryIntro((UUID)null);
+        this.noClip = false;
+        this.setNoGravity(false);
+        this.IsSitting = false;
+        this.HugCountdown = -1;
+        this.DashCountdown = -1;
+        this.HugSitCountdown = -1;
+        this.BedTarget = null;
+    }
+
+    protected boolean processInteract(EntityPlayer entityPlayer, EnumHand enumHand) {
+        try {
+            if (EllieNpc.getByPlayerUuid(entityPlayer) != null) {
+                return false;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        try {
+            if (this.getSexPlayerUuid() != null) {
+                return false;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        try {
+            if (this.world.isRemote) {
+                this.a(entityPlayer, false);
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        return true;
+    }
+
+    @Override
+    protected GirlAnimationState a(GirlAnimationState girlAnimationState) {
+        block14: {
+            block13: {
+                block12: {
+                    try {
+                        try {
+                            if (girlAnimationState != GirlAnimationState.COWGIRLFAST && girlAnimationState != GirlAnimationState.COWGIRLSLOW) break block12;
+                        }
+                        catch (RuntimeException runtimeException) {
+                            throw EllieNpc.rethrow(runtimeException);
+                        }
+                        return GirlAnimationState.COWGIRLCUM;
+                    }
+                    catch (RuntimeException runtimeException) {
+                        throw EllieNpc.rethrow(runtimeException);
+                    }
+                }
+                try {
+                    try {
+                        if (girlAnimationState != GirlAnimationState.MISSIONARY_FAST && girlAnimationState != GirlAnimationState.MISSIONARY_SLOW) break block13;
+                    }
+                    catch (RuntimeException runtimeException) {
+                        throw EllieNpc.rethrow(runtimeException);
+                    }
+                    return GirlAnimationState.MISSIONARY_CUM;
+                }
+                catch (RuntimeException runtimeException) {
+                    throw EllieNpc.rethrow(runtimeException);
+                }
+            }
+            try {
+                try {
+                    if (girlAnimationState != GirlAnimationState.CARRY_SLOW && girlAnimationState != GirlAnimationState.CARRY_FAST) break block14;
+                }
+                catch (RuntimeException runtimeException) {
+                    throw EllieNpc.rethrow(runtimeException);
+                }
+                return GirlAnimationState.CARRY_CUM;
+            }
+            catch (RuntimeException runtimeException) {
+                throw EllieNpc.rethrow(runtimeException);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    protected GirlAnimationState c(GirlAnimationState girlAnimationState) {
+        try {
+            if (girlAnimationState == GirlAnimationState.COWGIRLSLOW) {
+                return GirlAnimationState.COWGIRLFAST;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        try {
+            if (girlAnimationState == GirlAnimationState.MISSIONARY_SLOW) {
+                return GirlAnimationState.MISSIONARY_FAST;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        try {
+            if (girlAnimationState == GirlAnimationState.CARRY_SLOW) {
+                return GirlAnimationState.CARRY_FAST;
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        return null;
+    }
+
+    /*
+     * Exception decompiling
+     */
+    @Override
+    protected <E extends IAnimatable> PlayState a(AnimationEvent<E> animEvent) {
+        /*
+         * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
+         * 
+         * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [1[TRYBLOCK]], but top level block is 11[SWITCH]
+         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
+         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
+         *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
+         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
+         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
+         *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
+         *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
+         *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
+         *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1055)
+         *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
+         *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
+         *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
+         *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
+         *     at org.benf.cfr.reader.Main.main(Main.java:54)
+         */
+        throw new IllegalStateException("Decompilation failed");
+    }
+
+    @Override
+    @SideOnly(value=Side.CLIENT)
+    public void registerControllers(AnimationData animationData) {
+        try {
+            if (this.ActionController == null) {
+                this.initAnimationControllers();
+            }
+        }
+        catch (RuntimeException runtimeException) {
+            throw EllieNpc.rethrow(runtimeException);
+        }
+        AnimationController.ISoundListener iSoundListener = arg1 -> {
+            /*
+             * This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
+             * 
+             * org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 35[SWITCH]
+             *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:435)
+             *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
+             *     at org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:736)
+             *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:850)
+             *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:278)
+             *     at org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:201)
+             *     at org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:94)
+             *     at org.benf.cfr.reader.entities.Method.analyse(Method.java:531)
+             *     at org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:1050)
+             *     at org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:942)
+             *     at org.benf.cfr.reader.Driver.doJarVersionTypes(Driver.java:257)
+             *     at org.benf.cfr.reader.Driver.doJar(Driver.java:139)
+             *     at org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:76)
+             *     at org.benf.cfr.reader.Main.main(Main.java:54)
+             */
+            throw new IllegalStateException("Decompilation failed");
+        };
+        this.ActionController.registerSoundListener(iSoundListener);
+        animationData.addAnimationController(this.ActionController);
+        animationData.addAnimationController(this.MovementController);
+        animationData.addAnimationController(this.EyesController);
+    }
+
+    private static RuntimeException rethrow(RuntimeException runtimeException) {
+        return runtimeException;
+    }
+}
+
