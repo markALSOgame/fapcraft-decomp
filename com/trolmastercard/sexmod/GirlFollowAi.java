@@ -16,7 +16,7 @@ public class GirlFollowAi extends GirlAiBase {
 
    @Override
 
-   protected GirlAiBase.State getState() {
+   protected GirlAiBase.AiState getState() {
         boolean flag;
         block11: {
             block12: {
@@ -37,7 +37,7 @@ public class GirlFollowAi extends GirlAiBase {
                         catch (RuntimeException runtimeException) {
                             throw GirlFollowAi.rethrow(runtimeException);
                         }
-                        if (this.State != GirlAiBase.State.FOLLOW) break block11;
+                        if (this.State != GirlAiBase.AiState.FOLLOW) break block11;
                     }
                     catch (RuntimeException runtimeException) {
                         throw GirlFollowAi.rethrow(runtimeException);
@@ -55,17 +55,17 @@ public class GirlFollowAi extends GirlAiBase {
         }
         try {
             if (flag) {
-                return GirlAiBase.State.FOLLOW;
+                return GirlAiBase.AiState.FOLLOW;
             }
         }
         catch (RuntimeException runtimeException) {
             throw GirlFollowAi.rethrow(runtimeException);
         }
-        return GirlAiBase.State.IDLE;
+        return GirlAiBase.AiState.IDLE;
     }
 
    @Override
-   protected void executeState(GirlAiBase.State state) {
+   protected void executeState(GirlAiBase.AiState state) {
       switch (state) {
          case FOLLOW:
             double d = this.Girl.getDistance(this.Player);

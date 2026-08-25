@@ -1,5 +1,6 @@
 package com.trolmastercard.sexmod;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
@@ -73,7 +74,7 @@ public class ModelGalath extends GirlGeoModel {
       GalathNpc galath = (GalathNpc)girl;
 
       try {
-         if (galath.k()) {
+         if (galath.maybeMountedByMangFn()) {
             return true;
          }
       } catch (RuntimeException error2) {
@@ -92,11 +93,11 @@ public class ModelGalath extends GirlGeoModel {
       try {
          this.applyMasturbationAngles(girl);
          super.a(girl, i, animEvent);
-         this.a(girl);
+         this.applyFlightToolRotation(girl);
          this.applyRapeChargePose(girl);
          this.applySwordAttackPose(girl);
          this.b(girl);
-         this.e(girl);
+         this.applyNippleBoneVisibility(girl);
          this.updateWingsVisibility(girl);
          this.hideCoinBone(girl);
          this.a();
@@ -204,7 +205,7 @@ public class ModelGalath extends GirlGeoModel {
     }
 
    Vec3f getHeadSwayOffset(GalathNpc galath, float f) {
-      return LerpMath.lerpVec3f(this.computeHeadSway(f), Vec3f.ZERO, galath.b(this.Mc.getRenderPartialTicks()));
+      return LerpMath.lerpVec3f(this.computeHeadSway(f), Vec3f.ZERO, galath.float_b(this.Mc.getRenderPartialTicks()));
    }
 
    Vec3f computeHeadSway(float f) {
@@ -381,34 +382,50 @@ public class ModelGalath extends GirlGeoModel {
    }
 
 
-   void e(GirlEntity girl) {
-        try {
-            if (!(girl instanceof GalathNpc)) {
-                return true;
+   void applyNippleBoneVisibility(GirlEntity girl) {
+      AnimationProcessor animationProcessor = this.getAnimationProcessor();
+      IBone iBone = animationProcessor.getBone("nippleR");
+      IBone iBone2 = animationProcessor.getBone("nippleL");
+      IBone iBone3 = animationProcessor.getBone("braBoobL");
+      IBone iBone4 = animationProcessor.getBone("braBoobR");
+      IBone iBone5 = animationProcessor.getBone("slip");
+      boolean flag = ((BoxSource)((Object)girl)).shouldHideBody();
+      boolean flag2 = GirlAnimationState.a(girl, GirlAnimationState.PUSSY_LICKING, GirlAnimationState.MASTERBATE_SITTING, GirlAnimationState.MASTERBATE_SITTING_CUM);
+      if (iBone == null) {
+         return;
+      }
+      if (iBone3 == null) {
+         return;
+      }
+      iBone.setHidden(!flag);
+      iBone2.setHidden(!flag);
+      iBone3.setHidden(flag);
+      iBone4.setHidden(flag);
+      iBone5.setHidden(flag || flag2);
+   }
+
+   void applyFlightToolRotation(GirlEntity girl) {
+      float f = 0.0f;
+      switch (girl.getCurrentAction()) {
+         case BOOST: {
+            if (GirlAnimationState.BOOST.ticksPlaying[1] > 13 && GirlAnimationState.BOOST.ticksPlaying[1] < 40) {
+               f = 45.0f;
             }
-        }
-        catch (RuntimeException runtimeException) {
-            throw ModelGalath.rethrow(runtimeException);
-        }
-        GalathNpc f_2 = (GalathNpc)girl;
-        try {
-            if (f_2.k()) {
-                return true;
-            }
-        }
-        catch (RuntimeException runtimeException) {
-            throw ModelGalath.rethrow(runtimeException);
-        }
-        try {
-            if (f_2.getTargetEntity() == null) {
-                return true;
-            }
-        }
-        catch (RuntimeException runtimeException) {
-            throw ModelGalath.rethrow(runtimeException);
-        }
-        return false;
-    }
+         }
+         case FLY:
+         case CONTROLLED_FLIGHT: {
+            break;
+         }
+         default: {
+            return;
+         }
+      }
+      float f2 = Minecraft.getMinecraft().getRenderPartialTicks();
+      IBone iBone = this.getAnimationProcessor().getBone("rotationTool");
+      Vec4d vec4d = ((BoxSource)((Object)girl)).getPoseOffsets();
+      iBone.setRotationX((float)LerpMath.lerp(vec4d.Z + (double)f, vec4d.W + (double)f, (double)f2));
+      iBone.setRotationZ((float)LerpMath.lerp(vec4d.Y, vec4d.X, (double)f2));
+   }
 
    void b(GirlEntity girl) {
       try {
@@ -556,7 +573,8 @@ public class ModelGalath extends GirlGeoModel {
     }
 
 
-   void a(GirlEntity girl) {
+   @Override
+   public ResourceLocation getModelLocation(GirlEntity girl) {
         try {
             if (girl.world instanceof PreviewWorld) {
                 return this.TextureLayers[0];

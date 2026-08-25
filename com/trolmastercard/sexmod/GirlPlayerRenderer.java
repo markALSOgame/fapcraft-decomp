@@ -344,15 +344,15 @@ public class GirlPlayerRenderer extends GeoGirlRenderer<GirlEntity> {
       }
 
       if (this.u && !flag && stack.getItem() instanceof ItemBow) {
-         this.t += 0.015F;
-         this.RenderEntity.d(Math.round(-this.t * 20.0F + (float)stack.getMaxItemUseDuration()));
-         this.RenderEntity.a(stack);
+          this.t += 0.015F;
+          this.RenderEntity.d(Math.round(-this.t * 20.0F + (float)stack.getMaxItemUseDuration()));
+          this.RenderEntity.setActiveItemStack(stack);
          this.RenderEntity.setActiveHand(EnumHand.MAIN_HAND);
          this.RenderEntity.W();
       } else {
-         this.t = 0.0F;
-         this.RenderEntity.d(0);
-         this.RenderEntity.a(ItemStack.EMPTY);
+          this.t = 0.0F;
+          this.RenderEntity.d(0);
+          this.RenderEntity.setActiveItemStack(ItemStack.EMPTY);
          this.RenderEntity.W();
       }
 

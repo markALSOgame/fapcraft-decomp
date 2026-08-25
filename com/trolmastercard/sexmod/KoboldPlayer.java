@@ -564,7 +564,7 @@ implements BooleanCheck {
         float f2 = 0.25f - ((Float)this.DataManager.get(BodySizeKey)).floatValue();
         double d = f2 / 0.25f;
         float f3 = (float)LerpMath.lerp((double)0.9f, (double)1.1f, d);
-        this.a(soundEvent, f, f3);
+        this.playSoundAt(soundEvent, f, f3);
     }
 
     @Override
@@ -811,7 +811,7 @@ implements BooleanCheck {
                     break;
                 }
                 case "cumMsg": {
-                    this.a("I.. hope I am satisfying you sir");
+                    this.void_a("I.. hope I am satisfying you sir");
                     this.b(ModSounds.GIRLS_KOBOLD_SAD[this.getRNG().nextInt(1)]);
                     break;
                 }

@@ -117,7 +117,7 @@ implements BoxSource {
                 this.b(uUID);
                 this.setCurrentAction(GirlAnimationState.CORRUPT_SLOW);
                 this.a(this.getOutfitIndex(), GirlAnimationState.CORRUPT_SLOW);
-                this.a();
+                this.void_a();
                 return;
             }
         }
@@ -192,7 +192,7 @@ implements BoxSource {
         super.setCurrentAction(girlAnimationState);
     }
 
-    void a() {
+    void void_a() {
         EntityPlayer entityPlayer = this.S();
         try {
             if (entityPlayer == null) {
@@ -207,7 +207,7 @@ implements BoxSource {
     }
 
     @Override
-    public boolean b() {
+    public boolean boolean_b() {
         return false;
     }
 
@@ -228,12 +228,12 @@ implements BoxSource {
     }
 
     @Override
-    public Vec4d d() {
+    public Vec4d Vec4d_d() {
         return new Vec4d(0.0, 0.0, 0.0, 0.0);
     }
 
     @Override
-    public boolean c() {
+    public boolean boolean_c() {
         boolean flag;
         block5: {
             block4: {
@@ -257,7 +257,7 @@ implements BoxSource {
     }
 
     @Override
-    public boolean a() {
+    public boolean boolean_a() {
         try {
             switch (this.getCurrentAction()) {
                 case CORRUPT_CUM: 
@@ -285,9 +285,9 @@ implements BoxSource {
     public void onUpdate() {
         try {
             super.onUpdate();
-            this.b();
+            this.void_b();
             if (this.world.isRemote) {
-                this.d();
+                this.void_d();
             }
         }
         catch (RuntimeException runtimeException) {
@@ -296,7 +296,7 @@ implements BoxSource {
     }
 
     @SideOnly(value=Side.CLIENT)
-    void d() {
+    void void_d() {
         try {
             if (!this.isOwnedByLocalPlayer()) {
                 return;
@@ -316,7 +316,7 @@ implements BoxSource {
         GuiHud.showHudWithForce(false);
     }
 
-    void b() {
+    void void_b() {
         switch (this.getCurrentAction()) {
             case CORRUPT_CUM: 
             case CORRUPT_FAST: 
@@ -471,23 +471,23 @@ implements BoxSource {
                     break;
                 }
                 case "cum": {
-                    this.a(ModSounds.MISC_SMALLINSERTS, 2.0f);
+                    this.playRandomSoundWithChance(ModSounds.MISC_SMALLINSERTS, 2.0f);
                     break;
                 }
                 case "pound": {
-                    this.a(ModSounds.MISC_POUNDING, new int[0]);
+                    this.playRandomSound(ModSounds.MISC_POUNDING);
                     break;
                 }
                 case "flap": {
-                    this.a(ModSounds.MISC_FLAP, new int[0]);
+                    this.playRandomSound(ModSounds.MISC_FLAP);
                     break;
                 }
                 case "setNude": {
                     this.BusyFlag = true;
                     Vec3d vec3d = this.getPositionVector();
-                    Vec3d vec3d2 = this.b("slipR").add(vec3d);
-                    Vec3d vec3d3 = this.b("slipL").add(vec3d);
-                    Vec3d vec3d4 = this.b("turnable").add(vec3d);
+                    Vec3d vec3d2 = this.getModelBone("slipR").add(vec3d);
+                    Vec3d vec3d3 = this.getModelBone("slipL").add(vec3d);
+                    Vec3d vec3d4 = this.getModelBone("turnable").add(vec3d);
                     this.world.spawnParticle(EnumParticleTypes.DRAGON_BREATH, vec3d2.x, vec3d2.y, vec3d2.z, 0.0, 0.0, 0.0, new int[0]);
                     this.world.spawnParticle(EnumParticleTypes.DRAGON_BREATH, vec3d3.x, vec3d3.y, vec3d3.z, 0.0, 0.0, 0.0, new int[0]);
                     this.world.spawnParticle(EnumParticleTypes.DRAGON_BREATH, vec3d4.x, vec3d4.y, vec3d4.z, 0.0, 0.0, 0.0, new int[0]);
@@ -507,7 +507,7 @@ implements BoxSource {
                     break;
                 }
                 case "poundRape": {
-                    this.a(ModSounds.MISC_POUNDING, new int[0]);
+                    this.playRandomSound(ModSounds.MISC_POUNDING);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.03f);
                     break;
@@ -576,9 +576,9 @@ implements BoxSource {
                         Vec3d vec3d = girl.d("futaCockTip");
                         Vec3d vec3d2 = girl.d("futaCockTipDirHelp");
                         return vec3d.subtract(vec3d2).normalize();
-                    }, girl -> girl.b("futaCockTip").add(girl.getPositionVector()), this, 0.3f, 0.3f));
-                    GuiCumOverlay.addParticles(new ParticleEmitter(100, girl -> VectorMath.rotateYaw(new Vec3d(0.0, 0.0, 0.6f), this.I().floatValue()), girl -> girl.b("creampiePos").add(girl.getPositionVector()), this, 0.6f, 0.5f));
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_SMALLINSERTS), 3.0f);
+                    }, girl -> girl.getModelBone("futaCockTip").add(girl.getPositionVector()), this, 0.3f, 0.3f));
+                    GuiCumOverlay.addParticles(new ParticleEmitter(100, girl -> VectorMath.rotateYaw(new Vec3d(0.0, 0.0, 0.6f), this.I().floatValue()), girl -> girl.getModelBone("creampiePos").add(girl.getPositionVector()), this, 0.6f, 0.5f));
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.MISC_SMALLINSERTS), 3.0f);
                     break;
                 }
                 case "blackScreenTamed":
@@ -590,7 +590,7 @@ implements BoxSource {
                 case "flapControlled": {
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiGalathFlight.startFlight();
-                    this.a(ModSounds.MISC_FLAP, new int[0]);
+                    this.playRandomSound(ModSounds.MISC_FLAP);
                     Minecraft minecraft = Minecraft.getMinecraft();
                     EntityPlayerSP entityPlayerSP = minecraft.player;
                     MovementInput movementInput = entityPlayerSP.movementInput;
@@ -601,19 +601,19 @@ implements BoxSource {
                     break;
                 }
                 case "clap": {
-                    this.a(ModSounds.MISC_CLAP, new int[0]);
+                    this.playRandomSound(ModSounds.MISC_CLAP);
                     break;
                 }
                 case "energysound": {
-                    this.a(ModSounds.MISC_BEEW[1]);
+                    this.playSoundEvent(ModSounds.MISC_BEEW[1]);
                     break;
                 }
                 case "energy2": {
-                    this.a(ModSounds.MISC_BEEW[2]);
+                    this.playSoundEvent(ModSounds.MISC_BEEW[2]);
                     break;
                 }
                 case "tpSound": {
-                    this.a(ModSounds.MISC_WEOWEO[2]);
+                    this.playSoundEvent(ModSounds.MISC_WEOWEO[2]);
                     break;
                 }
                 case "sexui": {

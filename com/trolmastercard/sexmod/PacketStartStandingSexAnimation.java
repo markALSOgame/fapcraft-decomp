@@ -73,7 +73,7 @@ public class PacketStartStandingSexAnimation implements IMessage {
                         // empty catch block
                     }
                 }
-                playerGirl.b(packet.AnimationName, packet.GirlUuid);
+                playerGirl.startAction(packet.AnimationName, packet.GirlUuid);
             });
             return null;
         }

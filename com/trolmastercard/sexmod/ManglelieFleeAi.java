@@ -45,7 +45,7 @@ public class ManglelieFleeAi extends EntityAIAvoidEntity<EntityPlayer> {
          }
 
          try {
-            if (galath.k()) {
+            if (galath.maybeMountedByMangFn()) {
                return true;
             }
          } catch (RuntimeException error4) {

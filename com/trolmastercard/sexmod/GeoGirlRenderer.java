@@ -340,7 +340,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
                 try {
                     try {
                         try {
-                            if (GeoGirlRenderer.Mc.player == null || ((GirlEntity)t).h()) break block10;
+                            if (GeoGirlRenderer.Mc.player == null || ((GirlEntity)t).isTracked()) break block10;
                         }
                         catch (IllegalStateException illegalStateException) {
                             throw GeoGirlRenderer.rethrow(illegalStateException);
@@ -369,7 +369,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
             bufferBuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
             this.bindTexture(Objects.requireNonNull(this.getEntityTexture(this.RenderEntity)));
             this.ProcessedBones.clear();
-            flag2 = ((GirlEntity)t).h();
+            flag2 = ((GirlEntity)t).isTracked();
             flag = ((GirlEntity)t).ah() == 0;
         }
         catch (IllegalStateException illegalStateException) {
@@ -377,7 +377,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
         }
         this.ProcessedBones = this.a(flag2, flag);
         this.d();
-        BoneColorHelper.a(((GirlEntity)t).b().getModelRendererList(), this.a(), this);
+         BoneColorHelper.cacheBoneColors(((GirlEntity)t).b().getModelRendererList(), this.getFilteredBoneNames(), this);
         BoneColorHelper.setSkinColor(t, f);
         this.a(model, bufferBuilder, t, f2, f3, f4, f5, f);
         this.renderAfter(t, f, f2, f3, f4, f5);
@@ -451,11 +451,11 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
    }
 
    protected void renderNameLabel(double d, double d2, double d3) {
-      try {
-         if (this.RenderEntity.h()) {
-            return;
-         }
-      } catch (IllegalStateException error) {
+       try {
+          if (this.RenderEntity.isTracked()) {
+             return;
+          }
+       } catch (IllegalStateException error) {
          throw rethrow(error);
       }
 
@@ -771,21 +771,21 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
 
    void a(T t) {
       ArrayList<String> list = new ArrayList<>(GirlGeoModel.CamBones);
-      list.addAll(t.p);
+      list.addAll(t.AnchorNames);
 
       for (String string : list) {
          GirlEntity girl;
          String string2;
          boolean flag;
          label23: {
-            try {
-               girl = t;
-               string2 = string;
-               if (!t.h()) {
-                  flag = true;
-                  break label23;
-               }
-            } catch (IllegalStateException error) {
+             try {
+                girl = t;
+                string2 = string;
+                if (!t.isTracked()) {
+                   flag = true;
+                   break label23;
+                }
+             } catch (IllegalStateException error) {
                throw rethrow(error);
             }
 
@@ -795,7 +795,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
          MatrixStack matrixStack = girl.a(string2, flag);
          Matrix4f matrix4f = matrixStack.getModelMatrix();
          Vec3d vec3d = new Vec3d(-matrix4f.m03, matrix4f.m13, -matrix4f.m23);
-         t.a(string, vec3d);
+         t.setAnchorPoint(string, vec3d);
       }
    }
 
@@ -1397,7 +1397,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
         }
     }
 
-   protected ItemStack a() {
+   protected ItemStack getHeldItem() {
       String string = (String)this.RenderEntity.OpenProgress.get(GirlEntity.BlowjobStageKey);
       byte bv = -1;
 
@@ -1488,7 +1488,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
 
 
    protected void b(BufferBuilder bufferBuilder, GeoBone bone) {
-      ItemStack itemStack = this.a();
+      ItemStack itemStack = this.getHeldItem();
       if (itemStack == null) {
          return;
       }
@@ -1583,9 +1583,9 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
                             catch (IllegalStateException illegalStateException) {
                                 throw GeoGirlRenderer.rethrow(illegalStateException);
                             }
-                            this.a += 0.015f;
-                            inventoryGirl.getByPlayerUuid(Math.round(-this.a * 20.0f + (float)itemStack.getMaxItemUseDuration()));
-                            inventoryGirl.a(itemStack);
+                             this.a += 0.015f;
+                             inventoryGirl.getByPlayerUuid(Math.round(-this.a * 20.0f + (float)itemStack.getMaxItemUseDuration()));
+                             inventoryGirl.setActiveItemStack(itemStack);
                         }
                         catch (IllegalStateException illegalStateException) {
                             throw GeoGirlRenderer.rethrow(illegalStateException);

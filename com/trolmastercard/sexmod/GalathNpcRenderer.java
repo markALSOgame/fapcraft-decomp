@@ -148,7 +148,7 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
 
       try {
          if (vec3d != null) {
-            galath.a(vec3d);
+            galath.setTargetPosUnsafe(vec3d);
          }
       } catch (RuntimeException error) {
          throw rethrow(error);
@@ -161,7 +161,7 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
          this.c(galath);
          super.doRender(galath, d2, d3, d4, f, f2);
          renderGirl((GirlEntity)galath, f2);
-         if (galath.b()) {
+         if (galath.boolean_b()) {
             ManglelieNpcRenderer.renderGirl((GirlEntity)galath, f2);
          }
       } catch (RuntimeException error2) {
@@ -679,7 +679,7 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
          }
       }
 
-      if (((GalathNpc)this.RenderEntity).b()) {
+      if (((GalathNpc)this.RenderEntity).boolean_b()) {
          ManglelieNpcRenderer.applyModelPartColor(this.RenderEntity, string, bone, true);
       }
    }

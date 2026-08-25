@@ -202,8 +202,8 @@ implements GirlMaster {
         this.ThroneRot = f;
         this.ThronePos = vec3d;
         this.aX = true;
-        this.c(vec3d);
-        this.b(f);
+        this.setTargetPos(vec3d);
+        this.void_b(f);
         this.setCurrentAction(GirlAnimationState.SIT);
         this.setShouldBeAtTargetPos(true);
         this.setPosition(vec3d.x, vec3d.y, vec3d.z);
@@ -615,8 +615,8 @@ implements GirlMaster {
                                 throw GoblinNpc.rethrow(concurrentModificationException);
                             }
                         }
-                        this.c(entityPlayer.getPositionVector());
-                        this.b(entityPlayer.rotationYaw);
+                        this.setTargetPos(entityPlayer.getPositionVector());
+                        this.void_b(entityPlayer.rotationYaw);
                         this.setCurrentAction(GirlAnimationState.CATCH);
                         this.DataManager.set(h, (Object)"bj");
                         this.a(entityPlayer.getPersistentID());
@@ -714,10 +714,10 @@ implements GirlMaster {
         this.w();
         this.tickBreedingReward();
         this.dismissTamedGuards();
-        this.h();
-        this.o();
+        this.void_h();
+        this.void_o();
         this.tickStandUp();
-        this.n();
+        this.void_n();
     }
 
     public boolean canBeCollidedWith() {
@@ -774,7 +774,7 @@ implements GirlMaster {
         this.rotationPitch = (float)(-(Math.sin(d2 / d) * 57.29577951308232));
     }
 
-    void n() {
+    void void_n() {
         block31: {
             block30: {
                 block27: {
@@ -913,7 +913,7 @@ implements GirlMaster {
         return this.aJ;
     }
 
-    void o() {
+    void void_o() {
         try {
             if (this.getCurrentAction() != GirlAnimationState.THROWN) {
                 return;
@@ -944,7 +944,7 @@ implements GirlMaster {
         this.setCurrentAction(GirlAnimationState.STAND_UP);
     }
 
-    void h() {
+    void void_h() {
         try {
             if (!this.aX) {
                 return;
@@ -1072,10 +1072,10 @@ implements GirlMaster {
         Vec3d vec3d3 = this.ThronePos.add(GoblinNpc.rotateVec3dYaw(PartnerPosC, f));
         GoblinNpc goblin2 = (GoblinNpc)list.get(0);
         GoblinNpc goblin3 = (GoblinNpc)list.get(1);
-        goblin2.c(vec3d);
-        goblin3.c(vec3d2);
-        goblin2.b(0.0f);
-        goblin3.b(0.0f);
+        goblin2.setTargetPos(vec3d);
+        goblin3.setTargetPos(vec3d2);
+        goblin2.void_b(0.0f);
+        goblin3.void_b(0.0f);
         goblin2.setShouldBeAtTargetPos(true);
         goblin3.setShouldBeAtTargetPos(true);
         goblin2.setCurrentAction(GirlAnimationState.AWAIT_PICK_UP);
@@ -1215,8 +1215,8 @@ implements GirlMaster {
         catch (ConcurrentModificationException concurrentModificationException) {
             throw GoblinNpc.rethrow(concurrentModificationException);
         }
-        this.c(vec3d);
-        this.b(this.ThroneRot);
+        this.setTargetPos(vec3d);
+        this.void_b(this.ThroneRot);
         this.setCurrentAction(GirlAnimationState.BREEDING_INTRO_0);
         this.noClip = true;
         this.setNoGravity(true);
@@ -1227,16 +1227,16 @@ implements GirlMaster {
         List<GoblinNpc> list = this.getOrSpawnGuards();
         if (list.size() >= 1) {
             goblin = list.get(0);
-            goblin.c(vec3d);
-            goblin.b(this.ThroneRot);
+            goblin.setTargetPos(vec3d);
+            goblin.void_b(this.ThroneRot);
             goblin.setCurrentAction(GirlAnimationState.BREEDING_INTRO_1);
             goblin.noClip = true;
             goblin.setNoGravity(true);
         }
         if (list.size() >= 2) {
             goblin = list.get(1);
-            goblin.c(vec3d);
-            goblin.b(this.ThroneRot);
+            goblin.setTargetPos(vec3d);
+            goblin.void_b(this.ThroneRot);
             goblin.setCurrentAction(GirlAnimationState.BREEDING_INTRO_2);
             goblin.noClip = true;
             goblin.setNoGravity(true);
@@ -1337,23 +1337,23 @@ implements GirlMaster {
         NetworkHandler.channel.sendTo((IMessage)new PacketSetPlayerMovement(false), (EntityPlayerMP)entityPlayer);
         this.handleGirlUuidEvent(uUID);
         this.setCurrentAction(GirlAnimationState.JUMP_0);
-        this.c(vec3d);
-        this.b(f);
+        this.setTargetPos(vec3d);
+        this.void_b(f);
         this.setShouldBeAtTargetPos(true);
         List<GoblinNpc> list = this.getOrSpawnGuards();
         if (list.size() > 0) {
             GoblinNpc goblin = list.get(0);
             goblin.handleGirlUuidEvent(uUID);
             goblin.setCurrentAction(GirlAnimationState.JUMP_1);
-            goblin.c(vec3d);
-            goblin.b(f);
+            goblin.setTargetPos(vec3d);
+            goblin.void_b(f);
             goblin.setShouldBeAtTargetPos(true);
             if (list.size() > 1) {
                 GoblinNpc goblin2 = list.get(1);
                 goblin2.handleGirlUuidEvent(uUID);
                 goblin2.setCurrentAction(GirlAnimationState.JUMP_2);
-                goblin2.c(vec3d);
-                goblin2.b(f);
+                goblin2.setTargetPos(vec3d);
+                goblin2.void_b(f);
                 goblin2.setShouldBeAtTargetPos(true);
             }
         }
@@ -1447,7 +1447,7 @@ implements GirlMaster {
                 this.motionY = vec3d2.y;
                 this.motionZ = vec3d2.z;
                 if (!this.world.isRemote) {
-                    this.b(f2);
+                    this.void_b(f2);
                 }
             }
             catch (ConcurrentModificationException concurrentModificationException) {
@@ -1722,7 +1722,7 @@ implements GirlMaster {
         catch (ConcurrentModificationException concurrentModificationException) {
             throw GoblinNpc.rethrow(concurrentModificationException);
         }
-        Integer i = this.c(entityPlayer);
+        Integer i = this.java_lang_Integer_c(entityPlayer);
         try {
             if (i == null) {
                 return;
@@ -1760,7 +1760,7 @@ implements GirlMaster {
     }
 
     @Nullable
-    Integer findStealableSlot(EntityPlayer entityPlayer) {
+    Integer java_lang_Integer_c(EntityPlayer entityPlayer) {
         NonNullList nonNullList = entityPlayer.inventory.mainInventory;
         ArrayList<Integer> arrayList = new ArrayList<Integer>();
         for (int i = 0; i < nonNullList.size(); ++i) {
@@ -1810,8 +1810,8 @@ implements GirlMaster {
         catch (ConcurrentModificationException concurrentModificationException) {
             throw GoblinNpc.rethrow(concurrentModificationException);
         }
-        this.c(this.ThronePos);
-        this.b(this.ThroneRot);
+        this.setTargetPos(this.ThronePos);
+        this.void_b(this.ThroneRot);
         this.setShouldBeAtTargetPos(true);
         this.setNoGravity(true);
         this.setCurrentAction(GirlAnimationState.SIT);
@@ -1981,7 +1981,7 @@ implements GirlMaster {
     }
 
     @SideOnly(value=Side.CLIENT)
-    void v() {
+    void void_v() {
         try {
             if (this.aY == -1) {
                 return;
@@ -2244,8 +2244,8 @@ implements GirlMaster {
             throw GoblinNpc.rethrow(concurrentModificationException);
         }
         this.a((UUID)null);
-        this.c(entityPlayer.getPositionVector());
-        this.b(entityPlayer.rotationYaw);
+        this.setTargetPos(entityPlayer.getPositionVector());
+        this.void_b(entityPlayer.rotationYaw);
         this.setShouldBeAtTargetPos(true);
         this.noClip = true;
         this.setNoGravity(true);
@@ -2254,7 +2254,7 @@ implements GirlMaster {
         this.handleGirlUuidEvent(entityPlayer.getPersistentID());
     }
 
-    void z() {
+    void void_z() {
         EntityPlayer entityPlayer = this.world.getPlayerEntityByUUID(this.getSexPlayerUuid());
         try {
             if (entityPlayer == null) {
@@ -2265,8 +2265,8 @@ implements GirlMaster {
             throw GoblinNpc.rethrow(concurrentModificationException);
         }
         this.a((UUID)null);
-        this.c(entityPlayer.getPositionVector());
-        this.b(entityPlayer.rotationYaw + 180.0f);
+        this.setTargetPos(entityPlayer.getPositionVector());
+        this.void_b(entityPlayer.rotationYaw + 180.0f);
         this.setShouldBeAtTargetPos(true);
         this.noClip = true;
         this.setNoGravity(true);
@@ -2404,7 +2404,7 @@ implements GirlMaster {
         return flag;
     }
 
-    void y() {
+    void void_y() {
         try {
             if (this.getCurrentAction() != GirlAnimationState.SHOULDER_IDLE) {
                 return;
@@ -2436,7 +2436,6 @@ implements GirlMaster {
         this.setNoGravity(true);
     }
 
-    @Override
     @Override
     protected GirlAnimationState nextAnimationState(GirlAnimationState girlAnimationState) {
         switch (girlAnimationState) {
@@ -2728,28 +2727,28 @@ implements GirlMaster {
         AnimationController.ISoundListener iSoundListener = arg1 -> {
             switch (arg1.sound) {
                 case "catchEh": {
-                    this.a("ehh..");
-                    this.a(ModSounds.MISC_PLOB, new int[0]);
+                    this.void_a("ehh..");
+                    this.playRandomSound(ModSounds.MISC_PLOB, new int[0]);
                     break;
                 }
                 case "catchAkward": {
-                    this.a("awkward..");
-                    this.a(ModSounds.MISC_PLOB, new int[0]);
+                    this.void_a("awkward..");
+                    this.playRandomSound(ModSounds.MISC_PLOB, new int[0]);
                     break;
                 }
                 case "catchWell": {
-                    this.a("well...");
-                    this.a(ModSounds.MISC_PLOB, new int[0]);
+                    this.void_a("well...");
+                    this.playRandomSound(ModSounds.MISC_PLOB, new int[0]);
                     break;
                 }
                 case "catchRather": {
-                    this.a("would you rather have this stupid... thing?");
-                    this.a(ModSounds.MISC_PLOB, new int[0]);
+                    this.void_a("would you rather have this stupid... thing?");
+                    this.playRandomSound(ModSounds.MISC_PLOB, new int[0]);
                     break;
                 }
                 case "catchMe": {
-                    this.a("...or use me?~");
-                    this.a(ModSounds.MISC_PLOB, new int[0]);
+                    this.void_a("...or use me?~");
+                    this.playRandomSound(ModSounds.MISC_PLOB, new int[0]);
                     break;
                 }
                 case "catchDone": {
@@ -2765,18 +2764,18 @@ implements GirlMaster {
                     break;
                 }
                 case "paizuriChoice": {
-                    this.a("good choice!~");
-                    this.a(ModSounds.MISC_PLOB, new int[0]);
+                    this.void_a("good choice!~");
+                    this.playRandomSound(ModSounds.MISC_PLOB, new int[0]);
                     break;
                 }
                 case "paizuriBoth": {
-                    this.a("...for both of us!");
-                    this.a(ModSounds.MISC_PLOB, new int[0]);
+                    this.void_a("...for both of us!");
+                    this.playRandomSound(ModSounds.MISC_PLOB, new int[0]);
                     break;
                 }
                 case "paizruiUse": {
-                    this.a("now use me like a fuck toy!~");
-                    this.a(ModSounds.MISC_PLOB, new int[0]);
+                    this.void_a("now use me like a fuck toy!~");
+                    this.playRandomSound(ModSounds.MISC_PLOB, new int[0]);
                     break;
                 }
                 case "paizuriSwitch": {
@@ -2785,11 +2784,11 @@ implements GirlMaster {
                     break;
                 }
                 case "touch": {
-                    this.a(ModSounds.MISC_TOUCH, 3.0f);
+                    this.playRandomSoundWithChance(ModSounds.MISC_TOUCH, 3.0f);
                     break;
                 }
                 case "pound": {
-                    this.a(ModSounds.MISC_POUNDING, new int[0]);
+                    this.playRandomSound(ModSounds.MISC_POUNDING, new int[0]);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.04f);
                     break;
@@ -2815,7 +2814,7 @@ implements GirlMaster {
                     break;
                 }
                 case "smallPound": {
-                    this.a(ModSounds.MISC_POUNDING, 0.25f);
+                    this.playRandomSoundWithChance(ModSounds.MISC_POUNDING, 0.25f);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.02f);
                     break;
@@ -2837,7 +2836,7 @@ implements GirlMaster {
                     break;
                 }
                 case "cumSound": {
-                    this.a(ModSounds.MISC_SMALLINSERTS, 3.0f);
+                    this.playRandomSoundWithChance(ModSounds.MISC_SMALLINSERTS, 3.0f);
                     break;
                 }
                 case "jumpCam": {
@@ -2857,18 +2856,18 @@ implements GirlMaster {
                         minecraft.player.rotationYawHead = minecraft.player.rotationYaw;
                         minecraft.gameSettings.thirdPersonView = 0;
                     }
-                    this.a("hmm...");
-                    this.a(ModSounds.MISC_PLOB, new int[0]);
+                    this.void_a("hmm...");
+                    this.playRandomSound(ModSounds.MISC_PLOB, new int[0]);
                     break;
                 }
                 case "breedingFound": {
-                    this.a("guess we found a worthy breeding partner!");
-                    this.a(ModSounds.MISC_PLOB, new int[0]);
+                    this.void_a("guess we found a worthy breeding partner!");
+                    this.playRandomSound(ModSounds.MISC_PLOB, new int[0]);
                     break;
                 }
                 case "breedingEnough": {
-                    this.a("Eh.. go pin him down, before he runs off!");
-                    this.a(ModSounds.MISC_PLOB, new int[0]);
+                    this.void_a("Eh.. go pin him down, before he runs off!");
+                    this.playRandomSound(ModSounds.MISC_PLOB, new int[0]);
                     break;
                 }
                 case "breedingCam2": {
@@ -2908,7 +2907,7 @@ implements GirlMaster {
                     break;
                 }
                 case "cum": {
-                    this.a(ModSounds.MISC_SMALLINSERTS, 2.0f);
+                    this.playRandomSoundWithChance(ModSounds.MISC_SMALLINSERTS, 2.0f);
                     break;
                 }
                 case "breeding_intro_3Done": {

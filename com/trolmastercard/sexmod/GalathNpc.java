@@ -428,7 +428,7 @@ LeftBallActiveKey {
         return 1.9f;
     }
 
-    public boolean k() {
+    public boolean maybeMountedByMangFn() {
         return this.J();
     }
 
@@ -438,7 +438,7 @@ LeftBallActiveKey {
 
     protected void handleJumpWater() {
         try {
-            if (this.k()) {
+            if (this.maybeMountedByMangFn()) {
                 super.handleJumpWater();
             }
         }
@@ -449,7 +449,7 @@ LeftBallActiveKey {
 
     protected float getWaterSlowDown() {
         try {
-            if (this.k()) {
+            if (this.maybeMountedByMangFn()) {
                 return super.getWaterSlowDown();
             }
         }
@@ -461,7 +461,7 @@ LeftBallActiveKey {
 
     public boolean isInWater() {
         try {
-            if (this.k()) {
+            if (this.maybeMountedByMangFn()) {
                 return super.isInWater();
             }
         }
@@ -473,7 +473,7 @@ LeftBallActiveKey {
 
     public boolean handleWaterMovement() {
         try {
-            if (this.k()) {
+            if (this.maybeMountedByMangFn()) {
                 return super.handleWaterMovement();
             }
         }
@@ -585,7 +585,7 @@ LeftBallActiveKey {
             throw GalathNpc.rethrow(concurrentModificationException);
         }
         try {
-            girl = flag ? GalathNpc.setChildMangleUuid(uUID) : GalathNpc.getClientSideByUuid(uUID);
+            girl = flag ? GirlEntity.getServerSideByUuid(uUID) : GalathNpc.getClientSideByUuid(uUID);
         }
         catch (ConcurrentModificationException concurrentModificationException) {
             throw GalathNpc.rethrow(concurrentModificationException);
@@ -612,7 +612,7 @@ LeftBallActiveKey {
         catch (ConcurrentModificationException concurrentModificationException) {
             throw GalathNpc.rethrow(concurrentModificationException);
         }
-        return ((GalathNpc)girl).a(flag);
+        return ((GalathNpc)girl).getChildMangle(flag);
     }
 
     public void setChildMangleUuid(@Nullable UUID uUID) {
@@ -692,7 +692,7 @@ LeftBallActiveKey {
     }
 
     @Override
-    public boolean b() {
+    public boolean boolean_b() {
         try {
             switch (this.getCurrentAction()) {
                 default: {
@@ -725,17 +725,17 @@ LeftBallActiveKey {
                 boolean flag;
                 block8: {
                     block7: {
-                        flag = this.k();
+                        flag = this.maybeMountedByMangFn();
                         try {
                             if (!flag) break block7;
-                            this.E();
+                            this.void_E();
                             break block8;
                         }
                         catch (ConcurrentModificationException concurrentModificationException) {
                             throw GalathNpc.rethrow(concurrentModificationException);
                         }
                     }
-                    this.getDisplayName();
+                    this.void_c();
                 }
                 try {
                     this.getPlayerFrontPos();
@@ -748,11 +748,11 @@ LeftBallActiveKey {
                     throw GalathNpc.rethrow(concurrentModificationException);
                 }
             }
-            this.R();
+            this.void_R();
         }
         try {
             if (this.world.isRemote) {
-                this.X();
+                this.void_X();
             }
         }
         catch (ConcurrentModificationException concurrentModificationException) {
@@ -766,7 +766,7 @@ LeftBallActiveKey {
     }
 
     @SideOnly(value=Side.CLIENT)
-    void X() {
+    void void_X() {
         block11: {
             try {
                 if (this.getCurrentAction() != GirlAnimationState.GIVE_COIN) {
@@ -808,7 +808,7 @@ LeftBallActiveKey {
         }
     }
 
-    void E() {
+    void void_E() {
         boolean flag;
         GalathNpc f_2;
         try {
@@ -853,8 +853,8 @@ LeftBallActiveKey {
             this.aj();
             this.aq();
             this.aw();
-            this.C();
-            this.Y();
+            this.void_C();
+            this.Y_();
             this.getTargetPos();
             if (this.getTargetEntity() == null) {
                 this.ap = false;
@@ -865,7 +865,7 @@ LeftBallActiveKey {
         }
     }
 
-    void o() {
+    void void_o() {
         try {
             if (this.world.isRemote) {
                 return;
@@ -906,7 +906,7 @@ LeftBallActiveKey {
         NetworkHandler.channel.sendTo((IMessage)new PacketSetPlayerMovement(true), (EntityPlayerMP)entityPlayer);
     }
 
-    void Y() {
+    void Y_() {
         try {
             if (this.world.isRemote) {
                 return;
@@ -1081,24 +1081,24 @@ LeftBallActiveKey {
         this.al *= 0.94f;
     }
 
-    void c() {
+    void void_c() {
         this.isOwnedByLocalPlayer();
         this.getRenderPosition();
         this.getOutfitIndex();
     }
 
-    void R() {
+    void void_R() {
         try {
             GalathNpc.rotateToTarget(this, 0.0f);
             this.isTracked();
             this.aj();
             this.getSelf();
-            this.L();
-            this.F();
-            this.C();
-            this.u();
+            this.L_();
+            this.void_F();
+            this.void_C();
+            this.u_();
             if (this.world.isRemote) {
-                this.H();
+                this.void_H();
             }
         }
         catch (ConcurrentModificationException concurrentModificationException) {
@@ -1106,7 +1106,7 @@ LeftBallActiveKey {
         }
     }
 
-    void u() {
+    void u_() {
         try {
             if (this.world.isRemote) {
                 return;
@@ -1133,7 +1133,7 @@ LeftBallActiveKey {
         }
     }
 
-    void C() {
+    void void_C() {
         if (((Boolean)this.DataManager.get(IsParalyzedKey)).booleanValue()) {
             this.bb = true;
             return;
@@ -1170,7 +1170,7 @@ LeftBallActiveKey {
         return this.U;
     }
 
-    void F() {
+    void void_F() {
         try {
             if (!this.world.isRemote) {
                 return;
@@ -1215,7 +1215,7 @@ LeftBallActiveKey {
         f_2.setNoGravity(flag);
     }
 
-    void L() {
+    void L_() {
         try {
             if (this.getCurrentAction() != GirlAnimationState.ATTACK_SWORD) {
                 this.ap = false;
@@ -1402,17 +1402,17 @@ LeftBallActiveKey {
     }
 
     @Override
-    public String ab() {
+    public String getChatName() {
         EntityPlayer entityPlayer = this.getSexPlayer();
         try {
             if (entityPlayer == null) {
-                return super.getDisplayName();
+                return super.getChatName();
             }
         }
         catch (ConcurrentModificationException concurrentModificationException) {
             throw GalathNpc.rethrow(concurrentModificationException);
         }
-        return String.format("%s %s[%s]", super.getDisplayName(), TextFormatting.DARK_PURPLE, entityPlayer.getName());
+        return String.format("%s %s[%s]", super.getChatName(), TextFormatting.DARK_PURPLE, entityPlayer.getName());
     }
 
     void h() {
@@ -1484,7 +1484,7 @@ LeftBallActiveKey {
     }
 
     @Override
-    public Vec4d d() {
+    public Vec4d Vec4d_d() {
         return new Vec4d(this.a9, this.bg, this.b4, this.a_);
     }
 
@@ -1558,9 +1558,9 @@ LeftBallActiveKey {
                 try {
                     this.P();
                     super.updateAITasks();
-                    this.WatchPlayerAI.Active = this.resetMasterAndWalkSpeed();
-                    if (!this.k()) break block5;
-                    this.getSexPlayerUuid();
+                    this.WatchPlayerAI.Active = this.x();
+                    if (!this.maybeMountedByMangFn()) break block5;
+                    this.ae();
                     break block6;
                 }
                 catch (ConcurrentModificationException concurrentModificationException) {
@@ -1571,7 +1571,7 @@ LeftBallActiveKey {
         }
     }
 
-    void P() {
+    void void_P() {
         try {
             if (this.bK) {
                 return;
@@ -1682,7 +1682,7 @@ LeftBallActiveKey {
                     throw GalathNpc.rethrow(concurrentModificationException);
                 }
                 try {
-                    this.m();
+                    this.void_m();
                     if (this.getChildMangleUuid() != null) break block8;
                     this.aJ();
                     break block9;
@@ -1695,7 +1695,7 @@ LeftBallActiveKey {
         }
     }
 
-    void m() {
+    void void_m() {
         try {
             if (!GalathOwnershipData.isOwnerOnline(GalathOwnershipData.getGalathOwnerUuidByEntity(this))) {
                 return;
@@ -1704,7 +1704,7 @@ LeftBallActiveKey {
         catch (ConcurrentModificationException concurrentModificationException) {
             throw GalathNpc.rethrow(concurrentModificationException);
         }
-        boolean flag = this.getScale();
+        boolean flag = this.boolean_v();
         try {
             if (flag) {
                 Main.LOGGER.warn("mommy thinks she got no daughter but she actually does have one. Failsafe called. Hopefully its fixed");
@@ -1717,7 +1717,7 @@ LeftBallActiveKey {
 
     void am() {
         try {
-            if (this.ai()) {
+            if (this.boolean_ai()) {
                 return;
             }
         }
@@ -1728,7 +1728,7 @@ LeftBallActiveKey {
         this.ao();
     }
 
-    boolean ai() {
+    boolean boolean_ai() {
         double d;
         boolean flag;
         PathNavigate pathNavigate;
@@ -2167,7 +2167,7 @@ LeftBallActiveKey {
                 try {
                     if (!(Math.sqrt(this.bG.distanceSq((Vec3i)this.getPosition())) > 2.0)) break block38;
                     this.getNavigator().tryMoveToXYZ((double)this.bG.getX(), (double)this.bG.getY(), (double)this.bG.getZ(), (double)0.35f);
-                    this.k();
+                    this.maybeMountedByMangFn();
                     break block39;
                 }
                 catch (ConcurrentModificationException concurrentModificationException) {
@@ -2200,12 +2200,12 @@ LeftBallActiveKey {
         return entityPlayer.getPosition();
     }
 
-    double i() {
+    double double_i() {
         return Math.sqrt(1800.0);
     }
 
     @Nullable
-    public EntityPlayer ab() {
+    public EntityPlayer EntityPlayer_ab() {
         List list = this.getPassengers();
         try {
             if (list.isEmpty()) {
@@ -2305,12 +2305,12 @@ LeftBallActiveKey {
         }
         this.void_Q();
         this.void_I();
-        this.D();
+        this.D_();
         this.getWalkState();
-        this.J();
-        this.T();
-        this.S();
-        this.b();
+        this.void_J();
+        this.void_T();
+        this.void_S();
+        this.void_b();
         this.getAllGirls();
         this.aG();
         this.aA();
@@ -2321,7 +2321,7 @@ LeftBallActiveKey {
 
     void void_Q() {
         try {
-            if (!this.k()) {
+            if (!this.maybeMountedByMangFn()) {
                 return;
             }
         }
@@ -2495,7 +2495,7 @@ LeftBallActiveKey {
                         }
                         try {
                             try {
-                                if (!this.k() || girlAnimationState2 != GirlAnimationState.NULL) break block51;
+                                if (!this.maybeMountedByMangFn() || girlAnimationState2 != GirlAnimationState.NULL) break block51;
                             }
                             catch (ConcurrentModificationException concurrentModificationException) {
                                 throw GalathNpc.rethrow(concurrentModificationException);
@@ -2610,7 +2610,7 @@ LeftBallActiveKey {
     }
 
     @SideOnly(value=Side.CLIENT)
-    void H() {
+    void void_H() {
         float f;
         float f2;
         GirlAnimationState girlAnimationState;
@@ -2641,7 +2641,7 @@ LeftBallActiveKey {
             throw GalathNpc.rethrow(concurrentModificationException);
         }
         try {
-            f2 = this.k() ? 0.0f : this.I().floatValue() + 180.0f;
+            f2 = this.maybeMountedByMangFn() ? 0.0f : this.I().floatValue() + 180.0f;
         }
         catch (ConcurrentModificationException concurrentModificationException) {
             throw GalathNpc.rethrow(concurrentModificationException);
@@ -2669,7 +2669,7 @@ LeftBallActiveKey {
 
     @Override
     @SideOnly(value=Side.CLIENT)
-    public float v() {
+    public float float_v() {
         Minecraft minecraft = Minecraft.getMinecraft();
         if (minecraft.gameSettings.thirdPersonView != 0) {
             return 1.0f;
@@ -2692,7 +2692,7 @@ LeftBallActiveKey {
         return false;
     }
 
-    public boolean v() {
+    public boolean boolean_v() {
         try {
             if (this.getChildMangle(true) != null) {
                 return false;
@@ -2713,7 +2713,7 @@ LeftBallActiveKey {
 
     void Z() {
         try {
-            if (this.k()) {
+            if (this.maybeMountedByMangFn()) {
                 return;
             }
         }
@@ -2929,7 +2929,7 @@ LeftBallActiveKey {
         this.bY = 0;
     }
 
-    void b() {
+    void void_b() {
         try {
             if (this.getCurrentAction() != GirlAnimationState.KNOCK_OUT_GROUND) {
                 return;
@@ -2961,7 +2961,7 @@ LeftBallActiveKey {
         this.b3 = 0;
     }
 
-    void S() {
+    void void_S() {
         block7: {
             GirlAnimationState girlAnimationState = this.getCurrentAction();
             try {
@@ -2989,7 +2989,7 @@ LeftBallActiveKey {
         }
     }
 
-    void T() {
+    void void_T() {
         try {
             if (this.getCurrentAction() != GirlAnimationState.KNOCK_OUT_FLY) {
                 return;
@@ -3036,7 +3036,7 @@ LeftBallActiveKey {
         this.setCurrentAction(GirlAnimationState.KNOCK_OUT_GROUND);
     }
 
-    void J() {
+    void void_J() {
         boolean flag;
         try {
             if (this.CurrentDeathEvent != DeadClass.CHANGE_POSITION) {
@@ -3077,7 +3077,7 @@ LeftBallActiveKey {
         this.CurrentDeathEvent.apply(this);
     }
 
-    void D() {
+    void D_() {
         try {
             if (this.getTargetEntity() == null) {
                 this.aH();
@@ -3161,7 +3161,7 @@ LeftBallActiveKey {
         Object object;
         float f;
         try {
-            if (this.getGirlUuid()) {
+            if (this.f()) {
                 return;
             }
         }
@@ -3176,7 +3176,7 @@ LeftBallActiveKey {
         catch (ConcurrentModificationException concurrentModificationException) {
             throw GalathNpc.rethrow(concurrentModificationException);
         }
-        boolean flag = this.k();
+        boolean flag = this.maybeMountedByMangFn();
         try {
             f = flag ? 7.0f : 20.0f;
         }
@@ -3351,7 +3351,7 @@ LeftBallActiveKey {
         }
         float f2 = this.getDistance((Entity)entityLivingBase);
         try {
-            f = this.k() ? 16.0f : 30.0f;
+            f = this.maybeMountedByMangFn() ? 16.0f : 30.0f;
         }
         catch (ConcurrentModificationException concurrentModificationException) {
             throw GalathNpc.rethrow(concurrentModificationException);
@@ -3428,7 +3428,7 @@ LeftBallActiveKey {
 
     protected boolean processInteract(EntityPlayer entityPlayer, EnumHand enumHand) {
         try {
-            if (this.k()) {
+            if (this.maybeMountedByMangFn()) {
                 return this.a(entityPlayer, enumHand);
             }
         }
@@ -3469,7 +3469,7 @@ LeftBallActiveKey {
                 throw GalathNpc.rethrow(concurrentModificationException);
             }
         }
-        this.a(ModSounds.GIRLS_GALATH_HUH, new int[0]);
+        this.playRandomSound(ModSounds.GIRLS_GALATH_HUH);
         String[] stringArray = !entityPlayer.onGround ? new String[]{"ride"} : (this.getChildMangle(false) == null ? new String[]{"cowgirl", "anal", "ride"} : new String[]{"cowgirl", "anal", "threesome", "ride"});
         try {
             if (this.world.isRemote) {
@@ -3703,7 +3703,7 @@ LeftBallActiveKey {
         catch (ConcurrentModificationException concurrentModificationException) {
             throw GalathNpc.rethrow(concurrentModificationException);
         }
-        this.a(ModSounds.GIRLS_GALATH_UUH, new int[0]);
+        this.playRandomSound(ModSounds.GIRLS_GALATH_UUH);
         this.bc = l;
     }
 
@@ -4118,7 +4118,7 @@ LeftBallActiveKey {
         return false;
     }
 
-    public float b(float f) {
+    public float float_b(float f) {
         GirlAnimationState girlAnimationState;
         block12: {
             block11: {
@@ -4336,12 +4336,12 @@ LeftBallActiveKey {
         this.ActionController.registerSoundListener(arg1 -> {
             switch (arg1.sound) {
                 case "goodTiming": {
-                    this.a(ModSounds.GIRLS_GALATH_DIALOG[4]);
+                    this.playSoundEvent(ModSounds.GIRLS_GALATH_DIALOG[4]);
                     this.a("Good timing boy~");
                     break;
                 }
                 case "huh": {
-                    this.a(ModSounds.GIRLS_GALATH_HUH, new int[0]);
+                    this.playRandomSound(ModSounds.GIRLS_GALATH_HUH);
                     break;
                 }
                 case "giggle": {
@@ -4350,26 +4350,26 @@ LeftBallActiveKey {
                     break;
                 }
                 case "dialog1": {
-                    this.a(ModSounds.GIRLS_GALATH_DIALOG[1]);
+                    this.playSoundEvent(ModSounds.GIRLS_GALATH_DIALOG[1]);
                     break;
                 }
                 case "moan": {
-                    this.a(ModSounds.GIRLS_GALATH_MOAN, new int[0]);
+                    this.playRandomSound(ModSounds.GIRLS_GALATH_MOAN);
                     break;
                 }
                 case "breath": {
-                    this.a(ModSounds.GIRLS_GALATH_BREATHING, new int[0]);
+                    this.playRandomSound(ModSounds.GIRLS_GALATH_BREATHING);
                     break;
                 }
                 case "dialog5": {
-                    this.a(ModSounds.GIRLS_GALATH_DIALOG[5]);
+                    this.playSoundEvent(ModSounds.GIRLS_GALATH_DIALOG[5]);
                     break;
                 }
                 case "switchmoan": {
                     if (this.flag2) {
-                        this.a(ModSounds.GIRLS_GALATH_BREATHING, new int[0]);
+                        this.playRandomSound(ModSounds.GIRLS_GALATH_BREATHING);
                     } else {
-                        this.a(this.getRNG().nextBoolean() ? ModSounds.GIRLS_GALATH_MOAN : ModSounds.GIRLS_GALATH_AHH, new int[0]);
+                        this.playRandomSound(this.getRNG().nextBoolean() ? ModSounds.GIRLS_GALATH_MOAN : ModSounds.GIRLS_GALATH_AHH);
                     }
                     this.flag2 = !this.flag2;
                     break;
@@ -4380,27 +4380,27 @@ LeftBallActiveKey {
                     break;
                 }
                 case "strongcharge": {
-                    this.a(ModSounds.GIRLS_GALATH_STRONGCHARGE, new int[0]);
+                    this.playRandomSound(ModSounds.GIRLS_GALATH_STRONGCHARGE);
                     break;
                 }
                 case "hmph": {
-                    this.a(ModSounds.GIRLS_GALATH_HMPH, new int[0]);
+                    this.playRandomSound(ModSounds.GIRLS_GALATH_HMPH);
                     break;
                 }
                 case "cum": {
-                    this.a(ModSounds.MISC_SMALLINSERTS, 2.0f);
+                    this.playRandomSoundWithChance(ModSounds.MISC_SMALLINSERTS, 2.0f);
                     break;
                 }
                 case "giggle0": {
-                    this.a(ModSounds.GIRLS_GALATH_GIGGLE[0]);
+                    this.playSoundEvent(ModSounds.GIRLS_GALATH_GIGGLE[0]);
                     break;
                 }
                 case "orgasm": {
-                    this.a(ModSounds.GIRLS_GALATH_ORGASM, new int[0]);
+                    this.playRandomSound(ModSounds.GIRLS_GALATH_ORGASM);
                     break;
                 }
                 case "pound": {
-                    this.a(ModSounds.MISC_POUNDING, new int[0]);
+                    this.playRandomSound(ModSounds.MISC_POUNDING);
                     break;
                 }
                 case "flap": {
@@ -4449,14 +4449,14 @@ LeftBallActiveKey {
                     do {
                         this.i7 = random.nextInt(3);
                     } while (this.i7 == i);
-                    if (this.J() || !this.isOwnedByLocalPlayer() || !(0.0f >= (entityPlayerSP = Minecraft.getMinecraft().player).getHealth() - 1.0f)) break;
+                    if (this.maybeMountedByMangFn() || !this.isOwnedByLocalPlayer() || !(0.0f >= (entityPlayerSP = Minecraft.getMinecraft().player).getHealth() - 1.0f)) break;
                     this.setCurrentAction(GirlAnimationState.RAPE_CUM);
                     break;
                 }
                 case "poundRape": {
-                    this.a(ModSounds.MISC_POUNDING, new int[0]);
+                    this.playRandomSound(ModSounds.MISC_POUNDING);
                     if (!this.isOwnedByLocalPlayer()) break;
-                    if (this.J()) {
+                    if (this.maybeMountedByMangFn()) {
                         GuiHud.addProgress(0.03f);
                         break;
                     }
@@ -4464,13 +4464,13 @@ LeftBallActiveKey {
                     break;
                 }
                 case "rapeHurt": {
-                    if (this.J() || !this.isOwnedByLocalPlayer()) break;
+                    if (this.maybeMountedByMangFn() || !this.isOwnedByLocalPlayer()) break;
                     NetworkHandler.channel.sendToServer((IMessage)new PacketGalathRapePounce(false));
                     break;
                 }
                 case "enableRapeUI": {
                     if (!this.isOwnedByLocalPlayer()) break;
-                    if (this.J()) {
+                    if (this.maybeMountedByMangFn()) {
                         GuiHud.showHudWithForce(false);
                         break;
                     }
@@ -4478,7 +4478,7 @@ LeftBallActiveKey {
                     break;
                 }
                 case "removeUI": {
-                    if (!this.isOwnedByLocalPlayer() || this.J()) break;
+                    if (!this.isOwnedByLocalPlayer() || this.maybeMountedByMangFn()) break;
                     GuiEscapeMinigame.d();
                     break;
                 }
@@ -4552,11 +4552,11 @@ LeftBallActiveKey {
                             return vec3d.subtract(vec3d2).normalize();
                         }, girl -> girl.getModelBone("futaCockTip").add(girl.getTargetPos()), (GirlEntity)this, 0.3f, 0.3f));
                     }
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_SMALLINSERTS), 3.0f);
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.MISC_SMALLINSERTS), 3.0f);
                     break;
                 }
                 case "blackScreenTamed": {
-                    if (!this.J()) break;
+                    if (!this.maybeMountedByMangFn()) break;
                 }
                 case "blackScreen": {
                     if (!this.isOwnedByLocalPlayer()) break;
@@ -4572,7 +4572,7 @@ LeftBallActiveKey {
                 case "flapControlled": {
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiGalathFlight.startFlight();
-                    this.a(ModSounds.MISC_FLAP, new int[0]);
+                    this.playRandomSound(ModSounds.MISC_FLAP);
                     Minecraft minecraft = Minecraft.getMinecraft();
                     EntityPlayerSP entityPlayerSP = minecraft.player;
                     MovementInput movementInput = entityPlayerSP.movementInput;
@@ -4583,23 +4583,23 @@ LeftBallActiveKey {
                     break;
                 }
                 case "clap": {
-                    this.a(ModSounds.MISC_CLAP, new int[0]);
+                    this.playRandomSound(ModSounds.MISC_CLAP);
                     break;
                 }
                 case "energysound": {
-                    this.a(ModSounds.MISC_BEEW[1]);
+                    this.playSoundEvent(ModSounds.MISC_BEEW[1]);
                     break;
                 }
                 case "energy2": {
-                    this.a(ModSounds.MISC_BEEW[2]);
+                    this.playSoundEvent(ModSounds.MISC_BEEW[2]);
                     break;
                 }
                 case "tpSound": {
-                    this.a(ModSounds.MISC_WEOWEO[2]);
+                    this.playSoundEvent(ModSounds.MISC_WEOWEO[2]);
                     break;
                 }
                 case "lick": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_LIPSOUND));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_LIPSOUND));
                     break;
                 }
                 case "setCoinLook": {
@@ -4851,7 +4851,7 @@ LeftBallActiveKey {
                         throw GalathNpc.EventHandler.rethrow(concurrentModificationException);
                     }
                     try {
-                        if (f_2.k()) break block14;
+                        if (f_2.maybeMountedByMangFn()) break block14;
                         f_2.a((Entity)f_2.getCombatTracker().getFighter());
                         break block15;
                     }

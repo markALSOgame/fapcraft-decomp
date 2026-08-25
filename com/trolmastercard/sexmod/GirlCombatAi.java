@@ -116,7 +116,7 @@ public class GirlCombatAi extends GirlAiBase {
     }
 
    @Override
-   protected void executeState(GirlAiBase.State state) {
+   protected void executeState(GirlAiBase.AiState state) {
       switch (state) {
          case ATTACK: {
             this.Girl.getLookHelper().setLookPositionWithEntity((Entity)this.Target, 30.0f, 30.0f);
@@ -205,7 +205,7 @@ public class GirlCombatAi extends GirlAiBase {
 
    @Override
 
-   protected GirlAiBase.State getState() {
+   protected GirlAiBase.AiState getState() {
         boolean flag;
         block62: {
             block60: {
@@ -218,9 +218,9 @@ public class GirlCombatAi extends GirlAiBase {
                             try {
                                 try {
                                     --this.ForcedAttackTicks;
-                                    if (this.Girl.IsDowned) return GirlAiBase.State.DOWNED;
+                                    if (this.Girl.IsDowned) return GirlAiBase.AiState.DOWNED;
                                     if (this.Girl.getSexPlayerUuid() != null) {
-                                        return GirlAiBase.State.DOWNED;
+                                        return GirlAiBase.AiState.DOWNED;
                                     }
                                 }
                                 catch (RuntimeException runtimeException) {
@@ -254,7 +254,7 @@ public class GirlCombatAi extends GirlAiBase {
                                         }
                                     }
                                     this.RideMount = entity;
-                                    return GirlAiBase.State.RIDE;
+                                    return GirlAiBase.AiState.RIDE;
                                 }
                                 catch (RuntimeException runtimeException) {
                                     throw GirlCombatAi.rethrow(runtimeException);
@@ -270,7 +270,7 @@ public class GirlCombatAi extends GirlAiBase {
                                             catch (RuntimeException runtimeException) {
                                                 throw GirlCombatAi.rethrow(runtimeException);
                                             }
-                                            if (this.State != GirlAiBase.State.RIDE) break block57;
+                                            if (this.State != GirlAiBase.AiState.RIDE) break block57;
                                         }
                                         catch (RuntimeException runtimeException) {
                                             throw GirlCombatAi.rethrow(runtimeException);
@@ -292,7 +292,7 @@ public class GirlCombatAi extends GirlAiBase {
                         }
                         try {
                             if (this.isValidTarget(this.Target)) {
-                                return GirlAiBase.State.ATTACK;
+                                return GirlAiBase.AiState.ATTACK;
                             }
                         }
                         catch (RuntimeException runtimeException) {
@@ -304,7 +304,7 @@ public class GirlCombatAi extends GirlAiBase {
                             try {
                                 if (this.isValidTarget((EntityLivingBase)entity)) {
                                     this.Target = entity;
-                                    return GirlAiBase.State.ATTACK;
+                                    return GirlAiBase.AiState.ATTACK;
                                 }
                             }
                             catch (RuntimeException runtimeException) {
@@ -320,20 +320,20 @@ public class GirlCombatAi extends GirlAiBase {
                                 throw GirlCombatAi.rethrow(runtimeException);
                             }
                             this.Target = entity;
-                            return GirlAiBase.State.ATTACK;
+                            return GirlAiBase.AiState.ATTACK;
                         }
                         catch (RuntimeException runtimeException) {
                             throw GirlCombatAi.rethrow(runtimeException);
                         }
                     }
-                    if (this.State != GirlAiBase.State.FOLLOW) {
+                    if (this.State != GirlAiBase.AiState.FOLLOW) {
                         damageSource = this.Player.getLastDamageSource();
                         if (damageSource != null) {
                             entity = (EntityLivingBase)damageSource.getTrueSource();
                             try {
                                 if (this.isValidTarget((EntityLivingBase)entity)) {
                                     this.Target = entity;
-                                    return GirlAiBase.State.ATTACK;
+                                    return GirlAiBase.AiState.ATTACK;
                                 }
                             }
                             catch (RuntimeException runtimeException) {
@@ -372,7 +372,7 @@ public class GirlCombatAi extends GirlAiBase {
                                     throw GirlCombatAi.rethrow(runtimeException);
                                 }
                                 this.Target = entityMob3;
-                                return GirlAiBase.State.ATTACK;
+                                return GirlAiBase.AiState.ATTACK;
                             }
                             catch (RuntimeException runtimeException) {
                                 throw GirlCombatAi.rethrow(runtimeException);
@@ -389,7 +389,7 @@ public class GirlCombatAi extends GirlAiBase {
                     flag = flag2;
                     try {
                         try {
-                            if (flag || this.State != GirlAiBase.State.FOLLOW) break block60;
+                            if (flag || this.State != GirlAiBase.AiState.FOLLOW) break block60;
                         }
                         catch (RuntimeException runtimeException) {
                             throw GirlCombatAi.rethrow(runtimeException);
@@ -407,7 +407,7 @@ public class GirlCombatAi extends GirlAiBase {
             }
             try {
                 try {
-                    if (!flag || this.State != GirlAiBase.State.ATTACK) break block62;
+                    if (!flag || this.State != GirlAiBase.AiState.ATTACK) break block62;
                 }
                 catch (RuntimeException runtimeException) {
                     throw GirlCombatAi.rethrow(runtimeException);
@@ -419,8 +419,8 @@ public class GirlCombatAi extends GirlAiBase {
             }
         }
         try {
-            if (!flag) return GirlAiBase.State.IDLE;
-            return GirlAiBase.State.FOLLOW;
+            if (!flag) return GirlAiBase.AiState.IDLE;
+            return GirlAiBase.AiState.FOLLOW;
         }
         catch (RuntimeException runtimeException) {
             throw GirlCombatAi.rethrow(runtimeException);

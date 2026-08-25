@@ -440,7 +440,7 @@ public class GoblinPlayerRenderer extends CustomColorGirlRenderer {
             return;
          }
 
-         Vector4f vector4f = GoblinNpcRenderer.a(player3, f2);
+         Vector4f vector4f = GoblinNpcRenderer.getShoulderOffset(player3, f2);
          d = vector4f.x;
          d2 = vector4f.y;
          d3 = vector4f.z;
@@ -541,7 +541,7 @@ public class GoblinPlayerRenderer extends CustomColorGirlRenderer {
                 block7: {
                     try {
                         try {
-                            super.a(flag, stack);
+                            super.applyHeldItemTransform(flag, stack);
                             if (stack.getItem().getItemUseAction(stack) != EnumAction.BOW) break block6;
                             if (!flag) break block7;
                         }

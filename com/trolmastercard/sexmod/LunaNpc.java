@@ -181,8 +181,8 @@ fg {
 
     @Override
     public void c() {
-        this.a("Love it here owo");
-        this.a(ModSounds.GIRLS_LUNA_OWO, new int[0]);
+        this.void_a("Love it here owo");
+        this.playRandomSound(ModSounds.GIRLS_LUNA_OWO, new int[0]);
     }
 
     @Override
@@ -576,7 +576,7 @@ fg {
                 blockPos = this.a(this.getPosition());
                 try {
                     if (blockPos != null) break block8;
-                    this.a(ModSounds.GIRLS_LUNA_GIGGLE, new int[0]);
+                    this.playRandomSound(ModSounds.GIRLS_LUNA_GIGGLE, new int[0]);
                     NetworkHandler.channel.sendToAllAround((IMessage)new PacketSendChatMessage("<" + this.getDisplayName() + "> Heh.. there is no bed nearby.. but I already ate the fish so nya~ hehe", this.dimension, this.getGirlUuid()), this.P());
                     break block9;
                 }
@@ -608,8 +608,8 @@ fg {
             }
             try {
                 if (i == -1) {
-                    this.a(ModSounds.GIRLS_LUNA_GIGGLE, new int[0]);
-                    this.a("Heh.. the bed is obscured.. but I already ate the fish so nya~ hehe");
+                    this.playRandomSound(ModSounds.GIRLS_LUNA_GIGGLE, new int[0]);
+                    this.void_a("Heh.. the bed is obscured.. but I already ate the fish so nya~ hehe");
                     return;
                 }
             }
@@ -1025,8 +1025,8 @@ fg {
             if ("action.names.touchboobs".equals(string)) {
                 this.handleGirlUuidEvent(uUID);
                 this.a(true, true, uUID);
-                this.a("animationFollowUp", "touch_boobs");
-                this.a("currentModel", "0");
+                this.changeDataParameterFromClient("animationFollowUp", "touch_boobs");
+                this.changeDataParameterFromClient("currentModel", "0");
                 AnimationInputLock.setAnimationLocked(false);
             }
         }
@@ -1037,7 +1037,7 @@ fg {
             if ("action.names.sex".equals(string)) {
                 this.handleGirlUuidEvent(uUID);
                 this.a(true, true, uUID);
-                this.a("animationFollowUp", "sex");
+                this.changeDataParameterFromClient("animationFollowUp", "sex");
                 AnimationInputLock.setAnimationLocked(false);
             }
         }
@@ -1049,7 +1049,7 @@ fg {
                 this.handleGirlUuidEvent(uUID);
                 this.a(true, true, uUID);
                 AnimationInputLock.setAnimationLocked(false);
-                this.a("animationFollowUp", "headpat");
+                this.changeDataParameterFromClient("animationFollowUp", "headpat");
             }
         }
         catch (RuntimeException runtimeException) {
@@ -1136,14 +1136,14 @@ fg {
             }
         }
         if (this.world.isRemote) {
-            this.a("animationFollowUp", "");
+            this.changeDataParameterFromClient("animationFollowUp", "");
         } else {
             this.DataManager.set(BlowjobStageKey, (Object)"");
         }
     }
 
     protected void playHurtSound(DamageSource damageSource) {
-        this.a(ModSounds.GIRLS_LUNA_OUU, new int[0]);
+        this.playRandomSound(ModSounds.GIRLS_LUNA_OUU, new int[0]);
     }
 
     @Nullable
@@ -1201,7 +1201,7 @@ fg {
                 }
                 if (Math.abs(this.prevPosX - this.posX) + Math.abs(this.prevPosZ - this.posZ) > 0.0) {
                     if (this.onGround && Math.abs(Math.abs(this.prevPosY) - Math.abs(this.posY)) < (double)0.1f) {
-                        this.a(((Float)this.DataManager.get(Y)).floatValue() < 3.0f ? "animation.cat.walk" : "animation.cat.run", true, animEvent);
+                        this.createAnimation(((Float)this.DataManager.get(Y)).floatValue() < 3.0f ? "animation.cat.walk" : "animation.cat.run", true, animEvent);
                     } else {
                         this.createAnimationOnce("animation.cat.fly", true, animEvent);
                     }
@@ -1348,12 +1348,12 @@ fg {
                     break;
                 }
                 case "eat": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_EAT), 0.5f + 0.5f * (float)this.rand.nextInt(2), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2f + 1.0f);
+                    this.playSoundAt(ModSounds.pickRandomSound(ModSounds.MISC_EAT), 0.5f + 0.5f * (float)this.rand.nextInt(2), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2f + 1.0f);
                     this.aa -= 0.33333334f;
                     break;
                 }
                 case "eatPay": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_EAT), 0.5f + 0.5f * (float)this.rand.nextInt(2), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2f + 1.0f);
+                    this.playSoundAt(ModSounds.pickRandomSound(ModSounds.MISC_EAT), 0.5f + 0.5f * (float)this.rand.nextInt(2), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2f + 1.0f);
                     this.n -= 0.33333334f;
                     break;
                 }
@@ -1384,24 +1384,24 @@ fg {
                 }
                 case "paymentMSG1": {
                     this.a(this.getSexPlayerUuid(), "Here, I know u like fish and yea.. these are for you");
-                    this.a(ModSounds.MISC_PLOB[0]);
+                    this.playSoundEvent(ModSounds.MISC_PLOB[0]);
                     break;
                 }
                 case "paymentMSG2": {
-                    this.a("huh~?");
-                    this.a(ModSounds.GIRLS_LUNA_HUH, new int[0]);
+                    this.void_a("huh~?");
+                    this.playRandomSound(ModSounds.GIRLS_LUNA_HUH, new int[0]);
                     break;
                 }
                 case "paymentMSG3": {
-                    this.a("nyyyaaaa~ :D");
+                    this.void_a("nyyyaaaa~ :D");
                     int[] nArray = new int[]{1, 7, 10, 11};
                     int i = nArray[this.getRNG().nextInt(nArray.length)];
-                    this.a(ModSounds.GIRLS_LUNA_CUTENYA[i]);
+                    this.playSoundEvent(ModSounds.GIRLS_LUNA_CUTENYA[i]);
                     break;
                 }
                 case "paymentMSG4": {
-                    this.a("tankuuuu owowowo");
-                    this.a(ModSounds.GIRLS_LUNA_OWO, new int[0]);
+                    this.void_a("tankuuuu owowowo");
+                    this.playRandomSound(ModSounds.GIRLS_LUNA_OWO, new int[0]);
                     break;
                 }
                 case "paymentDone": {
@@ -1413,64 +1413,64 @@ fg {
                 }
                 case "breath":
                 case "rod_breath": {
-                    this.a(ModSounds.GIRLS_LUNA_LIGHTBREATHING, new int[0]);
+                    this.playRandomSound(ModSounds.GIRLS_LUNA_LIGHTBREATHING, new int[0]);
                     break;
                 }
                 case "happyOh": {
-                    this.a(ModSounds.GIRLS_LUNA_HAPPYOH, new int[0]);
+                    this.playRandomSound(ModSounds.GIRLS_LUNA_HAPPYOH, new int[0]);
                     break;
                 }
                 case "cutenya3": {
-                    this.a(ModSounds.GIRLS_LUNA_CUTENYA[3]);
+                    this.playSoundEvent(ModSounds.GIRLS_LUNA_CUTENYA[3]);
                     break;
                 }
                 case "cutenya2": {
-                    this.a(ModSounds.GIRLS_LUNA_CUTENYA[2]);
+                    this.playSoundEvent(ModSounds.GIRLS_LUNA_CUTENYA[2]);
                     break;
                 }
                 case "huh": {
-                    this.a(ModSounds.GIRLS_LUNA_HUH, new int[0]);
+                    this.playRandomSound(ModSounds.GIRLS_LUNA_HUH, new int[0]);
                     break;
                 }
                 case "hmph": {
-                    this.a(ModSounds.GIRLS_LUNA_HMPH, new int[0]);
+                    this.playRandomSound(ModSounds.GIRLS_LUNA_HMPH, new int[0]);
                     break;
                 }
                 case "hehe":
                 case "giggle": {
-                    this.a(ModSounds.GIRLS_LUNA_GIGGLE, new int[0]);
+                    this.playRandomSound(ModSounds.GIRLS_LUNA_GIGGLE, new int[0]);
                     break;
                 }
                 case "singing": {
-                    this.a(ModSounds.GIRLS_LUNA_SINGING, new int[0]);
+                    this.playRandomSound(ModSounds.GIRLS_LUNA_SINGING, new int[0]);
                     break;
                 }
                 case "touch_boobsMSG1": {
-                    this.a("comon~ touch me hihi~");
-                    this.a(ModSounds.GIRLS_LUNA_GIGGLE, new int[0]);
+                    this.void_a("comon~ touch me hihi~");
+                    this.playRandomSound(ModSounds.GIRLS_LUNA_GIGGLE, new int[0]);
                     break;
                 }
                 case "touch": {
-                    this.a(ModSounds.MISC_TOUCH, new int[0]);
+                    this.playRandomSound(ModSounds.MISC_TOUCH, new int[0]);
                     break;
                 }
                 case "jump": {
-                    this.a(ModSounds.MISC_JUMP[0], 0.2f);
+                    this.playSoundAtVolume(ModSounds.MISC_JUMP[0], 0.2f);
                     break;
                 }
                 case "horninya": {
-                    this.a(ModSounds.GIRLS_LUNA_HORNINYA, new int[0]);
+                    this.playRandomSound(ModSounds.GIRLS_LUNA_HORNINYA, new int[0]);
                     break;
                 }
                 case "horninya2":
                 case "touch_boobs_cumMSG3":
                 case "sitting_cumMSG1": {
-                    this.a(ModSounds.GIRLS_LUNA_HORNINYA[1]);
-                    this.a(ModSounds.MISC_CUMINFLATION[0], 5.0f);
+                    this.playSoundEvent(ModSounds.GIRLS_LUNA_HORNINYA[1]);
+                    this.playSoundAtVolume(ModSounds.MISC_CUMINFLATION[0], 5.0f);
                     break;
                 }
                 case "moan": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_LUNA_MOAN));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_LUNA_MOAN));
                     break;
                 }
                 case "touch_boobs_introDone": {
@@ -1506,10 +1506,10 @@ fg {
                 }
                 case "moanOrNya": {
                     if (Math.random() > 0.5) {
-                        this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_LUNA_MOAN));
+                        this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_LUNA_MOAN));
                         break;
                     }
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_LUNA_HORNINYA));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_LUNA_HORNINYA));
                     break;
                 }
                 case "blackScreen": {
@@ -1529,25 +1529,25 @@ fg {
                     break;
                 }
                 case "touch_boobs_cumMSG1": {
-                    this.a(ModSounds.GIRLS_LUNA_HORNINYA[3]);
+                    this.playSoundEvent(ModSounds.GIRLS_LUNA_HORNINYA[3]);
                     break;
                 }
                 case "touch_boobs_cumMSG2": {
-                    this.a(ModSounds.GIRLS_LUNA_HORNINYA[9]);
+                    this.playSoundEvent(ModSounds.GIRLS_LUNA_HORNINYA[9]);
                     break;
                 }
                 case "call_playerMSG1": {
-                    this.a(ModSounds.GIRLS_LUNA_GIGGLE, new int[0]);
-                    this.a("come here - big guy hehe~");
+                    this.playRandomSound(ModSounds.GIRLS_LUNA_GIGGLE, new int[0]);
+                    this.void_a("come here - big guy hehe~");
                     break;
                 }
                 case "pounding": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING));
                     break;
                 }
                 case "sitting_introMSG1": {
-                    this.a(ModSounds.GIRLS_LUNA_GIGGLE, new int[0]);
-                    this.a("hehe~");
+                    this.playRandomSound(ModSounds.GIRLS_LUNA_GIGGLE, new int[0]);
+                    this.void_a("hehe~");
                     break;
                 }
                 case "sitting_introDone": {
@@ -1560,12 +1560,12 @@ fg {
                 case "sitting_slowMSG1": {
                     if (this.getRNG().nextBoolean()) {
                         if (this.getRNG().nextBoolean()) {
-                            this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_LUNA_HORNINYA));
+                            this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_LUNA_HORNINYA));
                             break;
                         }
-                        this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_LUNA_MOAN));
+                        this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_LUNA_MOAN));
                     } else {
-                        this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_LUNA_LIGHTBREATHING));
+                        this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_LUNA_LIGHTBREATHING));
                     }
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.02);
@@ -1573,9 +1573,9 @@ fg {
                 }
                 case "sitting_fastMSG1": {
                     if (this.getRNG().nextBoolean()) {
-                        this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_LUNA_HORNINYA));
+                        this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_LUNA_HORNINYA));
                     } else {
-                        this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_LUNA_MOAN));
+                        this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_LUNA_MOAN));
                     }
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.04);
@@ -1597,17 +1597,17 @@ fg {
                     break;
                 }
                 case "headpatMSG1": {
-                    this.a("huh?~");
-                    this.a(ModSounds.GIRLS_LUNA_HUH, new int[0]);
+                    this.void_a("huh?~");
+                    this.playRandomSound(ModSounds.GIRLS_LUNA_HUH, new int[0]);
                     break;
                 }
                 case "headpatMSG2": {
-                    this.a(ModSounds.GIRLS_LUNA_MMM, new int[0]);
+                    this.playRandomSound(ModSounds.GIRLS_LUNA_MMM, new int[0]);
                     break;
                 }
                 case "headpatMSG3": {
-                    this.a("nya~");
-                    this.a(ModSounds.GIRLS_LUNA_HORNINYA[0]);
+                    this.void_a("nya~");
+                    this.playSoundEvent(ModSounds.GIRLS_LUNA_HORNINYA[0]);
                 }
             }
         };

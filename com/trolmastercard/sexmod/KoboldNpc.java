@@ -580,7 +580,7 @@ dr {
                         catch (IllegalArgumentException illegalArgumentException) {
                             throw KoboldNpc.rethrow(illegalArgumentException);
                         }
-                        this.a(ModSounds.GIRLS_KOBOLD_MASTER);
+                        this.playSoundEvent(ModSounds.GIRLS_KOBOLD_MASTER);
                     }
                     catch (IllegalArgumentException illegalArgumentException) {
                         throw KoboldNpc.rethrow(illegalArgumentException);
@@ -648,7 +648,7 @@ dr {
             throw KoboldNpc.rethrow(illegalArgumentException);
         }
         this.handleGirlUuidEvent((UUID)null);
-        this.a("shouldbeattargetpos", "false");
+        this.changeDataParameterFromClient("shouldbeattargetpos", "false");
     }
 
     @Override
@@ -667,7 +667,7 @@ dr {
         try {
             this.az = true;
             if ("oral".equals(string)) {
-                this.a("animationFollowUp", GirlAnimationState.STARTBLOWJOB.toString());
+                this.changeDataParameterFromClient("animationFollowUp", GirlAnimationState.STARTBLOWJOB.toString());
                 this.a(true, uUID);
             }
         }
@@ -676,7 +676,7 @@ dr {
         }
         try {
             if ("anal".equals(string)) {
-                this.a("animationFollowUp", GirlAnimationState.KOBOLD_ANAL_START.toString());
+                this.changeDataParameterFromClient("animationFollowUp", GirlAnimationState.KOBOLD_ANAL_START.toString());
                 this.a(true, uUID);
             }
         }
@@ -685,7 +685,7 @@ dr {
         }
         try {
             if ("mating".equals(string)) {
-                this.a("animationFollowUp", GirlAnimationState.MATING_PRESS_START.toString());
+                this.changeDataParameterFromClient("animationFollowUp", GirlAnimationState.MATING_PRESS_START.toString());
                 this.a(true, uUID);
             }
         }
@@ -841,7 +841,7 @@ dr {
                             }
                         }
                         try {
-                            if (this.noop()) {
+                            if (this.g()) {
                                 return;
                             }
                         }
@@ -1052,7 +1052,7 @@ dr {
                     throw KoboldNpc.rethrow(illegalArgumentException);
                 }
                 this.b(ModSounds.pickRandomSound(ModSounds.GIRLS_KOBOLD_HEYMASTER));
-                this.a("Hey master!");
+                this.void_a("Hey master!");
                 aV = this.world.getTotalWorldTime();
             }
             catch (IllegalArgumentException illegalArgumentException) {
@@ -1290,7 +1290,7 @@ dr {
         }
     }
 
-    void v() {
+    void void_v() {
         try {
             if (!this.world.isRemote) {
                 return;
@@ -1384,7 +1384,7 @@ dr {
             throw KoboldNpc.rethrow(illegalArgumentException);
         }
         try {
-            if (this.a()) {
+            if (this.boolean_a()) {
                 return false;
             }
         }
@@ -2218,7 +2218,7 @@ dr {
      */
     void n(UUID uUID) {
         try {
-            if (this.d(uUID)) {
+            if (this.c(uUID, true)) {
                 return;
             }
         }
@@ -2981,14 +2981,14 @@ dr {
         }
     }
 
-    double n() {
+    double double_n() {
         return Math.sqrt(800.0);
     }
 
     boolean b(UUID uUID, boolean flag) {
         block13: {
             try {
-                if (this.getGirlUuid()) {
+                if (this.f()) {
                     return false;
                 }
             }
@@ -3564,7 +3564,7 @@ dr {
         this.world.destroyBlock(blockPos2.up(), false);
     }
 
-    void h() {
+    void void_h() {
         try {
             if (this.aA) {
                 return;
@@ -4094,7 +4094,7 @@ dr {
                         this.rotationYaw = this.rotationYawHead;
                         double d2 = 1.0 + (double)(f * 2.0f);
                         this.MovementController.setAnimationSpeed(d2);
-                        if (this.a()) {
+                        if (this.boolean_a()) {
                             this.createAnimationOnce("animation.kobold.crouch_walk", true, animEvent);
                             break;
                         }
@@ -4112,7 +4112,7 @@ dr {
                     this.createAnimationOnce("animation.kobold.fly", true, animEvent);
                     break;
                 }
-                if (this.a()) {
+                if (this.boolean_a()) {
                     this.createAnimationOnce("animation.kobold.crouch_idle", true, animEvent);
                     break;
                 }
@@ -4348,29 +4348,29 @@ dr {
                     break;
                 }
                 case "giggle": {
-                    this.a(ModSounds.GIRLS_KOBOLD_GIGGLE);
+                    this.playSoundEvent(ModSounds.GIRLS_KOBOLD_GIGGLE);
                     break;
                 }
                 case "moan": {
-                    this.a(ModSounds.GIRLS_KOBOLD_MOAN);
+                    this.playSoundEvent(ModSounds.GIRLS_KOBOLD_MOAN);
                     break;
                 }
                 case "moanMating": {
                     --this.aN;
                     if (this.aN > 0) break;
                     this.aN = 3;
-                    this.a(ModSounds.GIRLS_KOBOLD_MOAN);
+                    this.playSoundEvent(ModSounds.GIRLS_KOBOLD_MOAN);
                     break;
                 }
                 case "analHardMSG1": {
                     --this.aN;
                     if (this.aN > 0) break;
                     this.aN = 4;
-                    this.a(ModSounds.GIRLS_KOBOLD_MOAN);
+                    this.playSoundEvent(ModSounds.GIRLS_KOBOLD_MOAN);
                     break;
                 }
                 case "orgasm": {
-                    this.a(ModSounds.GIRLS_KOBOLD_ORGASM);
+                    this.playSoundEvent(ModSounds.GIRLS_KOBOLD_ORGASM);
                     break;
                 }
                 case "breath": {
@@ -4382,11 +4382,11 @@ dr {
                     break;
                 }
                 case "interested": {
-                    this.a(ModSounds.GIRLS_KOBOLD_INTERESTED);
+                    this.playSoundEvent(ModSounds.GIRLS_KOBOLD_INTERESTED);
                     break;
                 }
                 case "yep": {
-                    this.a(ModSounds.GIRLS_KOBOLD_YEP);
+                    this.playSoundEvent(ModSounds.GIRLS_KOBOLD_YEP);
                     break;
                 }
                 case "bjmoan": {
@@ -4443,7 +4443,7 @@ dr {
                     break;
                 }
                 case "cumMsg": {
-                    this.a("I.. hope I am satisfying you sir");
+                    this.void_a("I.. hope I am satisfying you sir");
                     this.b(ModSounds.GIRLS_KOBOLD_SAD[this.getRNG().nextInt(1)]);
                     break;
                 }

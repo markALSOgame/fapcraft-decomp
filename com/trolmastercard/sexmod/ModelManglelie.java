@@ -9,7 +9,7 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.AnimationProcessor;
 import software.bernie.geckolib3.core.processor.IBone;
 
-public class ModelManglelie extends GirlGeoModel {
+public class ModelManglelie extends GirlGeoModel<GirlEntity> {
    public static final float h = 7.0F;
    public static final float k = 0.75F;
    static final float l = AngleMath.degToRadians(140.0F);
@@ -29,7 +29,7 @@ public class ModelManglelie extends GirlGeoModel {
    }
 
    @Override
-   public ResourceLocation a(GirlEntity girl) {
+   public ResourceLocation getModelLocation(GirlEntity girl) {
       try {
          if (girl.world instanceof PreviewWorld) {
             return this.TextureLayers[0];
@@ -64,12 +64,12 @@ public class ModelManglelie extends GirlGeoModel {
    }
 
    @Override
-   public void onAnimationEvent(GirlEntity girl, Integer i, AnimationEvent animEvent) {
-      super.onAnimationEvent(girl, i, animEvent);
+   public void setLivingAnimations(GirlEntity girl, Integer i, AnimationEvent animEvent) {
+      super.setLivingAnimations(girl, i, animEvent);
       applyAnimationTransforms(girl, this.getAnimationProcessor(), animEvent.getPartialTick());
       this.void_b(girl);
       this.void_d(girl);
-      this.a(girl);
+      this.void_a(girl);
       this.void_e(girl);
    }
 
@@ -117,7 +117,7 @@ public class ModelManglelie extends GirlGeoModel {
       iBone3.setRotationX(iBone3.getRotationX() + f);
    }
 
-   void a(GirlEntity girl) {
+   void void_a(GirlEntity girl) {
       try {
          if (!(girl instanceof ManglelieNpc)) {
             return;

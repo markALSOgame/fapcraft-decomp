@@ -370,7 +370,7 @@ extends PlayerGirlEntity {
             this.setCurrentAction(GirlAnimationState.PRONE_DOGGY_INTRO);
             Vec3d vec3d = this.getTargetPos();
             Vec3d vec3d2 = vec3d.add(VectorMath.rotatePitch(0.0, 0.0, 1.0, f2));
-            this.c(vec3d2);
+            this.setTargetPos(vec3d2);
             EntityPlayer entityPlayer2 = this.getBoundPlayer();
             try {
                 if (entityPlayer2 != null) {
@@ -382,7 +382,7 @@ extends PlayerGirlEntity {
             }
             Vec3d vec3d3 = vec3d.add(VectorMath.rotatePitch(0.0, 1.1875 - (double)entityPlayer.getEyeHeight(), 0.5, f2));
             entityPlayer.setPositionAndUpdate(vec3d3.x, vec3d3.y, vec3d3.z);
-            this.a(true);
+            this.setShouldBeAtTargetPos(true);
         }
     }
 
@@ -582,7 +582,7 @@ extends PlayerGirlEntity {
                 }
                 case "stripMSG1": {
                     this.h("Hihi~");
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_BIA_GIGGLE));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_BIA_GIGGLE));
                     break;
                 }
                 case "sexUiOn": {
@@ -596,37 +596,37 @@ extends PlayerGirlEntity {
                 }
                 case "talk_hornyMSG1": {
                     this.a("Heyaaa~");
-                    this.a(ModSounds.GIRLS_BIA_HEY[3]);
+                    this.playSoundEvent(ModSounds.GIRLS_BIA_HEY[3]);
                     break;
                 }
                 case "talk_hornyMSG2": {
                     this.a("I am Hornyyyyy~");
-                    this.a(ModSounds.GIRLS_BIA_GIGGLE[2]);
+                    this.playSoundEvent(ModSounds.GIRLS_BIA_GIGGLE[2]);
                     break;
                 }
                 case "talk_hornyMSG3": {
                     this.a("So...");
-                    this.a(ModSounds.GIRLS_BIA_BREATH[0]);
+                    this.playSoundEvent(ModSounds.GIRLS_BIA_BREATH[0]);
                     break;
                 }
                 case "talk_hornyMSG4": {
                     this.a("Are we gonna have some fun nyaa?");
-                    this.a(ModSounds.GIRLS_BIA_HUH[0]);
+                    this.playSoundEvent(ModSounds.GIRLS_BIA_HUH[0]);
                     break;
                 }
                 case "talk_responseMSG1": {
                     this.a("Huh?!...");
-                    this.a(ModSounds.GIRLS_BIA_HUH[2]);
+                    this.playSoundEvent(ModSounds.GIRLS_BIA_HUH[2]);
                     break;
                 }
                 case "talk_responseMSG2": {
                     this.a("I... uhm...");
-                    this.a(ModSounds.GIRLS_BIA_BREATH[1]);
+                    this.playSoundEvent(ModSounds.GIRLS_BIA_BREATH[1]);
                     break;
                 }
                 case "talk_responseMSG3": {
                     this.a("yes~");
-                    this.a(ModSounds.GIRLS_BIA_GIGGLE[0]);
+                    this.playSoundEvent(ModSounds.GIRLS_BIA_GIGGLE[0]);
                     break;
                 }
                 case "talk_responseDone": {
@@ -639,11 +639,11 @@ extends PlayerGirlEntity {
                     break;
                 }
                 case "anal_prepareMSG1": {
-                    this.a(ModSounds.MISC_PLOB[0]);
+                    this.playSoundEvent(ModSounds.MISC_PLOB[0]);
                     break;
                 }
                 case "anal_prepareMSG2": {
-                    this.a(ModSounds.MISC_BEDRUSTLE[0]);
+                    this.playSoundEvent(ModSounds.MISC_BEDRUSTLE[0]);
                     break;
                 }
                 case "anal_prepareDone": {
@@ -653,8 +653,8 @@ extends PlayerGirlEntity {
                     break;
                 }
                 case "anal_startMSG1": {
-                    this.a(ModSounds.GIRLS_BIA_MMM[3]);
-                    this.a(ModSounds.MISC_POUNDING[34]);
+                    this.playSoundEvent(ModSounds.GIRLS_BIA_MMM[3]);
+                    this.playSoundEvent(ModSounds.MISC_POUNDING[34]);
                     break;
                 }
                 case "anal_fastMSG1": {
@@ -664,8 +664,8 @@ extends PlayerGirlEntity {
                     if (this.isOwnedByLocalPlayer()) {
                         GuiHud.addProgress(0.02);
                     }
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.5f);
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_BIA_AHH));
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.5f);
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_BIA_AHH));
                     break;
                 }
                 case "anal_slowMSG1":
@@ -673,8 +673,8 @@ extends PlayerGirlEntity {
                     if (this.isOwnedByLocalPlayer()) {
                         GuiHud.addProgress(0.02);
                     }
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.5f);
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_BIA_AHH));
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.5f);
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_BIA_AHH));
                     break;
                 }
                 case "anal_fastDone": {
@@ -687,7 +687,7 @@ extends PlayerGirlEntity {
                     break;
                 }
                 case "anal_cumMSG2": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_BIA_AHH));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_BIA_AHH));
                     break;
                 }
                 case "anal_cumBlackScreen": {
@@ -705,22 +705,22 @@ extends PlayerGirlEntity {
                 }
                 case "headpatMSG1": {
                     this.a("Ooh headpats!");
-                    this.a(ModSounds.GIRLS_BIA_BREATH[0]);
+                    this.playSoundEvent(ModSounds.GIRLS_BIA_BREATH[0]);
                     break;
                 }
                 case "headpatMSG2": {
                     this.a("Hmmm.... :D");
-                    this.a(ModSounds.GIRLS_BIA_MMM[0]);
+                    this.playSoundEvent(ModSounds.GIRLS_BIA_MMM[0]);
                     break;
                 }
                 case "headpatMSG3": {
                     this.a("huh...?");
-                    this.a(ModSounds.GIRLS_BIA_HUH[0]);
+                    this.playSoundEvent(ModSounds.GIRLS_BIA_HUH[0]);
                     break;
                 }
                 case "headpatMSG4": {
                     this.a("Tanku hehe");
-                    this.a(ModSounds.GIRLS_BIA_GIGGLE[1]);
+                    this.playSoundEvent(ModSounds.GIRLS_BIA_GIGGLE[1]);
                     break;
                 }
                 case "headpatDone": {
@@ -730,7 +730,7 @@ extends PlayerGirlEntity {
                 }
                 case "sitdownMSG1": {
                     this.a("come here big boy~");
-                    this.a(ModSounds.GIRLS_BIA_BREATH);
+                    this.playRandomSound(ModSounds.GIRLS_BIA_BREATH);
                     break;
                 }
                 case "sitdownDone": {
@@ -738,17 +738,17 @@ extends PlayerGirlEntity {
                     break;
                 }
                 case "slide": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_SLIDE));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.MISC_SLIDE));
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.005);
                     break;
                 }
                 case "pound": {
-                    this.a(ModSounds.MISC_POUNDING);
+                    this.playRandomSound(ModSounds.MISC_POUNDING);
                     break;
                 }
                 case "doggyMoan": {
-                    this.a(ModSounds.pickRandomSound(this.getRNG().nextBoolean() ? ModSounds.GIRLS_BIA_AHH : ModSounds.GIRLS_BIA_MMM));
+                    this.playSoundEvent(ModSounds.pickRandomSound(this.getRNG().nextBoolean() ? ModSounds.GIRLS_BIA_AHH : ModSounds.GIRLS_BIA_MMM));
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.04);
                     break;
@@ -764,15 +764,15 @@ extends PlayerGirlEntity {
                     break;
                 }
                 case "cum": {
-                    this.a(ModSounds.MISC_INSERTS, 6.0f);
+                    this.playRandomSoundWithChance(ModSounds.MISC_INSERTS, 6.0f);
                     break;
                 }
                 case "orgasm1": {
-                    this.a(ModSounds.GIRLS_BIA_MMM[6]);
+                    this.playSoundEvent(ModSounds.GIRLS_BIA_MMM[6]);
                     break;
                 }
                 case "orgasm2": {
-                    this.a(ModSounds.GIRLS_BIA_MMM[7]);
+                    this.playSoundEvent(ModSounds.GIRLS_BIA_MMM[7]);
                     break;
                 }
                 case "openSexUI": {

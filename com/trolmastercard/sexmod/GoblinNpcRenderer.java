@@ -520,7 +520,7 @@ public class GoblinNpcRenderer extends ScaledGirlGeoRenderer<GoblinNpc> {
     }
 
    public static Vec3i parseTribeColor(String string) {
-      return TribeColor.values()[Integer.parseInt(string)].a();
+      return TribeColor.values()[Integer.parseInt(string)].getColor();
    }
 
    public static Vec3i parseGirlColor(String string) {

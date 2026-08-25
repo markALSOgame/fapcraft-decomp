@@ -14,7 +14,7 @@ public abstract class GirlAiBase extends EntityAIBase {
    public EntityPlayer Player;
    public PathNavigate Navigation;
    public EntityDataManager DataManager;
-   public GirlAiBase.State State = GirlAiBase.State.IDLE;
+   public GirlAiBase.AiState State = GirlAiBase.AiState.IDLE;
    public static final double WalkSpeed = 0.5;
    public static final double RunSpeed = 0.7;
    public static final int FollowDistance = 60;
@@ -72,7 +72,7 @@ public abstract class GirlAiBase extends EntityAIBase {
 
    public void resetTask() {
       this.Navigation.clearPath();
-      this.State = GirlAiBase.State.IDLE;
+      this.State = GirlAiBase.AiState.IDLE;
       this.Girl.setCurrentAction(GirlAnimationState.NULL);
       this.DataManager.set(GirlEntity.MasterUuidKey, "");
       this.Navigation = null;
@@ -134,7 +134,7 @@ public abstract class GirlAiBase extends EntityAIBase {
                             this.State = this.getState();
                             if (this.Girl.WatchPlayerAI == null) break block4;
                             GirlWatchAi ai = this.Girl.WatchPlayerAI;
-                            if (this.State != GirlAiBase.State.IDLE) break block5;
+                            if (this.State != GirlAiBase.AiState.IDLE) break block5;
                         }
                         catch (RuntimeException runtimeException) {
                             throw GirlAiBase.rethrow(runtimeException);
@@ -153,9 +153,9 @@ public abstract class GirlAiBase extends EntityAIBase {
         this.executeState(this.State);
     }
 
-   protected abstract GirlAiBase.State getState();
+   protected abstract GirlAiBase.AiState getState();
 
-   protected abstract void executeState(GirlAiBase.State state);
+   protected abstract void executeState(GirlAiBase.AiState state);
 
    @SubscribeEvent
    public void onGirlDeath(LivingDeathEvent livingDeathEvent) {
@@ -176,7 +176,7 @@ public abstract class GirlAiBase extends EntityAIBase {
       return error;
    }
 
-   public enum State {
+    public enum AiState {
       ATTACK,
       FOLLOW,
       IDLE,

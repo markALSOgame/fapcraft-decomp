@@ -53,36 +53,36 @@ public class ManglelieNpcRenderer extends GeoGirlRenderer<ManglelieNpc> {
       super(renderManager, animatedGeoModel, d);
    }
 
-   @Override
-   public HashSet<String> a() {
-      try {
-         if (!this.Initialized) {
-            B.addAll(BoneColorHelper.AdultParts);
-            this.Initialized = true;
-         }
-      } catch (NumberFormatException error) {
-         throw rethrow(error);
-      }
+    @Override
+    public HashSet<String> getFilteredBoneNames() {
+       try {
+          if (!this.Initialized) {
+             B.addAll(BoneColorHelper.AdultParts);
+             this.Initialized = true;
+          }
+       } catch (NumberFormatException error) {
+          throw rethrow(error);
+       }
 
-      return B;
-   }
+       return B;
+    }
 
    public void doRender(ManglelieNpc manglelie, double d2, double d3, double d4, float f, float f2) {
       try {
-         if (this.d(manglelie)) {
-            return;
-         }
-      } catch (NumberFormatException error) {
-         throw rethrow(error);
-      }
+          if (this.isMommyBusy(manglelie)) {
+             return;
+          }
+       } catch (NumberFormatException error) {
+          throw rethrow(error);
+       }
 
       try {
-         if (this.isInThreesomeAnimation(manglelie)) {
-            return;
-         }
-      } catch (NumberFormatException error2) {
-         throw rethrow(error2);
-      }
+          if (this.isRidingMommyHead(manglelie)) {
+             return;
+          }
+       } catch (NumberFormatException error2) {
+          throw rethrow(error2);
+       }
 
       try {
          if (c(manglelie, 0.5F)) {
@@ -128,7 +128,7 @@ public class ManglelieNpcRenderer extends GeoGirlRenderer<ManglelieNpc> {
       }
    }
 
-   boolean a(ManglelieNpc manglelie) {
+    boolean isRidingMommyHead(ManglelieNpc manglelie) {
       try {
          if (manglelie.getCurrentAction() != GirlAnimationState.RIDE_MOMMY_HEAD) {
             return false;
@@ -148,7 +148,7 @@ public class ManglelieNpcRenderer extends GeoGirlRenderer<ManglelieNpc> {
       return false;
    }
 
-   boolean d(ManglelieNpc manglelie) {
+    boolean isMommyBusy(ManglelieNpc manglelie) {
       GalathNpc galath = manglelie.getMommy(false);
 
       try {
@@ -168,7 +168,7 @@ public class ManglelieNpcRenderer extends GeoGirlRenderer<ManglelieNpc> {
          throw rethrow(error2);
       }
 
-      return galath.b();
+      return galath.boolean_b();
    }
 
    public void doRenderShadowAndFire(Entity entity, double d2, double d3, double d4, float f, float f2) {
@@ -184,20 +184,20 @@ public class ManglelieNpcRenderer extends GeoGirlRenderer<ManglelieNpc> {
       ManglelieNpc manglelie = (ManglelieNpc)entity;
 
       try {
-         if (this.d(manglelie)) {
-            return;
-         }
-      } catch (NumberFormatException error2) {
-         throw rethrow(error2);
-      }
+          if (this.isMommyBusy(manglelie)) {
+             return;
+          }
+       } catch (NumberFormatException error2) {
+          throw rethrow(error2);
+       }
 
       try {
-         if (manglelie.isClaimed()) {
-            return;
-         }
-      } catch (NumberFormatException error3) {
-         throw rethrow(error3);
-      }
+          if (manglelie.isClaimed()) {
+             return;
+          }
+       } catch (NumberFormatException error3) {
+          throw rethrow(error3);
+       }
 
       super.doRenderShadowAndFire(entity, d2, d3, d4, f, f2);
    }
@@ -211,7 +211,7 @@ public class ManglelieNpcRenderer extends GeoGirlRenderer<ManglelieNpc> {
          throw rethrow(error);
       }
 
-      GalathNpc galath = ((ManglelieNpc)girl).a(false);
+      GalathNpc galath = ((ManglelieNpc)girl).getMommy(false);
 
       try {
          if (galath == null) {
@@ -272,7 +272,7 @@ public class ManglelieNpcRenderer extends GeoGirlRenderer<ManglelieNpc> {
       KoboldEggEntity.getTextureManager().bindTexture(e);
       GlStateManager.disableCull();
       GlStateManager.disableLighting();
-      renderGirlGeometryWithAlpha(girl, bufferBuilder, tessellator, renderGirl((GirlEntity)girl, f));
+      renderGirlGeometryWithAlpha(girl, bufferBuilder, tessellator, GeoGirlRenderer.a(girl, f));
       renderGirlGeometry(girl, bufferBuilder, tessellator);
       GlStateManager.popMatrix();
       GlStateManager.enableCull();
@@ -321,8 +321,8 @@ public class ManglelieNpcRenderer extends GeoGirlRenderer<ManglelieNpc> {
 
    static boolean isInThreesomeAnimation(GirlEntity girl) {
       if (girl instanceof GalathNpc) {
-         girl = ((GalathNpc)girl).a(false);
-      }
+          girl = ((GalathNpc)girl).getChildMangle(false);
+       }
 
       try {
          if (girl == null) {
@@ -474,12 +474,12 @@ public class ManglelieNpcRenderer extends GeoGirlRenderer<ManglelieNpc> {
       float f = this.RenderEntity.b(KoboldEggEntity.getRenderPartialTicks());
       if (f < 1.0F) {
          float f2 = (float)LerpMath.EaseOutQuart(f);
-         this.RenderEntity.d((int)(11.0F * (1.0F - f2) + 71980.0F));
-         this.RenderEntity.a(stack);
-         this.RenderEntity.setActiveHand(EnumHand.MAIN_HAND);
-         this.RenderEntity.W();
-      } else {
-         this.RenderEntity.a(ItemStack.EMPTY);
+          this.RenderEntity.d((int)(11.0F * (1.0F - f2) + 71980.0F));
+          this.RenderEntity.setActiveItemStack(stack);
+          this.RenderEntity.setActiveHand(EnumHand.MAIN_HAND);
+          this.RenderEntity.W();
+       } else {
+          this.RenderEntity.setActiveItemStack(ItemStack.EMPTY);
          this.RenderEntity.K();
       }
 
@@ -688,8 +688,8 @@ public class ManglelieNpcRenderer extends GeoGirlRenderer<ManglelieNpc> {
       tessellator.draw();
    }
 
-   @Override
-   public boolean a(HashSet set, GeoBone bone) {
+    @Override
+    public boolean isBoneIncluded(HashSet set, GeoBone bone) {
       while (bone.parent != null) {
          String string = bone.getName();
 
