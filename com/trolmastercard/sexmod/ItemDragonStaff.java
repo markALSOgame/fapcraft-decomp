@@ -73,7 +73,7 @@ public class ItemDragonStaff extends Item implements IAnimatable {
                     }
                 }
                 catch (RuntimeException runtimeException) {
-                    throw ItemDragonStaff.a.rethrow(runtimeException);
+                    throw rethrow(runtimeException);
                 }
                 EntityPlayer entityPlayer = rightClickItem.getEntityPlayer();
                 try {
@@ -81,12 +81,12 @@ public class ItemDragonStaff extends Item implements IAnimatable {
                         if (entityPlayer.getHeldItem(EnumHand.MAIN_HAND).getItem() == Instance || entityPlayer.getHeldItem(EnumHand.OFF_HAND).getItem() == Instance) break block10;
                     }
                     catch (RuntimeException runtimeException) {
-                        throw ItemDragonStaff.a.rethrow(runtimeException);
+                        throw rethrow(runtimeException);
                     }
                     return;
                 }
                 catch (RuntimeException runtimeException) {
-                    throw ItemDragonStaff.a.rethrow(runtimeException);
+                    throw rethrow(runtimeException);
                 }
             }
             try {
@@ -95,7 +95,7 @@ public class ItemDragonStaff extends Item implements IAnimatable {
                 }
             }
             catch (RuntimeException runtimeException) {
-                throw ItemDragonStaff.a.rethrow(runtimeException);
+                throw rethrow(runtimeException);
             }
             this.registerAll();
         }
@@ -116,12 +116,12 @@ public class ItemDragonStaff extends Item implements IAnimatable {
                         if (entityPlayer.getHeldItem(EnumHand.MAIN_HAND).getItem() == Instance || entityPlayer.getHeldItem(EnumHand.OFF_HAND).getItem() == Instance) break block10;
                     }
                     catch (RuntimeException runtimeException) {
-                        throw ItemDragonStaff.a.rethrow(runtimeException);
+                        throw rethrow(runtimeException);
                     }
                     return;
                 }
                 catch (RuntimeException runtimeException) {
-                    throw ItemDragonStaff.a.rethrow(runtimeException);
+                    throw rethrow(runtimeException);
                 }
             }
             Block block = rightClickBlock.getWorld().getBlockState(rightClickBlock.getPos()).getBlock();
@@ -133,7 +133,7 @@ public class ItemDragonStaff extends Item implements IAnimatable {
                 }
             }
             catch (RuntimeException runtimeException) {
-                throw ItemDragonStaff.a.rethrow(runtimeException);
+                throw rethrow(runtimeException);
             }
             try {
                 if (block instanceof BlockChest) {
@@ -143,7 +143,7 @@ public class ItemDragonStaff extends Item implements IAnimatable {
                 }
             }
             catch (RuntimeException runtimeException) {
-                throw ItemDragonStaff.a.rethrow(runtimeException);
+                throw rethrow(runtimeException);
             }
         }
 

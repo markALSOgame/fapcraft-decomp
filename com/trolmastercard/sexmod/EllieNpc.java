@@ -85,7 +85,7 @@ implements VoidCallback {
     @Override
     public void c() {
         this.a("Okay, I will be residing here then..");
-        this.a(ModSounds.GIRLS_ELLIE_HUH[0], 6.0f);
+        this.playSoundAtVolume(ModSounds.GIRLS_ELLIE_HUH[0], 6.0f);
     }
 
     @Override
@@ -98,10 +98,10 @@ implements VoidCallback {
         return GirlLootTables.EllieLootTable;
     }
 
-    boolean i() {
+    boolean boolean_i() {
         boolean flag;
         try {
-            if (this.updateCarryHud()) {
+            if (this.isTracked()) {
                 return false;
             }
         }
@@ -120,7 +120,7 @@ implements VoidCallback {
     public float getEyeHeight() {
         float f;
         try {
-            f = this.getRenderLabelOffset() ? 1.53f : 1.9f;
+            f = this.boolean_i() ? 1.53f : 1.9f;
         }
         catch (RuntimeException runtimeException) {
             throw EllieNpc.rethrow(runtimeException);
@@ -129,12 +129,12 @@ implements VoidCallback {
     }
 
     @Override
-    public float i() {
+    public float getRenderLabelOffset() {
         return 0.4f;
     }
 
     @Override
-    public void b() {
+    public void void_b() {
         UUID uUID = this.getSexPlayerUuid();
         try {
             if (uUID == null) {
@@ -158,7 +158,7 @@ implements VoidCallback {
         float f = entityPlayer.rotationYaw - 180.0f;
         this.b(f);
         this.setCurrentAction(GirlAnimationState.CARRY_INTRO);
-        this.a(true);
+        this.setShouldBeAtTargetPos(true);
     }
 
     @Override
@@ -201,7 +201,7 @@ implements VoidCallback {
     public void x() {
         super.resetMasterAndWalkSpeed();
         this.a("stay safe darling~");
-        this.a(ModSounds.GIRLS_ELLIE_SIGH[1], 6.0f);
+        this.playSoundAtVolume(ModSounds.GIRLS_ELLIE_SIGH[1], 6.0f);
     }
 
     @Override
@@ -416,11 +416,11 @@ implements VoidCallback {
             throw EllieNpc.rethrow(runtimeException);
         }
         float f = this.I().floatValue();
-        Vec3d vec3d = this.initPhysics().add(VectorMath.rotateYaw(new Vec3d(0.0, (double)(2.5625f - entityPlayer.getEyeHeight()), -0.3125), 180.0f + f));
+        Vec3d vec3d = this.getTargetPos().add(VectorMath.rotateYaw(new Vec3d(0.0, (double)(2.5625f - entityPlayer.getEyeHeight()), -0.3125), 180.0f + f));
         entityPlayer.setPositionAndUpdate(vec3d.x, vec3d.y, vec3d.z);
     }
 
-    void m() {
+    void void_m() {
         try {
             if (this.getCurrentAction() != GirlAnimationState.SITDOWNIDLE) {
                 return;
@@ -460,13 +460,13 @@ implements VoidCallback {
     public void updateAITasks() {
         super.updateAITasks();
         this.initPhysics();
-        this.d();
-        this.isOwnedByLocalPlayer();
-        this.getWalkState();
-        this.getRenderPosition();
-        this.a();
-        this.t();
-        this.u();
+        this.void_d();
+        this.void_n();
+        this.void_q();
+        this.void_j();
+        this.a_10();
+        this.void_t();
+        this.u_();
     }
 
     void initPhysics() {
@@ -554,7 +554,7 @@ implements VoidCallback {
         }
     }
 
-    void u() {
+    void u_() {
         try {
             if (--this.StartSexCountdown != 0) {
                 return;
@@ -566,7 +566,7 @@ implements VoidCallback {
         this.U();
     }
 
-    void t() {
+    void void_t() {
         block10: {
             try {
                 try {
@@ -599,10 +599,10 @@ implements VoidCallback {
             throw EllieNpc.rethrow(runtimeException);
         }
         this.StartSexCountdown = 20;
-        this.updateCarryIntro(entityPlayer.getPersistentID());
+        this.handleGirlUuidEvent(entityPlayer.getPersistentID());
     }
 
-    void a() {
+    void a_10() {
         try {
             if (--this.HugCountdown != 0) {
                 return;
@@ -614,7 +614,7 @@ implements VoidCallback {
         this.setCurrentAction(GirlAnimationState.HUGIDLE);
     }
 
-    void j() {
+    void void_j() {
         try {
             if (--this.SitCountdown != 0) {
                 return;
@@ -626,7 +626,7 @@ implements VoidCallback {
         this.setCurrentAction(GirlAnimationState.SITDOWNIDLE);
     }
 
-    void q() {
+    void void_q() {
         block16: {
             try {
                 try {
@@ -648,7 +648,7 @@ implements VoidCallback {
             this.noClip = false;
             this.setNoGravity(false);
             if (this.BedTarget == null) {
-                this.BedTarget = this.noop();
+                this.BedTarget = this.java_lang_Object_arr_g();
             }
         }
         catch (RuntimeException runtimeException) {
@@ -656,10 +656,10 @@ implements VoidCallback {
         }
         try {
             if (this.BedTarget == null) {
-                this.updateCarryHud("no bed in sight...");
+                this.h("no bed in sight...");
                 this.world.playSound(null, this.getPosition(), ModSounds.GIRLS_ELLIE_SIGH[0], SoundCategory.NEUTRAL, 6.0f, 1.0f);
                 this.s();
-                this.getGirlUuid();
+                this.void_f();
                 return;
             }
         }
@@ -700,12 +700,12 @@ implements VoidCallback {
     }
 
     @Override
-    public void g() {
+    public void noop() {
         super.noop();
         this.HugCountdown = -1;
     }
 
-    Object[] g() {
+    Object[] java_lang_Object_arr_g() {
         Vec3d vec3d;
         BlockPos blockPos;
         int i = -1;
@@ -713,7 +713,7 @@ implements VoidCallback {
         Vec3d[][] vec3dArrayArray = new Vec3d[][]{{new Vec3d(0.5, 0.0, -0.18), new Vec3d(0.0, 0.0, -1.0), new Vec3d(0.0, 0.0, 1.0)}, {new Vec3d(0.5, 0.0, 1.18), new Vec3d(0.0, 0.0, 1.0), new Vec3d(0.0, 0.0, -1.0)}, {new Vec3d(-0.18, 0.0, 0.5), new Vec3d(-1.0, 0.0, 0.0), new Vec3d(1.0, 0.0, 0.0)}, {new Vec3d(1.18, 0.0, 0.5), new Vec3d(1.0, 0.0, 0.0), new Vec3d(-1.0, 0.0, 0.0)}};
         int[] nArray = new int[]{0, 180, -90, 90};
         do {
-            if ((blockPos = this.a(this.getPosition(), ++i3)) == null) {
+            if ((blockPos = this.findBedPos(this.getPosition(), ++i3)) == null) {
                 return null;
             }
             vec3d = new Vec3d((double)blockPos.getX(), (double)blockPos.getY(), (double)blockPos.getZ());
@@ -748,7 +748,7 @@ implements VoidCallback {
         return new Object[]{blockPos, nArray[i]};
     }
 
-    void d() {
+    void void_d() {
         try {
             if (this.getActivePotionEffect(PotionHandler.b) == null) {
                 return;
@@ -767,7 +767,7 @@ implements VoidCallback {
             throw EllieNpc.rethrow(runtimeException);
         }
         this.removeActivePotionEffect(PotionHandler.b);
-        this.updateCarryIntro(entityPlayer.getPersistentID());
+        this.handleGirlUuidEvent(entityPlayer.getPersistentID());
         float f = (float)(Math.atan2(this.posZ - entityPlayer.posZ, this.posX - entityPlayer.posX) * 57.29577951308232);
         this.b(f);
         this.setTargetPos(this.getPositionVector());
@@ -781,7 +781,7 @@ implements VoidCallback {
         this.tasks.removeTask((EntityAIBase)this.WatchPlayerAI);
     }
 
-    void n() {
+    void void_n() {
         try {
             if (--this.DashCountdown != 0) {
                 return;
@@ -820,10 +820,10 @@ implements VoidCallback {
         this.HugCountdown = 150;
     }
 
-    void f() {
+    void void_f() {
         this.DataManager.set(BusyKey, (Object)false);
         this.setCurrentAction(GirlAnimationState.NULL);
-        this.updateCarryIntro((UUID)null);
+        this.handleGirlUuidEvent((UUID)null);
         this.noClip = false;
         this.setNoGravity(false);
         this.IsSitting = false;
@@ -958,7 +958,7 @@ implements VoidCallback {
                 }
                 double d = Math.abs(this.prevPosX - this.posX) + Math.abs(this.prevPosZ - this.posZ);
                 if (d == 0.0) {
-                    this.a(this.i() ? "animation.ellie.crouchidle" : "animation.ellie.idle", true, animEvent);
+                    this.createAnimation(this.boolean_i() ? "animation.ellie.crouchidle" : "animation.ellie.idle", true, animEvent);
                     break;
                 }
                 if (this.i()) {
@@ -1117,22 +1117,22 @@ implements VoidCallback {
                 }
                 case "hugMSG2": {
                     this.h("Hmm...");
-                    this.a(ModSounds.GIRLS_ELLIE_HMPH[3], 6.0f);
+                    this.playSoundAtVolume(ModSounds.GIRLS_ELLIE_HMPH[3], 6.0f);
                     break;
                 }
                 case "hugMSG3": {
                     this.h("Hey!");
-                    this.a(ModSounds.GIRLS_ELLIE_HUH[1], 1.0f);
+                    this.playSoundAtVolume(ModSounds.GIRLS_ELLIE_HUH[1], 1.0f);
                     break;
                 }
                 case "hugMSG4": {
                     this.h(I18n.format("ellie.dialogue.mommyhorny", new Object[0]));
-                    this.a(ModSounds.GIRLS_ELLIE_MOMMYHORNY, 0.5f);
+                    this.playSoundAtVolume(ModSounds.GIRLS_ELLIE_MOMMYHORNY, 0.5f);
                     break;
                 }
                 case "hugMSG5": {
                     this.h(I18n.format("ellie.dialogue.whattodo", new Object[0]));
-                    this.a(ModSounds.GIRLS_ELLIE_HUH[1], 6.0f);
+                    this.playSoundAtVolume(ModSounds.GIRLS_ELLIE_HUH[1], 6.0f);
                     break;
                 }
                 case "hugDone": {
@@ -1142,24 +1142,24 @@ implements VoidCallback {
                 }
                 case "hugselectedMSG1": {
                     this.h(I18n.format("ellie.dialogue.iknow", new Object[0]));
-                    this.a(ModSounds.GIRLS_ELLIE_HMPH[3], 6.0f);
+                    this.playSoundAtVolume(ModSounds.GIRLS_ELLIE_HMPH[3], 6.0f);
                     break;
                 }
                 case "hugselectedMSG2": {
                     this.h(I18n.format("ellie.dialogue.followmedarling", new Object[0]));
-                    this.a(ModSounds.GIRLS_ELLIE_GIGGLE[3], 6.0f);
+                    this.playSoundAtVolume(ModSounds.GIRLS_ELLIE_GIGGLE[3], 6.0f);
                     if (!this.isOwnedByLocalPlayer()) break;
                     AnimationInputLock.setAnimationLocked(true);
                     break;
                 }
                 case "sitdownMSG1": {
-                    this.a(ModSounds.GIRLS_ELLIE_COMETOMOMMY, 0.5f);
+                    this.playSoundAtVolume(ModSounds.GIRLS_ELLIE_COMETOMOMMY, 0.5f);
                     if (!this.isLocalPlayerNearby()) break;
                     this.h(I18n.format("ellie.dialogue.cometomommy", new Object[0]));
                     break;
                 }
                 case "cowgirlStartMSG0": {
-                    this.a(ModSounds.GIRLS_ELLIE_GIGGLE[4], 6.0f);
+                    this.playSoundAtVolume(ModSounds.GIRLS_ELLIE_GIGGLE[4], 6.0f);
                     break;
                 }
                 case "cowgirlStartMSG1": {
@@ -1169,8 +1169,8 @@ implements VoidCallback {
                     break;
                 }
                 case "cowgirlStartMSG2": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ELLIE_AHH), 6.0f);
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.75f);
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.GIRLS_ELLIE_AHH), 6.0f);
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.75f);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.02);
                     break;
@@ -1185,9 +1185,9 @@ implements VoidCallback {
                     if (this.aj) {
                         this.aj = false;
                     } else {
-                        this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ELLIE_AHH), 6.0f);
+                        this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.GIRLS_ELLIE_AHH), 6.0f);
                     }
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.75f);
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.75f);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.04);
                     break;
@@ -1198,23 +1198,23 @@ implements VoidCallback {
                     break;
                 }
                 case "cowgirlfastdomMSG1": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.75f);
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.75f);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.2);
                     break;
                 }
                 case "cowgirlcumMSG1": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ELLIE_AHH), 6.0f);
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.75f);
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.GIRLS_ELLIE_AHH), 6.0f);
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.75f);
                     break;
                 }
                 case "cowgirlcumMSG2": {
-                    this.a(ModSounds.GIRLS_ELLIE_MOAN[5], 3.0f);
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.75f);
+                    this.playSoundAtVolume(ModSounds.GIRLS_ELLIE_MOAN[5], 3.0f);
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.75f);
                     break;
                 }
                 case "cowgirlcumMSG3": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.75f);
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.75f);
                     break;
                 }
                 case "cowgirlcumMSG4": {
@@ -1224,7 +1224,7 @@ implements VoidCallback {
                 }
                 case "cowgirlcumMSG5": 
                 case "missionary_cumMSG2": {
-                    this.a(ModSounds.GIRLS_ELLIE_GOODBOY, 0.5f);
+                    this.playSoundAtVolume(ModSounds.GIRLS_ELLIE_GOODBOY, 0.5f);
                     if (!this.isOwnedByLocalPlayer()) break;
                     this.a(I18n.format("ellie.dialogue.goodboy", new Object[0]));
                     break;
@@ -1244,7 +1244,7 @@ implements VoidCallback {
                     break;
                 }
                 case "attackSound": {
-                    this.a(SoundEvents.ENTITY_PLAYER_ATTACK_STRONG);
+                    this.playSoundEvent(SoundEvents.ENTITY_PLAYER_ATTACK_STRONG);
                     break;
                 }
                 case "attackDone": {
@@ -1263,22 +1263,22 @@ implements VoidCallback {
                     break;
                 }
                 case "missionary_slowMSG1": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING));
                     if (this.getRNG().nextBoolean() && this.getRNG().nextBoolean()) {
-                        this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ELLIE_MOAN), 6.0f);
+                        this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.GIRLS_ELLIE_MOAN), 6.0f);
                     } else {
-                        this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ELLIE_AHH), 6.0f);
+                        this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.GIRLS_ELLIE_AHH), 6.0f);
                     }
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.02);
                     break;
                 }
                 case "missionary_fastMSG1": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING));
                     if (this.getRNG().nextBoolean() || this.getRNG().nextBoolean()) {
-                        this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ELLIE_MOAN), 6.0f);
+                        this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.GIRLS_ELLIE_MOAN), 6.0f);
                     } else {
-                        this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ELLIE_AHH), 6.0f);
+                        this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.GIRLS_ELLIE_AHH), 6.0f);
                     }
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.05);
@@ -1296,41 +1296,41 @@ implements VoidCallback {
                     break;
                 }
                 case "bedRustle": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING));
-                    this.a(ModSounds.MISC_BEDRUSTLE[0]);
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING));
+                    this.playSoundEvent(ModSounds.MISC_BEDRUSTLE[0]);
                     break;
                 }
                 case "bedRustle1": {
-                    this.a(ModSounds.MISC_BEDRUSTLE[1]);
+                    this.playSoundEvent(ModSounds.MISC_BEDRUSTLE[1]);
                     break;
                 }
                 case "missionary_cumMSG1": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ELLIE_AHH), 6.0f);
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.GIRLS_ELLIE_AHH), 6.0f);
                     break;
                 }
                 case "carry_introMSG1": {
                     this.a("I'm hungry..");
-                    this.a(ModSounds.GIRLS_ELLIE_HMPH, 6.0f);
+                    this.playSoundAtVolume(ModSounds.GIRLS_ELLIE_HMPH, 6.0f);
                     break;
                 }
                 case "carry_introMSG2": {
                     this.a("heh~");
-                    this.a(ModSounds.GIRLS_ELLIE_GIGGLE[3], 6.0f);
+                    this.playSoundAtVolume(ModSounds.GIRLS_ELLIE_GIGGLE[3], 6.0f);
                     break;
                 }
                 case "lipsound": {
-                    this.a(ModSounds.GIRLS_ALLIE_LIPSOUND, new int[0]);
+                    this.playSoundEvent(ModSounds.GIRLS_ALLIE_LIPSOUND, new int[0]);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.02);
                     break;
                 }
                 case "cum": {
-                    this.a(ModSounds.MISC_INSERTS, 6.0f);
-                    this.a(ModSounds.MISC_POUNDING, new int[0]);
+                    this.playSoundAtVolume(ModSounds.MISC_INSERTS, 6.0f);
+                    this.playSoundEvent(ModSounds.MISC_POUNDING, new int[0]);
                     break;
                 }
                 case "pound": {
-                    this.a(ModSounds.MISC_POUNDING, new int[0]);
+                    this.playSoundEvent(ModSounds.MISC_POUNDING, new int[0]);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.04);
                     break;

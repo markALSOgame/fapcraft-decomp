@@ -162,7 +162,7 @@ implements BooleanCheck {
     }
 
     @Override
-    protected void a() {
+    protected void resetHomeData() {
         KoboldPlayerRenderer.clearColorCache();
         KoboldNpcRenderer.clearColorCache();
     }
@@ -218,7 +218,7 @@ implements BooleanCheck {
     }
 
     @Override
-    public boolean a() {
+    public boolean boolean_a() {
         boolean flag;
         Block block = this.world.getBlockState(this.getPosition().add(0, 1, 0)).getBlock();
         try {
@@ -266,7 +266,7 @@ implements BooleanCheck {
 
     @Override
     @Nullable
-    protected GirlAnimationState c(GirlAnimationState girlAnimationState) {
+    protected GirlAnimationState getFollowUpAction(GirlAnimationState girlAnimationState) {
         try {
             if (girlAnimationState == GirlAnimationState.SUCKBLOWJOB_BLINK) {
                 return GirlAnimationState.THRUSTBLOWJOB;
@@ -287,7 +287,7 @@ implements BooleanCheck {
     }
 
     @Override
-    protected GirlAnimationState a(GirlAnimationState girlAnimationState) {
+    protected GirlAnimationState nextAnimationState(GirlAnimationState girlAnimationState) {
         block14: {
             block13: {
                 block12: {
@@ -620,9 +620,9 @@ implements BooleanCheck {
                 }
                 case "lipsound": {
                     if (this.getRNG().nextBoolean()) {
-                        this.a(ModSounds.GIRLS_ALLIE_LIPSOUND, 1.5f);
+                        this.playRandomSoundWithChance(ModSounds.GIRLS_ALLIE_LIPSOUND, 1.5f);
                     } else {
-                        this.a(ModSounds.GIRLS_JENNY_LIPSOUND, 1.5f);
+                        this.playRandomSoundWithChance(ModSounds.GIRLS_JENNY_LIPSOUND, 1.5f);
                     }
                     GuiHud.addProgress(0.02f);
                     break;
@@ -656,11 +656,11 @@ implements BooleanCheck {
                     break;
                 }
                 case "cumLoud": {
-                    this.a(ModSounds.MISC_SMALLINSERTS, 3.0f);
+                    this.playRandomSoundWithChance(ModSounds.MISC_SMALLINSERTS, 3.0f);
                     break;
                 }
                 case "cumQuiet": {
-                    this.a(ModSounds.MISC_SMALLINSERTS, 1.5f);
+                    this.playRandomSoundWithChance(ModSounds.MISC_SMALLINSERTS, 1.5f);
                     break;
                 }
                 case "analCumDone":
@@ -712,7 +712,7 @@ implements BooleanCheck {
                     break;
                 }
                 case "cum": {
-                    this.a(ModSounds.MISC_SMALLINSERTS, 2.0f);
+                    this.playRandomSoundWithChance(ModSounds.MISC_SMALLINSERTS, 2.0f);
                     break;
                 }
                 case "giggle": {

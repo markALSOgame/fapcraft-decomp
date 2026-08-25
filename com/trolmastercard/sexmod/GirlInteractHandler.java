@@ -73,7 +73,7 @@ public class GirlInteractHandler {
       }
 
       try {
-         if (!playerGirl.getScale()) {
+         if (!playerGirl.v()) {
             return;
          }
       } catch (RuntimeException error2) {

@@ -213,7 +213,7 @@ public class KoboldEggEntity extends EntityLivingBase implements IAnimatable {
    }
 
    public void registerControllers(AnimationData animationData) {
-      AnimationController = new AnimationController(this, "controller", 5.0F, this::a);
+      AnimationController = new AnimationController(this, "controller", 5.0F, this::selectAnimation);
       animationData.addAnimationController(AnimationController);
    }
 

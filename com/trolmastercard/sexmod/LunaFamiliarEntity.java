@@ -51,7 +51,7 @@ public class LunaFamiliarEntity extends Entity {
 
    protected void entityInit() {
       this.getDataManager().register(HookedEntityIdKey, 0);
-      this.getDataManager().register(OwnerUuidKey, Optional.of(SummonerNpc.f()));
+      this.getDataManager().register(OwnerUuidKey, Optional.of(SummonerNpc.getGirlUuid()));
    }
 
    public AxisAlignedBB getRenderBoundingBox() {

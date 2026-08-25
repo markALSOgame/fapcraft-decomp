@@ -99,7 +99,7 @@ public abstract class GirlEffectEntity extends GirlEntity {
         this.L = blockPos;
     }
 
-   protected abstract void a();
+   protected abstract void void_a();
 
    protected abstract String a(StringBuilder sb);
 

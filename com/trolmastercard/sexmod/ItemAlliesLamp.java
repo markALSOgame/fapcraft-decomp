@@ -265,7 +265,7 @@ public class ItemAlliesLamp extends Item implements IAnimatable {
                 allie2.setPositionAndRotation(vec3d.x, vec3d.y, vec3d.z, entityPlayer.rotationYaw + 180.0f, entityPlayer.rotationPitch);
                 allie2.setTargetPos(allie2.getPositionVector());
                 allie2.b(entityPlayer.rotationYaw + 180.0f);
-                allie2.a(true);
+                allie2.setShouldBeAtTargetPos(true);
                 allie2.setNoGravity(true);
                 allie2.noClip = true;
                 entityPlayer.world.spawnEntity((Entity)allie2);
@@ -321,7 +321,7 @@ public class ItemAlliesLamp extends Item implements IAnimatable {
             }
          }
          catch (ConcurrentModificationException concurrentModificationException) {
-            throw ItemAlliesLamp.a.rethrow(concurrentModificationException);
+            throw rethrow(concurrentModificationException);
          }
          if (entityPlayer.world.isRemote && !AnimationInputLock.isAnimationLocked()) {
             return;

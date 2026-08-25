@@ -272,8 +272,8 @@ public class GuiCustomizeGirl extends GuiScreen {
       GuiCustomizeGirl gui;
       int i5;
       int i6;
-      byte bv;
-      byte bv2;
+      int bv;
+      int bv2;
       label32: {
          try {
             gui = this;
@@ -311,8 +311,8 @@ public class GuiCustomizeGirl extends GuiScreen {
       GuiCustomizeGirl gui;
       int i5;
       int i6;
-      byte bv;
-      byte bv2;
+      int bv;
+      int bv2;
       label41: {
          try {
             gui = this;
@@ -805,71 +805,19 @@ public class GuiCustomizeGirl extends GuiScreen {
    @SideOnly(Side.CLIENT)
 
    public static void openGui(@Nonnull GirlEntity girl) {
-        Object object;
-        this.mc = Minecraft.getMinecraft();
-        this.GirlUuid = girl.getGirlUuid();
-        GirlRegistry girlType = GirlRegistry.getByEntity((Entity)girl);
-        if (girlType == null) {
-            girlType = GirlRegistry.JENNY;
-        }
-        try {
-            object = girlType.npcClass.getConstructor(World.class);
-            this.Girl = (GirlEntity)((Constructor)object).newInstance(this.mc.world);
-            this.Girl.setTracked(true);
-        }
-        catch (Exception exception) {
-            exception.printStackTrace();
-        }
-        this.e();
-        object = girl.C();
-        this.Girl.getDataManager().set(GirlEntity.CustomModelKey, object);
-        int i = 0;
-        for (String string : this.Girl.Y()) {
-            Map.Entry<GirlBodySlot, Map.Entry<List<String>, Integer>> entry;
-            block15: {
-                GirlBodySlot girlBodySlot;
-                block14: {
-                    girlBodySlot = FilePersistence.getBodySlot(string);
-                    try {
-                        if (GirlBodySlot.CUSTOM_BONE.equals((Object)girlBodySlot)) {
-                            ++i;
-                        }
-                    }
-                    catch (Exception exception) {
-                        throw GuiCustomizeGirl.rethrow(exception);
-                    }
-                    entry = null;
-                    try {
-                        if (!GirlBodySlot.CUSTOM_BONE.equals((Object)girlBodySlot) || i <= 1) break block14;
-                    }
-                    catch (Exception exception) {
-                        throw GuiCustomizeGirl.rethrow(exception);
-                    }
-                    entry = GuiCustomizeGirl.getClothingData(this.Girl);
-                    break block15;
-                }
-                for (Map.Entry<GirlBodySlot, Map.Entry<List<String>, Integer>> entry2 : ClothingOptions) {
-                    if (!entry2.getKey().equals((Object)girlBodySlot)) continue;
-                    entry = entry2;
-                }
-            }
-            try {
-                if (entry == null) {
-                    continue;
-                }
-            }
-            catch (Exception exception) {
-                throw GuiCustomizeGirl.rethrow(exception);
-            }
-            ClothingOptions.remove(entry);
-            int i2 = entry.getValue().getKey().indexOf(string);
-            if (i2 == -1) {
-                i2 = 0;
-            }
-            entry.getValue().setValue(i2);
-            ClothingOptions.add(entry);
-        }
-    }
+      Minecraft minecraft = Minecraft.getMinecraft();
+      if (minecraft.currentScreen instanceof GuiCustomizeGirl) {
+         return;
+      }
+
+      boolean flag = FilePersistence.getServerAddress() == null || FilePersistence.isServerWhitelisted();
+      if (!flag) {
+         minecraft.player.sendStatusMessage(new net.minecraft.util.text.TextComponentString("You have to whitelist the server to use its custom models. " + net.minecraft.util.text.TextFormatting.YELLOW + "/whitelistserver"), true);
+         return;
+      }
+
+      minecraft.addScheduledTask(() -> minecraft.displayGuiScreen(new GuiCustomizeGirl(girl)));
+   }
 
    private static Exception rethrow(Exception error) {
       return error;
@@ -891,7 +839,7 @@ public class GuiCustomizeGirl extends GuiScreen {
                             }
                         }
                         catch (RuntimeException runtimeException) {
-                            throw GuiCustomizeGirl.b.rethrow(runtimeException);
+                            throw rethrow(runtimeException);
                         }
                         try {
                             try {
@@ -899,13 +847,13 @@ public class GuiCustomizeGirl extends GuiScreen {
                                 if (0 == FilePersistence.reloadModels(true)) break block14;
                             }
                             catch (RuntimeException runtimeException) {
-                                throw GuiCustomizeGirl.b.rethrow(runtimeException);
+                                throw rethrow(runtimeException);
                             }
                             flag = true;
                             break block15;
                         }
                         catch (RuntimeException runtimeException) {
-                            throw GuiCustomizeGirl.b.rethrow(runtimeException);
+                            throw rethrow(runtimeException);
                         }
                     }
                     flag = false;
@@ -917,7 +865,7 @@ public class GuiCustomizeGirl extends GuiScreen {
                     }
                 }
                 catch (RuntimeException runtimeException) {
-                    throw GuiCustomizeGirl.b.rethrow(runtimeException);
+                    throw rethrow(runtimeException);
                 }
             }
             Minecraft minecraft = Minecraft.getMinecraft();
@@ -929,7 +877,7 @@ public class GuiCustomizeGirl extends GuiScreen {
                 }
             }
             catch (RuntimeException runtimeException) {
-                throw GuiCustomizeGirl.b.rethrow(runtimeException);
+                throw rethrow(runtimeException);
             }
             GuiCustomizeGirl.openGui(playerGirl);
         }

@@ -182,7 +182,7 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    protected GirlAnimationState c(GirlAnimationState girlAnimationState) {
+    protected GirlAnimationState getFollowUpAction(GirlAnimationState girlAnimationState) {
         try {
             if (girlAnimationState == GirlAnimationState.ANAL_SLOW) {
                 return GirlAnimationState.ANAL_FAST;
@@ -203,7 +203,7 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    protected GirlAnimationState a(GirlAnimationState girlAnimationState) {
+    protected GirlAnimationState nextAnimationState(GirlAnimationState girlAnimationState) {
         block9: {
             block8: {
                 try {

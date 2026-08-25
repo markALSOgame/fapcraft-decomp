@@ -1,5 +1,5 @@
 package com.trolmastercard.sexmod;
 
 public interface BooleanCheck {
-   boolean a();
+   boolean boolean_a();
 }

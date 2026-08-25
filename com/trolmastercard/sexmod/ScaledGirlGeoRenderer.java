@@ -68,8 +68,8 @@ public abstract class ScaledGirlGeoRenderer<G extends GirlEffectEntity> extends 
    @Override
    protected void a(BufferBuilder bufferBuilder, GeoBone bone) {
       ItemStack stack = this.a((ItemStack)null);
-      float f = this.a();
-      Vec3d vec3d = this.a(stack);
+      float f = this.float_a();
+      Vec3d vec3d = this.getItemRenderRotation(stack);
 
       try {
          if (stack == null) {
@@ -94,11 +94,11 @@ public abstract class ScaledGirlGeoRenderer<G extends GirlEffectEntity> extends 
       GlStateManager.popMatrix();
    }
 
-   protected float a() {
+   protected float float_a() {
       return 1.0F;
    }
 
-   protected Vec3d a(ItemStack stack) {
+   protected Vec3d getItemRenderRotation(ItemStack stack) {
       return new Vec3d(-90.0, 0.0, 0.0);
    }
 

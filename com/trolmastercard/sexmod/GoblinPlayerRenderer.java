@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.UUID;
 import javax.annotation.Nullable;
 import javax.vecmath.Vector4f;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -20,6 +21,7 @@ import software.bernie.geckolib3.geo.render.built.GeoBone;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 public class GoblinPlayerRenderer extends CustomColorGirlRenderer {
+   static Minecraft Mc;
    GoblinPlayer RenderedGoblin = null;
    boolean IsShoulderCarried = false;
    boolean IsPickingUp = false;
@@ -27,6 +29,7 @@ public class GoblinPlayerRenderer extends CustomColorGirlRenderer {
 
    public GoblinPlayerRenderer(RenderManager renderManager, AnimatedGeoModel animatedGeoModel) {
       super(renderManager, animatedGeoModel);
+      Mc = Minecraft.getMinecraft();
    }
 
    @Override
@@ -38,7 +41,7 @@ public class GoblinPlayerRenderer extends CustomColorGirlRenderer {
                 stringArray = GirlEffectEntity.getAttributeStrings(this.RenderEntity);
                 try {
                     if (stringArray.length < 8) {
-                        return z;
+                        return DefaultColor;
                     }
                 }
                 catch (RuntimeException runtimeException) {
@@ -102,11 +105,11 @@ public class GoblinPlayerRenderer extends CustomColorGirlRenderer {
         catch (RuntimeException runtimeException) {
             throw GoblinPlayerRenderer.rethrow(runtimeException);
         }
-        return z;
+        return DefaultColor;
     }
 
    @Override
-   protected Vector4f getBoneTint(String string, float f, float f2, float f3) {
+   protected Vector4f a(String string, float f, float f2, float f3) {
       if (string.startsWith("crown")) {
          ItemStack stack = (ItemStack)this.RenderEntity.getDataManager().get(InventoryGirlEntity.HelmetKey);
 
@@ -344,7 +347,7 @@ public class GoblinPlayerRenderer extends CustomColorGirlRenderer {
 
    @Override
 
-   public void render(GirlEntity girl, double d, double d2, double d3, float f, float f2) {
+   public void doRender(GirlEntity girl, double d, double d2, double d3, float f, float f2) {
       this.D = GoblinPlayerRenderer.RenderTrigger;
       this.RenderedGoblin = (GoblinPlayer)girl;
       this.IsShoulderCarried = -420.69F == f && girl.getCurrentAction() == GirlAnimationState.SHOULDER_IDLE;
@@ -352,7 +355,7 @@ public class GoblinPlayerRenderer extends CustomColorGirlRenderer {
       this.RenderTick = f2;
       GoblinNpcRenderer.B = f;
       GirlAnimationState girlAnimationState = girl.getCurrentAction();
-      UUID uuid = this.RenderedGoblin.e();
+      UUID uuid = this.RenderedGoblin.getGirlUuid();
 
       if (girl.isTracked()) {
          Vec3d vec3d = GoblinNpcRenderer.a(girl.world, girl, uuid, d, d2, d3);
@@ -403,7 +406,7 @@ public class GoblinPlayerRenderer extends CustomColorGirlRenderer {
                }
             }
 
-            Vec3d vec3d3 = GoblinNpcRenderer.getThrowAimOffset(girl, this.RenderedGoblin.e(), f2);
+            Vec3d vec3d3 = GoblinNpcRenderer.getThrowAimOffset(girl, this.RenderedGoblin.getGirlUuid(), f2);
             d = vec3d3.x;
             d2 = vec3d3.y;
             d3 = vec3d3.z;
@@ -455,7 +458,7 @@ public class GoblinPlayerRenderer extends CustomColorGirlRenderer {
          }
       }
 
-      super.render(girl, d, d2, d3, f, f2);
+      super.doRender(girl, d, d2, d3, f, f2);
 
       if (GoblinNpcRenderer.isInCatchThrowAnimation(girl, girlAnimationState) && Mc.gameSettings.thirdPersonView == 0 && Mc.player.getPersistentID().equals(uuid)) {
          GlStateManager.popMatrix();
@@ -463,14 +466,14 @@ public class GoblinPlayerRenderer extends CustomColorGirlRenderer {
     }
 
    @Override
-   protected void renderGeometry(Tessellator tessellator, BufferBuilder bufferBuilder, GirlEntity girl, Vec3f vec3f, float f) {
+   protected void b(Tessellator tessellator, BufferBuilder bufferBuilder, GirlEntity girl, Vec3f vec3f, float f) {
       a(tessellator, bufferBuilder, girl, vec3f, f);
    }
 
    @Nullable
    @Override
 
-   protected Vec3f getTexture(GirlEntity girl) {
+   protected Vec3f e(GirlEntity girl) {
       if (!this.D) {
          return null;
       }
@@ -524,7 +527,7 @@ public class GoblinPlayerRenderer extends CustomColorGirlRenderer {
    }
 
    @Override
-   protected void applyModelScale() {
+   protected void applyScaleOffset() {
       GlStateManager.translate(0.0, -0.77, -0.05);
       GlStateManager.scale(0.5, 0.5, 0.5);
    }
@@ -538,7 +541,7 @@ public class GoblinPlayerRenderer extends CustomColorGirlRenderer {
                 block7: {
                     try {
                         try {
-                            super.applyItemPose(flag, stack);
+                            super.a(flag, stack);
                             if (stack.getItem().getItemUseAction(stack) != EnumAction.BOW) break block6;
                             if (!flag) break block7;
                         }
@@ -568,7 +571,7 @@ public class GoblinPlayerRenderer extends CustomColorGirlRenderer {
     }
 
    @Override
-   protected void a(boolean flag) {
+   protected void applyHandOffset(boolean flag) {
    }
 
    @Override
@@ -580,7 +583,7 @@ public class GoblinPlayerRenderer extends CustomColorGirlRenderer {
                     block7: {
                         try {
                             try {
-                                super.applyArmPose(flag, flag2);
+                                super.a(flag, flag2);
                                 if (!flag) break block6;
                                 if (!flag2) break block7;
                             }

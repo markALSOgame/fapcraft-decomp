@@ -13,18 +13,18 @@ import net.minecraft.world.World;
 public class TreeCluster {
    public static final int MaxLogCapacity = 30;
    BlockPos AnchorPos;
-   TreeCluster.TaskType TaskType;
+   KoboldTask TaskType;
    HashSet<BlockPos> LogPositions;
    List<KoboldNpc> Assignees = new ArrayList<>();
    EnumFacing Facing = EnumFacing.NORTH;
 
-   public TreeCluster(BlockPos pos, TreeCluster.TaskType taskType, HashSet<BlockPos> set) {
+   public TreeCluster(BlockPos pos, KoboldTask taskType, HashSet<BlockPos> set) {
       this.AnchorPos = pos;
       this.TaskType = taskType;
       this.LogPositions = set;
    }
 
-   public TreeCluster(BlockPos pos, TreeCluster.TaskType taskType, HashSet<BlockPos> set, EnumFacing facing) {
+   public TreeCluster(BlockPos pos, KoboldTask taskType, HashSet<BlockPos> set, EnumFacing facing) {
       this.AnchorPos = pos;
       this.TaskType = taskType;
       this.LogPositions = set;
@@ -39,7 +39,7 @@ public class TreeCluster {
       return this.AnchorPos;
    }
 
-   public TreeCluster.TaskType getTaskType() {
+   public KoboldTask getTaskType() {
       return this.TaskType;
    }
 
@@ -182,7 +182,7 @@ public class TreeCluster {
             }
         }
         hashSet.removeAll(hashSet4);
-        TreeCluster treeCluster2 = new TreeCluster(blockPos2, TreeCluster.TaskType.FALL_TREE, hashSet);
+        TreeCluster treeCluster2 = new TreeCluster(blockPos2, KoboldTask.FALL_TREE, hashSet);
         GirlHomeBuilder.addAnchor(uuid, treeCluster2);
         return hashSet;
     }
@@ -383,13 +383,13 @@ public class TreeCluster {
       return error;
    }
 
-   public enum TaskType {
+   public enum KoboldTask {
       FALL_TREE(1),
       MINE(3);
 
       int Cost;
 
-      TaskType(int i) {
+      KoboldTask(int i) {
          this.Cost = i;
       }
 

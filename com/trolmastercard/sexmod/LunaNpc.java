@@ -237,7 +237,7 @@ fg {
     }
 
     @Override
-    public void b() {
+    public void void_b() {
         this.ac = true;
     }
 
@@ -341,7 +341,7 @@ fg {
                                 }
                                 try {
                                     try {
-                                        this.m();
+                                        this.void_m();
                                         this.getRenderLabelOffset();
                                         entityDataManager = this.DataManager;
                                         dataParameter = IsBoundKey;
@@ -448,11 +448,11 @@ fg {
             Vec3d vec3d = LerpMath.stepTowards(this.getPositionVector(), this.getTargetPos(), 40 - this.aw);
             this.setPosition(vec3d.x, vec3d.y, vec3d.z);
         }
-        this.d();
+        this.void_d();
         this.DataManager.set(ActiveItemStackKey, (Object)this.Inventory.getStackInSlot(6));
     }
 
-    void d() {
+    void void_d() {
         ItemStack itemStack = this.HeldRodStack;
         ItemStack itemStack2 = (ItemStack)this.DataManager.get(ActiveItemStackKey);
         try {
@@ -677,7 +677,7 @@ fg {
         this.tasks.addTask(5, (EntityAIBase)this.WanderAI);
     }
 
-    public void h() {
+    public void void_h() {
         try {
             this.getWalkState();
             if (++this.aq >= 3) {
@@ -834,7 +834,7 @@ fg {
         this.CurrentPath = this.getNavigator().getPath();
     }
 
-    public void o() {
+    public void void_o() {
         this.VisitedPositions.add(this.MoveTargetPos);
         this.getWalkState();
     }
@@ -900,7 +900,7 @@ fg {
         }
     }
 
-    void n() {
+    void void_n() {
         block26: {
             int i;
             BlockPos blockPos;
@@ -995,7 +995,7 @@ fg {
         }
     }
 
-    void m() {
+    void void_m() {
         Path path = this.getNavigator().getPath();
         try {
             if (path == null) {

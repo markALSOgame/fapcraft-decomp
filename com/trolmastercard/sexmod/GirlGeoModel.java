@@ -150,7 +150,7 @@ public abstract class GirlGeoModel<T extends GirlEntity> extends GirlAnimatedGeo
                         try {
                             try {
                                 this.a(t, animationProcessor, animEvent);
-                                if (!(t instanceof InventoryGirlEntity) || ((GirlEntity)t).h()) break block22;
+                                if (!(t instanceof InventoryGirlEntity) || ((GirlEntity)t).isTracked()) break block22;
                             }
                             catch (RuntimeException runtimeException) {
                                 throw GirlGeoModel.rethrow(runtimeException);
@@ -291,9 +291,9 @@ public abstract class GirlGeoModel<T extends GirlEntity> extends GirlAnimatedGeo
       boolean flag2;
       label16: {
          try {
-            this.a(this.c(), flag, animationProcessor);
+            this.a(this.getHelmetBones(), flag, animationProcessor);
             girlGeoModel = this;
-            stringArray = this.g();
+            stringArray = this.getHeadAccessoryBones();
             if (!flag) {
                flag2 = true;
                break label16;
@@ -314,9 +314,9 @@ public abstract class GirlGeoModel<T extends GirlEntity> extends GirlAnimatedGeo
       boolean flag2;
       label16: {
          try {
-            this.a(this.f(), flag, animationProcessor);
+            this.a(this.getChestArmorBones(), flag, animationProcessor);
             girlGeoModel = this;
-            stringArray = this.a();
+            stringArray = this.getFleshTorsoBones();
             if (!flag) {
                flag2 = true;
                break label16;
@@ -337,9 +337,9 @@ public abstract class GirlGeoModel<T extends GirlEntity> extends GirlAnimatedGeo
       boolean flag2;
       label16: {
          try {
-            this.a(this.h(), flag, animationProcessor);
+            this.a(this.getPantsArmorBones(), flag, animationProcessor);
             girlGeoModel = this;
-            stringArray = this.e();
+            stringArray = this.getFleshLegsBones();
             if (!flag) {
                flag2 = true;
                break label16;
@@ -360,9 +360,9 @@ public abstract class GirlGeoModel<T extends GirlEntity> extends GirlAnimatedGeo
       boolean flag2;
       label16: {
          try {
-            this.a(this.b(), flag, animationProcessor);
+            this.a(this.getBootsArmorBones(), flag, animationProcessor);
             girlGeoModel = this;
-            stringArray = this.d();
+            stringArray = this.getFleshFeetBones();
             if (!flag) {
                flag2 = true;
                break label16;
@@ -572,7 +572,7 @@ public abstract class GirlGeoModel<T extends GirlEntity> extends GirlAnimatedGeo
 
    public ItemStack a(GirlEntity girl, String string) {
       try {
-         if (Arrays.asList(this.c()).contains(string)) {
+         if (Arrays.asList(this.getHelmetBones()).contains(string)) {
             return (ItemStack)girl.DataManager.get(InventoryGirlEntity.HelmetKey);
          }
       } catch (RuntimeException error) {
@@ -580,7 +580,7 @@ public abstract class GirlGeoModel<T extends GirlEntity> extends GirlAnimatedGeo
       }
 
       try {
-         if (Arrays.asList(this.f()).contains(string)) {
+         if (Arrays.asList(this.getChestArmorBones()).contains(string)) {
             return (ItemStack)girl.DataManager.get(InventoryGirlEntity.ChestKey);
          }
       } catch (RuntimeException error2) {

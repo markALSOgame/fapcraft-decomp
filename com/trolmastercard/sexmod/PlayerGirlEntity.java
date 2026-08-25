@@ -175,11 +175,11 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
    public void u_() {
    }
 
-   public abstract void b(String string, UUID uuid);
+   public abstract void startAction(String string, UUID uuid);
 
-   public abstract ModelPartProvider a(int i2);
+   public abstract ModelPartProvider getHandModel(int i2);
 
-   public abstract String c(int i3);
+   public abstract String getHandTexture(int i3);
 
    public Vec3i b(int i) {
       return new Vec3i(255, 255, 255);
@@ -455,7 +455,7 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
       return false;
    }
 
-   void d(EntityPlayer player) {
+   void void_d(EntityPlayer player) {
       NBTTagCompound tagCompound = player.getEntityData();
       String string = tagCompound.getString("sexmod:CustomModel" + GirlRegistry.getByEntity(this));
       this.f(string);
@@ -490,7 +490,7 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
                 catch (ConcurrentModificationException concurrentModificationException) {
                     throw PlayerGirlEntity.rethrow(concurrentModificationException);
                 }
-                this.d(entityPlayer);
+                this.void_d(entityPlayer);
                 if (this.Q()) {
                     Vec3d vec3d = this.getTargetPos();
                     this.setPositionAndUpdate(vec3d.x, vec3d.y, vec3d.z);

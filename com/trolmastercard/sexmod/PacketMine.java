@@ -90,7 +90,7 @@ public class PacketMine implements IMessage {
                         throw PacketMine.Handler.rethrow(runtimeException);
                     }
                 }
-                TreeCluster treeCluster = new TreeCluster(packet.Pos, TreeCluster.TaskType.MINE, hashSet, packet.Facing);
+                TreeCluster treeCluster = new TreeCluster(packet.Pos, TreeCluster.KoboldTask.MINE, hashSet, packet.Facing);
                 GirlHomeBuilder.addAnchor(uUID, treeCluster);
                 NetworkHandler.channel.sendTo((IMessage)new PacketSendBlocks(hashSet, true), ctx.getServerHandler().player);
             });

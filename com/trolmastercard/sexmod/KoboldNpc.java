@@ -321,7 +321,7 @@ dr {
         KoboldNpcRenderer.clearColorCache();
     }
 
-    void m() {
+    void void_m() {
         if (this.OutfitData == null) {
             return;
         }
@@ -592,7 +592,7 @@ dr {
             this.handleGirlUuidEvent(entityPlayer.getPersistentID());
             this.getNavigator().clearPath();
             this.b((float)(Math.atan2(this.posZ - entityPlayer.posZ, this.posX - entityPlayer.posX) * 57.29577951308232 + 90.0));
-            this.getDisplayName(new Vec3d(this.posX, Math.floor(this.posY), this.posZ));
+            this.setTargetPos(new Vec3d(this.posX, Math.floor(this.posY), this.posZ));
             this.DataManager.set(G, (Object)true);
             this.setCurrentAction(GirlAnimationState.NULL);
         }
@@ -695,13 +695,13 @@ dr {
     }
 
     @Override
-    public void b() {
+    public void void_b() {
         this.a2 = true;
         this.DataManager.set(G, (Object)false);
     }
 
     @Override
-    protected void a() {
+    protected void void_a() {
         KoboldNpcRenderer.clearColorCache();
     }
 
@@ -1107,7 +1107,7 @@ dr {
         this.canInteract(entityPlayer);
     }
 
-    void t() {
+    void void_t() {
         try {
             if (((Boolean)this.DataManager.get(aC)).booleanValue()) {
                 return;
@@ -1336,10 +1336,11 @@ dr {
         this.canInteract(entityPlayer);
     }
 
-    void b(EntityPlayer entityPlayer) {
+    void void_b(EntityPlayer entityPlayer) {
         float f;
         double d;
         double d2;
+        double d3;
         Vec3d vec3d;
         Vec3d vec3d2;
         PlayerGirlEntity playerGirl = PlayerGirlEntity.getByUuid(entityPlayer.getPersistentID());
@@ -1362,10 +1363,10 @@ dr {
         this.rotationPitch = (float)(-(Math.sin(d4 / d3) * 57.29577951308232));
     }
 
-    void u() {
+    void u_() {
     }
 
-    boolean o() {
+    boolean boolean_o() {
         try {
             if (this.getCurrentAction() != GirlAnimationState.NULL) {
                 return false;
@@ -1397,7 +1398,7 @@ dr {
      * Enabled force condition propagation
      * Lifted jumps to return sites
      */
-    void d() {
+    void void_d() {
         UUID uUID;
         block23: {
             block21: {
@@ -1465,7 +1466,7 @@ dr {
                     catch (IllegalArgumentException illegalArgumentException) {
                         throw KoboldNpc.rethrow(illegalArgumentException);
                     }
-                    this.getDisplayName(entityPlayer);
+                    this.void_c(entityPlayer);
                     return;
                 }
                 catch (IllegalArgumentException illegalArgumentException) {
@@ -1474,7 +1475,7 @@ dr {
             }
             try {
                 if (!GirlHomeBuilder.isKoboldOfGirl(uUID, this)) break block23;
-                this.b(uUID);
+                this.void_b(uUID);
                 return;
             }
             catch (IllegalArgumentException illegalArgumentException) {
@@ -1522,9 +1523,9 @@ dr {
         }
     }
 
-    void b(UUID uuid) {
+    void void_b(UUID uuid) {
         ActivityState activityState;
-        if (this.d(uuid)) {
+        if (this.d_(uuid)) {
             return;
         }
         if (!this.J() && GirlHomeBuilder.hasKobold(uuid)) {
@@ -1551,7 +1552,7 @@ dr {
         switch (activityState) {
             case ACTIVE: {
                 this.aF = null;
-                this.getDisplayName(uuid);
+                this.void_c(uuid);
                 break;
             }
             case REST: {
@@ -1620,7 +1621,7 @@ dr {
                     throw KoboldNpc.rethrow(illegalArgumentException);
                 }
             }
-            this.a(uUID);
+            this.void_a(uUID);
         }
     }
 
@@ -1646,7 +1647,7 @@ dr {
                         Vec3d vec3d3 = LerpMath.lerpVec3d(vec3d, vec3d2, 0.5);
                         try {
                             this.DataManager.set(G, (Object)true);
-                            this.getDisplayName(vec3d3);
+                            this.setTargetPos(vec3d3);
                             kobold = this;
                             f = flag2 ? 0.0f : 90.0f;
                         }
@@ -1722,7 +1723,7 @@ dr {
                         throw KoboldNpc.rethrow(illegalArgumentException);
                     }
                 }
-                BlockPos blockPos3 = this.getDisplayName(blockPos);
+                BlockPos blockPos3 = this.c(blockPos);
                 try {
                     this.getNavigator().tryMoveToXYZ((double)blockPos3.getX(), (double)blockPos3.getY(), (double)blockPos3.getZ(), (double)0.35f);
                     if (this.getNavigator().getPath() == null) {
@@ -1739,7 +1740,7 @@ dr {
         this.setCurrentAction(GirlAnimationState.SLEEP);
     }
 
-    void a(UUID uUID) {
+    void void_a(UUID uUID) {
         block12: {
             int i;
             int i2;
@@ -1805,7 +1806,7 @@ dr {
         this.k();
     }
 
-    void getDisplayName(UUID uUID) {
+    void void_c(UUID uUID) {
         block9: {
             Collection<TreeCluster> collection;
             block8: {
@@ -1924,7 +1925,7 @@ dr {
         GirlHomeBuilder.b(uUID, null);
     }
 
-    protected void getDisplayName(EntityPlayer entityPlayer) {
+    protected void void_c(EntityPlayer entityPlayer) {
         BlockPos blockPos;
         int i = 0;
         do {
@@ -1953,10 +1954,10 @@ dr {
         catch (IllegalArgumentException illegalArgumentException) {
             throw KoboldNpc.rethrow(illegalArgumentException);
         }
-        return this.getDisplayName(blockPos);
+        return this.c(blockPos);
     }
 
-    BlockPos getDisplayName(BlockPos blockPos) {
+    BlockPos c(BlockPos blockPos) {
         double d;
         double d2;
         int i;
@@ -2019,7 +2020,7 @@ dr {
         GirlHomeBuilder.setHomePos(uuid, blockPos);
     }
 
-    void getDisplayName(UUID uUID, Collection<TreeCluster> collection) {
+    void c(UUID uUID, Collection<TreeCluster> collection) {
         List<BlockPos> list = this.a(this.getPosition(), BlockLog.class, 30, 4, null);
         BlockPos blockPos = null;
         for (BlockPos blockPos2 : list) {
@@ -2068,11 +2069,11 @@ dr {
         return ActivityState.REST;
     }
 
-    boolean d(UUID uUID) {
-        return this.getDisplayName(uUID, true);
+    boolean d_(UUID uUID) {
+        return this.c(uUID, true);
     }
 
-    boolean getDisplayName(UUID uUID, boolean flag) {
+    boolean c(UUID uUID, boolean flag) {
         Iterator<Object> iterator;
         Object object2;
         HashSet<EntityLivingBase> hashSet = GirlHomeBuilder.getNearbyEntities(uUID);
@@ -2246,7 +2247,7 @@ dr {
         }
     }
 
-    void h(UUID uUID) {
+    void h_(UUID uUID) {
         block22: {
             block20: {
                 block21: {
@@ -2323,7 +2324,7 @@ dr {
         this.k();
     }
 
-    void g(UUID uUID) {
+    void g_(UUID uUID) {
         try {
             if (this.getSexPlayerUuid() != null) {
                 return;
@@ -2375,7 +2376,7 @@ dr {
                 treeCluster = treeCluster3;
                 try {
                     this.aI = null;
-                    if (treeCluster3.getTaskType() == TreeCluster.TaskType.FALL_TREE) {
+                    if (treeCluster3.getTaskType() == KoboldTask.FALL_TREE) {
                         this.h("Ima fall this tree owo");
                         break;
                     }
@@ -2399,7 +2400,7 @@ dr {
             throw KoboldNpc.rethrow(illegalArgumentException);
         }
         try {
-            if (treeCluster.getTaskType() == TreeCluster.TaskType.FALL_TREE) {
+            if (treeCluster.getTaskType() == KoboldTask.FALL_TREE) {
                 this.a(uUID, treeCluster.getAnchorPos(), treeCluster);
             }
         }
@@ -2407,7 +2408,7 @@ dr {
             throw KoboldNpc.rethrow(illegalArgumentException);
         }
         try {
-            if (treeCluster.getTaskType() == TreeCluster.TaskType.MINE) {
+            if (treeCluster.getTaskType() == KoboldTask.MINE) {
                 this.b(uUID, treeCluster);
             }
         }
@@ -2528,7 +2529,7 @@ dr {
                 }
                 IBlockState iBlockState = this.world.getBlockState(this.aI);
                 try {
-                    if (!this.a(new ItemStack(iBlockState.getBlock().getItemDropped(iBlockState, ModConstants.Random, 0)))) {
+                    if (!this.boolean_a(new ItemStack(iBlockState.getBlock().getItemDropped(iBlockState, ModConstants.Random, 0)))) {
                         this.ax = true;
                         this.b(uUID, true);
                         return;
@@ -3150,7 +3151,7 @@ dr {
                     return false;
                 }
                 tileEntityChest = this.getNavigator();
-                blockPos3 = this.getDisplayName(blockPos2);
+                blockPos3 = this.c(blockPos2);
                 try {
                     try {
                         tileEntityChest.tryMoveToXYZ((double)blockPos3.getX(), (double)blockPos3.getY(), (double)blockPos3.getZ(), (double)0.35f);
@@ -3291,7 +3292,7 @@ dr {
                 Main.LOGGER.warn("block in question: " + this.world.getBlockState(object2).getBlock().getTranslationKey());
                 Main.LOGGER.error(illegalArgumentException.getMessage());
             }
-            this.CarriedItem = this.a(object2);
+            this.CarriedItem = this.net_minecraft_item_ItemStack_a(object2);
             this.world.destroyBlock(object2, false);
             treeCluster.removeLogPos(object2);
             treeCluster.removeAllLogPos(hashSet);
@@ -3312,7 +3313,7 @@ dr {
             Main.LOGGER.warn("block in question: " + this.world.getBlockState(blockPos).getBlock().getTranslationKey());
             Main.LOGGER.error(illegalArgumentException.getMessage());
         }
-        this.CarriedItem = this.a(blockPos);
+        this.CarriedItem = this.net_minecraft_item_ItemStack_a(blockPos);
         this.world.destroyBlock(blockPos, false);
         int i = 0;
         for (BlockPos blockPos2 : treeCluster.getLogPositions()) {
@@ -3346,7 +3347,7 @@ dr {
         }
     }
 
-    ItemStack a(BlockPos blockPos) {
+    ItemStack net_minecraft_item_ItemStack_a(BlockPos blockPos) {
         block26: {
             int i;
             int i2;
@@ -3537,7 +3538,7 @@ dr {
                     throw KoboldNpc.rethrow(illegalArgumentException);
                 }
             }
-            entityPlayer = this.getDisplayName(blockPos2);
+            entityPlayer = this.c(blockPos2);
             this.getNavigator().tryMoveToXYZ((double)entityPlayer.getX() + 0.5, (double)entityPlayer.getY(), (double)entityPlayer.getZ() + 0.5, 0.35);
             this.k();
             return;
@@ -3555,7 +3556,7 @@ dr {
         if (blockPos2.subtract((Vec3i)blockPos).equals((Object)new BlockPos(-1, 0, 0))) {
             f = -90.0f;
         }
-        this.getDisplayName(new Vec3d((double)blockPos2.getX() + 0.5, (double)blockPos2.getY(), (double)blockPos2.getZ() + 0.5));
+        this.setTargetPos(new Vec3d((double)blockPos2.getX() + 0.5, (double)blockPos2.getY(), (double)blockPos2.getZ() + 0.5));
         this.b(f);
         this.DataManager.set(G, (Object)true);
         this.DataManager.set(at, (Object)true);
@@ -3701,7 +3702,7 @@ dr {
     }
 
     @Override
-    protected GirlAnimationState getDisplayName(GirlAnimationState girlAnimationState) {
+    protected GirlAnimationState getFollowUpAction(GirlAnimationState girlAnimationState) {
         try {
             if (girlAnimationState == GirlAnimationState.SUCKBLOWJOB_BLINK) {
                 return GirlAnimationState.THRUSTBLOWJOB;
@@ -3722,7 +3723,7 @@ dr {
     }
 
     @Override
-    protected GirlAnimationState a(GirlAnimationState girlAnimationState) {
+    protected GirlAnimationState nextAnimationState(GirlAnimationState girlAnimationState) {
         block14: {
             block13: {
                 block12: {
@@ -3867,7 +3868,7 @@ dr {
     }
 
     @Override
-    public boolean a() {
+    public boolean boolean_a() {
         boolean flag;
         try {
             if (this.isTracked()) {
@@ -3920,14 +3921,14 @@ dr {
             }
             catch (IllegalArgumentException illegalArgumentException) {}
         }
-        return this.a((List<ItemStack>)arrayList);
+        return this.boolean_a((List<ItemStack>)arrayList);
     }
 
-    boolean a(ItemStack itemStack) {
+    boolean boolean_a(ItemStack itemStack) {
         return this.a(this.Inventory, itemStack, true, false);
     }
 
-    boolean a(List<ItemStack> list) {
+    boolean boolean_a(List<ItemStack> list) {
         ItemStackHandler itemStackHandler = new ItemStackHandler(this.Inventory.getSlots());
         try {
             for (int i = 0; i < itemStackHandler.getSlots(); ++i) {
@@ -4044,7 +4045,7 @@ dr {
         float f2 = 0.25f - ((Float)this.DataManager.get(BodySizeKey)).floatValue();
         double d = f2 / 0.25f;
         float f3 = (float)LerpMath.lerp((double)0.9f, (double)1.1f, d);
-        this.a(soundEvent, f, f3);
+        this.playSoundAt(soundEvent, f, f3);
     }
 
     void b(SoundEvent soundEvent) {
@@ -4115,7 +4116,7 @@ dr {
                     this.createAnimationOnce("animation.kobold.crouch_idle", true, animEvent);
                     break;
                 }
-                this.a((Boolean)this.DataManager.get(aC) != false ? "animation.kobold.idle_armed" : "animation.kobold.idle", true, animEvent);
+                this.createAnimationOnce((Boolean)this.DataManager.get(aC) != false ? "animation.kobold.idle_armed" : "animation.kobold.idle", true, animEvent);
                 break;
             }
             case "action": {
@@ -4214,16 +4215,16 @@ dr {
         AnimationController.ISoundListener iSoundListener = arg1 -> {
             switch (arg1.sound) {
                 case "attackSound": {
-                    this.a(SoundEvents.ENTITY_PLAYER_ATTACK_STRONG);
+                    this.playSoundEvent(SoundEvents.ENTITY_PLAYER_ATTACK_STRONG);
                     break;
                 }
                 case "paymentMSG1": {
                     this.a(this.getSexPlayerUuid(), "I'd like to use ur services owo");
-                    this.a(ModSounds.MISC_PLOB, new int[0]);
+                    this.playRandomSound(ModSounds.MISC_PLOB);
                     break;
                 }
                 case "plob": {
-                    this.a(ModSounds.MISC_PLOB, new int[0]);
+                    this.playRandomSound(ModSounds.MISC_PLOB);
                     break;
                 }
                 case "blackScreen": {
@@ -4252,15 +4253,15 @@ dr {
                 }
                 case "lipsound": {
                     if (this.getRNG().nextBoolean()) {
-                        this.a(ModSounds.GIRLS_ALLIE_LIPSOUND, 1.5f);
+                        this.playRandomSoundWithChance(ModSounds.GIRLS_ALLIE_LIPSOUND, 1.5f);
                     } else {
-                        this.a(ModSounds.GIRLS_JENNY_LIPSOUND, 1.5f);
+                        this.playRandomSoundWithChance(ModSounds.GIRLS_JENNY_LIPSOUND, 1.5f);
                     }
                     GuiHud.addProgress(0.02f);
                     break;
                 }
                 case "touch": {
-                    this.a(ModSounds.MISC_TOUCH, new int[0]);
+                    this.playRandomSound(ModSounds.MISC_TOUCH);
                     break;
                 }
                 case "blowjobStartDone": {
@@ -4288,11 +4289,11 @@ dr {
                     break;
                 }
                 case "cumLoud": {
-                    this.a(ModSounds.MISC_SMALLINSERTS, 3.0f);
+                    this.playRandomSoundWithChance(ModSounds.MISC_SMALLINSERTS, 3.0f);
                     break;
                 }
                 case "cumQuiet": {
-                    this.a(ModSounds.MISC_SMALLINSERTS, 1.5f);
+                    this.playRandomSoundWithChance(ModSounds.MISC_SMALLINSERTS, 1.5f);
                     break;
                 }
                 case "analCumDone":
@@ -4316,7 +4317,7 @@ dr {
                     break;
                 }
                 case "pounding": {
-                    this.a(ModSounds.MISC_POUNDING, new int[0]);
+                    this.playRandomSound(ModSounds.MISC_POUNDING);
                     break;
                 }
                 case "analFastRapid": {
@@ -4343,7 +4344,7 @@ dr {
                     break;
                 }
                 case "cum": {
-                    this.a(ModSounds.MISC_SMALLINSERTS, 2.0f);
+                    this.playRandomSoundWithChance(ModSounds.MISC_SMALLINSERTS, 2.0f);
                     break;
                 }
                 case "giggle": {
@@ -4448,7 +4449,7 @@ dr {
                 }
                 case "renderEgg": {
                     this.Q = true;
-                    this.a(ModSounds.MISC_PLOB, 0.5f);
+                    this.playRandomSoundWithChance(ModSounds.MISC_PLOB, 0.5f);
                     break;
                 }
                 case "mating_press_cumDone": {

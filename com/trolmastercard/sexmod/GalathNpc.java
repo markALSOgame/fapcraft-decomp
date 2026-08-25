@@ -2303,8 +2303,8 @@ LeftBallActiveKey {
         catch (ConcurrentModificationException concurrentModificationException) {
             throw GalathNpc.rethrow(concurrentModificationException);
         }
-        this.Q();
-        this.I();
+        this.void_Q();
+        this.void_I();
         this.D();
         this.getWalkState();
         this.J();
@@ -2315,11 +2315,11 @@ LeftBallActiveKey {
         this.aG();
         this.aA();
         this.aD();
-        this.O();
+        this.void_O();
         this.Z();
     }
 
-    void Q() {
+    void void_Q() {
         try {
             if (!this.k()) {
                 return;
@@ -2751,7 +2751,7 @@ LeftBallActiveKey {
         entityPlayer.attackEntityFrom((DamageSource)new GalathMeleeDamageSource(this), 2.14748365E9f);
     }
 
-    void O() {
+    void void_O() {
         EntityLivingBase entityLivingBase = this.getTargetEntity();
         try {
             if (entityLivingBase == null) {
@@ -3157,7 +3157,7 @@ LeftBallActiveKey {
         this.CurrentDeathEvent = null;
     }
 
-    void I() {
+    void void_I() {
         Object object;
         float f;
         try {
@@ -3853,7 +3853,7 @@ LeftBallActiveKey {
     }
 
     @Override
-    public boolean a() {
+    public boolean boolean_a() {
         try {
             switch (this.getCurrentAction()) {
                 case CORRUPT_SLOW: 
@@ -3977,7 +3977,7 @@ LeftBallActiveKey {
         this.setCurrentAction(GirlAnimationState.MASTERBATE_SITTING);
     }
 
-    public void a() {
+    public void void_a() {
         this.a5 = true;
         this.setCurrentAction(GirlAnimationState.PUSSY_LICKING);
     }

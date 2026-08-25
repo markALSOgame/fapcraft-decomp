@@ -1,5 +1,5 @@
 package com.trolmastercard.sexmod;
 
 public interface VoidCallback {
-   void b();
+   void void_b();
 }

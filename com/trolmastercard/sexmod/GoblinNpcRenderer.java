@@ -90,10 +90,10 @@ public class GoblinNpcRenderer extends ScaledGirlGeoRenderer<GoblinNpc> {
       Mc = Minecraft.getMinecraft();
    }
 
-   protected ResourceLocation a(GoblinNpc goblin) throws IOException {
+   protected ResourceLocation d(GoblinNpc goblin) throws IOException {
       UUID uuid = goblin.getSexPlayerUuid();
       if (uuid == null) {
-         uuid = goblin.e();
+         uuid = goblin.getGirlUuid();
       }
 
       label43: {
@@ -241,7 +241,7 @@ public class GoblinNpcRenderer extends ScaledGirlGeoRenderer<GoblinNpc> {
       this.LastPartialTicks = f2;
       B = f;
       GirlAnimationState girlAnimationState = goblin.getCurrentAction();
-      UUID uuid = goblin.e();
+      UUID uuid = goblin.getGirlUuid();
 
       if (goblin.isTracked()) {
          Vec3d vec3d = GoblinNpcRenderer.a(goblin.world, goblin, uuid, d, d2, d3);
@@ -325,7 +325,7 @@ public class GoblinNpcRenderer extends ScaledGirlGeoRenderer<GoblinNpc> {
             return;
          }
 
-         Vector4f vector4f = a(player3, f2);
+         Vector4f vector4f = getShoulderOffset(player3, f2);
          d = vector4f.x;
          d2 = vector4f.y;
          d3 = vector4f.z;
@@ -434,7 +434,7 @@ public class GoblinNpcRenderer extends ScaledGirlGeoRenderer<GoblinNpc> {
       return vec3d.subtract(vec3d2);
    }
 
-   public static Vector4f a(EntityPlayer player2, float f) {
+   public static Vector4f getShoulderOffset(EntityPlayer player2, float f) {
       EntityPlayerSP mcPlayer = Mc.player;
       float f2 = LerpMath.lerp(player2.prevRenderYawOffset, player2.renderYawOffset, f);
       Vec3d vec3d = LerpMath.lerpVec3d(new Vec3d(player2.lastTickPosX, player2.lastTickPosY, player2.lastTickPosZ), player2.getPositionVector(), f);
@@ -445,14 +445,14 @@ public class GoblinNpcRenderer extends ScaledGirlGeoRenderer<GoblinNpc> {
 
    @Override
 
-   protected Vec3i a(String string) {
+   protected Vec3i getBoneColor(String string) {
         String[] stringArray;
         block24: {
             block23: {
                 stringArray = GirlEffectEntity.getAttributeStrings(this.RenderEntity);
                 try {
                     if (stringArray.length < 8) {
-                        return r;
+                        return DefaultColor;
                     }
                 }
                 catch (RuntimeException runtimeException) {
@@ -516,7 +516,7 @@ public class GoblinNpcRenderer extends ScaledGirlGeoRenderer<GoblinNpc> {
         catch (RuntimeException runtimeException) {
             throw GoblinNpcRenderer.rethrow(runtimeException);
         }
-        return r;
+        return DefaultColor;
     }
 
    public static Vec3i parseTribeColor(String string) {
@@ -801,10 +801,10 @@ public class GoblinNpcRenderer extends ScaledGirlGeoRenderer<GoblinNpc> {
       a(bone, i);
    }
 
-   static HashSet<Integer> b(int i, String string) {
+   static HashSet<Integer> rotateSubsetIndex(int i, String string) {
       int i2 = Integer.parseInt(string);
       int i3 = i - 1;
-      ArrayList list = rotateCameraToGirl(i3);
+      ArrayList list = computeSubsets(i3);
 
       while (i2 >= list.size()) {
          i2 -= list.size();
@@ -813,13 +813,13 @@ public class GoblinNpcRenderer extends ScaledGirlGeoRenderer<GoblinNpc> {
       return (HashSet<Integer>)list.get(i2);
    }
 
-   static ArrayList<HashSet<Integer>> a(int i) {
+   static ArrayList<HashSet<Integer>> computeSubsets(int i) {
       ArrayList list = new ArrayList();
-      a(0, new HashSet<>(), i, list);
+      collectSubsets(0, new HashSet<>(), i, list);
       return list;
    }
 
-   static void a(int i, HashSet<Integer> set, int i2, ArrayList<HashSet<Integer>> list) {
+   static void collectSubsets(int i, HashSet<Integer> set, int i2, ArrayList<HashSet<Integer>> list) {
       try {
          if (i > i2) {
             list.add(set);
@@ -830,12 +830,12 @@ public class GoblinNpcRenderer extends ScaledGirlGeoRenderer<GoblinNpc> {
       }
 
       HashSet set2 = new HashSet(set);
-      a(i + 1, set, i2, list);
+      collectSubsets(i + 1, set, i2, list);
       set2.add(i);
-      a(i + 1, set2, i2, list);
+      collectSubsets(i + 1, set2, i2, list);
    }
 
-   static HashSet<Integer> a(int i, String string) {
+   static HashSet<Integer> pickRandomSubset(int i, String string) {
       HashSet set = new HashSet();
       int i2 = Integer.parseInt(string);
       i2 = (int)(0.01F * i2 * i2);
@@ -865,7 +865,7 @@ public class GoblinNpcRenderer extends ScaledGirlGeoRenderer<GoblinNpc> {
       GeoBone bone3 = a(bone2, Integer.parseInt(string2));
       List list = bone3.childBones;
       int i = list.size();
-      HashSet set = b(i, string3);
+      HashSet<Integer> set = rotateSubsetIndex(i, string3);
       bone3.childBones.forEach(arg1 -> arg1.setHidden(true));
       set.forEach(arg1b -> b(bone3, arg1b));
    }
@@ -895,7 +895,7 @@ public class GoblinNpcRenderer extends ScaledGirlGeoRenderer<GoblinNpc> {
 
    protected ItemStack a(@Nullable ItemStack stack) {
         block4: {
-            GirlAnimationState girlAnimationState = ((GoblinNpc)this.RenderEntity).y();
+            GirlAnimationState girlAnimationState = ((GoblinNpc)this.RenderEntity).getCurrentAction();
             try {
                 try {
                     if (girlAnimationState != GirlAnimationState.RUN && girlAnimationState != GirlAnimationState.CATCH) break block4;
@@ -913,7 +913,7 @@ public class GoblinNpcRenderer extends ScaledGirlGeoRenderer<GoblinNpc> {
     }
 
    @Override
-   public HashSet<String> a() {
+   public HashSet<String> getFilteredBoneNames() {
       return new HashSet<String>() {
          {
             this.add("boobs");
@@ -930,7 +930,7 @@ public class GoblinNpcRenderer extends ScaledGirlGeoRenderer<GoblinNpc> {
    }
 
    @Override
-   protected float a() {
+   protected float float_a() {
       try {
          return this.RenderEntity.getCurrentAction() == GirlAnimationState.CATCH ? 0.5F : 1.0F;
       } catch (RuntimeException error) {
@@ -940,7 +940,7 @@ public class GoblinNpcRenderer extends ScaledGirlGeoRenderer<GoblinNpc> {
 
    @Override
 
-   protected Vec3d a(ItemStack stack) {
+   protected Vec3d getItemRenderRotation(ItemStack stack) {
         block7: {
             try {
                 if (stack == null) {

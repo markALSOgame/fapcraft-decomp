@@ -184,8 +184,8 @@ extends ChestGirlEntity {
         catch (RuntimeException runtimeException) {
             throw BeeNpc.rethrow(runtimeException);
         }
-        this.a();
-        this.b();
+        this.a_();
+        this.b_15();
     }
 
     @Override
@@ -284,7 +284,7 @@ extends ChestGirlEntity {
         }
     }
 
-    void b() {
+    void b_15() {
         block7: {
             RayTraceResult rayTraceResult = this.world.rayTraceBlocks(this.getPositionVector(), new Vec3d(this.posX, 0.0, this.posZ));
             try {
@@ -312,7 +312,7 @@ extends ChestGirlEntity {
         }
     }
 
-    void a() {
+    void a_() {
         block28: {
             block25: {
                 block26: {
@@ -474,7 +474,7 @@ extends ChestGirlEntity {
                 catch (RuntimeException runtimeException) {
                     throw BeeNpc.rethrow(runtimeException);
                 }
-                this.canInteract(entityPlayer);
+                this.void_b(entityPlayer);
             }
             catch (RuntimeException runtimeException) {
                 throw BeeNpc.rethrow(runtimeException);
@@ -484,7 +484,7 @@ extends ChestGirlEntity {
     }
 
     @SideOnly(value=Side.CLIENT)
-    void b(EntityPlayer entityPlayer) {
+    void void_b(EntityPlayer entityPlayer) {
         Minecraft.getMinecraft().displayGuiScreen((GuiScreen)new GuiGirlDialogue(this, entityPlayer));
     }
 

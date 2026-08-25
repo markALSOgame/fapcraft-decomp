@@ -11,15 +11,15 @@ public class BiaPlayerRenderer extends GirlPlayerRenderer {
    }
 
    @Override
-   protected void void_c() {
+   protected void applyScaleOffset() {
       GlStateManager.translate(0.0, -1.0, -0.05);
       GlStateManager.scale(0.65F, 0.65F, 0.65F);
    }
 
    @Override
-   protected void a(boolean flag) {
+   protected void applyHandOffset(boolean flag) {
       try {
-         super.a(flag);
+         super.applyHandOffset(flag);
          if (flag) {
             GlStateManager.translate(0.15, 0.0, 0.0);
          }
@@ -30,12 +30,12 @@ public class BiaPlayerRenderer extends GirlPlayerRenderer {
 
    @Override
 
-   protected void a(boolean flag, boolean flag2) {
+   protected void applyDualHandOffset(boolean flag, boolean flag2) {
         block9: {
             block8: {
                 try {
                     try {
-                        super.a(flag, flag2);
+                        super.applyDualHandOffset(flag, flag2);
                         if (flag || flag2) break block8;
                     }
                     catch (RuntimeException runtimeException) {

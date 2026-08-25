@@ -40,7 +40,7 @@ public class LunaPlayerRenderer extends GirlPlayerRenderer {
    }
 
    @Override
-   protected void animateBone(String string, GeoBone bone) {
+   protected void applyBoneState(String string, GeoBone bone) {
       try {
          if (Minecraft.getMinecraft().isGamePaused()) {
             return;

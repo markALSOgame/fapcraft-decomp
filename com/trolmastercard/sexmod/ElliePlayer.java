@@ -55,7 +55,7 @@ extends PlayerGirlEntity {
     public float getEyeHeight() {
         float f;
         try {
-            f = this.a() ? 1.53f : 1.9f;
+            f = this.boolean_a() ? 1.53f : 1.9f;
         }
         catch (RuntimeException runtimeException) {
             throw ElliePlayer.rethrow(runtimeException);
@@ -206,7 +206,7 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    protected GirlAnimationState c(GirlAnimationState girlAnimationState) {
+    protected GirlAnimationState getFollowUpAction(GirlAnimationState girlAnimationState) {
         try {
             if (girlAnimationState == GirlAnimationState.COWGIRLSLOW) {
                 return GirlAnimationState.COWGIRLFAST;
@@ -235,7 +235,7 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    protected GirlAnimationState a(GirlAnimationState girlAnimationState) {
+    protected GirlAnimationState nextAnimationState(GirlAnimationState girlAnimationState) {
         block14: {
             block13: {
                 block12: {
@@ -344,7 +344,7 @@ extends PlayerGirlEntity {
         }
     }
 
-    boolean a() {
+    boolean boolean_a() {
         boolean flag;
         EntityPlayer entityPlayer = this.getBoundPlayer();
         try {
@@ -394,19 +394,19 @@ extends PlayerGirlEntity {
                 if (Math.abs(this.ao.x) + Math.abs(this.ao.y) > 0.0f) {
                     if (this.aj) {
                         this.MovementController.setAnimationSpeed(1.5);
-                        this.a(this.a() ? "animation.ellie.crouchwalk" : "animation.ellie.run", true, animEvent);
+                        this.a(this.boolean_a() ? "animation.ellie.crouchwalk" : "animation.ellie.run", true, animEvent);
                         break;
                     }
                     if (this.ao.y >= -0.1f) {
                         this.MovementController.setAnimationSpeed(2.0);
-                        this.a(this.a() ? "animation.ellie.crouchwalk" : "animation.ellie.fastwalk", true, animEvent);
+                        this.a(this.boolean_a() ? "animation.ellie.crouchwalk" : "animation.ellie.fastwalk", true, animEvent);
                         break;
                     }
                     this.MovementController.setAnimationSpeed(1.5);
-                    this.a(this.a() ? "animation.ellie.crouchwalk" : "animation.ellie.backwards_walk", true, animEvent);
+                    this.a(this.boolean_a() ? "animation.ellie.crouchwalk" : "animation.ellie.backwards_walk", true, animEvent);
                     break;
                 }
-                this.a(this.a() ? "animation.ellie.crouchidle" : "animation.ellie.idle", true, animEvent);
+                this.a(this.boolean_a() ? "animation.ellie.crouchidle" : "animation.ellie.idle", true, animEvent);
                 break;
             }
             case "action": {

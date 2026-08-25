@@ -94,7 +94,7 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    public void performAction(String string, UUID uUID) {
+    public void startAction(String string, UUID uUID) {
         try {
             if ("action.names.boobjob".equals(string)) {
                 this.DataManager.set(GirlEntity.OutfitIndexKey, (Object)0);
@@ -167,7 +167,7 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    protected GirlAnimationState c(GirlAnimationState girlAnimationState) {
+    protected GirlAnimationState getFollowUpAction(GirlAnimationState girlAnimationState) {
         switch (girlAnimationState) {
             case SUCKBLOWJOB: {
                 return GirlAnimationState.THRUSTBLOWJOB;
@@ -187,7 +187,7 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    protected GirlAnimationState a(GirlAnimationState girlAnimationState) {
+    protected GirlAnimationState nextAnimationState(GirlAnimationState girlAnimationState) {
         block14: {
             block13: {
                 block12: {

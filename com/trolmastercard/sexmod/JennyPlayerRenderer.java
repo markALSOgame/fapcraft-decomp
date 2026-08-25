@@ -10,19 +10,19 @@ public class JennyPlayerRenderer extends GirlPlayerRenderer {
    }
 
    @Override
-   protected void void_c() {
+   protected void applyScaleOffset() {
       GlStateManager.translate(0.0F, -1.25F, 0.0F);
       GlStateManager.scale(0.8F, 0.8F, 0.8F);
    }
 
    @Override
 
-   protected void a(boolean flag, boolean flag2) {
+   protected void applyDualHandOffset(boolean flag, boolean flag2) {
         block9: {
             block8: {
                 try {
                     try {
-                        super.a(flag, flag2);
+                        super.applyDualHandOffset(flag, flag2);
                         if (flag || flag2) break block8;
                     }
                     catch (RuntimeException runtimeException) {
@@ -55,9 +55,9 @@ public class JennyPlayerRenderer extends GirlPlayerRenderer {
     }
 
    @Override
-   protected void a(boolean flag) {
+   protected void applyHandOffset(boolean flag) {
       try {
-         super.a(flag);
+         super.applyHandOffset(flag);
          if (flag) {
             GlStateManager.translate(0.15, 0.0, 0.0);
          }

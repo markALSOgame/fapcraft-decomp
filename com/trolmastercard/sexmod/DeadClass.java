@@ -424,8 +424,8 @@ public enum DeadClass {
         Vec3d vec3d2 = f_2.M().getPositionVector();
         Vec2d vec2d = new Vec2d(vec3d2.x - vec3d.x, vec3d2.z - vec3d.z);
         double d = AngleMath.radToDegrees(Math.atan2(vec2d.Y, vec2d.X)) - 90.0;
-        f_2.a(true);
-        f_2.c(vec3d);
+        f_2.setShouldBeAtTargetPos(true);
+        f_2.setTargetPos(vec3d);
         f_2.b((float)d);
         GirlEntity.playSoundRandom((GirlEntity)f_2, ModSounds.GIRLS_GALATH_STRONGCHARGE, true);
     }, f_2 -> {
@@ -442,13 +442,13 @@ public enum DeadClass {
             Vec3d vec3d4 = vec3d.add(vec3d2);
             float f = (float)(i7 - 24) / 8.0f;
             Vec3d vec3d5 = LerpMath.lerpVec3d(vec3d3, vec3d4, (double)f);
-            f_2.c(vec3d5);
+            f_2.setTargetPos(vec3d5);
             return;
         }
         if (MathUtils.isInRange((double)i7, 32.0, 54.0)) {
             Vec3d vec3d = VectorMath.a(new Vec3d(0.0, 0.0, 1.5), f_2.I().floatValue() + 180.0f);
             Vec3d vec3d6 = entityLivingBase.getPositionVector().add(vec3d);
-            f_2.c(vec3d6);
+            f_2.setTargetPos(vec3d6);
             GalathProjectileDamageSource galathProjectileDamageSource = new GalathProjectileDamageSource(f_2);
             try {
                 entityLivingBase.hurtTime = 0;
@@ -470,9 +470,9 @@ public enum DeadClass {
             }
         }
         if (i7 == 54) {
-            f_2.a(false);
+            f_2.setShouldBeAtTargetPos(false);
             f_2.setCurrentAction(GirlAnimationState.FLY);
-            Vec3d vec3d = f_2.B().subtract(f_2.getPositionVector()).normalize();
+            Vec3d vec3d = f_2.getManglePos().subtract(f_2.getPositionVector()).normalize();
             f_2.motionX = vec3d.x * (double)0.6f;
             f_2.motionY = vec3d.y * (double)0.6f;
             f_2.motionZ = vec3d.z * (double)0.6f;
@@ -494,7 +494,7 @@ public enum DeadClass {
         f_2.b(0);
         f_2.b(Vec3d.ZERO);
         f_2.a(-1);
-        f_2.a(false);
+        f_2.setShouldBeAtTargetPos(false);
     }, true, f_2 -> true, false),
     RAPE(f_2 -> {
         f_2.setCurrentAction(GirlAnimationState.RAPE_PREPARE);
@@ -577,9 +577,9 @@ public enum DeadClass {
                 }
                 f_2.bI.clear();
                 EntityPlayerMP entityPlayerMP = (EntityPlayerMP)entityPlayer2;
-                f_2.c(entityPlayer2.getPositionVector());
+                f_2.setTargetPos(entityPlayer2.getPositionVector());
                 f_2.e(entityPlayer2.getPersistentID());
-                f_2.a(true);
+                f_2.setShouldBeAtTargetPos(true);
                 f_2.setCurrentAction(GirlAnimationState.RAPE_INTRO);
                 byte bv = (byte)MathHelper.floor((float)((f_2.I().floatValue() + 180.0f) * 256.0f / 360.0f));
                 NetworkHandler.channel.sendTo((IMessage)new PacketSetPlayerMovement(false), entityPlayerMP);
@@ -634,7 +634,7 @@ public enum DeadClass {
     }, f_2 -> {
         boolean flag10;
         try {
-            if (f_2.y() == GirlAnimationState.RAPE_INTRO) {
+            if (f_2.getCurrentAction() == GirlAnimationState.RAPE_INTRO) {
                 return true;
             }
         }

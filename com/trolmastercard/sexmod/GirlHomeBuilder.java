@@ -912,7 +912,7 @@ public class GirlHomeBuilder {
          throw rethrow(error);
       }
 
-      HashMap map = homeData.HomeMap;
+      HashMap<UUID, BlockPos> map = homeData.HomeMap;
       ArrayList list = new ArrayList();
 
       for (Entry entry : map.entrySet()) {
@@ -1582,7 +1582,7 @@ public class GirlHomeBuilder {
                            throw rethrow(error8);
                         }
 
-                        GirlHomeBuilder.addAnchor(uuid, new TreeCluster(pos4, TreeCluster.TaskType.valueOf(string7), set, facing));
+                        GirlHomeBuilder.addAnchor(uuid, new TreeCluster(pos4, TreeCluster.KoboldTask.valueOf(string7), set, facing));
                         i5++;
                         continue label82;
                      }

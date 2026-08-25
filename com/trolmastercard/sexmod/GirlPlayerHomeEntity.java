@@ -91,7 +91,7 @@ public abstract class GirlPlayerHomeEntity extends PlayerGirlEntity {
       try {
          this.ar = false;
          if (!"".equals(string)) {
-            this.a(c(string));
+            this.a(string);
          }
       } catch (RuntimeException error4) {
          throw rethrow(error4);

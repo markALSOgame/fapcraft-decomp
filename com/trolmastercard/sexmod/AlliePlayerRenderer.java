@@ -117,7 +117,7 @@ public class AlliePlayerRenderer extends GirlPlayerRenderer {
     }
 
    @Override
-   protected void applyBoneTransform(String string, GeoBone bone) {
+   protected void applyBoneState(String string, GeoBone bone) {
       try {
          if ((Boolean)this.CurrentGirl.getDataManager().get(GirlEntity.BusyKey)) {
             return;

@@ -33,7 +33,7 @@ public class AnimationInputLock {
             }
             try {
                 if (AnimationInputLock.MovementInput.jump) {
-                    PlayerGirlEntity.getRenderLabelOffset();
+                    PlayerGirlEntity.i();
                 }
             }
             catch (RuntimeException runtimeException) {

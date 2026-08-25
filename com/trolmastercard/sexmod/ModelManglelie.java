@@ -67,13 +67,13 @@ public class ModelManglelie extends GirlGeoModel {
    public void onAnimationEvent(GirlEntity girl, Integer i, AnimationEvent animEvent) {
       super.onAnimationEvent(girl, i, animEvent);
       applyAnimationTransforms(girl, this.getAnimationProcessor(), animEvent.getPartialTick());
-      this.b(girl);
-      this.d(girl);
+      this.void_b(girl);
+      this.void_d(girl);
       this.a(girl);
-      this.e(girl);
+      this.void_e(girl);
    }
 
-   void e(GirlEntity girl) {
+   void void_e(GirlEntity girl) {
       try {
          if (this.Mc.isGamePaused()) {
             return;
@@ -176,7 +176,7 @@ public class ModelManglelie extends GirlGeoModel {
    }
 
 
-   void d(GirlEntity girl) {
+   void void_d(GirlEntity girl) {
       try {
          if (ClientProxy.IS_PRELOADING) {
             return;
@@ -304,8 +304,8 @@ public class ModelManglelie extends GirlGeoModel {
       float f = galath.aE + animationProcessor.getBone("upperBody").getRotationX();
       float f2 = this.Mc.getRenderPartialTicks();
       Vec3d vec3d = ManglelieNpcRenderer.a(galath, f2);
-      Vec3d vec3d2 = manglelie.b("armR").add(vec3d);
-      Vec3d vec3d3 = manglelie.b("armL").add(vec3d);
+      Vec3d vec3d2 = manglelie.getModelBone("armR").add(vec3d);
+      Vec3d vec3d3 = manglelie.getModelBone("armL").add(vec3d);
       Vec2f vec2f = MathUtils.rotationBetween(vec3d2, manglelie.R);
       Vec2f vec2f2 = MathUtils.rotationBetween(vec3d3, manglelie.R);
       Float f3 = GalathNpc.rotateToTarget(galath, f2);
@@ -332,7 +332,7 @@ public class ModelManglelie extends GirlGeoModel {
       float f9 = AngleMath.degToRadians(LerpMath.lerp(0.0F, 90.0F, f6));
 
       try {
-         if (manglelie.a(manglelie.R, f2)) {
+         if (manglelie.boolean_a(manglelie.R, f2)) {
             gui.c = new Vec3f(-f + vec2f.X + AngleMath.degToRadians(90.0F), vec2f.Y, 0.0F);
             gui.g = new Vec3f(
                -f + vec2f2.X + AngleMath.degToRadians(90.0F),
@@ -395,7 +395,7 @@ public class ModelManglelie extends GirlGeoModel {
       return mc;
    }
 
-   void b(GirlEntity girl) {
+   void void_b(GirlEntity girl) {
       try {
          if (ClientProxy.IS_PRELOADING) {
             return;

@@ -399,7 +399,7 @@ public class ModelKobold extends GirlGeoModel {
       label28: {
          switch (girl.getCurrentAction()) {
             case NULL:
-               if (Math.abs(girl.prevPosX - girl.posX) + Math.abs(girl.prevPosZ - girl.posZ) < 0.0 || girl.onGround && Math.abs(Math.abs(girl.prevPosY) - Math.abs(girl.posY)) > (double)0.1F || !((BooleanCheck)girl).a()) {
+                if (Math.abs(girl.prevPosX - girl.posX) + Math.abs(girl.prevPosZ - girl.posZ) < 0.0 || girl.onGround && Math.abs(Math.abs(girl.prevPosY) - Math.abs(girl.posY)) > (double)0.1F || !((BooleanCheck)girl).boolean_a()) {
                   break label28;
                }
             default:

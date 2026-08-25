@@ -194,7 +194,7 @@ public class ModelGalath extends GirlGeoModel {
                         throw ModelGalath.rethrow(runtimeException);
                     }
                 }
-                girl.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_LIPSOUND));
+                girl.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_LIPSOUND));
             }
             catch (RuntimeException runtimeException) {
                 throw ModelGalath.rethrow(runtimeException);

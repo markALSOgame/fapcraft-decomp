@@ -115,7 +115,7 @@ public class PacketSexPromptReply implements IMessage {
                }
 
                VoidCallback callback = (VoidCallback)girl;
-               callback.b();
+               callback.void_b();
             }
          } catch (ConcurrentModificationException concurrentModificationException) {
             // empty catch block

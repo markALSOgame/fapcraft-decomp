@@ -63,12 +63,12 @@ implements BoxSource {
 
     @Override
     @Nullable
-    protected GirlAnimationState c(GirlAnimationState girlAnimationState) {
+    protected GirlAnimationState getFollowUpAction(GirlAnimationState girlAnimationState) {
         return null;
     }
 
     @Override
-    protected GirlAnimationState a(GirlAnimationState girlAnimationState) {
+    protected GirlAnimationState nextAnimationState(GirlAnimationState girlAnimationState) {
         block7: {
             try {
                 try {
@@ -100,7 +100,7 @@ implements BoxSource {
     }
 
     @Override
-    public void b(String string, UUID uUID) {
+    public void startAction(String string, UUID uUID) {
         try {
             if ("cowgirl".equals(string)) {
                 this.b(uUID);

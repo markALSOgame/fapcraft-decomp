@@ -201,7 +201,7 @@ extends GirlEntity {
         }
         try {
             if (this.SpawnPortalsPending) {
-                this.d();
+                this.void_d();
             }
         }
         catch (RuntimeException runtimeException) {
@@ -220,12 +220,12 @@ extends GirlEntity {
             throw AllieNpc.rethrow(runtimeException);
         }
         int i = this.getRNG().nextInt(8);
-        Vec3d vec3d = this.b("tail" + i).add(this.getPositionVector());
+        Vec3d vec3d = this.getModelBone("tail" + i).add(this.getPositionVector());
         this.world.spawnParticle(EnumParticleTypes.PORTAL, vec3d.x, vec3d.y, vec3d.z, this.getRNG().nextGaussian() * (double)0.01f, this.getRNG().nextGaussian() * (double)0.01f, this.getRNG().nextGaussian() * (double)0.01f, new int[0]);
     }
 
     @SideOnly(value=Side.CLIENT)
-    void d() {
+    void void_d() {
         this.SpawnPortalsPending = false;
         BedLogic.spawnParticles(this.world, EnumParticleTypes.PORTAL, this.getPositionVector(), 300, 0.75, 1.5);
     }
@@ -368,7 +368,7 @@ extends GirlEntity {
                 catch (RuntimeException runtimeException) {
                     throw AllieNpc.rethrow(runtimeException);
                 }
-                this.a();
+                this.a_();
             }
             catch (RuntimeException runtimeException) {
                 throw AllieNpc.rethrow(runtimeException);
@@ -377,7 +377,7 @@ extends GirlEntity {
         super.setCurrentAction(girlAnimationState);
     }
 
-    void a() {
+    void a_() {
         EntityPlayer entityPlayer = this.S();
         try {
             if (entityPlayer == null) {

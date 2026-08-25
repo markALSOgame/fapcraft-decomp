@@ -156,7 +156,7 @@ public class GirlPlayerRenderer extends GeoGirlRenderer<GirlEntity> {
       return false;
    }
 
-   protected void a(String string, GeoBone bone) {
+   protected void applyBoneState(String string, GeoBone bone) {
    }
 
    protected void a(String string, GeoBone bone, PlayerGirlEntity playerGirl, BufferBuilder bufferBuilder) {
@@ -180,7 +180,7 @@ public class GirlPlayerRenderer extends GeoGirlRenderer<GirlEntity> {
          this.a(bufferBuilder, bone, Color.ofRGB(f, f2, f3));
       }
 
-      this.a(string, bone);
+      this.applyBoneState(string, bone);
       this.a(string, bone, this.CurrentGirl, bufferBuilder);
       if (this.u && (this.MainHandStack.getItem() instanceof ItemBow || this.OffHandStack.getItem() instanceof ItemBow)) {
          if (string.equals("armR")) {
@@ -312,7 +312,7 @@ public class GirlPlayerRenderer extends GeoGirlRenderer<GirlEntity> {
       Tessellator.getInstance().draw();
       MatrixUtil.applyGeoBoneTransform(IGeoRenderer.MATRIX_STACK, bone);
       GL11.glEnable(2896);
-      this.void_c();
+      this.applyScaleOffset();
       new GirlElytraRenderer(this).render(this.RenderEntity, this.RenderEntity.limbSwing, this.RenderEntity.limbSwingAmount, this.RenderTick, 0.0F, 0.0F, 0.0F, color);
       this.bindTexture(Objects.requireNonNull(this.getEntityTexture(this.RenderEntity)));
       bufferBuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
@@ -322,7 +322,7 @@ public class GirlPlayerRenderer extends GeoGirlRenderer<GirlEntity> {
       GlStateManager.popMatrix();
    }
 
-   protected void void_c() {
+   protected void applyScaleOffset() {
    }
 
 
@@ -337,7 +337,7 @@ public class GirlPlayerRenderer extends GeoGirlRenderer<GirlEntity> {
       ItemStack stack = flag ? this.OffHandStack : this.MainHandStack;
       switch (stack.getItem().getItemUseAction(stack)) {
          case BOW:
-            this.a(flag);
+            this.applyHandOffset(flag);
             break;
          case BLOCK:
             this.a(flag, this.u);
@@ -356,7 +356,7 @@ public class GirlPlayerRenderer extends GeoGirlRenderer<GirlEntity> {
          this.RenderEntity.W();
       }
 
-      this.a(flag, stack);
+      this.applyHeldItemTransform(flag, stack);
       GlStateManager.scale(0.75F, 0.75F, 0.75F);
       itemRenderer.renderItem(this.RenderEntity, stack, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND);
       bufferBuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
@@ -367,7 +367,7 @@ public class GirlPlayerRenderer extends GeoGirlRenderer<GirlEntity> {
       GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
    }
 
-   protected void a(boolean flag, ItemStack stack) {
+   protected void applyHeldItemTransform(boolean flag, ItemStack stack) {
       float f;
       label16: {
          try {
@@ -385,12 +385,12 @@ public class GirlPlayerRenderer extends GeoGirlRenderer<GirlEntity> {
       GlStateManager.rotate(f, 1.0F, 0.0F, 0.0F);
    }
 
-   protected void a(boolean flag) {
+   protected void applyHandOffset(boolean flag) {
       GlStateManager.rotate(20.0F, 1.0F, 0.0F, 0.0F);
    }
 
 
-   protected void a(boolean flag, boolean flag2) {
+   protected void applyDualHandOffset(boolean flag, boolean flag2) {
         block8: {
             block7: {
                 try {

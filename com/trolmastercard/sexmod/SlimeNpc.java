@@ -742,7 +742,7 @@ extends GirlEntity {
                 case "dress": {
                     if (!this.isLocalPlayerNearby()) break;
                     this.DataManager.set(OutfitIndexKey, (Object)1);
-                    this.b((GirlAnimationState)null);
+                    this.setCurrentAction((GirlAnimationState)null);
                     this.resetAimTarget();
                     break;
                 }

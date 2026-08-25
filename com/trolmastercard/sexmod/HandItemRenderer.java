@@ -50,8 +50,8 @@ public class HandItemRenderer {
                         }
                         int i = playerGirl.getOutfitIndex();
                         try {
-                            this.Hand = playerGirl.a(i);
-                            this.Texture = new ResourceLocation("sexmod", playerGirl.c(i));
+                            this.Hand = playerGirl.getHandModel(i);
+                            this.Texture = new ResourceLocation("sexmod", playerGirl.getHandTexture(i));
                             this.Color = playerGirl.b(i);
                             if (this.Hand == null) {
                                 System.out.println("HAND IS NULL uwu did you forget to assign this girl a hand owo?");

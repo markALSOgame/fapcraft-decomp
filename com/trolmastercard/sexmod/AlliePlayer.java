@@ -212,7 +212,7 @@ extends PlayerGirlEntity {
         try {
             super.onUpdate();
             if (this.world.isRemote) {
-                this.a();
+                this.void_a();
             }
         }
         catch (RuntimeException runtimeException) {
@@ -221,7 +221,7 @@ extends PlayerGirlEntity {
     }
 
     @SideOnly(value=Side.CLIENT)
-    void a() {
+    void void_a() {
         try {
             if (this.ticksExisted % 10 != 0) {
                 return;
@@ -231,7 +231,7 @@ extends PlayerGirlEntity {
             throw AlliePlayer.rethrow(runtimeException);
         }
         int i = this.getRNG().nextInt(8);
-        Vec3d vec3d = this.b("tail" + i).add(this.getPositionVector());
+        Vec3d vec3d = this.getModelBone("tail" + i).add(this.getPositionVector());
         this.world.spawnParticle(EnumParticleTypes.PORTAL, vec3d.x, vec3d.y, vec3d.z, this.getRNG().nextGaussian() * (double)0.01f, this.getRNG().nextGaussian() * (double)0.01f, this.getRNG().nextGaussian() * (double)0.01f, new int[0]);
     }
 
@@ -246,7 +246,7 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    protected GirlAnimationState c(GirlAnimationState girlAnimationState) {
+    protected GirlAnimationState getFollowUpAction(GirlAnimationState girlAnimationState) {
         try {
             if (girlAnimationState == GirlAnimationState.DEEPTHROAT_SLOW) {
                 return GirlAnimationState.DEEPTHROAT_FAST;
@@ -267,7 +267,7 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    protected GirlAnimationState a(GirlAnimationState girlAnimationState) {
+    protected GirlAnimationState nextAnimationState(GirlAnimationState girlAnimationState) {
         block12: {
             block10: {
                 try {

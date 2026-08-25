@@ -245,21 +245,21 @@ extends GirlEntity {
         catch (RuntimeException runtimeException) {
             throw ManglelieNpc.rethrow(runtimeException);
         }
-        this.getGirlUuid();
-        this.getCustomName();
+        this.f();
+        this.w();
         super.updateAITasks();
         this.bindPendingMommy();
-        this.getDisplayName();
-        this.d();
-        this.getRenderLabelOffset();
-        this.isOwnedByLocalPlayer();
-        this.u();
-        this.isTracked();
-        this.a();
-        this.isUnclaimed();
+        this.void_c();
+        this.void_d();
+        this.i();
+        this.void_n();
+        this.u_();
+        this.void_h();
+        this.a_();
+        this.void_t();
     }
 
-    void isUnclaimed() {
+    void void_t() {
         try {
             if (this.getMommyUuid() != null) {
                 this.IsWild = false;
@@ -287,7 +287,7 @@ extends GirlEntity {
         }
     }
 
-    void a() {
+    void a_() {
         GalathNpc f_2 = this.getMommy(true);
         try {
             if (f_2 == null) {
@@ -326,7 +326,7 @@ extends GirlEntity {
         catch (RuntimeException runtimeException) {
             throw ManglelieNpc.rethrow(runtimeException);
         }
-        return ((ManglelieNpc)girl).a(flag);
+        return ((ManglelieNpc)girl).getMommy(flag);
     }
 
     public long getAttackTime() {
@@ -352,7 +352,7 @@ extends GirlEntity {
         this.ArrowFired = false;
     }
 
-    void h() {
+    void void_h() {
         long l = this.getAttackTime();
         try {
             if (l == -1L) {
@@ -413,7 +413,7 @@ extends GirlEntity {
     public void addPotionEffect(PotionEffect potionEffect) {
     }
 
-    void u() {
+    void u_() {
         boolean flag;
         try {
             flag = this.getMommyUuid() != null;
@@ -469,7 +469,7 @@ extends GirlEntity {
         return ManglelieNpcRenderer.rotateHeadToTwin(f_2, f);
     }
 
-    public float b(float f) {
+    public float float_b(float f) {
         long l = this.getAttackTime();
         try {
             if (l == -1L) {
@@ -512,7 +512,7 @@ extends GirlEntity {
         manglelie.setAttackTime(l);
     }
 
-    void d() {
+    void void_d() {
         Entity entity = this.getTargetEntity();
         try {
             if (entity == null) {
@@ -614,7 +614,7 @@ extends GirlEntity {
         return false;
     }
 
-    void n() {
+    void void_n() {
         try {
             if (this.getTargetEntity() != null) {
                 return;
@@ -738,7 +738,7 @@ extends GirlEntity {
             this.setMommyUuid(this.PendingMommyUuid);
             f_2.setChildMangleUuid(this.getGirlUuid());
             this.setClaimed(true);
-            this.setAnimationState(GirlAnimationState.RIDE_MOMMY_HEAD);
+            this.setCurrentAction(GirlAnimationState.RIDE_MOMMY_HEAD);
             this.PendingMommyUuid = null;
             if (f_2.getCurrentAction() == GirlAnimationState.HUG_MANG) {
                 f_2.getChildMangle(false);
@@ -751,7 +751,7 @@ extends GirlEntity {
     }
 
     @Override
-    public void setAnimationState(GirlAnimationState girlAnimationState) {
+    public void setCurrentAction(GirlAnimationState girlAnimationState) {
         block9: {
             block8: {
                 try {
@@ -780,7 +780,7 @@ extends GirlEntity {
                 throw ManglelieNpc.rethrow(runtimeException);
             }
         }
-        super.setAnimationState(girlAnimationState);
+        super.setCurrentAction(girlAnimationState);
     }
 
     void w() {
@@ -864,7 +864,7 @@ extends GirlEntity {
         return ManglelieNpcRenderer.rotateHeadToTwin(f_2, f);
     }
 
-    void getDisplayName() {
+    void void_c() {
         GalathNpc f_22;
         GalathNpc f_3;
         block23: {
@@ -927,7 +927,7 @@ extends GirlEntity {
                     catch (RuntimeException runtimeException) {
                         throw ManglelieNpc.rethrow(runtimeException);
                     }
-                    this.setAnimationState((GirlAnimationState)null);
+                    this.setCurrentAction((GirlAnimationState)null);
                     this.getNavigator().clearPath();
                 }
                 catch (RuntimeException runtimeException) {
@@ -944,7 +944,7 @@ extends GirlEntity {
         catch (RuntimeException runtimeException) {
             throw ManglelieNpc.rethrow(runtimeException);
         }
-        this.setAnimationState(GirlAnimationState.RUN);
+        this.setCurrentAction(GirlAnimationState.RUN);
         Vec3d vec3d = this.getPositionVector();
         f_22 = f_3.getPositionVector();
         Vec3d vec3d2 = f_22.subtract(vec3d);
@@ -978,7 +978,7 @@ extends GirlEntity {
         return this.a(VecMath.getPositionOffset(entity, f).subtract(vec3d), f_2, f);
     }
 
-    boolean a(Vec3d vec3d, float f) {
+    boolean boolean_a(Vec3d vec3d, float f) {
         boolean flag;
         ManglelieNpc manglelie;
         try {
@@ -1018,7 +1018,7 @@ extends GirlEntity {
         try {
             super.onUpdate();
             if (this.world.isRemote) {
-                this.m();
+                this.void_m();
             }
         }
         catch (RuntimeException runtimeException) {
@@ -1027,7 +1027,7 @@ extends GirlEntity {
     }
 
     @SideOnly(value=Side.CLIENT)
-    void m() {
+    void void_m() {
         float f;
         float f2;
         try {
@@ -1067,7 +1067,7 @@ extends GirlEntity {
             throw ManglelieNpc.rethrow(runtimeException);
         }
         Vec3d vec3d = entity.getPositionVector().add(0.0, (double)entity.getEyeHeight(), 0.0);
-        Vec3d vec3d2 = f_2.getPositionVector().add(f_2.getModelBone("mangPos")).add(this.b("head"));
+        Vec3d vec3d2 = f_2.getPositionVector().add(f_2.getModelBone("mangPos")).add(this.getModelBone("head"));
         Vec3d vec3d3 = vec3d2.subtract(vec3d);
         float f3 = (float)(AngleMath.radToDegrees(Math.atan2(vec3d3.z, vec3d3.x)) + 90.0);
         Float f4 = GalathNpc.rotateToTarget(f_2, 0.0f);
@@ -1116,7 +1116,7 @@ extends GirlEntity {
     }
 
     @Nullable
-    Entity o() {
+    Entity net_minecraft_entity_Entity_o() {
         Entity entity = this.getTargetEntity();
         try {
             if (entity != null) {
@@ -1240,10 +1240,10 @@ extends GirlEntity {
     }
 
     @Override
-    public void g() {
+    public void noop() {
         try {
             if (this.isClaimed()) {
-                this.setAnimationState(GirlAnimationState.RIDE_MOMMY_HEAD);
+                this.setCurrentAction(GirlAnimationState.RIDE_MOMMY_HEAD);
                 this.b(0.0f);
                 this.DataManager.setDirty(RotationYawKey);
             }
@@ -1311,7 +1311,7 @@ extends GirlEntity {
                             catch (RuntimeException runtimeException) {
                                 throw ManglelieNpc.rethrow(runtimeException);
                             }
-                            this.setAnimationState(GirlAnimationState.THREESOME_CUM);
+                            this.setCurrentAction(GirlAnimationState.THREESOME_CUM);
                             this.createAnimation("animation.shared.double_holding_cum", true, animationEvent, true);
                             GalathNpc f_3 = this.getMommy(false);
                             try {
@@ -1337,7 +1337,7 @@ extends GirlEntity {
                             throw ManglelieNpc.rethrow(runtimeException);
                         }
                         this.Y = false;
-                        this.setAnimationState(GirlAnimationState.THREESOME_FAST);
+                        this.setCurrentAction(GirlAnimationState.THREESOME_FAST);
                         this.createAnimation("animation.shared.double_holding_soft", true, animationEvent, true);
                         GalathNpc f_4 = this.getMommy(false);
                         try {
@@ -1386,12 +1386,12 @@ extends GirlEntity {
                     throw ManglelieNpc.rethrow(runtimeException);
                 }
                 this.M = true;
-                this.setAnimationState(GirlAnimationState.THREESOME_SLOW);
+                this.setCurrentAction(GirlAnimationState.THREESOME_SLOW);
                 this.createAnimation("animation.shared.double_holding_back", true, animationEvent, true);
                 GalathNpc f_5 = this.getMommy(false);
                 try {
                     if (f_5 != null) {
-                        f_5.a();
+                        f_5.void_a();
                     }
                 }
                 catch (RuntimeException runtimeException) {

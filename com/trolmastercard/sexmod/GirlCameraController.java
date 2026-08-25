@@ -253,7 +253,7 @@ public class GirlCameraController {
         }
         this.StartPos = minecraft.player.getPositionVector();
         this.PrevPos = new Vec3d(minecraft.player.lastTickPosX, minecraft.player.lastTickPosY, minecraft.player.lastTickPosZ);
-        Vec3d vec3d = playerGirl.b("girlCam");
+        Vec3d vec3d = playerGirl.getModelBone("girlCam");
         vec3d = playerGirl.b(vec3d, renderTickEvent.renderTickTime);
         vec3d = vec3d.add(LerpMath.lerpVec3d(this.PrevPos, this.StartPos, (double)renderTickEvent.renderTickTime));
         minecraft.player.posX = vec3d.x;

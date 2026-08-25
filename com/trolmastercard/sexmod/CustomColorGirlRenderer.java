@@ -119,7 +119,7 @@ public abstract class CustomColorGirlRenderer extends GirlPlayerRenderer {
          this.a(bufferBuilder, bone, Color.ofRGB(f, f2, f3));
       }
 
-      this.a(string, bone);
+      this.applyBoneState(string, bone);
       this.a(string, bone, this.CurrentGirl, bufferBuilder);
       if (this.u && (this.MainHandStack.getItem() instanceof ItemBow || this.OffHandStack.getItem() instanceof ItemBow)) {
          if (string.equals("armR")) {

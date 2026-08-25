@@ -100,11 +100,11 @@ fg {
     @Override
     public void c() {
         this.a("I am living here now nya~");
-        this.a(ModSounds.GIRLS_BIA_BREATH, new int[0]);
+        this.playRandomSound(ModSounds.GIRLS_BIA_BREATH, new int[0]);
     }
 
     @Override
-    public void b() {
+    public void void_b() {
         this.SeekingBed = true;
     }
 
@@ -340,7 +340,7 @@ fg {
         return false;
     }
 
-    void b(EntityPlayer entityPlayer) {
+    void void_b(EntityPlayer entityPlayer) {
         BiaNpc.openActionMenu(entityPlayer, this, new String[]{"action.names.anal", "doggy"}, false);
     }
 
@@ -392,7 +392,7 @@ fg {
                 throw BiaNpc.rethrow(nullPointerException);
             }
         }
-        this.d();
+        this.void_d();
     }
 
     @Override
@@ -401,7 +401,7 @@ fg {
         this.ActionTimer = -1;
     }
 
-    void d() {
+    void void_d() {
         float f;
         EntityPlayer entityPlayer;
         block27: {
@@ -508,7 +508,7 @@ fg {
             this.setTargetPos(vec3d2);
             Vec3d vec3d3 = vec3d.add(VectorMath.rotatePitch(0.0, 1.1875 - (double)entityPlayer.getEyeHeight(), 0.5, f));
             entityPlayer.setPositionAndUpdate(vec3d3.x, vec3d3.y, vec3d3.z);
-            this.a(true);
+            this.setShouldBeAtTargetPos(true);
         }
     }
 
@@ -600,13 +600,13 @@ fg {
         AnimationInputLock.setAnimationLocked(false);
     }
 
-    Vector4d a() {
+    Vector4d javax_vecmath_Vector4d_a() {
         BlockPos blockPos;
         block15: {
             blockPos = null;
             int i = 0;
-            while (!this.a(blockPos)) {
-                blockPos = this.a(this.getPosition(), i);
+            while (!this.boolean_a(blockPos)) {
+                blockPos = this.findBedPos(this.getPosition(), i);
                 if (++i != 50) continue;
             }
             try {
@@ -616,7 +616,7 @@ fg {
                 catch (NullPointerException nullPointerException) {
                     throw BiaNpc.rethrow(nullPointerException);
                 }
-                this.a(ModSounds.GIRLS_BIA_BREATH[2]);
+                this.playSoundEvent(ModSounds.GIRLS_BIA_BREATH[2]);
                 this.acceptPlayer(I18n.format((String)"jenny.dialogue.nobedinsight", (Object[])new Object[0]));
                 return null;
             }
@@ -656,7 +656,7 @@ fg {
         }
         try {
             if (i3 == -1) {
-                this.a(ModSounds.GIRLS_BIA_BREATH[2]);
+                this.playSoundEvent(ModSounds.GIRLS_BIA_BREATH[2]);
                 this.acceptPlayer(I18n.format((String)"jenny.dialogue.nobedinsight", (Object[])new Object[0]));
                 return null;
             }
@@ -668,7 +668,7 @@ fg {
         return new Vector4d(vec3d4.x, vec3d4.y, vec3d4.z, (double)this.BedSideYaws[i3]);
     }
 
-    boolean a(BlockPos blockPos) {
+    boolean boolean_a(BlockPos blockPos) {
         block22: {
             block21: {
                 block20: {
@@ -736,11 +736,11 @@ fg {
         return false;
     }
 
-    Vector4d b() {
-        BlockPos blockPos = this.acceptPlayer(this.getPosition());
+    Vector4d javax_vecmath_Vector4d_b() {
+        BlockPos blockPos = this.findNearbyBedPos(this.getPosition());
         try {
             if (blockPos == null) {
-                this.a(ModSounds.GIRLS_BIA_BREATH[2]);
+                this.playSoundEvent(ModSounds.GIRLS_BIA_BREATH[2]);
                 this.acceptPlayer(I18n.format((String)"jenny.dialogue.nobedinsight", (Object[])new Object[0]));
                 return null;
             }
@@ -772,7 +772,7 @@ fg {
         }
         try {
             if (i == -1) {
-                this.a(ModSounds.GIRLS_BIA_BREATH[2]);
+                this.playSoundEvent(ModSounds.GIRLS_BIA_BREATH[2]);
                 this.acceptPlayer(I18n.format((String)"jenny.dialogue.bedobscured", (Object[])new Object[0]));
                 return null;
             }
@@ -789,7 +789,7 @@ fg {
         Vector4d vector4d;
         String string = (String)this.DataManager.get(BlowjobStageKey);
         try {
-            vector4d = string.equals("anal") ? this.b() : this.a();
+            vector4d = string.equals("anal") ? this.javax_vecmath_Vector4d_b() : this.javax_vecmath_Vector4d_a();
         }
         catch (NullPointerException nullPointerException) {
             throw BiaNpc.rethrow(nullPointerException);
@@ -1091,7 +1091,7 @@ fg {
                 }
                 case "stripMSG1": {
                     this.a(I18n.format("bia.dialogue.hihi", new Object[0]));
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_BIA_GIGGLE));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_BIA_GIGGLE));
                     break;
                 }
                 case "sexUiOn": {
@@ -1105,22 +1105,22 @@ fg {
                 }
                 case "talk_hornyMSG1": {
                     this.a(I18n.format("bia.dialogue.heya", new Object[0]));
-                    this.a(ModSounds.GIRLS_BIA_HEY, new int[0]);
+                    this.playRandomSound(ModSounds.GIRLS_BIA_HEY, new int[0]);
                     break;
                 }
                 case "talk_hornyMSG2": {
                     this.a(I18n.format("bia.dialogue.horny", new Object[0]));
-                    this.a(ModSounds.GIRLS_BIA_GIGGLE[2]);
+                    this.playSoundEvent(ModSounds.GIRLS_BIA_GIGGLE[2]);
                     break;
                 }
                 case "talk_hornyMSG3": {
                     this.a(I18n.format("bia.dialogue.so", new Object[0]));
-                    this.a(ModSounds.GIRLS_BIA_BREATH[0]);
+                    this.playSoundEvent(ModSounds.GIRLS_BIA_BREATH[0]);
                     break;
                 }
                 case "talk_hornyMSG4": {
                     this.a(I18n.format("bia.dialogue.fun", new Object[0]));
-                    this.a(ModSounds.GIRLS_BIA_HUH[0]);
+                    this.playSoundEvent(ModSounds.GIRLS_BIA_HUH[0]);
                     break;
                 }
                 case "talk_hornyDone": {
@@ -1131,17 +1131,17 @@ fg {
                 }
                 case "talk_responseMSG1": {
                     this.a(I18n.format("bia.dialogue.huh", new Object[0]));
-                    this.a(ModSounds.GIRLS_BIA_HUH[2]);
+                    this.playSoundEvent(ModSounds.GIRLS_BIA_HUH[2]);
                     break;
                 }
                 case "talk_responseMSG2": {
                     this.a(I18n.format("bia.dialogue.iuhm", new Object[0]));
-                    this.a(ModSounds.GIRLS_BIA_BREATH[1]);
+                    this.playSoundEvent(ModSounds.GIRLS_BIA_BREATH[1]);
                     break;
                 }
                 case "talk_responseMSG3": {
                     this.a(I18n.format("bia.dialogue.yes", new Object[0]));
-                    this.a(ModSounds.GIRLS_BIA_GIGGLE[0]);
+                    this.playSoundEvent(ModSounds.GIRLS_BIA_GIGGLE[0]);
                     break;
                 }
                 case "talk_responseDone": {
@@ -1152,11 +1152,11 @@ fg {
                     break;
                 }
                 case "anal_prepareMSG1": {
-                    this.a(ModSounds.MISC_PLOB[0]);
+                    this.playSoundEvent(ModSounds.MISC_PLOB[0]);
                     break;
                 }
                 case "anal_prepareMSG2": {
-                    this.a(ModSounds.MISC_BEDRUSTLE[0]);
+                    this.playSoundEvent(ModSounds.MISC_BEDRUSTLE[0]);
                     break;
                 }
                 case "anal_prepareDone": {
@@ -1166,8 +1166,8 @@ fg {
                     break;
                 }
                 case "anal_startMSG1": {
-                    this.a(ModSounds.GIRLS_BIA_MMM[3]);
-                    this.a(ModSounds.MISC_POUNDING[34]);
+                    this.playSoundEvent(ModSounds.GIRLS_BIA_MMM[3]);
+                    this.playSoundEvent(ModSounds.MISC_POUNDING[34]);
                     break;
                 }
                 case "anal_fastMSG1": {
@@ -1180,8 +1180,8 @@ fg {
                     if (this.isOwnedByLocalPlayer()) {
                         GuiHud.addProgress(0.02);
                     }
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.5f);
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_BIA_AHH));
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.5f);
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_BIA_AHH));
                     break;
                 }
                 case "anal_fastDone": {
@@ -1194,7 +1194,7 @@ fg {
                     break;
                 }
                 case "anal_cumMSG2": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_BIA_AHH));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_BIA_AHH));
                     break;
                 }
                 case "blackScreen": 
@@ -1212,22 +1212,22 @@ fg {
                 }
                 case "headpatMSG1": {
                     this.a(I18n.format("bia.dialogue.headpats", new Object[0]));
-                    this.a(ModSounds.GIRLS_BIA_BREATH[0]);
+                    this.playSoundEvent(ModSounds.GIRLS_BIA_BREATH[0]);
                     break;
                 }
                 case "headpatMSG2": {
                     this.a(I18n.format("bia.dialogue.hmm", new Object[0]));
-                    this.a(ModSounds.GIRLS_BIA_MMM[0]);
+                    this.playSoundEvent(ModSounds.GIRLS_BIA_MMM[0]);
                     break;
                 }
                 case "headpatMSG3": {
                     this.a(I18n.format("bia.dialogue.huh2", new Object[0]));
-                    this.a(ModSounds.GIRLS_BIA_HUH[0]);
+                    this.playSoundEvent(ModSounds.GIRLS_BIA_HUH[0]);
                     break;
                 }
                 case "headpatMSG4": {
                     this.a(I18n.format("bia.dialogue.thankyou", new Object[0]));
-                    this.a(ModSounds.GIRLS_BIA_GIGGLE[1]);
+                    this.playSoundEvent(ModSounds.GIRLS_BIA_GIGGLE[1]);
                     break;
                 }
                 case "headpatDone": {
@@ -1236,7 +1236,7 @@ fg {
                 }
                 case "sitdownMSG1": {
                     this.a("come here big boy~");
-                    this.a(ModSounds.GIRLS_BIA_BREATH, new int[0]);
+                    this.playRandomSound(ModSounds.GIRLS_BIA_BREATH, new int[0]);
                     break;
                 }
                 case "sitdownDone": {
@@ -1244,17 +1244,17 @@ fg {
                     break;
                 }
                 case "slide": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_SLIDE));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.MISC_SLIDE));
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.005);
                     break;
                 }
                 case "pound": {
-                    this.a(ModSounds.MISC_POUNDING, new int[0]);
+                    this.playRandomSound(ModSounds.MISC_POUNDING, new int[0]);
                     break;
                 }
                 case "doggyMoan": {
-                    this.a(this.getRNG().nextBoolean() ? ModSounds.GIRLS_BIA_AHH : ModSounds.GIRLS_BIA_MMM, new int[0]);
+                    this.playRandomSound(this.getRNG().nextBoolean() ? ModSounds.GIRLS_BIA_AHH : ModSounds.GIRLS_BIA_MMM, new int[0]);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.04);
                     break;
@@ -1270,15 +1270,15 @@ fg {
                     break;
                 }
                 case "cum": {
-                    this.a(ModSounds.MISC_INSERTS, 6.0f);
+                    this.playSoundAtVolume(ModSounds.MISC_INSERTS, 6.0f);
                     break;
                 }
                 case "orgasm1": {
-                    this.a(ModSounds.GIRLS_BIA_MMM[6]);
+                    this.playSoundEvent(ModSounds.GIRLS_BIA_MMM[6]);
                     break;
                 }
                 case "orgasm2": {
-                    this.a(ModSounds.GIRLS_BIA_MMM[7]);
+                    this.playSoundEvent(ModSounds.GIRLS_BIA_MMM[7]);
                 }
             }
         };

@@ -65,7 +65,7 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    public void performAction(String string, UUID uUID) {
+    public void startAction(String string, UUID uUID) {
         try {
             if ("action.names.blowjob".equals(string)) {
                 this.a(0, GirlAnimationState.SUCKBLOWJOB);
@@ -136,7 +136,7 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    protected GirlAnimationState c(GirlAnimationState girlAnimationState) {
+    protected GirlAnimationState getFollowUpAction(GirlAnimationState girlAnimationState) {
         try {
             if (girlAnimationState == GirlAnimationState.SUCKBLOWJOB) {
                 return GirlAnimationState.THRUSTBLOWJOB;
@@ -157,7 +157,7 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    protected GirlAnimationState a(GirlAnimationState girlAnimationState) {
+    protected GirlAnimationState nextAnimationState(GirlAnimationState girlAnimationState) {
         block9: {
             block8: {
                 try {
@@ -378,7 +378,7 @@ extends PlayerGirlEntity {
                 case "dress": {
                     if (!this.isLocalPlayerNearby()) break;
                     this.DataManager.set(GirlEntity.OutfitIndexKey, (Object)1);
-                    this.b((GirlAnimationState)null);
+                    this.setCurrentAction((GirlAnimationState)null);
                     this.resetAimTarget();
                     break;
                 }

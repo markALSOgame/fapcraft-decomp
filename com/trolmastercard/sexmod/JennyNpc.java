@@ -496,7 +496,7 @@ fg {
                 throw JennyNpc.rethrow(runtimeException);
             }
             Vec3d vec3d3 = vec3d.add(vec3dArrayArray[i][0]);
-            this.a(false);
+            this.setShouldBeAtTargetPos(false);
             this.b(nArray[i]);
             this.setTargetPos(new Vec3d(vec3d3.x, vec3d3.y, vec3d3.z));
             this.AimYaw = this.I().floatValue();
@@ -686,7 +686,7 @@ fg {
     }
 
     @Override
-    public void b() {
+    public void void_b() {
         this.Teleporting = true;
     }
 

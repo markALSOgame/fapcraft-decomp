@@ -46,7 +46,7 @@ public class ModelGoblin extends GirlGeoModel {
       GoblinNpc goblin = (GoblinNpc)girl;
       UUID uuid = goblin.getSexPlayerUuid();
       if (uuid == null) {
-         uuid = goblin.e();
+         uuid = goblin.getGirlUuid();
       }
 
       try {
@@ -459,7 +459,7 @@ public class ModelGoblin extends GirlGeoModel {
          label29: {
             try {
                iBone2 = iBone;
-               if (girlMaster.a() < 15) {
+               if (((GoblinNpc)girlMaster).getThrowCounter() < 15) {
                   flag = true;
                   break label29;
                }

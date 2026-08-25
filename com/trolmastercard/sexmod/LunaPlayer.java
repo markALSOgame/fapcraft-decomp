@@ -61,7 +61,7 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    public void performAction(String string, UUID uUID) {
+    public void startAction(String string, UUID uUID) {
         try {
             if ("action.names.touchboobs".equals(string)) {
                 this.a(0, GirlAnimationState.TOUCH_BOOBS_INTRO);
@@ -158,7 +158,7 @@ extends PlayerGirlEntity {
                 try {
                     super.onUpdate();
                     if (!GirlAnimationState.WAIT_CAT.equals((Object)this.getCurrentAction())) break block2;
-                    this.a();
+                    this.void_a();
                     break block3;
                 }
                 catch (RuntimeException runtimeException) {
@@ -169,7 +169,7 @@ extends PlayerGirlEntity {
         }
     }
 
-    void a() {
+    void void_a() {
         block12: {
             EntityPlayer entityPlayer;
             block11: {
@@ -250,7 +250,7 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    protected GirlAnimationState c(GirlAnimationState girlAnimationState) {
+    protected GirlAnimationState getFollowUpAction(GirlAnimationState girlAnimationState) {
         try {
             if (girlAnimationState == GirlAnimationState.TOUCH_BOOBS_SLOW) {
                 return GirlAnimationState.TOUCH_BOOBS_FAST;
@@ -271,7 +271,7 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    protected GirlAnimationState a(GirlAnimationState girlAnimationState) {
+    protected GirlAnimationState nextAnimationState(GirlAnimationState girlAnimationState) {
         block9: {
             block8: {
                 try {
