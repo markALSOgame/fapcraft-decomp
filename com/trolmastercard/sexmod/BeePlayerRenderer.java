@@ -11,7 +11,7 @@ public class BeePlayerRenderer extends GirlPlayerRenderer {
    }
 
    @Override
-   protected void applyItemHoldRotation(boolean flag, ItemStack stack) {
+   protected void applyHeldItemTransform(boolean flag, ItemStack stack) {
       float f;
       label16: {
          try {
@@ -30,15 +30,15 @@ public class BeePlayerRenderer extends GirlPlayerRenderer {
    }
 
    @Override
-   protected void applyRenderOffset() {
+   protected void applyScaleOffset() {
       GlStateManager.translate(0.0F, -0.6F, 0.0F);
       GlStateManager.scale(0.4F, 0.4F, 0.4F);
    }
 
    @Override
-   protected void applyBodyTilt(boolean flag) {
+   protected void applyHandOffset(boolean flag) {
       try {
-         super.applyBodyTilt(flag);
+         super.applyHandOffset(flag);
          if (flag) {
             GlStateManager.translate(0.1, 0.0, 0.0);
          }
@@ -49,7 +49,7 @@ public class BeePlayerRenderer extends GirlPlayerRenderer {
 
    @Override
 
-   protected void applyPostureTransform(boolean flag, boolean flag2) {
+   protected void applyDualHandOffset(boolean flag, boolean flag2) {
         block8: {
             block7: {
                 try {

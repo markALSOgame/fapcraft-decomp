@@ -2,6 +2,7 @@ package com.trolmastercard.sexmod;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import software.bernie.geckolib3.model.provider.data.EntityModelData;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import software.bernie.geckolib3.core.AnimationState;
@@ -11,7 +12,7 @@ import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.resource.GeckoLibCache;
 import software.bernie.shadowed.eliotlash.molang.MolangParser;
 
-public class ModelGalath extends GirlGeoModel {
+public class ModelGalath extends GirlGeoModel<GirlEntity> {
    public static ResourceLocation GalathTexture = new ResourceLocation("sexmod", "textures/entity/galath/galath.png");
    float LickPulse = 0.0F;
    long AttackStartTick = -1L;
@@ -41,7 +42,7 @@ public class ModelGalath extends GirlGeoModel {
       }
 
       try {
-         if (((BoxSource)girl).b()) {
+         if (((BoxSource)girl).hasMangleCompanion()) {
             return this.TextureLayers[2];
          }
       } catch (RuntimeException error2) {
@@ -52,12 +53,12 @@ public class ModelGalath extends GirlGeoModel {
    }
 
    @Override
-   public ResourceLocation b() {
+   public ResourceLocation getSkinLocation() {
       return GalathTexture;
    }
 
    @Override
-   public ResourceLocation b(GirlEntity girl) {
+   public ResourceLocation getAnimationFileLocation(GirlEntity girl) {
       return new ResourceLocation("sexmod", "animations/galath/galath.animation.json");
    }
 
@@ -89,18 +90,18 @@ public class ModelGalath extends GirlGeoModel {
    }
 
    @Override
-   public void a(GirlEntity girl, Integer i, AnimationEvent animEvent) {
+   public void setLivingAnimations(GirlEntity girl, Integer i, AnimationEvent animEvent) {
       try {
          this.applyMasturbationAngles(girl);
-         super.a(girl, i, animEvent);
+         super.setLivingAnimations(girl, i, animEvent);
          this.applyFlightToolRotation(girl);
          this.applyRapeChargePose(girl);
          this.applySwordAttackPose(girl);
-         this.b(girl);
+         this.applyGalathPose(girl);
          this.applyNippleBoneVisibility(girl);
          this.updateWingsVisibility(girl);
          this.hideCoinBone(girl);
-         this.a();
+         this.applyCorruptionPose();
          this.syncBodyPose(girl);
          this.animatePussyLicking(girl);
          this.applyHugPose(girl);
@@ -115,7 +116,7 @@ public class ModelGalath extends GirlGeoModel {
 
       try {
          galath.aE = this.getAnimationProcessor().getBone("head").getRotationX();
-         if (galath.b()) {
+         if (galath.hasMangleCompanion()) {
             ModelManglelie.applyAnimationTransforms(galath, this.getAnimationProcessor(), animEvent.getPartialTick());
          }
       } catch (RuntimeException error2) {
@@ -228,6 +229,24 @@ public class ModelGalath extends GirlGeoModel {
       galath.bm = iBone.getScaleY();
    }
 
+   Vec3d getHugPoseOffsets(GirlEntity girl) {
+      float f = 0.0F;
+      float f2 = 0.0F;
+      float f3 = 0.0F;
+
+      try {
+         if (girl.getCurrentAction() == GirlAnimationState.HUG_MANG) {
+            f = 0.6F;
+            f2 = -0.1F;
+            f3 = -0.4F;
+         }
+      } catch (RuntimeException error) {
+         throw rethrow(error);
+      }
+
+      return new Vec3d((double)f, (double)f2, (double)f3);
+   }
+
    void applyHugPose(GirlEntity girl) {
       try {
          if (girl.ActionController.getAnimationState() != AnimationState.Transitioning) {
@@ -291,7 +310,7 @@ public class ModelGalath extends GirlGeoModel {
       molangParser.setValue("yaw", f + 90.0F);
    }
 
-   void a() {
+   void applyCorruptionPose() {
       try {
          if (ClientProxy.IS_PRELOADING) {
             return;
@@ -367,7 +386,7 @@ public class ModelGalath extends GirlGeoModel {
       label16: {
          try {
             iBone = this.getAnimationProcessor().getBone("wings");
-            if (!((BoxSource)girl).a()) {
+            if (!((BoxSource)girl).shouldHideBody()) {
                flag = true;
                break label16;
             }
@@ -390,7 +409,7 @@ public class ModelGalath extends GirlGeoModel {
       IBone iBone4 = animationProcessor.getBone("braBoobR");
       IBone iBone5 = animationProcessor.getBone("slip");
       boolean flag = ((BoxSource)((Object)girl)).shouldHideBody();
-      boolean flag2 = GirlAnimationState.a(girl, GirlAnimationState.PUSSY_LICKING, GirlAnimationState.MASTERBATE_SITTING, GirlAnimationState.MASTERBATE_SITTING_CUM);
+      boolean flag2 = GirlAnimationState.isGirlInAnimation(girl, GirlAnimationState.PUSSY_LICKING, GirlAnimationState.MASTERBATE_SITTING, GirlAnimationState.MASTERBATE_SITTING_CUM);
       if (iBone == null) {
          return;
       }
@@ -427,7 +446,7 @@ public class ModelGalath extends GirlGeoModel {
       iBone.setRotationZ((float)LerpMath.lerp(vec4d.Y, vec4d.X, (double)f2));
    }
 
-   void b(GirlEntity girl) {
+   void applyGalathPose(GirlEntity girl) {
       try {
          if (!(girl instanceof GalathNpc)) {
             return;
@@ -483,7 +502,7 @@ public class ModelGalath extends GirlGeoModel {
          throw rethrow(error5);
       }
 
-      Vec3d vec3d3 = applyHugPose(girl);
+      Vec3d vec3d3 = getHugPoseOffsets(girl);
       iBone.setRotationX(-((float)vec3d3.x));
       iBone.setPositionY((float)vec3d3.y);
       iBone.setPositionZ((float)vec3d3.z);
@@ -506,7 +525,7 @@ public class ModelGalath extends GirlGeoModel {
          throw rethrow(error2);
       }
 
-      Vec3d vec3d = applyHugPose(girl);
+      Vec3d vec3d = getHugPoseOffsets(girl);
       IBone iBone = this.getAnimationProcessor().getBone("body");
       IBone iBone2 = this.getAnimationProcessor().getBone("rotationTool");
       iBone2.setRotationX((float)vec3d.x);
@@ -584,7 +603,7 @@ public class ModelGalath extends GirlGeoModel {
             throw ModelGalath.rethrow(runtimeException);
         }
         try {
-            if (((BoxSource)((Object)girl)).b()) {
+            if (((BoxSource)((Object)girl)).hasMangleCompanion()) {
                 return this.TextureLayers[2];
             }
         }
@@ -595,7 +614,7 @@ public class ModelGalath extends GirlGeoModel {
     }
 
    @Override
-   public String[] c() {
+   public String[] getHelmetBones() {
       return new String[]{"armorHelmet"};
    }
 

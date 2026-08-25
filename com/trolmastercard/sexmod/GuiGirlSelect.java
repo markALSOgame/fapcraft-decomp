@@ -27,13 +27,9 @@ public class GuiGirlSelect extends GuiScreen {
       this.mc = Minecraft.getMinecraft();
 
       for (GirlRegistry girlType : GirlRegistry.values()) {
-         try {
             if (girlType.isNpcOnly) {
                continue;
             }
-         } catch (Exception error) {
-            throw rethrow(error);
-         }
 
          try {
             Constructor constructor = girlType.npcClass.getConstructor(World.class);
@@ -166,8 +162,14 @@ public class GuiGirlSelect extends GuiScreen {
       livingBase.prevRotationYawHead = f4;
       livingBase.rotationYawHead = f5;
    }
+ static RuntimeException rethrow(RuntimeException error) {
 
-   private static Exception rethrow(Exception error) {
       return error;
+
+   }
+
+
+   private static RuntimeException rethrow(Exception error) {
+      return new RuntimeException(error);
    }
 }

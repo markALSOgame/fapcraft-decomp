@@ -8,6 +8,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import java.util.ArrayList;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.management.PlayerList;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -72,7 +73,7 @@ public class PacketSetPlayerForGirl implements IMessage {
                     }
                     try {
                         if (girl instanceof JennyNpc) {
-                            ((JennyNpc)girl).af = true;
+                            ((JennyNpc)girl).StartDoggyPending = true;
                         }
                     }
                     catch (NullPointerException nullPointerException) {

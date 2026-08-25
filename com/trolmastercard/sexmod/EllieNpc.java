@@ -89,7 +89,7 @@ implements VoidCallback {
     }
 
     @Override
-    public String getDisplayName() {
+    public String getGirlName() {
         return "Ellie";
     }
 
@@ -198,7 +198,7 @@ implements VoidCallback {
     }
 
     @Override
-    public void x() {
+    public void resetMasterAndWalkSpeed() {
         super.resetMasterAndWalkSpeed();
         this.a("stay safe darling~");
         this.playSoundAtVolume(ModSounds.GIRLS_ELLIE_SIGH[1], 6.0f);
@@ -491,7 +491,7 @@ implements VoidCallback {
         UUID uUID;
         String string = (String)this.DataManager.get(BlowjobStageKey);
         if ("Missionary".equals(string)) {
-            this.DataManager.set(OutfitIndexKey, (Object)0);
+            this.DataManager.set(OutfitIndexKey, 0);
             this.setCurrentAction(GirlAnimationState.MISSIONARY_START);
             uUID = this.getSexPlayerUuid();
             try {
@@ -514,7 +514,7 @@ implements VoidCallback {
             }
             entityPlayer.setNoGravity(true);
             entityPlayer.noClip = true;
-            vec3d2 = this.initPhysics();
+            vec3d2 = this.getTargetPos();
             entityPlayer.rotationYaw = this.I().floatValue();
             vec3d = VectorMath.rotateYaw(new Vec3d(0.0, 0.0, 0.1), entityPlayer.rotationYaw);
             vec3d2 = vec3d2.add(vec3d);
@@ -522,7 +522,7 @@ implements VoidCallback {
             NetworkHandler.channel.sendTo((IMessage)new PacketSetPlayerMovement(false), (EntityPlayerMP)entityPlayer);
         }
         if ("cowgirl".equals(string)) {
-            this.DataManager.set(OutfitIndexKey, (Object)0);
+            this.DataManager.set(OutfitIndexKey, 0);
             this.setCurrentAction(GirlAnimationState.COWGIRLSTART);
             uUID = this.getSexPlayerUuid();
             try {
@@ -545,7 +545,7 @@ implements VoidCallback {
             }
             entityPlayer.setNoGravity(true);
             entityPlayer.noClip = true;
-            vec3d2 = this.initPhysics();
+            vec3d2 = this.getTargetPos();
             entityPlayer.rotationYaw = this.I().floatValue() + 180.0f;
             vec3d = VectorMath.rotateYaw(new Vec3d(0.0, 1.0 - (double)entityPlayer.eyeHeight, -1.8125), entityPlayer.rotationYaw);
             vec3d2 = vec3d2.add(vec3d);
@@ -643,7 +643,7 @@ implements VoidCallback {
         }
         try {
             this.IsSitting = true;
-            this.DataManager.set(BusyKey, (Object)false);
+            this.DataManager.set(BusyKey, false);
             this.setCurrentAction(GirlAnimationState.NULL);
             this.noClip = false;
             this.setNoGravity(false);
@@ -691,7 +691,7 @@ implements VoidCallback {
         this.setTargetPos(vec3d);
         this.b(i);
         this.setCurrentAction(GirlAnimationState.SITDOWN);
-        this.DataManager.set(BusyKey, (Object)true);
+        this.DataManager.set(BusyKey, true);
         this.SitCountdown = 109;
         this.noClip = true;
         this.setNoGravity(true);
@@ -744,8 +744,8 @@ implements VoidCallback {
                 i = i4;
             }
         } while (i == -1);
-        blockPos = vec3d.add(vec3dArrayArray[i][0]);
-        return new Object[]{blockPos, nArray[i]};
+        Vec3d vec3d4 = vec3d.add(vec3dArrayArray[i][0]);
+        return new Object[]{vec3d4, nArray[i]};
     }
 
     void void_d() {
@@ -771,7 +771,7 @@ implements VoidCallback {
         float f = (float)(Math.atan2(this.posZ - entityPlayer.posZ, this.posX - entityPlayer.posX) * 57.29577951308232);
         this.b(f);
         this.setTargetPos(this.getPositionVector());
-        this.DataManager.set(BusyKey, (Object)true);
+        this.DataManager.set(BusyKey, true);
         this.setCurrentAction(GirlAnimationState.DASH);
         this.DashCountdown = 16;
         this.setNoGravity(true);
@@ -821,7 +821,7 @@ implements VoidCallback {
     }
 
     void void_f() {
-        this.DataManager.set(BusyKey, (Object)false);
+        this.DataManager.set(BusyKey, false);
         this.setCurrentAction(GirlAnimationState.NULL);
         this.handleGirlUuidEvent((UUID)null);
         this.noClip = false;
@@ -862,7 +862,7 @@ implements VoidCallback {
     }
 
     @Override
-    protected GirlAnimationState a(GirlAnimationState girlAnimationState) {
+    protected GirlAnimationState nextAnimationState(GirlAnimationState girlAnimationState) {
         block14: {
             block13: {
                 block12: {
@@ -909,7 +909,7 @@ implements VoidCallback {
     }
 
     @Override
-    protected GirlAnimationState c(GirlAnimationState girlAnimationState) {
+    protected GirlAnimationState getFollowUpAction(GirlAnimationState girlAnimationState) {
         try {
             if (girlAnimationState == GirlAnimationState.COWGIRLSLOW) {
                 return GirlAnimationState.COWGIRLFAST;
@@ -958,10 +958,10 @@ implements VoidCallback {
                 }
                 double d = Math.abs(this.prevPosX - this.posX) + Math.abs(this.prevPosZ - this.posZ);
                 if (d == 0.0) {
-                    this.createAnimation(this.boolean_i() ? "animation.ellie.crouchidle" : "animation.ellie.idle", true, animEvent);
+                    this.createAnimationOnce(this.boolean_i() ? "animation.ellie.crouchidle" : "animation.ellie.idle", true, animEvent);
                     break;
                 }
-                if (this.i()) {
+                if (this.boolean_i()) {
                     this.createAnimationOnce("animation.ellie.crouchwalk", true, animEvent);
                     break;
                 }
@@ -1127,7 +1127,7 @@ implements VoidCallback {
                 }
                 case "hugMSG4": {
                     this.h(I18n.format("ellie.dialogue.mommyhorny", new Object[0]));
-                    this.playSoundAtVolume(ModSounds.GIRLS_ELLIE_MOMMYHORNY, 0.5f);
+                    this.playRandomSoundWithChance(ModSounds.GIRLS_ELLIE_MOMMYHORNY, 0.5f);
                     break;
                 }
                 case "hugMSG5": {
@@ -1153,7 +1153,7 @@ implements VoidCallback {
                     break;
                 }
                 case "sitdownMSG1": {
-                    this.playSoundAtVolume(ModSounds.GIRLS_ELLIE_COMETOMOMMY, 0.5f);
+                    this.playRandomSoundWithChance(ModSounds.GIRLS_ELLIE_COMETOMOMMY, 0.5f);
                     if (!this.isLocalPlayerNearby()) break;
                     this.h(I18n.format("ellie.dialogue.cometomommy", new Object[0]));
                     break;
@@ -1224,7 +1224,7 @@ implements VoidCallback {
                 }
                 case "cowgirlcumMSG5": 
                 case "missionary_cumMSG2": {
-                    this.playSoundAtVolume(ModSounds.GIRLS_ELLIE_GOODBOY, 0.5f);
+                    this.playRandomSoundWithChance(ModSounds.GIRLS_ELLIE_GOODBOY, 0.5f);
                     if (!this.isOwnedByLocalPlayer()) break;
                     this.a(I18n.format("ellie.dialogue.goodboy", new Object[0]));
                     break;
@@ -1310,7 +1310,7 @@ implements VoidCallback {
                 }
                 case "carry_introMSG1": {
                     this.a("I'm hungry..");
-                    this.playSoundAtVolume(ModSounds.GIRLS_ELLIE_HMPH, 6.0f);
+                    this.playRandomSoundWithChance(ModSounds.GIRLS_ELLIE_HMPH, 6.0f);
                     break;
                 }
                 case "carry_introMSG2": {
@@ -1319,18 +1319,18 @@ implements VoidCallback {
                     break;
                 }
                 case "lipsound": {
-                    this.playSoundEvent(ModSounds.GIRLS_ALLIE_LIPSOUND, new int[0]);
+                    this.playRandomSound(ModSounds.GIRLS_ALLIE_LIPSOUND, new int[0]);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.02);
                     break;
                 }
                 case "cum": {
-                    this.playSoundAtVolume(ModSounds.MISC_INSERTS, 6.0f);
-                    this.playSoundEvent(ModSounds.MISC_POUNDING, new int[0]);
+                    this.playRandomSoundWithChance(ModSounds.MISC_INSERTS, 6.0f);
+                    this.playRandomSound(ModSounds.MISC_POUNDING, new int[0]);
                     break;
                 }
                 case "pound": {
-                    this.playSoundEvent(ModSounds.MISC_POUNDING, new int[0]);
+                    this.playRandomSound(ModSounds.MISC_POUNDING, new int[0]);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.04);
                     break;

@@ -78,13 +78,13 @@ implements BooleanCheck {
     protected void entityInit() {
         super.entityInit();
         EyeAndKoboldColor eyeAndKoboldColor = EyeAndKoboldColor.values()[this.getRNG().nextInt(EyeAndKoboldColor.values().length)];
-        this.DataManager.register(au, (Object)new BlockPos(eyeAndKoboldColor.getMainColor()));
-        this.DataManager.register(as, (Object)DefaultTribeColor.name());
-        this.DataManager.register(BodySizeKey, (Object)Float.valueOf(0.0f));
+        this.DataManager.register(HomePosKey, new BlockPos(eyeAndKoboldColor.getMainColor()));
+        this.DataManager.register(TribeColorKey, DefaultTribeColor.name());
+        this.DataManager.register(BodySizeKey, Float.valueOf(0.0f));
     }
 
     @Override
-    public AxisAlignedBB getInteractBox(EntityPlayer entityPlayer) {
+    public AxisAlignedBB getPlayerBoundingBox(EntityPlayer entityPlayer) {
         float f = 0.6f;
         float f2 = 0.9f;
         float f3 = f / 2.0f;
@@ -98,15 +98,15 @@ implements BooleanCheck {
             int n = list.get(i);
             switch (i) {
                 case 0: {
-                    this.DataManager.set(BodySizeKey, (Object)Float.valueOf((float)n / 100.0f * 0.25f));
+                    this.DataManager.set(BodySizeKey, Float.valueOf((float)n / 100.0f * 0.25f));
                     continue block5;
                 }
                 case 1: {
-                    this.DataManager.set(TribeColorKey, (Object)EyeAndKoboldColor.values()[n].toString());
+                    this.DataManager.set(TribeColorKey, EyeAndKoboldColor.values()[n].toString());
                     continue block5;
                 }
                 case 2: {
-                    this.DataManager.set(HomePosKey, (Object)new BlockPos(EyeAndKoboldColor.values()[n].getMainColor()));
+                    this.DataManager.set(HomePosKey, new BlockPos(EyeAndKoboldColor.values()[n].getMainColor()));
                     continue block5;
                 }
                 default: {
@@ -114,23 +114,23 @@ implements BooleanCheck {
                 }
             }
         }
-        this.DataManager.set(AttributeStringKey, (Object)stringBuilder.toString());
+        this.DataManager.set(AttributeStringKey, stringBuilder.toString());
         if (this.world.isRemote) {
             KoboldPlayerRenderer.clearColorCache();
         }
     }
 
     @Override
-    public ArrayList<Integer> getOutfitData() {
+    public ArrayList<Integer> L() {
         ArrayList<Integer> arrayList = new ArrayList<Integer>();
         arrayList.add(Math.round(((Float)this.DataManager.get(BodySizeKey)).floatValue() * 100.0f / 0.25f));
-        arrayList.add(EyeAndKoboldColor.indexOf(EyeAndKoboldColor.safeValueOf((String)this.DataManager.get(as))));
-        arrayList.add(EyeAndKoboldColor.indexOf(EyeAndKoboldColor.safeValueOf((Vec3i)this.DataManager.get(au))));
+        arrayList.add(EyeAndKoboldColor.indexOf(EyeAndKoboldColor.safeValueOf((String)this.DataManager.get(TribeColorKey))));
+        arrayList.add(EyeAndKoboldColor.indexOf(EyeAndKoboldColor.safeValueOf((Vec3i)this.DataManager.get(HomePosKey))));
         return arrayList;
     }
 
     @Override
-    protected String serializeGirlSpecificData(StringBuilder stringBuilder) {
+    protected String generateAttributeString(StringBuilder stringBuilder) {
         GirlEffectEntity.appendRandomBelow(stringBuilder, 8);
         GirlEffectEntity.appendRandomBelow(stringBuilder, 3);
         GirlEffectEntity.appendRandomGauss(stringBuilder);
@@ -143,7 +143,7 @@ implements BooleanCheck {
     }
 
     @Override
-    public ArrayList<Integer> getCustomizationSlots() {
+    public ArrayList<Integer> D() {
         return new ArrayList<Integer>(){
             {
                 this.add(101);
@@ -180,7 +180,7 @@ implements BooleanCheck {
                 this.b(uUID);
                 this.setCurrentAction(GirlAnimationState.KOBOLD_ANAL_START);
                 this.a(this.getOutfitIndex(), GirlAnimationState.KOBOLD_ANAL_START);
-                this.f(0);
+                this.setOutfitIndex(0);
             }
         }
         catch (RuntimeException runtimeException) {
@@ -191,7 +191,7 @@ implements BooleanCheck {
                 this.b(uUID);
                 this.setCurrentAction(GirlAnimationState.STARTBLOWJOB);
                 this.a(this.getOutfitIndex(), GirlAnimationState.STARTBLOWJOB);
-                this.f(0);
+                this.setOutfitIndex(0);
             }
         }
         catch (RuntimeException runtimeException) {
@@ -202,7 +202,7 @@ implements BooleanCheck {
                 this.b(uUID);
                 this.setCurrentAction(GirlAnimationState.MATING_PRESS_START);
                 this.a(this.getOutfitIndex(), GirlAnimationState.MATING_PRESS_START);
-                this.f(0);
+                this.setOutfitIndex(0);
             }
         }
         catch (RuntimeException runtimeException) {
@@ -212,7 +212,7 @@ implements BooleanCheck {
 
     @Override
     @SideOnly(value=Side.CLIENT)
-    public boolean onPlayerInteract(EntityPlayer entityPlayer) {
+    public boolean canInteract(EntityPlayer entityPlayer) {
         Minecraft.getMinecraft().displayGuiScreen((GuiScreen)new GuiGirlCommandMenu(this, entityPlayer, new String[]{"anal", "oral", "mating"}, null, false));
         return true;
     }
@@ -254,13 +254,13 @@ implements BooleanCheck {
     }
 
     @Override
-    public Vec3i getTribeColor(int i) {
+    public Vec3i b(int i) {
         try {
-            return EyeAndKoboldColor.valueOf((String)this.DataManager.get(as)).getMainColor();
+            return EyeAndKoboldColor.valueOf((String)this.DataManager.get(TribeColorKey)).getMainColor();
         }
         catch (Exception exception) {
             exception.printStackTrace();
-            return super.getTribeColor(i);
+            return super.b(i);
         }
     }
 
@@ -811,7 +811,7 @@ implements BooleanCheck {
                     break;
                 }
                 case "cumMsg": {
-                    this.void_a("I.. hope I am satisfying you sir");
+                    this.a("I.. hope I am satisfying you sir");
                     this.b(ModSounds.GIRLS_KOBOLD_SAD[this.getRNG().nextInt(1)]);
                     break;
                 }

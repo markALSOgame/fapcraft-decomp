@@ -115,15 +115,15 @@ extends GirlEntity {
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.DataManager.register(MommyUuidKey, (Object)"");
-        this.DataManager.register(ClaimedKey, (Object)false);
-        this.DataManager.register(TargetEntityIdKey, (Object)-1);
-        this.DataManager.register(AttackTimeKey, (Object)"");
-        this.DataManager.register(FleeingKey, (Object)false);
+        this.DataManager.register(MommyUuidKey, "");
+        this.DataManager.register(ClaimedKey, false);
+        this.DataManager.register(TargetEntityIdKey, -1);
+        this.DataManager.register(AttackTimeKey, "");
+        this.DataManager.register(FleeingKey, false);
     }
 
     @Override
-    public String getDisplayName() {
+    public String getGirlName() {
         return "Manglelie";
     }
 
@@ -134,12 +134,12 @@ extends GirlEntity {
     }
 
     @Override
-    public float i() {
+    public float getRenderLabelOffset() {
         return 0.0f;
     }
 
     public void setClaimed(boolean flag) {
-        this.DataManager.set(ClaimedKey, (Object)flag);
+        this.DataManager.set(ClaimedKey, flag);
     }
 
     public boolean isClaimed() {
@@ -149,14 +149,9 @@ extends GirlEntity {
     @Nullable
     public UUID getMommyUuid() {
         String string = (String)this.DataManager.get(MommyUuidKey);
-        try {
             if ("".equals(string)) {
                 return null;
             }
-        }
-        catch (Exception exception) {
-            throw ManglelieNpc.rethrow(exception);
-        }
         try {
             return UUID.fromString(string);
         }
@@ -166,7 +161,6 @@ extends GirlEntity {
         }
     }
 
-    @Override
     public boolean isUnclaimed() {
         boolean flag;
         try {
@@ -211,14 +205,14 @@ extends GirlEntity {
     public void setMommyUuid(UUID uUID) {
         try {
             if (uUID == null) {
-                this.DataManager.set(MommyUuidKey, (Object)"");
+                this.DataManager.set(MommyUuidKey, "");
                 return;
             }
         }
         catch (RuntimeException runtimeException) {
             throw ManglelieNpc.rethrow(runtimeException);
         }
-        this.DataManager.set(MommyUuidKey, (Object)uUID.toString());
+        this.DataManager.set(MommyUuidKey, uUID.toString());
     }
 
     @Override
@@ -331,14 +325,9 @@ extends GirlEntity {
 
     public long getAttackTime() {
         String string = (String)this.DataManager.get(AttackTimeKey);
-        try {
             if ("".equals(string)) {
                 return -1L;
             }
-        }
-        catch (Exception exception) {
-            throw ManglelieNpc.rethrow(exception);
-        }
         try {
             return Long.parseLong(string);
         }
@@ -348,7 +337,7 @@ extends GirlEntity {
     }
 
     public void setAttackTime(long l) {
-        this.DataManager.set(AttackTimeKey, (Object)Long.toString(l));
+        this.DataManager.set(AttackTimeKey, Long.toString(l));
         this.ArrowFired = false;
     }
 
@@ -466,7 +455,7 @@ extends GirlEntity {
             throw ManglelieNpc.rethrow(runtimeException);
         }
         ManglelieNpcRenderer.renderNpcWithLiving(f_2, f, previewEntity);
-        return ManglelieNpcRenderer.rotateHeadToTwin(f_2, f);
+        return ManglelieNpcRenderer.b(f_2, f);
     }
 
     public float float_b(float f) {
@@ -502,7 +491,7 @@ extends GirlEntity {
         long l;
         ManglelieNpc manglelie;
         try {
-            this.DataManager.set(TargetEntityIdKey, (Object)i);
+            this.DataManager.set(TargetEntityIdKey, i);
             manglelie = this;
             l = i == -1 ? -1L : this.world.getTotalWorldTime();
         }
@@ -658,7 +647,7 @@ extends GirlEntity {
         }
         BlockPos blockPos = f_2.getPosition();
         BlockPos blockPos2 = new BlockPos(15.0, 15.0, 15.0);
-        List list = this.world.getEntitiesWithinAABB(EntityMob.class, new AxisAlignedBB(blockPos.add((Vec3i)blockPos2), blockPos.subtract((Vec3i)blockPos2)));
+        List<EntityMob> list = this.world.getEntitiesWithinAABB(EntityMob.class, new AxisAlignedBB(blockPos.add((Vec3i)blockPos2), blockPos.subtract((Vec3i)blockPos2)));
         for (EntityMob entityMob : list) {
             try {
                 if (ManglelieNpc.isTargetBlocked((Entity)entityMob, f_2)) {
@@ -825,7 +814,7 @@ extends GirlEntity {
             }
         }
         this.b(0.0f);
-        this.c(f_2.getPositionVector());
+        this.setTargetPos(f_2.getPositionVector());
         this.getMommy(true);
     }
 
@@ -861,11 +850,10 @@ extends GirlEntity {
         catch (RuntimeException runtimeException) {
             throw ManglelieNpc.rethrow(runtimeException);
         }
-        return ManglelieNpcRenderer.rotateHeadToTwin(f_2, f);
+        return ManglelieNpcRenderer.b(f_2, f);
     }
 
     void void_c() {
-        GalathNpc f_22;
         GalathNpc f_3;
         block23: {
             block24: {
@@ -889,11 +877,11 @@ extends GirlEntity {
                 BlockPos blockPos2 = blockPos.add(-15.0, -15.0, -15.0);
                 BlockPos blockPos3 = blockPos.add(15.0, 15.0, 15.0);
                 AxisAlignedBB axisAlignedBB = new AxisAlignedBB(blockPos2, blockPos3);
-                List list = this.world.getEntitiesWithinAABB(GalathNpc.class, axisAlignedBB);
+                List<GalathNpc> list = this.world.getEntitiesWithinAABB(GalathNpc.class, axisAlignedBB);
                 f_3 = null;
-                for (GalathNpc f_22 : list) {
+                for (GalathNpc galath : list) {
                     try {
-                        if (f_22.isDead) {
+                        if (galath.isDead) {
                             continue;
                         }
                     }
@@ -901,7 +889,7 @@ extends GirlEntity {
                         throw ManglelieNpc.rethrow(runtimeException);
                     }
                     try {
-                        if (f_22.getChildMangle(true) != null) {
+                        if (galath.getChildMangle(true) != null) {
                             continue;
                         }
                     }
@@ -909,14 +897,14 @@ extends GirlEntity {
                         throw ManglelieNpc.rethrow(runtimeException);
                     }
                     try {
-                        if (!f_22.onGround) {
+                        if (!galath.onGround) {
                             continue;
                         }
                     }
                     catch (RuntimeException runtimeException) {
                         throw ManglelieNpc.rethrow(runtimeException);
                     }
-                    f_3 = f_22;
+                    f_3 = galath;
                     break;
                 }
                 try {
@@ -946,8 +934,8 @@ extends GirlEntity {
         }
         this.setCurrentAction(GirlAnimationState.RUN);
         Vec3d vec3d = this.getPositionVector();
-        f_22 = f_3.getPositionVector();
-        Vec3d vec3d2 = f_22.subtract(vec3d);
+        Vec3d vec3d4 = f_3.getPositionVector();
+        Vec3d vec3d2 = vec3d4.subtract(vec3d);
         float f = (float)AngleMath.radToDegrees(Math.atan2(vec3d2.z, vec3d2.x)) - 90.0f;
         this.b(f);
         this.Navigation = this.getNavigator();
@@ -1055,7 +1043,7 @@ extends GirlEntity {
         catch (RuntimeException runtimeException) {
             throw ManglelieNpc.rethrow(runtimeException);
         }
-        Entity entity = this.getTargetPos();
+        Entity entity = this.getSexPlayer();
         try {
             if (entity == null) {
                 this.VerticalImpulse = 0.0f;
@@ -1076,21 +1064,19 @@ extends GirlEntity {
             f3 -= f4.floatValue();
         }
         try {
-            ManglelieNpc manglelie = this;
             f2 = Math.abs(BedLogic.angleDifference(0.0f, f3)) < 80.0f ? -AngleMath.degToRadians(f3) : 0.0f;
         }
         catch (RuntimeException runtimeException) {
             throw ManglelieNpc.rethrow(runtimeException);
         }
         try {
-            manglelie.VerticalImpulse = f2;
-            ManglelieNpc manglelie2 = this;
+            this.VerticalImpulse = f2;
             f = this.VerticalImpulse == 0.0f ? 0.0f : (float)MathUtils.clamp(-vec3d3.y / 2.0, -0.75, 0.75);
         }
         catch (RuntimeException runtimeException) {
             throw ManglelieNpc.rethrow(runtimeException);
         }
-        manglelie2.W = f;
+        this.W = f;
     }
 
     public boolean attackEntityFrom(DamageSource damageSource, float f) {
@@ -1202,7 +1188,7 @@ extends GirlEntity {
     }
 
     @Override
-    public void f(String string) {
+    public void setCustomModel(String string) {
         super.setCustomModel(string);
         CustomModelWorldData.removeGirl(this);
     }
@@ -1222,12 +1208,12 @@ extends GirlEntity {
 
     @Override
     @Nullable
-    protected GirlAnimationState c(GirlAnimationState girlAnimationState) {
+    protected GirlAnimationState getFollowUpAction(GirlAnimationState girlAnimationState) {
         return null;
     }
 
     @Override
-    protected GirlAnimationState a(GirlAnimationState girlAnimationState) {
+    protected GirlAnimationState nextAnimationState(GirlAnimationState girlAnimationState) {
         try {
             if (GirlAnimationState.isAnimationInList(girlAnimationState, GirlAnimationState.THREESOME_FAST, GirlAnimationState.THREESOME_SLOW)) {
                 this.N = true;
@@ -1485,7 +1471,7 @@ extends GirlEntity {
         this.ActionController.registerSoundListener(arg1 -> {
             switch (arg1.sound) {
                 case "pound": {
-                    this.a(ModSounds.MISC_POUNDING, new int[0]);
+                    this.playRandomSound(ModSounds.MISC_POUNDING, new int[0]);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.02);
                     break;
@@ -1508,8 +1494,8 @@ extends GirlEntity {
                     break;
                 }
                 case "doubleSemen0": {
-                    this.a(ModSounds.MISC_INSERTS, 6.0f);
-                    this.a(ModSounds.MISC_POUNDING, new int[0]);
+                    this.playRandomSoundWithChance(ModSounds.MISC_INSERTS, 6.0f);
+                    this.playRandomSound(ModSounds.MISC_POUNDING, new int[0]);
                 }
                 case "doubleSemen": {
                     GuiCumOverlay.addParticles(new ParticleEmitter(10, girl -> {
@@ -1528,18 +1514,8 @@ extends GirlEntity {
         animationData.addAnimationController(this.ActionController);
     }
 
-    private static /* synthetic */ Vec3d lambda$null$1(GirlEntity girl) {
-        return girl.getModelBone("semenEmitter").add(girl.getTargetPos());
-    }
-
-    private static /* synthetic */ Vec3d lambda$null$0(GirlEntity girl) {
-        Vec3d vec3d = girl.d("semenEmitter");
-        Vec3d vec3d2 = girl.d("semenDir");
-        return vec3d.subtract(vec3d2).normalize();
-    }
-
-    private static Exception rethrow(Exception exception) {
-        return exception;
+    private static RuntimeException rethrow(Exception exception) {
+        return new RuntimeException(exception);
     }
 
     public static class ArrowImpactHandler {

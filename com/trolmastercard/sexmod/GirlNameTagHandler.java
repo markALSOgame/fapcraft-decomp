@@ -45,7 +45,7 @@ public class GirlNameTagHandler {
       }
 
       try {
-         ((GirlEntity)entity).g(string);
+         ((GirlEntity)entity).setCustomName(string);
          if (!player.capabilities.isCreativeMode) {
             stack.shrink(1);
          }

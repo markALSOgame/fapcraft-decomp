@@ -8,7 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.Vec3d;
 import software.bernie.geckolib3.core.processor.IBone;
 
-public class ModelEllie extends GirlGeoModel {
+public class ModelEllie extends GirlGeoModel<GirlEntity> {
    HashMap<Integer, float[]> HeadYawRotations = new HashMap<Integer, float[]>() {
       {
          this.put(0, new float[]{0.0F, -1.2F, 1.2F});
@@ -27,7 +27,7 @@ public class ModelEllie extends GirlGeoModel {
    }
 
    @Override
-   public ResourceLocation b() {
+   public ResourceLocation getSkinLocation() {
       return new ResourceLocation("sexmod", "textures/entity/ellie/ellie.png");
    }
 
@@ -38,7 +38,7 @@ public class ModelEllie extends GirlGeoModel {
 
    @Override
 
-   public void animateHeadTracking(GirlEntity girl, Integer i, AnimationEvent animEvent) {
+   public void setLivingAnimations(GirlEntity girl, Integer i, AnimationEvent animEvent) {
         float f;
         float f2;
         float f3;
@@ -51,7 +51,7 @@ public class ModelEllie extends GirlGeoModel {
                 block23: {
                     block22: {
                         try {
-                            super.animateHeadTracking(girl, i, animEvent);
+                            super.setLivingAnimations(girl, i, animEvent);
                             if (girl.world instanceof PreviewWorld) {
                                 return;
                             }
@@ -139,37 +139,37 @@ public class ModelEllie extends GirlGeoModel {
     }
 
    @Override
-   public String[] getArmorHelmetBones() {
+   public String[] getHelmetBones() {
       return new String[]{"armorHelmet"};
    }
 
    @Override
-   public String[] getHeadbandBones() {
+   public String[] getHeadAccessoryBones() {
       return new String[]{"headband"};
    }
 
    @Override
-   public String[] getArmorShoulderBones() {
+   public String[] getChestArmorBones() {
       return new String[]{"armorShoulderR", "armorShoulderL", "armorChest", "armorBoobs"};
    }
 
    @Override
-   public String[] a() {
+   public String[] getFleshTorsoBones() {
       return new String[]{"boobsFlesh", "upperBodyL", "upperBodyR"};
    }
 
    @Override
-   public String[] getArmorHipAndPantsBones() {
+   public String[] getPantsArmorBones() {
       return new String[]{"armorBootyR", "armorBootyL", "armorPantsLowL", "armorPantsLowR", "armorPantsLowR", "armorPantsUpR", "armorPantsUpL", "armorHip"};
    }
 
    @Override
-   public String[] getFleshBones() {
+   public String[] getFleshLegsBones() {
       return new String[]{"fleshL", "fleshR", "vagina", "hotpants", "slip", "curvesL", "curvesR", "kneeL", "kneeR"};
    }
 
    @Override
-   public String[] b() {
+   public String[] getBootsArmorBones() {
       return new String[]{"armorShoesL", "armorShoesR"};
    }
 

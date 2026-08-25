@@ -277,7 +277,7 @@ public enum GirlAnimationState {
       this.hideNameTag = flag3;
    }
 
-   public static boolean a(GirlAnimationState girlAnimationState, GirlAnimationState... girlAnimationStateArray) {
+   public static boolean isAnimationInList(GirlAnimationState girlAnimationState, GirlAnimationState... girlAnimationStateArray) {
       for (GirlAnimationState girlAnimationState2 : girlAnimationStateArray) {
          try {
             if (girlAnimationState == girlAnimationState2) {
@@ -291,8 +291,8 @@ public enum GirlAnimationState {
       return false;
    }
 
-   public static boolean a(GirlEntity girl, GirlAnimationState... girlAnimationStateArray) {
-      return a(girl.getCurrentAction(), girlAnimationStateArray);
+   public static boolean isGirlInAnimation(GirlEntity girl, GirlAnimationState... girlAnimationStateArray) {
+      return isAnimationInList(girl.getCurrentAction(), girlAnimationStateArray);
    }
 
    public static double getAnimationLength(AnimationController controller) {

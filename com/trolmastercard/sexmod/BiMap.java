@@ -44,7 +44,7 @@ public class BiMap<K, V> {
       return this.ForwardMap.entrySet();
    }
 
-   public Set<K> a() {
+   public Set<K> keySet() {
       return this.ForwardMap.keySet();
    }
 

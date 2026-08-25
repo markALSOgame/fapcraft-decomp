@@ -233,7 +233,7 @@ public class GirlPlayerRenderer extends GeoGirlRenderer<GirlEntity> {
       }
 
       if (!bone.isHidden) {
-         Vector4f vector4f = this.a(string, f, f2, f3);
+         Vector4f vector4f = this.getBoneTint(string, f, f2, f3);
          f = vector4f.x;
          f2 = vector4f.y;
          f3 = vector4f.z;
@@ -249,14 +249,14 @@ public class GirlPlayerRenderer extends GeoGirlRenderer<GirlEntity> {
             }
          }
 
-         for (GeoBone bone2 : bone.childBones) {
-            if (d == 0.0) {
-               this.renderRecursively(bufferBuilder, bone2, f, f2, f3, f4);
-               continue;
-            }
+          for (GeoBone bone2 : bone.childBones) {
+             if (d == 0.0) {
+                this.renderRecursively(bufferBuilder, bone2, f, f2, f3, f4);
+                continue;
+             }
 
-            this.a(bufferBuilder, bone2, f, f2, f3, f4, d);
-         }
+             this.renderBone(bufferBuilder, bone2, f, f2, f3, f4, d);
+          }
       }
 
       try {

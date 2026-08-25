@@ -39,7 +39,7 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
-import net.minecraft.entity.EnumParticleTypes;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -238,7 +238,7 @@ public class ItemAlliesLamp extends Item implements IAnimatable {
                     double d = (float)(i2 - k) / (float)(c - k);
                     d = LerpMath.EaseInOutSine(d);
                     vec3d = new Vec3d(0.0, (double)entityPlayer.eyeHeight * (1.0 - d), 0.0);
-                    BedLogic.a(world2, EnumParticleTypes.CRIT_MAGIC, this.a(entityPlayer).add(vec3d), (int)(d * 150.0), d * 0.75, d);
+                    BedLogic.spawnParticles(world2, EnumParticleTypes.CRIT_MAGIC, this.a(entityPlayer).add(vec3d), (int)(d * 150.0), d * 0.75, d);
                 }
                 try {
                     if (i2 < c) {

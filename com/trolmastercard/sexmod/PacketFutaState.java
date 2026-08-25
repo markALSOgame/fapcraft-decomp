@@ -48,7 +48,7 @@ public class PacketFutaState implements IMessage {
             for (GirlEntity girl : GirlEntity.getGirlsByOwner(packet.GirlUuid)) {
                try {
                   if (girl instanceof InventoryGirlEntity) {
-                     ((InventoryGirlEntity)girl).Q.deserializeNBT(packet.Data);
+                     ((InventoryGirlEntity)girl).Inventory.deserializeNBT(packet.Data);
                   }
                } catch (RuntimeException error2) {
                   throw rethrow(error2);

@@ -122,7 +122,7 @@ public class ModSounds {
 
 
    public static void registerAllSounds() {
-        for (Field field : ModSounds.class.getDeclaredFields()) {
+        for (java.lang.reflect.Field field : ModSounds.class.getDeclaredFields()) {
             Class<?> clazz = field.getType();
             if (!clazz.isArray() || clazz.getComponentType() != SoundEvent.class) continue;
             SoundEvent[] soundEventArray;
@@ -162,8 +162,14 @@ public class ModSounds {
       lastRandomSound.replace(soundArray[0], i2);
       return soundArray[i2];
    }
+ static RuntimeException rethrow(RuntimeException error) {
 
-   private static Exception rethrow(Exception error) {
       return error;
+
+   }
+
+
+   private static RuntimeException rethrow(Exception error) {
+      return new RuntimeException(error);
    }
 }

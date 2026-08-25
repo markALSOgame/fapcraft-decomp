@@ -203,7 +203,7 @@ public class CultistRenderer extends Render<CultistEntity> {
       }
 
       byte bv = 90;
-      float f2 = MathUtils.b(this.Mc.player.ticksExisted - cultistEntity.HitTick, bv, 120.0F) - bv;
+      float f2 = MathUtils.clamp(this.Mc.player.ticksExisted - cultistEntity.HitTick, bv, 120.0F) - bv;
       float f3 = (f2 + f) / 30.0F;
       return 1.0F - f3;
    }

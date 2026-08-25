@@ -71,12 +71,12 @@ extends GirlEntity {
     }
 
     @Override
-    public String getDisplayName() {
+    public String getGirlName() {
         return "Slime";
     }
 
     @Override
-    public float i() {
+    public float getRenderLabelOffset() {
         return 1.6f;
     }
 
@@ -144,13 +144,13 @@ extends GirlEntity {
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.getDataManager().register(HornyLevelKey, (Object)0);
-        this.getDataManager().register(JumpYawKey, (Object)Float.valueOf(0.0f));
-        this.getDataManager().register(TicksUntilBirthKey, (Object)-1);
+        this.getDataManager().register(HornyLevelKey, 0);
+        this.getDataManager().register(JumpYawKey, Float.valueOf(0.0f));
+        this.getDataManager().register(TicksUntilBirthKey, -1);
     }
 
     @Override
-    protected GirlAnimationState a(GirlAnimationState girlAnimationState) {
+    protected GirlAnimationState getFollowUpAction(GirlAnimationState girlAnimationState) {
         block9: {
             block8: {
                 try {
@@ -183,7 +183,7 @@ extends GirlEntity {
     }
 
     @Override
-    protected GirlAnimationState c(GirlAnimationState girlAnimationState) {
+    protected GirlAnimationState nextAnimationState(GirlAnimationState girlAnimationState) {
         try {
             if (girlAnimationState == GirlAnimationState.SUCKBLOWJOB) {
                 return GirlAnimationState.THRUSTBLOWJOB;
@@ -218,10 +218,10 @@ extends GirlEntity {
     public void readEntityFromNBT(NBTTagCompound nBTTagCompound) {
         try {
             super.readEntityFromNBT(nBTTagCompound);
-            this.DataManager.set(HornyLevelKey, (Object)nBTTagCompound.getInteger("hornyLevel"));
-            this.DataManager.set(TicksUntilBirthKey, (Object)nBTTagCompound.getInteger("ticksUntilBirth"));
+            this.DataManager.set(HornyLevelKey, nBTTagCompound.getInteger("hornyLevel"));
+            this.DataManager.set(TicksUntilBirthKey, nBTTagCompound.getInteger("ticksUntilBirth"));
             if ((Integer)this.DataManager.get(HornyLevelKey) != 0) {
-                this.DataManager.set(D, (Object)0);
+                this.DataManager.set(OutfitIndexKey, 0);
             }
         }
         catch (RuntimeException runtimeException) {
@@ -237,9 +237,9 @@ extends GirlEntity {
     }
 
     @Override
-    public void onBirth() {
-        this.DataManager.set(HornyLevelKey, (Object)0);
-        this.DataManager.set(D, (Object)1);
+    public void noop() {
+        this.DataManager.set(HornyLevelKey, 0);
+        this.DataManager.set(OutfitIndexKey, 1);
     }
 
     @Override
@@ -252,7 +252,7 @@ extends GirlEntity {
                             try {
                                 super.updateAITasks();
                                 this.tryMate();
-                                this.getDisplayName();
+                                this.c();
                                 if (!this.isPotionActive(PotionHandler.b) || this.JumpPhase != SlimeNpc.JumpState.IDLE) break block8;
                             }
                             catch (RuntimeException runtimeException) {
@@ -263,8 +263,8 @@ extends GirlEntity {
                         catch (RuntimeException runtimeException) {
                             throw SlimeNpc.rethrow(runtimeException);
                         }
-                        this.DataManager.set(HornyLevelKey, (Object)2);
-                        if ((Integer)this.DataManager.get(D) != 1) break block9;
+                        this.DataManager.set(HornyLevelKey, 2);
+                        if ((Integer)this.DataManager.get(OutfitIndexKey) != 1) break block9;
                     }
                     catch (RuntimeException runtimeException) {
                         throw SlimeNpc.rethrow(runtimeException);
@@ -307,7 +307,7 @@ extends GirlEntity {
         try {
             if (this.world.isRemote) {
                 this.spawnPregnancyParticles();
-                this.getRenderLabelOffset();
+                this.i();
             }
         }
         catch (RuntimeException runtimeException) {
@@ -354,7 +354,7 @@ extends GirlEntity {
         try {
             SlimeNpc.spawnParticles(EnumParticleTypes.SPELL_WITCH, (GirlEntity)this);
             if (i == 0) {
-                this.a(ModSounds.MISC_PLOB[0]);
+                this.playSoundEvent(ModSounds.MISC_PLOB[0]);
             }
         }
         catch (RuntimeException runtimeException) {
@@ -373,7 +373,7 @@ extends GirlEntity {
             throw SlimeNpc.rethrow(runtimeException);
         }
         try {
-            this.DataManager.set(TicksUntilBirthKey, (Object)(i - 1));
+            this.DataManager.set(TicksUntilBirthKey, i - 1);
             if (--i >= 0) {
                 return;
             }
@@ -384,7 +384,7 @@ extends GirlEntity {
         SlimeRainEntity slimeRainEntity = new SlimeRainEntity(this.world);
         slimeRainEntity.setPosition(this.posX, this.posY, this.posZ);
         this.world.spawnEntity((Entity)slimeRainEntity);
-        this.DataManager.set(TicksUntilBirthKey, (Object)-1);
+        this.DataManager.set(TicksUntilBirthKey, -1);
     }
 
     void tryMate() {
@@ -417,7 +417,7 @@ extends GirlEntity {
                             }
                             this.setTargetPos(this.getPositionVector());
                             this.b(this.rotationYaw);
-                            this.DataManager.set(G, (Object)true);
+                            this.DataManager.set(BusyKey, true);
                             this.setNoGravity(true);
                             this.noClip = true;
                             this.setCurrentAction(GirlAnimationState.STARTDOGGY);
@@ -451,13 +451,13 @@ extends GirlEntity {
                 }
                 this.setTargetPos(this.getPositionVector());
                 this.b(this.rotationYaw);
-                this.DataManager.set(G, (Object)true);
+                this.DataManager.set(BusyKey, true);
                 this.setNoGravity(true);
                 this.noClip = true;
                 entityPlayer.setNoGravity(true);
                 entityPlayer.noClip = true;
                 NetworkHandler.channel.sendTo((IMessage)new PacketSetPlayerMovement(false), (EntityPlayerMP)entityPlayer);
-                this.getTargetYaw(entityPlayer.getPersistentID());
+                this.handleGirlUuidEvent(entityPlayer.getPersistentID());
                 entityPlayer.rotationYaw = this.I().floatValue();
                 Vec3d vec3d = VectorMath.rotateYaw(new Vec3d(0.0, 0.0, (double)0.65f), this.I().floatValue());
                 try {
@@ -519,7 +519,7 @@ extends GirlEntity {
                         }
                         try {
                             if ((double)this.JumpTicks == 85.0) {
-                                this.DataManager.set(JumpYawKey, (Object)Float.valueOf(this.getTargetYaw()));
+                                this.DataManager.set(JumpYawKey, Float.valueOf(this.getTargetYaw()));
                             }
                         }
                         catch (RuntimeException runtimeException) {
@@ -542,7 +542,6 @@ extends GirlEntity {
                                     catch (RuntimeException runtimeException) {
                                         throw SlimeNpc.rethrow(runtimeException);
                                     }
-                                    SlimeNpc slime = this;
                                     if ((Integer)this.DataManager.get(TicksUntilBirthKey) != -1) break block34;
                                 }
                                 catch (RuntimeException runtimeException) {
@@ -562,7 +561,7 @@ extends GirlEntity {
                     }
                     flag = false;
                 }
-                slime.ShouldJump = flag;
+                this.ShouldJump = flag;
             }
             try {
                 if (!this.ShouldJump || this.JumpTicks != 50) break block36;
@@ -573,7 +572,7 @@ extends GirlEntity {
             int i = (Integer)this.DataManager.get(HornyLevelKey);
             int i2 = i + 1;
             try {
-                this.DataManager.set(HornyLevelKey, (Object)i2);
+                this.DataManager.set(HornyLevelKey, i2);
                 if (i2 == 1) {
                     this.setCurrentAction(GirlAnimationState.UNDRESS);
                 }
@@ -669,7 +668,7 @@ extends GirlEntity {
             }
             case "action": {
                 if (this.getCurrentAction() == GirlAnimationState.NULL) {
-                    this.a(this.JumpPhase.AnimationId, true, animEvent);
+                    this.createAnimationOnce(this.JumpPhase.AnimationId, true, animEvent);
                     break;
                 }
                 switch (this.getCurrentAction()) {
@@ -742,13 +741,13 @@ extends GirlEntity {
                 }
                 case "dress": {
                     if (!this.isLocalPlayerNearby()) break;
-                    this.DataManager.set(OutfitIndexKey, (Object)1);
+                    this.DataManager.set(OutfitIndexKey, 1);
                     this.setCurrentAction((GirlAnimationState)null);
                     this.resetAimTarget();
                     break;
                 }
                 case "becomeNude": {
-                    this.DataManager.set(OutfitIndexKey, (Object)0);
+                    this.DataManager.set(OutfitIndexKey, 0);
                     break;
                 }
                 case "sexUiOn": {
@@ -762,23 +761,23 @@ extends GirlEntity {
                     break;
                 }
                 case "bjiMSG11": {
-                    this.a(SoundEvents.ENTITY_SLIME_SQUISH, 0.5f);
+                    this.playSoundAtVolume(SoundEvents.ENTITY_SLIME_SQUISH, 0.5f);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.02);
                     break;
                 }
                 case "bjiMSG12": {
                     if (ModConstants.Random.nextInt(5) == 0) {
-                        this.a(SoundEvents.ENTITY_SLIME_JUMP, 0.5f);
+                        this.playSoundAtVolume(SoundEvents.ENTITY_SLIME_JUMP, 0.5f);
                     }
-                    this.a(SoundEvents.ENTITY_SLIME_SQUISH, 0.5f);
+                    this.playSoundAtVolume(SoundEvents.ENTITY_SLIME_SQUISH, 0.5f);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.02);
                     break;
                 }
                 case "bjtMSG1": {
-                    this.a(SoundEvents.BLOCK_SLIME_HIT);
-                    this.a(SoundEvents.ENTITY_SLIME_DEATH);
+                    this.playSoundEvent(SoundEvents.BLOCK_SLIME_HIT);
+                    this.playSoundEvent(SoundEvents.ENTITY_SLIME_DEATH);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.04);
                     break;
@@ -800,17 +799,17 @@ extends GirlEntity {
                     break;
                 }
                 case "bjcMSG1": {
-                    this.a(SoundEvents.ENTITY_SLIME_JUMP);
+                    this.playSoundEvent(SoundEvents.ENTITY_SLIME_JUMP);
                     break;
                 }
                 case "bjcMSG2": {
-                    this.a(SoundEvents.ENTITY_SLIME_JUMP);
+                    this.playSoundEvent(SoundEvents.ENTITY_SLIME_JUMP);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.forceShowHud();
                     break;
                 }
                 case "doggyslowMSG2": {
-                    this.a(SoundEvents.BLOCK_SLIME_HIT);
+                    this.playSoundEvent(SoundEvents.BLOCK_SLIME_HIT);
                     break;
                 }
                 case "bjcBlackScreen": {
@@ -827,7 +826,7 @@ extends GirlEntity {
                     break;
                 }
                 case "doggyGoOnBedMSG1": {
-                    this.a(SoundEvents.ENTITY_SLIME_SQUISH);
+                    this.playSoundEvent(SoundEvents.ENTITY_SLIME_SQUISH);
                     this.AimYaw = this.rotationYaw;
                     break;
                 }
@@ -836,24 +835,24 @@ extends GirlEntity {
                     break;
                 }
                 case "doggystartMSG1": {
-                    this.a(ModSounds.MISC_TOUCH[0]);
+                    this.playSoundEvent(ModSounds.MISC_TOUCH[0]);
                     break;
                 }
                 case "doggystartMSG2": {
-                    this.a(ModSounds.MISC_TOUCH[1]);
+                    this.playSoundEvent(ModSounds.MISC_TOUCH[1]);
                     break;
                 }
                 case "doggystartMSG3": {
-                    this.a(SoundEvents.ENTITY_SLIME_SQUISH, 0.25f);
+                    this.playSoundAtVolume(SoundEvents.ENTITY_SLIME_SQUISH, 0.25f);
                     break;
                 }
                 case "doggystartMSG4": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_SMALLINSERTS), 1.5f);
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.MISC_SMALLINSERTS), 1.5f);
                     break;
                 }
                 case "doggystartMSG5": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.33f);
-                    this.a(SoundEvents.BLOCK_SLIME_HIT);
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.33f);
+                    this.playSoundEvent(SoundEvents.BLOCK_SLIME_HIT);
                     break;
                 }
                 case "doggystartDone": {
@@ -863,24 +862,24 @@ extends GirlEntity {
                     break;
                 }
                 case "doggyslowMSG1": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.33f);
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.33f);
                     int i = ModConstants.Random.nextInt(4);
                     if (i == 0) {
                         i = ModConstants.Random.nextInt(2);
                         if (i == 0) {
-                            this.a(SoundEvents.ENTITY_SLIME_JUMP);
+                            this.playSoundEvent(SoundEvents.ENTITY_SLIME_JUMP);
                         } else {
-                            this.a(SoundEvents.ENTITY_SLIME_SQUISH);
+                            this.playSoundEvent(SoundEvents.ENTITY_SLIME_SQUISH);
                         }
                     } else {
-                        this.a(SoundEvents.BLOCK_SLIME_HIT);
+                        this.playSoundEvent(SoundEvents.BLOCK_SLIME_HIT);
                     }
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.02);
                     break;
                 }
                 case "doggyfastMSG1": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.75f);
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.75f);
                     if (this.isOwnedByLocalPlayer()) {
                         GuiHud.addProgress(0.04);
                     }
@@ -888,13 +887,13 @@ extends GirlEntity {
                     if (this.P % 2 == 0) {
                         int i = ModConstants.Random.nextInt(2);
                         if (i == 0) {
-                            this.a(SoundEvents.ENTITY_SLIME_JUMP);
+                            this.playSoundEvent(SoundEvents.ENTITY_SLIME_JUMP);
                             break;
                         }
-                        this.a(SoundEvents.ENTITY_SLIME_SQUISH);
+                        this.playSoundEvent(SoundEvents.ENTITY_SLIME_SQUISH);
                         break;
                     }
-                    this.a(SoundEvents.BLOCK_SLIME_HIT);
+                    this.playSoundEvent(SoundEvents.BLOCK_SLIME_HIT);
                     break;
                 }
                 case "doggyfastDone": {
@@ -902,13 +901,13 @@ extends GirlEntity {
                     break;
                 }
                 case "doggycumMSG1": {
-                    this.a(ModSounds.MISC_CUMINFLATION[0], 4.0f);
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 2.0f);
-                    this.a(SoundEvents.ENTITY_SLIME_DEATH);
+                    this.playSoundAtVolume(ModSounds.MISC_CUMINFLATION[0], 4.0f);
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 2.0f);
+                    this.playSoundEvent(SoundEvents.ENTITY_SLIME_DEATH);
                     break;
                 }
                 case "jumpStart": {
-                    this.a(SoundEvents.ENTITY_SLIME_JUMP);
+                    this.playSoundEvent(SoundEvents.ENTITY_SLIME_JUMP);
                     break;
                 }
                 case "jumpStartDone": {
@@ -916,7 +915,7 @@ extends GirlEntity {
                     break;
                 }
                 case "jumpEndSound": {
-                    this.a(SoundEvents.ENTITY_SLIME_SQUISH);
+                    this.playSoundEvent(SoundEvents.ENTITY_SLIME_SQUISH);
                     break;
                 }
                 case "jumpEndDone": {

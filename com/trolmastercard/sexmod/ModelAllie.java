@@ -2,7 +2,7 @@ package com.trolmastercard.sexmod;
 
 import net.minecraft.util.ResourceLocation;
 
-public class ModelAllie extends GirlGeoModel {
+public class ModelAllie extends GirlGeoModel<GirlEntity> {
    @Override
    protected ResourceLocation[] a() {
       return new ResourceLocation[]{
@@ -13,7 +13,7 @@ public class ModelAllie extends GirlGeoModel {
    }
 
    @Override
-   public ResourceLocation getTextureForGirl(GirlEntity girl) {
+   public ResourceLocation getTextureLocation(GirlEntity girl) {
       try {
          if (girl.world instanceof PreviewWorld) {
             return this.TextureLayers[0];
@@ -51,27 +51,27 @@ public class ModelAllie extends GirlGeoModel {
    }
 
    @Override
-   public ResourceLocation getDefaultTexture() {
+   public ResourceLocation getSkinLocation() {
       return new ResourceLocation("sexmod", "textures/entity/allie/allie.png");
    }
 
    @Override
-   public ResourceLocation getAnimationResource(GirlEntity girl) {
+   public ResourceLocation getAnimationFileLocation(GirlEntity girl) {
       return new ResourceLocation("sexmod", "animations/allie/allie.animation.json");
    }
 
    @Override
-   public String[] getHelmetArmorBones() {
+   public String[] getHelmetBones() {
       return new String[]{"armorHelmet"};
    }
 
    @Override
-   public String[] getTorsoArmorBones() {
+   public String[] getChestArmorBones() {
       return new String[]{"armorShoulderR", "armorShoulderL", "armorChest", "armorBoobs"};
    }
 
    @Override
-   public String[] a() {
+   public String[] getFleshTorsoBones() {
       return new String[]{"boobsFlesh", "clothes", "clothesR", "clothesL"};
    }
 

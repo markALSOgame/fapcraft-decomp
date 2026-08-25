@@ -161,8 +161,8 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
          this.c(galath);
          super.doRender(galath, d2, d3, d4, f, f2);
          renderGirl((GirlEntity)galath, f2);
-         if (galath.boolean_b()) {
-            ManglelieNpcRenderer.renderGirl((GirlEntity)galath, f2);
+         if (galath.hasMangleCompanion()) {
+             ManglelieNpcRenderer.renderGirl((GirlEntity)galath, f2);
          }
       } catch (RuntimeException error2) {
          throw rethrow(error2);
@@ -586,7 +586,7 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
 
    @Override
 
-   protected void a(BufferBuilder bufferBuilder, String string, GeoBone bone) {
+   protected void applyBoneState(BufferBuilder bufferBuilder, String string, GeoBone bone) {
       switch (string) {
          case "hairBack": {
             if (Mc.isGamePaused()) break;
@@ -679,7 +679,7 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
          }
       }
 
-      if (((GalathNpc)this.RenderEntity).boolean_b()) {
+      if (((GalathNpc)this.RenderEntity).hasMangleCompanion()) {
          ManglelieNpcRenderer.applyModelPartColor(this.RenderEntity, string, bone, true);
       }
    }
@@ -895,7 +895,7 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
    }
 
    void f(BufferBuilder bufferBuilder, GeoBone bone) {
-      float f = this.RenderEntity.b(Minecraft.getMinecraft().getRenderPartialTicks());
+      float f = this.RenderEntity.float_b(Minecraft.getMinecraft().getRenderPartialTicks());
 
       try {
          if (f == 0.0F) {
@@ -915,7 +915,7 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
          throw rethrow(error2);
       }
 
-      QuadRenderHelper.QuadConfig quadConfig = G.a();
+      QuadRenderHelper.QuadConfig quadConfig = G.copy();
       quadConfig.SegmentLength = LerpMath.lerp(G.SegmentLength, 0.0F, f);
       quadConfig.RotationAngle = LerpMath.lerp(G.RotationAngle, 0.0F, f);
       this.a(bufferBuilder, bone, quadConfig);
@@ -927,7 +927,7 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
       MatrixUtil.applyGeoBoneTransform(MATRIX_STACK, bone);
       GlStateManager.disableCull();
       this.bindTexture(LineTexture);
-      QuadRenderHelper.a(bufferBuilder, Tessellator.getInstance(), Mc, quadConfig);
+      QuadRenderHelper.drawQuad(bufferBuilder, Tessellator.getInstance(), Mc, quadConfig);
       this.bindTexture(Objects.requireNonNull(this.getEntityTexture(this.RenderEntity)));
       bufferBuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
       GlStateManager.enableCull();
@@ -1010,8 +1010,15 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
       return vec3d;
    }
 
-   @SuppressWarnings("unchecked")
-   private static <E extends Throwable> E rethrow(Throwable error) throws E {
-      throw (E) error;
+   private static RuntimeException rethrow(RuntimeException error) {
+      return error;
+   }
+
+   private static IllegalStateException rethrow(IllegalStateException error) {
+      return error;
+   }
+
+   private static IOException rethrow(IOException error) {
+      return error;
    }
 }

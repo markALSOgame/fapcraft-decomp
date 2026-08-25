@@ -21,6 +21,7 @@ import software.bernie.geckolib3.geo.render.built.GeoCube;
 import software.bernie.geckolib3.geo.render.built.GeoModel;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
+import software.bernie.geckolib3.util.MatrixStack;
 import javax.vecmath.Tuple3f;
 import javax.vecmath.Tuple4f;
 import javax.vecmath.Vector3f;
@@ -196,20 +197,19 @@ public class PreviewRenderer extends GeoEntityRenderer<PreviewEntity> {
         }
         try {
             GL11.glDisable((int)2896);
-            PreviewRenderer renderer = this;
             vec3d = whitelist.i() == RenderMode.SEXMOD ? BedLogic.getBedHeadPos(previewEntity, f) : null;
         }
         catch (IllegalStateException illegalStateException) {
             throw PreviewRenderer.rethrow(illegalStateException);
         }
-        renderer.CachedPos = vec3d;
+        this.CachedPos = vec3d;
     }
 
 
    public void a(PreviewEntity previewEntity, double d2, double d3, double d4, float f, float f2) {
         EntityPlayer entityPlayer;
         UUID uUID;
-        GirlEntity girl;
+        EntityLivingBase girl;
         GirlEntity girl2;
         block36: {
             FilePersistence.WhitelistFile whitelist;
@@ -299,8 +299,8 @@ public class PreviewRenderer extends GeoEntityRenderer<PreviewEntity> {
         if (!(girl2 instanceof PlayerGirlEntity)) {
             girl = girl2;
         } else {
-            GirlEntity girl3;
-            uUID = ((PlayerGirlEntity)girl2).m();
+            EntityLivingBase girl3;
+            uUID = ((PlayerGirlEntity)girl2).getBoundPlayerUuid();
             try {
                 if (uUID == null) {
                     return;
@@ -318,15 +318,15 @@ public class PreviewRenderer extends GeoEntityRenderer<PreviewEntity> {
             }
             girl = girl3;
         }
-        uUID = girl2.a(this.Mc, previewEntity, (EntityLivingBase)girl, f2);
-        entityPlayer = new BlockPos(Math.floor(((EntityLivingBase)girl).posX), Math.floor(((EntityLivingBase)girl).posY), Math.floor(((EntityLivingBase)girl).posZ));
-        int i = ((EntityLivingBase)girl).world.getLight((BlockPos)entityPlayer, true);
+        Vec3d renderPos = girl2.getRenderPosition(this.Mc, previewEntity, girl, f2);
+        BlockPos blockPos = new BlockPos(Math.floor(((EntityLivingBase)girl).posX), Math.floor(((EntityLivingBase)girl).posY), Math.floor(((EntityLivingBase)girl).posZ));
+        int i = ((EntityLivingBase)girl).world.getLight(blockPos, true);
         Vec3d vec3d = new Vec3d(1.0, 1.0, 1.0);
         float f3 = MathUtils.clamp(i, 10.0f, 15.0f) / 15.0f;
         try {
             this.ModelScale = new Vec3d(vec3d.x * (double)f3, vec3d.y * (double)f3, vec3d.z * (double)f3);
             GlStateManager.pushMatrix();
-            GlStateManager.translate((double)((Vec3d)uUID).x, (double)((Vec3d)uUID).y, (double)((Vec3d)uUID).z);
+            GlStateManager.translate(renderPos.x, renderPos.y, renderPos.z);
             if (girl2.Q()) {
                 GlStateManager.rotate((float)girl2.I().floatValue(), (float)0.0f, (float)1.0f, (float)0.0f);
             }
@@ -427,7 +427,7 @@ public class PreviewRenderer extends GeoEntityRenderer<PreviewEntity> {
       if (!(girl instanceof PlayerGirlEntity)) {
          obj = girl;
       } else {
-         EntityPlayer player = previewEntity.world.getPlayerEntityByUUID(((PlayerGirlEntity)girl).m());
+         EntityPlayer player = previewEntity.world.getPlayerEntityByUUID(((PlayerGirlEntity)girl).getBoundPlayerUuid());
 
          Object obj2;
          label28: {

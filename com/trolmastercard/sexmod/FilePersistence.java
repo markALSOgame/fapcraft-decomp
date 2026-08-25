@@ -3,15 +3,18 @@ package com.trolmastercard.sexmod;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Properties;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import net.minecraft.client.Minecraft;
@@ -114,7 +117,7 @@ public class FilePersistence {
    public static void whitelistServer(String string) {
       File file = new File("sexmod/custom_models/whitelisted_servers.txt");
       file.mkdirs();
-      HashSet set = new HashSet();
+      HashSet<String> set = new HashSet<String>();
       if (file.exists()) {
          set = loadWhitelistFile();
       }
@@ -137,7 +140,6 @@ public class FilePersistence {
          } finally {
             label90: {
                label89: {
-                  try {
                      if (fileWriter == null) {
                         break label90;
                      }
@@ -145,9 +147,6 @@ public class FilePersistence {
                      if (error == null) {
                         break label89;
                      }
-                  } catch (Throwable error3) {
-                     throw rethrow(error3);
-                  }
 
                   try {
                      fileWriter.close();
@@ -189,15 +188,11 @@ public class FilePersistence {
                String string;
                String string2 = string = reader.readLine();
 
-               try {
                   if (string2 == null) {
                      return set;
                   }
 
                   set.add(string);
-               } catch (Exception error3) {
-                  throw rethrow(error3);
-               }
             }
          } catch (Throwable error4) {
             error2 = error4;
@@ -205,7 +200,6 @@ public class FilePersistence {
          } finally {
             label100: {
                label99: {
-                  try {
                      if (reader == null) {
                         break label100;
                      }
@@ -213,9 +207,6 @@ public class FilePersistence {
                      if (error2 == null) {
                         break label99;
                      }
-                  } catch (Exception error5) {
-                     throw rethrow(error5);
-                  }
 
                   try {
                      reader.close();
@@ -245,7 +236,7 @@ public class FilePersistence {
          throw rethrow(error);
       }
 
-      return whitelist.loadWhitelistFile();
+      return whitelist.f();
    }
 
    @SideOnly(Side.CLIENT)
@@ -261,8 +252,8 @@ public class FilePersistence {
             throw rethrow(error);
          }
 
-         ResourceLocation location = whitelist.clearGeoModelCache();
-         ResourceLocation location2 = whitelist.getModelResourceLocation();
+         ResourceLocation location = whitelist.c();
+         ResourceLocation location2 = whitelist.k();
 
          try {
             if (location != null) {
@@ -457,15 +448,11 @@ public class FilePersistence {
             String string;
             String string2 = string = reader.readLine();
 
-            try {
                if (string2 == null) {
                   break;
                }
 
                sb.append(string);
-            } catch (Throwable error2) {
-               throw rethrow(error2);
-            }
          }
       } catch (Throwable error3) {
          error = error3;
@@ -473,7 +460,6 @@ public class FilePersistence {
       } finally {
          label82: {
             label81: {
-               try {
                   if (reader == null) {
                      break label82;
                   }
@@ -481,9 +467,6 @@ public class FilePersistence {
                   if (error == null) {
                      break label81;
                   }
-               } catch (Throwable error4) {
-                  throw rethrow(error4);
-               }
 
                try {
                   reader.close();
@@ -502,46 +485,30 @@ public class FilePersistence {
    }
 
    public static String registerModel(String string, String string2, boolean flag) {
-      try {
          if (ModelCache.get(string) != null) {
             return String.format("already registered '%s'... honestly, unsure how this could happen lol", string);
          }
-      } catch (IOException error) {
-         throw rethrow(error);
-      }
 
       String string3 = String.format("%s/%s/", string2, string);
       String string4 = string3 + string + ".cfg";
       File file = new File(string4);
 
-      try {
          if (!file.exists()) {
             return String.format("couldn't find cfg File for '%s'. It should have been at '%s'. Are you sure it exists?", string, string4);
          }
-      } catch (IOException error2) {
-         throw rethrow(error2);
-      }
 
       FilePersistence.WhitelistFile whitelist = new FilePersistence.WhitelistFile(file, string);
 
-      try {
          if (whitelist.Error != null) {
             return whitelist.Error;
          }
-      } catch (IOException error3) {
-         throw rethrow(error3);
-      }
 
       String string5 = string3 + string + ".png";
       File file2 = new File(string5);
 
-      try {
          if (!file2.exists()) {
             return String.format("The texture for the custom model '%s' couldn't be found at '%s' are you sure it exists?", string, string5);
          }
-      } catch (IOException error4) {
-         throw rethrow(error4);
-      }
 
       ResourceLocation location = null;
       if (flag) {
@@ -560,13 +527,9 @@ public class FilePersistence {
       String string6 = string3 + string + ".geo.json";
       File file3 = new File(string6);
 
-      try {
          if (!file3.exists()) {
             return String.format("The geo model for the custom model '%s' couldn't be found at '%s' are you sure it exists?", string, string6);
          }
-      } catch (IOException error7) {
-         throw rethrow(error7);
-      }
 
       if (flag) {
          RawGeoModel rawGeoModel;
@@ -585,14 +548,10 @@ public class FilePersistence {
          }
       }
 
-      try {
          if (flag) {
             whitelist.b(location2);
             whitelist.a(location);
          }
-      } catch (IOException error10) {
-         throw rethrow(error10);
-      }
 
       ModelCache.put(string, whitelist);
       log(Level.DEBUG, String.format("successfully registered custom model '%s'", string));
@@ -675,8 +634,8 @@ public class FilePersistence {
             }
             return GirlBodySlot.HEAD;
         }
-        return whitelist.ModelScale;
-    }
+         return whitelist.BodySlot;
+      }
 
 
    public static HashSet<GirlRegistry> getAllowedGirls(String string) {
@@ -725,8 +684,8 @@ public class FilePersistence {
             }
             return new HashSet<String>();
         }
-        return whitelist.WhitelistEntry;
-    }
+         return whitelist.AllowedNames;
+      }
 
 
    public static String d(String string) {
@@ -750,8 +709,8 @@ public class FilePersistence {
             }
             return "";
         }
-        return whitelist.IsRendering;
-    }
+         return whitelist.ModelName;
+      }
 
    @Nullable
    public static FilePersistence.WhitelistFile getModelData(String string) {
@@ -799,8 +758,8 @@ public class FilePersistence {
       return map;
    }
 
-   private static Throwable rethrow(Throwable error) {
-      return error;
+   private static RuntimeException rethrow(Throwable error) {
+      return new RuntimeException(error);
    }
 
    @SideOnly(Side.CLIENT)
@@ -820,8 +779,8 @@ public class FilePersistence {
             throw rethrow(error);
          }
 
-         EntityPlayerSP mcPlayer = Minecraft.getMinecraft().player;
-         List list = mcPlayer.world.getEntitiesWithinAABB(GirlEntity.class, mcPlayer.getEntityBoundingBox().grow(10.0));
+          EntityPlayerSP mcPlayer = Minecraft.getMinecraft().player;
+          List<GirlEntity> list = mcPlayer.world.getEntitiesWithinAABB(GirlEntity.class, mcPlayer.getEntityBoundingBox().grow(10.0));
          GirlEntity girl = null;
 
          for (GirlEntity girl2 : list) {
@@ -940,15 +899,10 @@ public class FilePersistence {
             return;
          }
          String wearType = properties.getProperty("wear_type");
-         try {
             if (wearType == null) {
                this.Error = String.format("The cfg File for the model '%s' at '%s' is missing the 'wear_type'. Go to the bottom of the cfg File and write 'wear_type=HEAD'. Check the cfg files of my examples to see what values for 'wear_type' are possible", new Object[]{string, file.getAbsolutePath()});
                return;
             }
-         }
-         catch (FileNotFoundException error6) {
-            throw FilePersistence.WhitelistFile.rethrow(error6);
-         }
          try {
             wearType = wearType.replace(" ", "");
             this.BodySlot = GirlBodySlot.valueOf(wearType);
@@ -976,15 +930,10 @@ public class FilePersistence {
             }
          }
          String lighting = properties.getProperty("which_lighting");
-         try {
             if (lighting == null) {
                this.Error = String.format("The %s's cfg file at '%s' doesn't contain the field 'which_lighting'. Go to the bottom of the cfg file and write either 'which_lighting=DEFAULT', 'which_lighting=SEXMOD', or 'which_lighting=NONE'.", new Object[]{string, file.getAbsolutePath()});
                return;
             }
-         }
-         catch (FileNotFoundException error12) {
-            throw FilePersistence.WhitelistFile.rethrow(error12);
-         }
          lighting = lighting.replace(" ", "");
          try {
             this.RenderMode = RenderMode.valueOf(lighting);

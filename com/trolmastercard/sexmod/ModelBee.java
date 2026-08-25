@@ -1,35 +1,36 @@
 package com.trolmastercard.sexmod;
 
+import software.bernie.geckolib3.model.provider.data.EntityModelData;
 import net.minecraft.util.ResourceLocation;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.AnimationProcessor;
 import software.bernie.geckolib3.core.processor.IBone;
 
-public class ModelBee extends GirlGeoModel {
+public class ModelBee extends GirlGeoModel<GirlEntity> {
    @Override
    protected ResourceLocation[] a() {
       return new ResourceLocation[]{new ResourceLocation("sexmod", "geo/bee/bee.geo.json"), new ResourceLocation("sexmod", "geo/bee/armored.geo.json")};
    }
 
    @Override
-   public ResourceLocation b() {
+   public ResourceLocation getSkinLocation() {
       return new ResourceLocation("sexmod", "textures/entity/bee/bee.png");
    }
 
    @Override
-   public ResourceLocation getAnimationLocation(GirlEntity girl) {
+   public ResourceLocation getAnimationFileLocation(GirlEntity girl) {
       return new ResourceLocation("sexmod", "animations/bee/bee.animation.json");
    }
 
    @Override
 
-   public void onAnimationEvent(GirlEntity girl, Integer i, AnimationEvent animEvent) {
+   public void setLivingAnimations(GirlEntity girl, Integer i, AnimationEvent animEvent) {
         boolean flag;
         IBone iBone;
         block11: {
             block10: {
                 try {
-                    super.onAnimationEvent(girl, i, animEvent);
+                    super.setLivingAnimations(girl, i, animEvent);
                     if (girl.world instanceof PreviewWorld) {
                         return;
                     }
@@ -93,7 +94,7 @@ public class ModelBee extends GirlGeoModel {
                     throw ModelBee.rethrow(runtimeException);
                 }
             }
-            EntityModelData entityModelData = animEvent.getExtraDataOfType(EntityModelData.class).get(0);
+            EntityModelData entityModelData = (EntityModelData)animEvent.getExtraDataOfType(EntityModelData.class).get(0);
             IBone iBone2 = animationProcessor.getBone("neck");
             iBone2.setRotationY(entityModelData.netHeadYaw * 0.5f * ((float)Math.PI / 180));
             IBone iBone3 = animationProcessor.getBone("head");
@@ -121,27 +122,27 @@ public class ModelBee extends GirlGeoModel {
    }
 
    @Override
-   public String[] getChestBones() {
+   public String[] getChestArmorBones() {
       return new String[]{"armorShoulderR", "armorShoulderL", "armorChest", "armorBoobs"};
    }
 
    @Override
-   public String[] a() {
+   public String[] getFleshTorsoBones() {
       return new String[]{"boobsFlesh", "upperBodyL", "upperBodyR"};
    }
 
    @Override
-   public String[] getPantsBones() {
+   public String[] getPantsArmorBones() {
       return new String[]{"armorBootyR", "armorBootyL", "armorPantsLowL", "armorPantsLowR", "armorPantsLowR", "armorPantsUpR", "armorPantsUpL", "armorHip"};
    }
 
    @Override
-   public String[] getLegBones() {
+   public String[] getFleshLegsBones() {
       return new String[]{"sideL", "sideR", "fleshL", "fleshR", "vagina", "curvesL", "curvesR", "kneeL", "kneeR"};
    }
 
    @Override
-   public String[] b() {
+   public String[] getBootsArmorBones() {
       return new String[]{"armorShoesL", "armorShoesR"};
    }
 

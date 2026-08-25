@@ -73,7 +73,7 @@ public class GirlHomeBuilder {
          throw rethrow(error);
       }
 
-      ArrayList list = new ArrayList();
+      ArrayList<KoboldNpc> list = new ArrayList<KoboldNpc>();
 
       for (float f : floats) {
          KoboldNpc kobold = KoboldNpc.create(world, uuid, f);
@@ -228,7 +228,7 @@ public class GirlHomeBuilder {
          GirlHomes.replace(uuid, homeData);
          kobold.getDataManager().set(KoboldNpc.BoundPlayerUuidKey, Optional.of(uuid));
          if (!kobold.aA) {
-            kobold.getDataManager().set(KoboldNpc.BodyColorKey, homeData.TribeColor.toString());
+            kobold.getDataManager().set(KoboldNpc.TribeColorKey, homeData.TribeColor.toString());
          }
       } catch (RuntimeException error2) {
          throw rethrow(error2);
@@ -248,7 +248,7 @@ public class GirlHomeBuilder {
             catch (RuntimeException runtimeException) {
                 throw GirlHomeBuilder.rethrow(runtimeException);
             }
-            KoboldNpc kobold = homeData.GirlUuid;
+            KoboldNpc kobold = homeData.KoboldEntity;
             try {
                 try {
                     if (kobold != null && !kobold.isDead) break block7;
@@ -256,7 +256,7 @@ public class GirlHomeBuilder {
                 catch (RuntimeException runtimeException) {
                     throw GirlHomeBuilder.rethrow(runtimeException);
                 }
-                homeData.GirlUuid = homeData.getSelectedClothingOptions();
+                homeData.KoboldEntity = homeData.getNearestKobold();
             }
             catch (RuntimeException runtimeException) {
                 throw GirlHomeBuilder.rethrow(runtimeException);
@@ -819,11 +819,11 @@ public class GirlHomeBuilder {
         catch (RuntimeException runtimeException) {
             throw GirlHomeBuilder.rethrow(runtimeException);
         }
-        for (Map.Entry<UUID, KoboldHomes> entry : GirlHomes.entrySet()) {
+        for (Map.Entry<UUID, GirlHomeBuilder.HomeData> entry : GirlHomes.entrySet()) {
             HomeData homeData = entry.getValue();
             try {
                 try {
-                    if (homeData.d().size() == 0 && homeData.f() == 0) {
+                    if (homeData.Kobolds.size() == 0 && homeData.HomeMap.size() == 0) {
                         continue;
                     }
                 }
@@ -835,7 +835,7 @@ public class GirlHomeBuilder {
                 throw GirlHomeBuilder.rethrow(runtimeException);
             }
             try {
-                if (!uuid.equals(entry.getValue().a())) continue;
+                if (!uuid.equals(entry.getValue().getOwnerUuid())) continue;
                 return entry.getKey();
             }
             catch (RuntimeException runtimeException) {
@@ -917,7 +917,7 @@ public class GirlHomeBuilder {
       }
 
       HashMap<UUID, BlockPos> map = homeData.HomeMap;
-      ArrayList list = new ArrayList();
+      ArrayList<UUID> list = new ArrayList<UUID>();
 
       for (Entry entry : map.entrySet()) {
          BlockPos pos = (BlockPos)entry.getValue();
@@ -1031,7 +1031,7 @@ public class GirlHomeBuilder {
                     kobold.setCurrentAction(GirlAnimationState.NULL);
                     kobold.setNoGravity(false);
                     kobold.noClip = false;
-                    kobold.getDataManager().set(GirlEntity.BusyKey, (Object)false);
+                    kobold.getDataManager().set(GirlEntity.BusyKey, false);
                 }
                 try {
                     try {
@@ -1127,7 +1127,7 @@ public class GirlHomeBuilder {
          }
 
          UUID uuid = kobold.getGirlUuid();
-         ArrayList list = new ArrayList();
+         ArrayList<KoboldNpc> list = new ArrayList<KoboldNpc>();
 
          for (KoboldNpc kobold2 : this.Kobolds) {
             try {

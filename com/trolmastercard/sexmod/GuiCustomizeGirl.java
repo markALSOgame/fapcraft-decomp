@@ -24,6 +24,8 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -32,7 +34,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.Map;
-import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent;
 
 public class GuiCustomizeGirl extends GuiScreen {
    public static final ResourceLocation Texture = new ResourceLocation("sexmod", "textures/gui/clothing_icons.png");
@@ -80,25 +82,17 @@ public class GuiCustomizeGirl extends GuiScreen {
       for (String string2 : this.Girl.Y()) {
          GirlBodySlot girlBodySlot = FilePersistence.getBodySlot(string2);
 
-         try {
             if (GirlBodySlot.CUSTOM_BONE.equals(girlBodySlot)) {
                i++;
             }
-         } catch (Exception error2) {
-            throw rethrow(error2);
-         }
 
          Entry entry = null;
 
          label65: {
             label79: {
-               try {
                   if (GirlBodySlot.CUSTOM_BONE.equals(girlBodySlot) && i > 1) {
                      break label79;
                   }
-               } catch (Exception error3) {
-                  throw rethrow(error3);
-               }
 
                Iterator iterator2 = ClothingOptions.iterator();
 
@@ -117,13 +111,9 @@ public class GuiCustomizeGirl extends GuiScreen {
             entry = getClothingData(this.Girl);
          }
 
-         try {
             if (entry == null) {
                continue;
             }
-         } catch (Exception error4) {
-            throw rethrow(error4);
-         }
 
          ClothingOptions.remove(entry);
          int i2 = ((List)((Entry)entry.getValue()).getKey()).indexOf(string2);
@@ -573,20 +563,16 @@ public class GuiCustomizeGirl extends GuiScreen {
       }
 
       int i4 = i - this.PrevScrollOffset;
-      GuiCustomizeGirl.add(i4);
+      this.ClothingList.scrollBy(i4);
       this.PrevScrollOffset = i;
    }
 
    protected void mouseClicked(int i, int i2, int i3) throws IOException {
-      try {
          super.mouseClicked(i, i2, i3);
          this.ClothingList.mouseClicked(i, i2, i3);
          if (i3 != 0) {
             return;
          }
-      } catch (URISyntaxException error) {
-         throw rethrow(error);
-      }
 
       this.MagicSlotsDirty = true;
       this.RemovingCloth = true;
@@ -594,21 +580,13 @@ public class GuiCustomizeGirl extends GuiScreen {
       int i4 = this.LayoutTopPx - this.a(15.0F);
       int i5 = this.LayoutBottomPx - 20;
 
-      try {
          if (this.a(i, i2, i4, i5, i4 + 20, i5 + 20)) {
             this.c();
          }
-      } catch (URISyntaxException error2) {
-         throw rethrow(error2);
-      }
 
-      try {
          if (FilePersistence.getServerAddress() != null) {
             return;
          }
-      } catch (URISyntaxException error3) {
-         throw rethrow(error3);
-      }
 
       i5 = this.LayoutBottomPx - 40;
       if (this.a(i, i2, i4, i5, i4 + 20, i5 + 20)) {
@@ -616,36 +594,23 @@ public class GuiCustomizeGirl extends GuiScreen {
          this.mc.player.closeScreen();
          int i6 = FilePersistence.reloadModels(true);
 
-         try {
             if (i6 != 0) {
                FilePersistence.ServerActive = true;
                return;
             }
-         } catch (URISyntaxException error4) {
-            throw rethrow(error4);
-         }
 
          GirlEntity girl = GirlEntity.getClientSideByUuid(this.GirlUuid);
 
-         try {
             if (girl != null) {
-               GuiCustomizeGirl(girl);
+               Minecraft.getMinecraft().displayGuiScreen(new GuiCustomizeGirl(girl));
             }
-         } catch (URISyntaxException error5) {
-            throw rethrow(error5);
-         }
       } else {
-         try {
             i5 -= 20;
             if (this.a(i, i2, i4, i5, i4 + 20, i5 + 20)) {
                Desktop.getDesktop().open(new File(FilePersistence.getClientModelsPath()));
                return;
             }
-         } catch (URISyntaxException error6) {
-            throw rethrow(error6);
-         }
 
-         try {
             i5 -= 20;
             if (this.a(i, i2, i4, i5, i4 + 20, i5 + 20)) {
                try {
@@ -654,9 +619,6 @@ public class GuiCustomizeGirl extends GuiScreen {
                   throw new RuntimeException(error7);
                }
             }
-         } catch (IOException error8) {
-            throw rethrow(error8);
-         }
       }
    }
 
@@ -685,7 +647,6 @@ public class GuiCustomizeGirl extends GuiScreen {
    public void onGuiClosed() {
       super.onGuiClosed();
       this.Girl.world.removeEntityDangerously(this.Girl);
-      GuiCustomizeGirl.clear();
       ClothingOptions.clear();
    }
 
@@ -821,8 +782,8 @@ public class GuiCustomizeGirl extends GuiScreen {
       minecraft.addScheduledTask(() -> minecraft.displayGuiScreen(new GuiCustomizeGirl(girl)));
    }
 
-   private static Exception rethrow(Exception error) {
-      return error;
+   private static RuntimeException rethrow(Exception error) {
+      return new RuntimeException(error);
    }
 
    @SideOnly(Side.CLIENT)

@@ -93,7 +93,7 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    public boolean onPlayerInteract(EntityPlayer entityPlayer) {
+    public boolean canInteract(EntityPlayer entityPlayer) {
         AlliePlayer.openActionMenu(entityPlayer, this, new String[]{"action.names.deepthroat", "Reverse cowgirl"}, false);
         return true;
     }
@@ -156,7 +156,7 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    public boolean isInOralState() {
+    public boolean F_() {
         try {
             switch (this.getCurrentAction()) {
                 case ALLIE_PREPARE_NORMAL: 
@@ -326,12 +326,12 @@ extends PlayerGirlEntity {
                 }
                 case "deepthroat_prepareMSG1": {
                     this.a(I18n.format("allie.dialogue.hihi", new Object[0]));
-                    this.a(ModSounds.MISC_PLOB[0]);
+                    this.playSoundEvent(ModSounds.MISC_PLOB[0]);
                     break;
                 }
                 case "deepthroat_prepareMSG2": {
                     this.a(I18n.format("allie.dialogue.boys", new Object[0]));
-                    this.a(ModSounds.MISC_PLOB[0]);
+                    this.playSoundEvent(ModSounds.MISC_PLOB[0]);
                     break;
                 }
                 case "blackscreen": {
@@ -349,7 +349,7 @@ extends PlayerGirlEntity {
                     break;
                 }
                 case "deepthroat_fastMSG1": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_BJMOAN));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_BJMOAN));
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.showHud();
                     GuiHud.addProgress(0.04f);
@@ -365,15 +365,15 @@ extends PlayerGirlEntity {
                     break;
                 }
                 case "deepthroat_slowMSG1": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_LIPSOUND));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_LIPSOUND));
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.showHud();
                     GuiHud.addProgress(0.02f);
                     break;
                 }
                 case "deepthroat_cumMSG1": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_LIPSOUND));
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_CUMINFLATION), 1.5f);
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_LIPSOUND));
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.MISC_CUMINFLATION), 1.5f);
                     break;
                 }
                 case "cowgirl_cumDone":
@@ -384,32 +384,32 @@ extends PlayerGirlEntity {
                 }
                 case "deepthroat_normal_prepareMSG1": {
                     this.a(I18n.format("allie.dialogue.alright", new Object[0]));
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_PLOB));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.MISC_PLOB));
                     break;
                 }
                 case "giggle": {
-                    this.a(ModSounds.GIRLS_ALLIE_GIGGLE, new int[0]);
+                    this.playRandomSound(ModSounds.GIRLS_ALLIE_GIGGLE);
                     break;
                 }
                 case "pounding": {
-                    this.a(ModSounds.MISC_POUNDING, new int[0]);
+                    this.playRandomSound(ModSounds.MISC_POUNDING);
                     break;
                 }
                 case "moan": {
-                    this.a(ModSounds.GIRLS_ALLIE_MOAN, new int[0]);
+                    this.playRandomSound(ModSounds.GIRLS_ALLIE_MOAN);
                     break;
                 }
                 case "mmm": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_MMM));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_MMM));
                     break;
                 }
                 case "slide": {
-                    this.a(ModSounds.MISC_SLIDE, 0, 1, 4, 6);
+                    this.playRandomSound(ModSounds.MISC_SLIDE, 0, 1, 4, 6);
                     break;
                 }
                 case "slowMoan": {
                     if (this.getRNG().nextBoolean()) {
-                        this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_AHH));
+                        this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_AHH));
                     }
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.02f);
@@ -427,7 +427,7 @@ extends PlayerGirlEntity {
                         GuiHud.addProgress(0.04f);
                     }
                     if (!this.ap) {
-                        this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_MOAN));
+                        this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_MOAN));
                         this.ap = true;
                         break;
                     }
@@ -454,11 +454,11 @@ extends PlayerGirlEntity {
                     break;
                 }
                 case "cum": {
-                    this.a(ModSounds.MISC_INSERTS, 6.0f);
+                    this.playRandomSoundWithChance(ModSounds.MISC_INSERTS, 6.0f);
                     break;
                 }
                 case "aftermoan": {
-                    this.a(ModSounds.GIRLS_ALLIE_AFTERSESSIONMOAN, new int[0]);
+                    this.playRandomSound(ModSounds.GIRLS_ALLIE_AFTERSESSIONMOAN);
                 }
             }
         };

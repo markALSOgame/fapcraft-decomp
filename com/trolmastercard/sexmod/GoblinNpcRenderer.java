@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
@@ -97,36 +98,24 @@ public class GoblinNpcRenderer extends ScaledGirlGeoRenderer<GoblinNpc> {
       }
 
       label43: {
-         try {
-            if (!(goblin.world instanceof PreviewWorld) && uuid != null) {
-               break label43;
-            }
-         } catch (IOException error) {
-            throw rethrow(error);
+         if (!(goblin.world instanceof PreviewWorld) && uuid != null) {
+            break label43;
          }
 
-         ResourceLocation location = BoyCamera.get(Mc.getSession().getProfile().getId());
+         ResourceLocation location = TextureCache.get(Mc.getSession().getProfile().getId());
 
-         try {
             if (location == null) {
                return this.a(Mc.getSession().getProfile().getId(), goblin.world);
             }
 
             return location;
-         } catch (IOException error2) {
-            throw rethrow(error2);
-         }
       }
 
-      ResourceLocation location2 = BoyCamera.get(uuid);
+      ResourceLocation location2 = TextureCache.get(uuid);
 
-      try {
          if (location2 == null) {
             return this.a(uuid, goblin.world);
          }
-      } catch (IOException error3) {
-         throw rethrow(error3);
-      }
 
       return location2;
    }
@@ -523,16 +512,16 @@ public class GoblinNpcRenderer extends ScaledGirlGeoRenderer<GoblinNpc> {
       return TribeColor.values()[Integer.parseInt(string)].getColor();
    }
 
-   public static Vec3i parseGirlColor(String string) {
-      return GirlColor.values()[Integer.parseInt(string)].a();
-   }
+    public static Vec3i parseGirlColor(String string) {
+      return GirlColor.values()[Integer.parseInt(string)].getColor();
+    }
 
-   public static Vec3i parseMarkColor(String string) {
-      return MarkColor.values()[Integer.parseInt(string)].a();
-   }
+    public static Vec3i parseMarkColor(String string) {
+      return MarkColor.values()[Integer.parseInt(string)].getColor();
+    }
 
    @Override
-   protected void a(BufferBuilder bufferBuilder, String string, GeoBone bone) {
+   protected void applyBoneState(BufferBuilder bufferBuilder, String string, GeoBone bone) {
       try {
          if (this.RenderEntity.world instanceof PreviewWorld) {
             return;
@@ -957,7 +946,7 @@ public class GoblinNpcRenderer extends ScaledGirlGeoRenderer<GoblinNpc> {
                 catch (RuntimeException runtimeException) {
                     throw GoblinNpcRenderer.rethrow(runtimeException);
                 }
-                return super.a(stack);
+                return super.getItemRenderRotation(stack);
             }
             catch (RuntimeException runtimeException) {
                 throw GoblinNpcRenderer.rethrow(runtimeException);
@@ -994,8 +983,15 @@ public class GoblinNpcRenderer extends ScaledGirlGeoRenderer<GoblinNpc> {
         this.CachedBone = bone;
         super.a(bufferBuilder, geoCube, bone, f, f2, f3, f4, d);
     }
-
-   private static Exception rethrow(Exception error) {
+   private static RuntimeException rethrow(RuntimeException error) {
       return error;
+   }
+
+   private static IOException rethrow(IOException error) {
+      return error;
+   }
+
+   private static RuntimeException rethrow(Exception error) {
+      return new RuntimeException(error);
    }
 }

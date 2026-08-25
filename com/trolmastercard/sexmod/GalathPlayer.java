@@ -207,33 +207,33 @@ implements BoxSource {
     }
 
     @Override
-    public boolean boolean_b() {
+    public boolean hasMangleCompanion() {
         return false;
     }
 
     @Override
-    public boolean openActionMenu(EntityPlayer entityPlayer) {
+    public boolean canInteract(EntityPlayer entityPlayer) {
         GalathPlayer.openActionMenu(entityPlayer, this, new String[]{"cowgirl", "mating press", "ride"}, false);
         return true;
     }
 
     @Override
-    public boolean allowsBedInteraction() {
+    public boolean v() {
         return false;
     }
 
     @Override
-    public boolean suppressInventoryStripButton() {
+    public boolean A_() {
         return false;
     }
 
     @Override
-    public Vec4d Vec4d_d() {
+    public Vec4d getPoseOffsets() {
         return new Vec4d(0.0, 0.0, 0.0, 0.0);
     }
 
     @Override
-    public boolean boolean_c() {
+    public boolean shouldHideBody() {
         boolean flag;
         block5: {
             block4: {
@@ -257,7 +257,7 @@ implements BoxSource {
     }
 
     @Override
-    public boolean boolean_a() {
+    public boolean isVisible() {
         try {
             switch (this.getCurrentAction()) {
                 case CORRUPT_CUM: 
@@ -379,21 +379,21 @@ implements BoxSource {
                     break;
                 }
                 if (Math.abs(this.ao.x) + Math.abs(this.ao.y) == 0.0f) {
-                    this.a(this.g() ? "animation.galath.crouchidle" : "animation.galath.idle", true, animEvent);
+                    this.createAnimationOnce(this.g() ? "animation.galath.crouchidle" : "animation.galath.idle", true, animEvent);
                     break;
                 }
                 if (this.aj) {
                     this.MovementController.setAnimationSpeed(1.5);
-                    this.a(this.g() ? "animation.galath.crouchwalk" : "animation.galath.run", true, animEvent);
+                    this.createAnimationOnce(this.g() ? "animation.galath.crouchwalk" : "animation.galath.run", true, animEvent);
                     break;
                 }
                 if (this.ao.y >= -0.1f) {
                     this.MovementController.setAnimationSpeed(2.0);
-                    this.a(this.g() ? "animation.galath.crouchwalk" : "animation.galath.walk", true, animEvent);
+                    this.createAnimationOnce(this.g() ? "animation.galath.crouchwalk" : "animation.galath.walk", true, animEvent);
                     break;
                 }
                 this.MovementController.setAnimationSpeed(1.5);
-                this.a(this.g() ? "animation.galath.crouchwalk" : "animation.galath.backwards_walk", true, animEvent);
+                this.createAnimationOnce(this.g() ? "animation.galath.crouchwalk" : "animation.galath.backwards_walk", true, animEvent);
                 break;
             }
             case "action": {
@@ -625,24 +625,6 @@ implements BoxSource {
         animationData.addAnimationController(this.ActionController);
         animationData.addAnimationController(this.EyesController);
         animationData.addAnimationController(this.MovementController);
-    }
-
-    private static /* synthetic */ Vec3d lambda$null$3(GirlEntity girl) {
-        return girl.getModelBone("creampiePos").add(girl.getTargetPos());
-    }
-
-    private /* synthetic */ Vec3d lambda$null$2(GirlEntity girl) {
-        return VectorMath.rotateYaw(new Vec3d(0.0, 0.0, (double)0.6f), this.I().floatValue());
-    }
-
-    private static /* synthetic */ Vec3d lambda$null$1(GirlEntity girl) {
-        return girl.getModelBone("futaCockTip").add(girl.getTargetPos());
-    }
-
-    private static /* synthetic */ Vec3d lambda$null$0(GirlEntity girl) {
-        Vec3d vec3d = girl.d("futaCockTip");
-        Vec3d vec3d2 = girl.d("futaCockTipDirHelp");
-        return vec3d.subtract(vec3d2).normalize();
     }
 
     private static RuntimeException rethrow(RuntimeException runtimeException) {

@@ -34,7 +34,7 @@ public interface GirlBoneFilter {
       return true;
    }
 
-   private static RuntimeException rethrow(RuntimeException error) {
+   static RuntimeException rethrow(RuntimeException error) {
       return error;
    }
 }

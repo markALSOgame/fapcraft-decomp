@@ -65,7 +65,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 public class BiaNpc
 extends InventoryGirlEntity
 implements VoidCallback,
-fg {
+EmptyAction {
     static final int ae = 3;
     public boolean SeekingBed = false;
     int WalkTicks = 0;
@@ -88,7 +88,7 @@ fg {
     }
 
     @Override
-    public String getDisplayName() {
+    public String getGirlName() {
         return "Bia";
     }
 
@@ -122,7 +122,7 @@ fg {
                         catch (NullPointerException nullPointerException) {
                             throw BiaNpc.rethrow(nullPointerException);
                         }
-                        this.DataManager.set(BlowjobStageKey, (Object)"");
+                        this.DataManager.set(BlowjobStageKey, "");
                     }
                     catch (NullPointerException nullPointerException) {
                         throw BiaNpc.rethrow(nullPointerException);
@@ -194,7 +194,7 @@ fg {
                 this.SeekingBed = false;
                 this.WalkTicks = 0;
                 this.b(this.world.getMinecraftServer().getPlayerList().getPlayerByUUID((UUID)this.getSexPlayerUuid()).rotationYaw + 180.0f);
-                this.DataManager.set(BiaNpc.BusyKey, (Object)true);
+                this.DataManager.set(BusyKey, true);
                 this.getNavigator().clearPath();
                 this.U();
             } else {
@@ -213,7 +213,7 @@ fg {
         if (this.ArrivedAtBed) {
             if (this.getPositionVector().distanceTo(this.getTargetPos()) < 0.6 || this.SitTicks > 200) {
                 this.ArrivedAtBed = false;
-                this.DataManager.set(BiaNpc.BusyKey, (Object)true);
+                this.DataManager.set(BusyKey, true);
                 this.SitTicks = 0;
                 this.noClip = true;
                 this.setNoGravity(true);
@@ -279,7 +279,7 @@ fg {
                 catch (NullPointerException nullPointerException) {
                     throw BiaNpc.rethrow(nullPointerException);
                 }
-                this.acceptPlayer(I18n.format((String)"bia.dialogue.busy", (Object[])new Object[0]));
+                this.a(I18n.format((String)"bia.dialogue.busy", (Object[])new Object[0]));
             }
             catch (NullPointerException nullPointerException) {
                 throw BiaNpc.rethrow(nullPointerException);
@@ -290,54 +290,17 @@ fg {
 
     @Override
     public boolean canInteract(EntityPlayer entityPlayer) {
-        block8: {
-            String string;
-            String[] stringArray;
-            block11: {
-                block10: {
-                    try {
-                        try {
-                            block9: {
-                                try {
-                                    try {
-                                        if (this.getSexPlayerUuid() != null) break block8;
-                                        if (!this.J()) break block9;
-                                    }
-                                    catch (NullPointerException nullPointerException) {
-                                        throw BiaNpc.rethrow(nullPointerException);
-                                    }
-                                    if (!((String)this.DataManager.get(MasterUuidKey)).equals(Minecraft.getMinecraft().player.getPersistentID().toString())) break block8;
-                                }
-                                catch (NullPointerException nullPointerException) {
-                                    throw BiaNpc.rethrow(nullPointerException);
-                                }
-                            }
-                            String[] stringArray2 = new String[3];
-                            String[] stringArray3 = stringArray2;
-                            stringArray = stringArray2;
-                            int i = 0;
-                            if ((Integer)this.DataManager.get(OutfitIndexKey) != 1) break block10;
-                        }
-                        catch (NullPointerException nullPointerException) {
-                            throw BiaNpc.rethrow(nullPointerException);
-                        }
-                        string = "action.names.strip";
-                        break block11;
-                    }
-                    catch (NullPointerException nullPointerException) {
-                        throw BiaNpc.rethrow(nullPointerException);
-                    }
-                }
-                string = "action.names.dressup";
+        try {
+            if (this.getSexPlayerUuid() != null || (this.J() && !((String)this.DataManager.get(MasterUuidKey)).equals(Minecraft.getMinecraft().player.getPersistentID().toString()))) {
+                return false;
             }
-            stringArray3[0] = string;
-            stringArray[1] = "action.names.talk";
-            stringArray[2] = "action.names.headpat";
-            String[] stringArray4 = stringArray;
-            BiaNpc.openActionMenu(entityPlayer, this, stringArray4, true);
-            return true;
         }
-        return false;
+        catch (NullPointerException nullPointerException) {
+            throw BiaNpc.rethrow(nullPointerException);
+        }
+        String[] stringArray = new String[]{(Integer)this.DataManager.get(OutfitIndexKey) == 1 ? "action.names.strip" : "action.names.dressup", "action.names.talk", "action.names.headpat"};
+        BiaNpc.openActionMenu(entityPlayer, this, stringArray, true);
+        return true;
     }
 
     void void_b(EntityPlayer entityPlayer) {
@@ -396,8 +359,8 @@ fg {
     }
 
     @Override
-    protected void resetActionTimer() {
-        super.resetActionTimer();
+    protected void V() {
+        super.V();
         this.ActionTimer = -1;
     }
 
@@ -514,7 +477,7 @@ fg {
 
     @Override
     @SideOnly(value=Side.CLIENT)
-    public void ag() {
+    public void resetTickOffset() {
         try {
             super.resetTickOffset();
             if (this.getCurrentAction() != GirlAnimationState.PRONE_DOGGY_HARD) {
@@ -537,7 +500,7 @@ fg {
     }
 
     @Override
-    public void initAITasks() {
+    public void noop() {
         this.WanderAI = new EntityAIWanderAvoidWater((EntityCreature)this, 0.35);
         this.WatchPlayerAI = new GirlWatchAi((EntityLiving)this, EntityPlayer.class, 3.0f, 1.0f);
         this.tasks.addTask(5, (EntityAIBase)this.WatchPlayerAI);
@@ -617,7 +580,7 @@ fg {
                     throw BiaNpc.rethrow(nullPointerException);
                 }
                 this.playSoundEvent(ModSounds.GIRLS_BIA_BREATH[2]);
-                this.acceptPlayer(I18n.format((String)"jenny.dialogue.nobedinsight", (Object[])new Object[0]));
+                this.a(I18n.format((String)"jenny.dialogue.nobedinsight", (Object[])new Object[0]));
                 return null;
             }
             catch (NullPointerException nullPointerException) {
@@ -657,7 +620,7 @@ fg {
         try {
             if (i3 == -1) {
                 this.playSoundEvent(ModSounds.GIRLS_BIA_BREATH[2]);
-                this.acceptPlayer(I18n.format((String)"jenny.dialogue.nobedinsight", (Object[])new Object[0]));
+                this.a(I18n.format((String)"jenny.dialogue.nobedinsight", (Object[])new Object[0]));
                 return null;
             }
         }
@@ -741,7 +704,7 @@ fg {
         try {
             if (blockPos == null) {
                 this.playSoundEvent(ModSounds.GIRLS_BIA_BREATH[2]);
-                this.acceptPlayer(I18n.format((String)"jenny.dialogue.nobedinsight", (Object[])new Object[0]));
+                this.a(I18n.format((String)"jenny.dialogue.nobedinsight", (Object[])new Object[0]));
                 return null;
             }
         }
@@ -773,7 +736,7 @@ fg {
         try {
             if (i == -1) {
                 this.playSoundEvent(ModSounds.GIRLS_BIA_BREATH[2]);
-                this.acceptPlayer(I18n.format((String)"jenny.dialogue.bedobscured", (Object[])new Object[0]));
+                this.a(I18n.format((String)"jenny.dialogue.bedobscured", (Object[])new Object[0]));
                 return null;
             }
         }
@@ -785,7 +748,7 @@ fg {
     }
 
     @Override
-    public void a() {
+    public void goToSexBed() {
         Vector4d vector4d;
         String string = (String)this.DataManager.get(BlowjobStageKey);
         try {
@@ -814,7 +777,7 @@ fg {
     }
 
     @Override
-    protected GirlAnimationState c(GirlAnimationState girlAnimationState) {
+    protected GirlAnimationState getFollowUpAction(GirlAnimationState girlAnimationState) {
         try {
             if (girlAnimationState == GirlAnimationState.ANAL_SLOW) {
                 return GirlAnimationState.ANAL_FAST;
@@ -835,7 +798,7 @@ fg {
     }
 
     @Override
-    protected GirlAnimationState a(GirlAnimationState girlAnimationState) {
+    protected GirlAnimationState nextAnimationState(GirlAnimationState girlAnimationState) {
         block9: {
             block8: {
                 try {
@@ -888,7 +851,7 @@ fg {
         if (this.world.isRemote) {
             this.a("animationFollowUp", "");
         } else {
-            this.DataManager.set(BlowjobStageKey, (Object)"");
+            this.DataManager.set(BlowjobStageKey, "");
         }
     }
 
@@ -1126,7 +1089,7 @@ fg {
                 case "talk_hornyDone": {
                     this.setCurrentAction(GirlAnimationState.TALK_IDLE);
                     if (!this.isOwnedByLocalPlayer()) break;
-                    this.openActionMenu(Minecraft.getMinecraft().player);
+                    this.void_b(Minecraft.getMinecraft().player);
                     break;
                 }
                 case "talk_responseMSG1": {
@@ -1270,7 +1233,7 @@ fg {
                     break;
                 }
                 case "cum": {
-                    this.playSoundAtVolume(ModSounds.MISC_INSERTS, 6.0f);
+                    this.playRandomSoundWithChance(ModSounds.MISC_INSERTS, 6.0f);
                     break;
                 }
                 case "orgasm1": {

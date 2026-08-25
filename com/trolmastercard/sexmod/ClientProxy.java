@@ -57,7 +57,7 @@ public class ClientProxy extends CommonProxy {
       }
 
       IS_PRELOADING = false;
-      ClientChatHandler.Entry = new ClientChatHandler();
+      ClientChatHandler.Instance = new ClientChatHandler();
       ClientCommandHandler.instance.registerCommand(CommandWhitelistServer.Instance);
       ClientCommandHandler.instance.registerCommand(CommandSetModelCode.Instance);
       ClientCommandHandler.instance.registerCommand(CommandFuta.Instance);

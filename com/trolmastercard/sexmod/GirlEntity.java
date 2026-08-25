@@ -68,7 +68,6 @@ import software.bernie.geckolib3.util.MatrixStack;
 import java.util.Collections;
 import java.util.Map;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.entity.ai.EntityAIOpenDoor;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.pathfinding.PathPoint;
@@ -116,7 +115,7 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
    public List<String> AnchorNames;
    protected List<Entry<GirlBodySlot, Entry<List<String>, Integer>>> OutfitData;
 
-   public void a(GirlEntity.WalkState walkState) {
+   public void setWalkState(GirlEntity.WalkState walkState) {
       this.DataManager.set(WalkStateKey, walkState.toString());
    }
 
@@ -185,8 +184,8 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
         catch (ConcurrentModificationException concurrentModificationException) {
             throw GirlEntity.rethrow(concurrentModificationException);
         }
-        girlAnimationState3.ticksPlaying = new int[]{0, 0};
-        this.DataManager.set(CurrentActionKey, (Object)girlAnimationState.toString());
+        girlAnimationState.ticksPlaying = new int[]{0, 0};
+        this.DataManager.set(CurrentActionKey, girlAnimationState.toString());
     }
 
    public int getOutfitIndex() {
@@ -255,11 +254,11 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
    }
 
    public static void playSoundRandom(GirlEntity girl, SoundEvent[] soundArray) {
-      a(girl, ModSounds.pickRandomSound(soundArray));
+      playSound(girl, ModSounds.pickRandomSound(soundArray));
    }
 
    public static void playSoundRandom(GirlEntity girl, SoundEvent[] soundArray, boolean flag) {
-      a(girl, ModSounds.pickRandomSound(soundArray), flag);
+      playSound(girl, ModSounds.pickRandomSound(soundArray), flag);
    }
 
    @SideOnly(Side.CLIENT)
@@ -313,14 +312,14 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
                 }
                 try {
                     if (uuid != null) break block9;
-                    this.DataManager.set(SexPlayerUuidKey, (Object)"null");
+                    this.DataManager.set(SexPlayerUuidKey, "null");
                     break block10;
                 }
                 catch (ConcurrentModificationException concurrentModificationException) {
                     throw GirlEntity.rethrow(concurrentModificationException);
                 }
             }
-            this.DataManager.set(SexPlayerUuidKey, (Object)uuid.toString());
+            this.DataManager.set(SexPlayerUuidKey, uuid.toString());
         }
     }
 
@@ -608,7 +607,7 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
 
       try {
          if (flag) {
-            Main.LOGGER.log(Level.WARN, String.format("got a duped %s with id '%s'. Deleted her", this.getDisplayName(), uuid));
+            Main.LOGGER.log(Level.WARN, String.format("got a duped %s with id '%s'. Deleted her", this.getGirlName(), uuid));
             this.world.removeEntity(this);
             return;
          }
@@ -619,7 +618,7 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
       try {
          this.DataManager.set(GirlUuidKey, uuid.toString());
          if (this.X()) {
-            this.f(tagCompound.getString("sexmod:customModel"));
+            this.setCustomModel(tagCompound.getString("sexmod:customModel"));
          }
       } catch (ConcurrentModificationException error8) {
          throw rethrow(error8);
@@ -734,7 +733,7 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
       }
 
       set.removeAll(set2);
-      this.f(joinModelNames(set));
+      this.setCustomModel(joinModelNames(set));
    }
 
    protected void advanceAnimationState() {
@@ -919,7 +918,7 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
          throw rethrow(error);
       }
 
-      PacketSexPromptReply.Handler.a(this.getGirlUuid(), uuid, flag, flag2);
+      PacketSexPromptReply.Handler.handle(this.getGirlUuid(), uuid, flag, flag2);
    }
 
    public static GirlEntity getClientSideByUuid(UUID uuid) {
@@ -1392,7 +1391,7 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
         catch (ConcurrentModificationException concurrentModificationException) {
             throw GirlEntity.rethrow(concurrentModificationException);
         }
-        hashMap.put(string2, (Pair<Integer, Integer>)Pair.of((Object)i3, (Object)i2));
+        hashMap.put(string2, Pair.of(i3, i2));
     }
 
    @SideOnly(Side.CLIENT)
@@ -1474,7 +1473,7 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
             }
             try {
                 if (!this.world.isRemote) {
-                    EyesController.Handler.a((EntityPlayerMP)this.world.getPlayerEntityByUUID(this.getSexPlayerUuid()));
+                    PacketResetGirl.Handler.handle((EntityPlayerMP)this.world.getPlayerEntityByUUID(this.getSexPlayerUuid()));
                 }
             }
             catch (ConcurrentModificationException concurrentModificationException) {
@@ -1854,7 +1853,7 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
       return (String)this.DataManager.get(CustomNameKey);
    }
 
-   public abstract String getDisplayName();
+   public abstract String getGirlName();
 
    public String getChatName() {
       String string = (String)this.DataManager.get(CustomNameKey);
@@ -1867,7 +1866,7 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
          throw rethrow(error);
       }
 
-      return this.getDisplayName();
+      return this.getGirlName();
    }
 
    public abstract float getRenderLabelOffset();
@@ -2167,7 +2166,7 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
                             catch (ConcurrentModificationException concurrentModificationException) {
                                 throw GirlEntity.rethrow(concurrentModificationException);
                             }
-                            Main.LOGGER.log(Level.WARN, String.format("The bone '%s' does not exist on %s. Bone model matrix couldn't be calculated", string, this.getDisplayName()));
+                            Main.LOGGER.log(Level.WARN, String.format("The bone '%s' does not exist on %s. Bone model matrix couldn't be calculated", string, this.getGirlName()));
                             this.AnchorNames.remove(string);
                         }
                         catch (ConcurrentModificationException concurrentModificationException) {
@@ -2374,7 +2373,7 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
         for (int i : list) {
             GirlEffectEntity.appendZeroPaddedNumber(stringBuilder, i);
         }
-        this.DataManager.set(GirlEffectEntity.M, (Object)stringBuilder.toString());
+        this.DataManager.set(GirlEffectEntity.M, stringBuilder.toString());
     }
 
 
@@ -2524,7 +2523,7 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
                 catch (ConcurrentModificationException concurrentModificationException) {
                     throw GirlEntity.rethrow(concurrentModificationException);
                 }
-                this.DataManager.set(GirlEffectEntity.M, (Object)string);
+                this.DataManager.set(GirlEffectEntity.M, string);
             }
             catch (ConcurrentModificationException concurrentModificationException) {
                 throw GirlEntity.rethrow(concurrentModificationException);

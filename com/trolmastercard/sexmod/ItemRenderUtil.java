@@ -133,18 +133,13 @@ public class ItemRenderUtil extends GeoItemRenderer<ItemDragonStaff> {
                 vector3f4 = new Vector3f(0.0f, 0.0f, 0.0f);
             }
             try {
-                Vector3f vector3f5;
-                vector3f3 = vector3f4;
-                vector3f2 = vector3f5;
-                vector3f = vector3f5;
                 f6 = this.Offset2f.x;
                 f5 = this.OwnerPlayer == null ? 0.0f : (float)(this.OwnerPlayer.posY - this.OwnerPlayer.lastTickPosY);
             }
             catch (RuntimeException runtimeException) {
                 throw ItemRenderUtil.rethrow(runtimeException);
             }
-            vector3f2(f6, f5, this.Offset2f.y);
-            vector3f3.add((Tuple3f)vector3f);
+            vector3f4.add((Tuple3f)new Vector3f(f6, f5, this.Offset2f.y));
             GlStateManager.rotate((float)(vector3f4.z * 10.0f), (float)1.0f, (float)0.0f, (float)0.0f);
             GlStateManager.rotate((float)(vector3f4.x * 10.0f), (float)0.0f, (float)1.0f, (float)0.0f);
             GlStateManager.rotate((float)(-vector3f4.y * 10.0f), (float)0.0f, (float)0.0f, (float)1.0f);
@@ -156,7 +151,7 @@ public class ItemRenderUtil extends GeoItemRenderer<ItemDragonStaff> {
             if (this.OwnerPlayer != null) {
                 this.computeStaffRotation();
             }
-            this.Mc.getTextureManager().bindTexture(new ModelDragonStaff().a(null));
+            this.Mc.getTextureManager().bindTexture(new ModelDragonStaff().getTextureLocation(null));
             bufferBuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
         }
         super.renderRecursively(bufferBuilder, bone, f, f2, f3, f4);

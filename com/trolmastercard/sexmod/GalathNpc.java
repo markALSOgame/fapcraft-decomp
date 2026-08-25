@@ -180,7 +180,6 @@ import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
-import net.minecraft.entity.ai.EntityAIOpenDoor;
 
 /*
  * Duplicate member names - consider using --renamedupmembers true
@@ -188,7 +187,7 @@ import net.minecraft.entity.ai.EntityAIOpenDoor;
 public class GalathNpc
 extends GirlEntity
 implements IEntityMultiPart,
-LeftBallActiveKey {
+BoxSource {
     public static final float f3 = 0.6f;
     public static final float f4 = 0.6f;
     public static final int bj = 10;
@@ -284,8 +283,8 @@ LeftBallActiveKey {
     public static final double d2 = 0.2;
     public static final float bS = 5.0f;
     public static final int i5 = 60;
-    BossInfoServer aO = new BossInfoServer((ITextComponent)new TextComponentString(this.getDisplayName()), BossInfo.Color.RED, BossInfo.Overlay.PROGRESS);
-    GalathBodyPart galathBodyPart = new GalathBodyPart(this, "energyBallHitBox", 0.75f, 0.75f);
+    BossInfoServer aO = new BossInfoServer((ITextComponent)new TextComponentString(this.getGirlName()), BossInfo.Color.RED, BossInfo.Overlay.PROGRESS);
+    GalathBodyPart b2 = new GalathBodyPart(this, "energyBallHitBox", 0.75f, 0.75f);
     GalathBodyPart V = new GalathBodyPart(this, "energyBallHitBox", 0.75f, 0.75f);
     public DeadClass CurrentDeathEvent = null;
     public Vec3d O = null;
@@ -325,7 +324,7 @@ LeftBallActiveKey {
     int i7 = 0;
     boolean aT = false;
     public boolean bx = false;
-    public boolean flag = false;
+    public boolean a5 = false;
     public boolean aD = false;
     public boolean bt = false;
     public boolean ap = false;
@@ -341,7 +340,7 @@ LeftBallActiveKey {
     public GalathNpc(World world, @Nonnull EntityPlayer entityPlayer, Vec3d vec3d, boolean flag) {
         this(world);
         UUID uUID = entityPlayer.getPersistentID();
-        this.DataManager.set(MasterUuidKey, (Object)uUID.toString());
+        this.DataManager.set(MasterUuidKey, uUID.toString());
         this.aO.setVisible(false);
         this.bG = new BlockPos(this.getPositionVector());
         String string = GirlHomeWorldData.getCustomName(uUID, GirlRegistry.GALATH);
@@ -373,9 +372,9 @@ LeftBallActiveKey {
         this.setCurrentAction(GirlAnimationState.MASTERBATE);
         this.b(180.0f - (float)AngleMath.radToDegrees(Math.atan2(vec3d.x - entityPlayer.posX, vec3d.z - entityPlayer.posZ)));
         MathUtils.runAfterDelay(8000, () -> {
-            EntityPlayer entityPlayer = this.getSexPlayer();
+            EntityPlayer p1 = this.getSexPlayer();
             try {
-                if (entityPlayer == null) {
+                if (p1 == null) {
                     return;
                 }
             }
@@ -383,17 +382,17 @@ LeftBallActiveKey {
                 throw GalathNpc.rethrow(concurrentModificationException);
             }
             try {
-                if (entityPlayer.isDead) {
+                if (p1.isDead) {
                     return;
                 }
             }
             catch (ConcurrentModificationException concurrentModificationException) {
                 throw GalathNpc.rethrow(concurrentModificationException);
             }
-            this.setTargetPos(entityPlayer.getPositionVector());
-            this.b(entityPlayer.rotationYaw + 180.0f);
+            this.setTargetPos(p1.getPositionVector());
+            this.b(p1.rotationYaw + 180.0f);
             this.setCurrentAction(GirlAnimationState.RAPE_INTRO);
-            this.e(entityPlayer.getPersistentID());
+            this.setChildMangleUuid(p1.getPersistentID());
             this.getChildMangle(true);
         });
     }
@@ -403,18 +402,18 @@ LeftBallActiveKey {
     }
 
     @Override
-    public void f(String string) {
+    public void setCustomModel(String string) {
         super.setCustomModel(string);
         CustomModelWorldData.removeGirl(this);
     }
 
     @Override
-    public String getDisplayName() {
+    public String getGirlName() {
         return "Galath";
     }
 
     @Override
-    public float i() {
+    public float getRenderLabelOffset() {
         float f;
         try {
             f = this.getChildMangleUuid() == null ? 0.5f : 1.35f;
@@ -487,18 +486,18 @@ LeftBallActiveKey {
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.DataManager.register(TargetEntityIdKey, (Object)-1);
-        this.DataManager.register(CombatTargetIdKey, (Object)0);
-        this.DataManager.register(RightBallActiveKey, (Object)true);
-        this.DataManager.register(LeftBallActiveKey, (Object)true);
-        this.DataManager.register(FlipSideKey, (Object)false);
-        this.DataManager.register(ManglePosKey, (Object)"null");
-        this.DataManager.register(bH, (Object)-1);
-        this.DataManager.register(IsKnockedOutKey, (Object)false);
-        this.DataManager.register(bO, (Object)Float.valueOf(0.0f));
-        this.DataManager.register(IsParalyzedKey, (Object)false);
-        this.DataManager.register(ChildMangleUuidKey, (Object)"");
-        this.DataManager.register(bT, (Object)false);
+        this.DataManager.register(TargetEntityIdKey, -1);
+        this.DataManager.register(CombatTargetIdKey, 0);
+        this.DataManager.register(RightBallActiveKey, true);
+        this.DataManager.register(LeftBallActiveKey, true);
+        this.DataManager.register(FlipSideKey, false);
+        this.DataManager.register(ManglePosKey, "null");
+        this.DataManager.register(bH, -1);
+        this.DataManager.register(IsKnockedOutKey, false);
+        this.DataManager.register(bO, Float.valueOf(0.0f));
+        this.DataManager.register(IsParalyzedKey, false);
+        this.DataManager.register(ChildMangleUuidKey, "");
+        this.DataManager.register(bT, false);
     }
 
     @Override
@@ -536,7 +535,7 @@ LeftBallActiveKey {
     }
 
     @Override
-    public Vec3d o() {
+    public Vec3d getTargetPos() {
         block4: {
             try {
                 try {
@@ -557,13 +556,8 @@ LeftBallActiveKey {
     @Nullable
     public UUID getChildMangleUuid() {
         String string = (String)this.DataManager.get(ChildMangleUuidKey);
-        try {
-            if ("".equals(string)) {
-                return null;
-            }
-        }
-        catch (Exception exception) {
-            throw GalathNpc.rethrow(exception);
+        if ("".equals(string)) {
+            return null;
         }
         try {
             return UUID.fromString(string);
@@ -628,7 +622,7 @@ LeftBallActiveKey {
         catch (ConcurrentModificationException concurrentModificationException) {
             throw GalathNpc.rethrow(concurrentModificationException);
         }
-        entityDataManager.set(dataParameter, (Object)string);
+        entityDataManager.set(dataParameter, string);
     }
 
     public void aC() {
@@ -660,7 +654,7 @@ LeftBallActiveKey {
         this.setCurrentAction(GirlAnimationState.FLY);
         EntityPlayer entityPlayer = this.S();
         try {
-            this.e((UUID)null);
+            this.setChildMangleUuid((UUID)null);
             if (entityPlayer != null) {
                 NetworkHandler.channel.sendTo((IMessage)new PacketSetPlayerMovement(true), (EntityPlayerMP)entityPlayer);
             }
@@ -677,7 +671,7 @@ LeftBallActiveKey {
     }
 
     public void setManglePos(@Nullable Vec3d vec3d) {
-        this.DataManager.set(ManglePosKey, (Object)(vec3d.x + "|" + vec3d.y + "|" + vec3d.z));
+        this.DataManager.set(ManglePosKey, (vec3d.x + "|" + vec3d.y + "|" + vec3d.z));
     }
 
     public int getSpecialState() {
@@ -685,7 +679,7 @@ LeftBallActiveKey {
     }
 
     public void setSpecialState(int i) {
-        this.DataManager.set(bH, (Object)i);
+        this.DataManager.set(bH, i);
     }
 
     public boolean isNonBoss() {
@@ -693,7 +687,7 @@ LeftBallActiveKey {
     }
 
     @Override
-    public boolean boolean_b() {
+    public boolean hasMangleCompanion() {
         try {
             switch (this.getCurrentAction()) {
                 default: {
@@ -762,7 +756,7 @@ LeftBallActiveKey {
     }
 
     @Override
-    public boolean getManglePos() {
+    public boolean B() {
         return false;
     }
 
@@ -814,7 +808,7 @@ LeftBallActiveKey {
         GalathNpc f_2;
         try {
             f_2 = this;
-            flag = this.getDisplayName() != null;
+            flag = this.EntityPlayer_ab() != null;
         }
         catch (ConcurrentModificationException concurrentModificationException) {
             throw GalathNpc.rethrow(concurrentModificationException);
@@ -895,7 +889,7 @@ LeftBallActiveKey {
         this.setCurrentAction(GirlAnimationState.NULL);
         EntityPlayer entityPlayer = this.S();
         try {
-            this.e((UUID)null);
+            this.setChildMangleUuid((UUID)null);
             if (entityPlayer == null) {
                 return;
             }
@@ -936,7 +930,7 @@ LeftBallActiveKey {
         this.setCurrentAction(GirlAnimationState.NULL);
         EntityPlayer entityPlayer = this.S();
         try {
-            this.e((UUID)null);
+            this.setChildMangleUuid((UUID)null);
             if (entityPlayer == null) {
                 return;
             }
@@ -1034,7 +1028,7 @@ LeftBallActiveKey {
 
     void aw() {
         int i;
-        EntityPlayer entityPlayer = this.getDisplayName();
+        EntityPlayer entityPlayer = this.EntityPlayer_ab();
         GirlAnimationState girlAnimationState = this.getCurrentAction();
         try {
             if (entityPlayer == null) {
@@ -1390,7 +1384,7 @@ LeftBallActiveKey {
 
     @Override
     @SideOnly(value=Side.CLIENT)
-    public void ag() {
+    public void resetTickOffset() {
         try {
             if (this.getCurrentAction() == GirlAnimationState.GALATH_DE_SUMMON) {
                 return;
@@ -1485,16 +1479,16 @@ LeftBallActiveKey {
     }
 
     @Override
-    public Vec4d Vec4d_d() {
-        return new Vec4d(this.a9, this.bg, this.b4, this.a_);
+    public Vec4d getPoseOffsets() {
+        return new Vec4d(this.d4, this.bg, this.d5, this.a_);
     }
 
     void aj() {
-        this.b4 = this.a9;
+        this.d5 = this.d4;
         this.a_ = this.bg;
         Vec3d vec3d = this.W.subtract(this.bD);
         Vec3d vec3d2 = VectorMath.rotateYaw(vec3d, this.renderYawOffset + 180.0f);
-        this.a9 = AngleMath.degToRadians(MathUtils.clamp(vec3d2.z * 40.0, -50.0, 50.0));
+        this.d4 = AngleMath.degToRadians(MathUtils.clamp(vec3d2.z * 40.0, -50.0, 50.0));
         this.bg = AngleMath.degToRadians(MathUtils.clamp(vec3d2.x * 40.0, -50.0, 50.0));
     }
 
@@ -1509,7 +1503,7 @@ LeftBallActiveKey {
             throw GalathNpc.rethrow(concurrentModificationException);
         }
         try {
-            this.DataManager.set(IsKnockedOutKey, (Object)true);
+            this.DataManager.set(IsKnockedOutKey, true);
             if (this.CurrentDeathEvent != null) {
                 this.CurrentDeathEvent.tick(this);
             }
@@ -1540,7 +1534,7 @@ LeftBallActiveKey {
         GirlEntity.sendMessageToNearbyPlayers((GirlEntity)this, TextFormatting.GRAY + "(Walk to her and right click her)");
         NetworkHandler.channel.sendToAllTracking((IMessage)new PacketSpawnEnergyBallParticles(this.getPositionVector(), true), (Entity)this);
         this.f((Vec3d)null);
-        this.DataManager.set(IsParalyzedKey, (Object)true);
+        this.DataManager.set(IsParalyzedKey, true);
     }
 
     @Override
@@ -1581,7 +1575,7 @@ LeftBallActiveKey {
         catch (ConcurrentModificationException concurrentModificationException) {
             throw GalathNpc.rethrow(concurrentModificationException);
         }
-        this.f(CustomModelWorldData.getCustomModelName(this));
+        this.setCustomModel(CustomModelWorldData.getCustomModelName(this));
         this.bK = true;
     }
 
@@ -1615,7 +1609,7 @@ LeftBallActiveKey {
             throw GalathNpc.rethrow(concurrentModificationException);
         }
         try {
-            if (this.getDisplayName() != null) {
+            if (this.EntityPlayer_ab() != null) {
                 return;
             }
         }
@@ -1642,9 +1636,6 @@ LeftBallActiveKey {
         Vec3d vec3d2;
         PlayerGirlEntity playerGirl = PlayerGirlEntity.getByUuid(entityPlayer.getPersistentID());
         try {
-            Vec3d vec3d3;
-            vec3d2 = vec3d3;
-            vec3d = vec3d3;
             d2 = entityPlayer.posX;
             d = entityPlayer.posY;
             f = playerGirl == null ? entityPlayer.eyeHeight : playerGirl.getEyeHeight();
@@ -1652,7 +1643,7 @@ LeftBallActiveKey {
         catch (ConcurrentModificationException concurrentModificationException) {
             throw GalathNpc.rethrow(concurrentModificationException);
         }
-        vec3d2(d2, d + (double)f, entityPlayer.posZ);
+        vec3d = new Vec3d(d2, d + (double)f, entityPlayer.posZ);
         Vec3d vec3d4 = vec3d;
         Vec3d vec3d5 = new Vec3d(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ);
         double d3 = vec3d5.distanceTo(vec3d4);
@@ -1674,7 +1665,7 @@ LeftBallActiveKey {
                     throw GalathNpc.rethrow(concurrentModificationException);
                 }
                 try {
-                    if (this.getDisplayName() != null) {
+                    if (this.EntityPlayer_ab() != null) {
                         this.getCurrentAction();
                         return;
                     }
@@ -1725,7 +1716,7 @@ LeftBallActiveKey {
         catch (ConcurrentModificationException concurrentModificationException) {
             throw GalathNpc.rethrow(concurrentModificationException);
         }
-        this.DataManager.set(bT, (Object)false);
+        this.DataManager.set(bT, false);
         this.ao();
     }
 
@@ -1868,7 +1859,7 @@ LeftBallActiveKey {
             d2 *= 60.0;
         }
         pathNavigate.setSpeed(d2);
-        this.DataManager.set(bT, (Object)flag2);
+        this.DataManager.set(bT, flag2);
         this.setCurrentAction((GirlAnimationState)null);
         return true;
     }
@@ -1979,7 +1970,7 @@ LeftBallActiveKey {
                 BlockPos blockPos2 = blockPos.add(-15.0, -15.0, -15.0);
                 BlockPos blockPos3 = blockPos.add(15.0, 15.0, 15.0);
                 AxisAlignedBB axisAlignedBB = new AxisAlignedBB(blockPos2, blockPos3);
-                List list = this.world.getEntitiesWithinAABB(ManglelieNpc.class, axisAlignedBB);
+                List<ManglelieNpc> list = this.world.getEntitiesWithinAABB(ManglelieNpc.class, axisAlignedBB);
                 manglelie2 = null;
                 for (ManglelieNpc manglelie3 : list) {
                     try {
@@ -2030,7 +2021,7 @@ LeftBallActiveKey {
                 this.getChildMangle(true);
                 this.setChildMangleUuid(manglelie2.getGirlUuid());
                 manglelie2.setMommyUuid(this.getGirlUuid());
-                manglelie2.setAnimationState(GirlAnimationState.RIDE_MOMMY_HEAD);
+                manglelie2.setCurrentAction(GirlAnimationState.RIDE_MOMMY_HEAD);
                 GalathOwnershipData.markOwnerOnline(this.getGirlUuid());
                 return;
             }
@@ -2039,8 +2030,8 @@ LeftBallActiveKey {
             throw GalathNpc.rethrow(concurrentModificationException);
         }
         Vec3d vec3d = this.getPositionVector();
-        manglelie3 = manglelie2.getPositionVector();
-        Vec3d vec3d2 = manglelie3.subtract(vec3d);
+        Vec3d vec3d6 = manglelie2.getPositionVector();
+        Vec3d vec3d2 = vec3d6.subtract(vec3d);
         float f = (float)AngleMath.radToDegrees(Math.atan2(vec3d2.z, vec3d2.x)) - 90.0f;
         this.b(f);
         this.Navigation.clearPath();
@@ -2122,7 +2113,7 @@ LeftBallActiveKey {
                                     block34: {
                                         try {
                                             try {
-                                                if (this.bG == null || this.getDistance(this.bG.getX(), this.bG.getY(), this.bG.getZ()) > this.getRenderLabelOffset()) break block34;
+                                                if (this.bG == null || this.getDistance(this.bG.getX(), this.bG.getY(), this.bG.getZ()) > this.double_i()) break block34;
                                             }
                                             catch (ConcurrentModificationException concurrentModificationException) {
                                                 throw GalathNpc.rethrow(concurrentModificationException);
@@ -2229,7 +2220,7 @@ LeftBallActiveKey {
 
     @Nullable
     public UUID getAttackPlayerUuid() {
-        EntityPlayer entityPlayer = this.getDisplayName();
+        EntityPlayer entityPlayer = this.EntityPlayer_ab();
         try {
             if (entityPlayer == null) {
                 return null;
@@ -2242,7 +2233,7 @@ LeftBallActiveKey {
     }
 
     @Override
-    public void g(String string) {
+    public void setCustomName(String string) {
         super.setCustomName(string);
         UUID uUID = this.O();
         try {
@@ -2263,12 +2254,12 @@ LeftBallActiveKey {
     }
 
     public void resetMangle() {
-        this.e((UUID)null);
+        this.setChildMangleUuid((UUID)null);
         this.setCurrentAction((GirlAnimationState)null);
     }
 
     void aB() {
-        EntityPlayer entityPlayer = this.getDisplayName();
+        EntityPlayer entityPlayer = this.EntityPlayer_ab();
         try {
             if (entityPlayer == null) {
                 return;
@@ -2559,13 +2550,13 @@ LeftBallActiveKey {
         EntityPlayer entityPlayer = this.S();
         try {
             if (entityPlayer != null) {
-                PacketResetGirl.Handler.a((EntityPlayerMP)entityPlayer);
+                PacketResetGirl.Handler.handle((EntityPlayerMP)entityPlayer);
             }
         }
         catch (ConcurrentModificationException concurrentModificationException) {
             throw GalathNpc.rethrow(concurrentModificationException);
         }
-        PacketResetGirl.Handler.openGui(this);
+        PacketResetGirl.Handler.handle(this);
     }
 
     void al() {
@@ -2603,7 +2594,7 @@ LeftBallActiveKey {
             throw GalathNpc.rethrow(concurrentModificationException);
         }
         NetworkHandler.channel.sendTo((IMessage)new PacketSetPlayerMovement(true), (EntityPlayerMP)entityPlayer);
-        this.e((UUID)null);
+        this.setChildMangleUuid((UUID)null);
         this.setTargetEntity((EntityLivingBase)null);
         entityPlayer.sendMessage((ITextComponent)new TextComponentString(TextFormatting.GRAY + "Defeating a succubus makes her accept the victor as her master, granting him a coin to which her soul is bound. Using the coin summons her, offering services on demand. If her master uses the coin on her or goes too far, she returns to the coin"));
         GalathOwnershipData.releaseOwnedGalath(this);
@@ -2668,7 +2659,7 @@ LeftBallActiveKey {
         entityPlayer.setPositionAndUpdate(vec3d.x, vec3d.y, vec3d.z);
     }
 
-    @Override
+
     @SideOnly(value=Side.CLIENT)
     public float float_v() {
         Minecraft minecraft = Minecraft.getMinecraft();
@@ -2706,7 +2697,7 @@ LeftBallActiveKey {
         this.setChildMangleUuid(manglelie.getGirlUuid());
         manglelie.setMommyUuid(this.getGirlUuid());
         manglelie.setClaimed(true);
-        manglelie.setAnimationState(GirlAnimationState.RIDE_MOMMY_HEAD);
+        manglelie.setCurrentAction(GirlAnimationState.RIDE_MOMMY_HEAD);
         manglelie.setPositionAndUpdate(this.posX, this.posY, this.posZ);
         this.world.spawnEntity((Entity)manglelie);
         return true;
@@ -2850,8 +2841,8 @@ LeftBallActiveKey {
                 throw GalathNpc.rethrow(concurrentModificationException);
             }
             Set set = ((WorldServer)this.world).getEntityTracker().getTrackingPlayers((Entity)entityWitherSkeleton);
-            for (EntityPlayer entityPlayer : set) {
-                ((EntityPlayerMP)entityPlayer).connection.sendPacket((Packet)new SPacketParticles(EnumParticleTypes.DRAGON_BREATH, false, (float)entityWitherSkeleton.posX, (float)entityWitherSkeleton.posY, (float)entityWitherSkeleton.posZ, 0.2f * (float)MathUtils.randomSign(), entityWitherSkeleton.getEyeHeight() / 2.0f, 0.2f * (float)MathUtils.randomSign(), 0.0f, 5, new int[0]));
+            for (EntityPlayerMP entityPlayer : (Iterable<EntityPlayerMP>)set) {
+                entityPlayer.connection.sendPacket((Packet)new SPacketParticles(EnumParticleTypes.DRAGON_BREATH, false, (float)entityWitherSkeleton.posX, (float)entityWitherSkeleton.posY, (float)entityWitherSkeleton.posZ, 0.2f * (float)MathUtils.randomSign(), entityWitherSkeleton.getEyeHeight() / 2.0f, 0.2f * (float)MathUtils.randomSign(), 0.0f, 5, new int[0]));
             }
         }
     }
@@ -2889,7 +2880,7 @@ LeftBallActiveKey {
             Vec3d vec3d2 = vec3d.subtract(2.0, 2.0, 2.0);
             Vec3d vec3d3 = vec3d.add(2.0, 2.0, 2.0);
             AxisAlignedBB axisAlignedBB = new AxisAlignedBB(vec3d2.x, vec3d2.y, vec3d2.z, vec3d3.x, vec3d3.y, vec3d3.z);
-            List list = this.world.getEntitiesWithinAABB(EntityLivingBase.class, axisAlignedBB);
+            List<EntityLivingBase> list = this.world.getEntitiesWithinAABB(EntityLivingBase.class, axisAlignedBB);
             for (EntityLivingBase entityLivingBase : list) {
                 try {
                     if (entityLivingBase instanceof GalathNpc) {
@@ -2925,8 +2916,8 @@ LeftBallActiveKey {
         catch (ConcurrentModificationException concurrentModificationException) {
             throw GalathNpc.rethrow(concurrentModificationException);
         }
-        this.b(Vec3d.ZERO);
-        this.DataManager.set(IsKnockedOutKey, (Object)false);
+        this.addVelocity(Vec3d.ZERO);
+        this.DataManager.set(IsKnockedOutKey, false);
         this.bY = 0;
     }
 
@@ -2948,9 +2939,8 @@ LeftBallActiveKey {
             throw GalathNpc.rethrow(concurrentModificationException);
         }
         try {
-            int i;
-            ++this.b3;
-            if ((double)i < 50.0) {
+            this.i6++;
+            if ((double)this.i6 < 50.0) {
                 return;
             }
         }
@@ -2959,7 +2949,7 @@ LeftBallActiveKey {
         }
         this.setCurrentAction(GirlAnimationState.KNOCK_OUT_STAND_UP);
         this.bY = 0;
-        this.b3 = 0;
+        this.i6 = 0;
     }
 
     void void_S() {
@@ -3049,14 +3039,13 @@ LeftBallActiveKey {
         }
         int i = this.getCombatTargetId();
         try {
-            GalathNpc f_2 = this;
             flag = i == 0;
         }
         catch (ConcurrentModificationException concurrentModificationException) {
             throw GalathNpc.rethrow(concurrentModificationException);
         }
         try {
-            f_2.noClip = flag;
+            this.noClip = flag;
             if (!this.world.isAirBlock(this.getPosition())) {
                 this.noClip = true;
             }
@@ -3159,7 +3148,7 @@ LeftBallActiveKey {
     }
 
     void void_I() {
-        Object object;
+        EntityLivingBase object;
         float f;
         try {
             if (this.f()) {
@@ -3196,7 +3185,7 @@ LeftBallActiveKey {
         catch (ConcurrentModificationException concurrentModificationException) {
             throw GalathNpc.rethrow(concurrentModificationException);
         }
-        EntityMob entityMob = object;
+        EntityLivingBase entityMob = object;
         try {
             if (entityMob == null) {
                 this.aI();
@@ -3485,7 +3474,7 @@ LeftBallActiveKey {
 
     @Override
     @SideOnly(value=Side.CLIENT)
-    public void onInteractionCommand(String string, UUID uUID) {
+    public void a(String string, UUID uUID) {
         try {
             if ("ride".equals(string)) {
                 GuiGalathFlight.startFlight();
@@ -3504,7 +3493,7 @@ LeftBallActiveKey {
                     EntityPlayerSP entityPlayerSP = Minecraft.getMinecraft().player;
                     this.setTargetPos(entityPlayerSP.getPositionVector());
                     this.b(0.0f);
-                    this.e(entityPlayerSP.getPersistentID());
+                    this.setChildMangleUuid(entityPlayerSP.getPersistentID());
                     this.getChildMangle(true);
                     this.setCurrentAction(GirlAnimationState.CORRUPT_SLOW);
                 });
@@ -3523,7 +3512,7 @@ LeftBallActiveKey {
                     this.setTargetPos(entityPlayerSP.getPositionVector());
                     this.b(entityPlayerSP.rotationYaw + 180.0f);
                     this.setCurrentAction(GirlAnimationState.RAPE_INTRO);
-                    this.e(entityPlayerSP.getPersistentID());
+                    this.setChildMangleUuid(entityPlayerSP.getPersistentID());
                     this.getChildMangle(true);
                 });
                 return;
@@ -3548,14 +3537,14 @@ LeftBallActiveKey {
                 Minecraft minecraft = Minecraft.getMinecraft();
                 EntityPlayerSP entityPlayerSP = minecraft.player;
                 minecraft.gameSettings.thirdPersonView = 1;
-                manglelie.c(entityPlayerSP.getPositionVector());
+                manglelie.setTargetPos(entityPlayerSP.getPositionVector());
                 this.setTargetPos(entityPlayerSP.getPositionVector());
                 manglelie.b(entityPlayerSP.rotationYaw + 180.0f);
                 this.b(entityPlayerSP.rotationYaw);
-                manglelie.setAnimationState(GirlAnimationState.THREESOME_SLOW);
+                manglelie.setCurrentAction(GirlAnimationState.THREESOME_SLOW);
                 this.setCurrentAction(GirlAnimationState.PUSSY_LICKING);
                 manglelie.handleGirlUuidEvent(entityPlayerSP.getPersistentID());
-                this.e(entityPlayerSP.getPersistentID());
+                this.setChildMangleUuid(entityPlayerSP.getPersistentID());
                 manglelie.getMommy(true);
                 this.getChildMangle(true);
             });
@@ -3590,7 +3579,7 @@ LeftBallActiveKey {
             throw GalathNpc.rethrow(concurrentModificationException);
         }
         this.setCurrentAction(GirlAnimationState.CORRUPT_INTRO);
-        this.e(entityPlayer.getPersistentID());
+        this.setChildMangleUuid(entityPlayer.getPersistentID());
         this.getChildMangle(true);
         this.setTargetPos(this.getPositionVector());
         this.b(entityPlayer.rotationYaw);
@@ -3607,14 +3596,14 @@ LeftBallActiveKey {
     public void setTargetEntity(@Nullable EntityLivingBase entityLivingBase) {
         try {
             if (entityLivingBase == null) {
-                this.DataManager.set(TargetEntityIdKey, (Object)-1);
+                this.DataManager.set(TargetEntityIdKey, -1);
                 return;
             }
         }
         catch (ConcurrentModificationException concurrentModificationException) {
             throw GalathNpc.rethrow(concurrentModificationException);
         }
-        this.DataManager.set(TargetEntityIdKey, (Object)entityLivingBase.getEntityId());
+        this.DataManager.set(TargetEntityIdKey, entityLivingBase.getEntityId());
     }
 
     public int getCombatTargetId() {
@@ -3622,7 +3611,7 @@ LeftBallActiveKey {
     }
 
     public void b(int i) {
-        this.DataManager.set(CombatTargetIdKey, (Object)i);
+        this.DataManager.set(CombatTargetIdKey, i);
     }
 
     public EntityLivingBase getTargetEntity() {
@@ -3772,7 +3761,7 @@ LeftBallActiveKey {
         }
         try {
             if (multiPartEntityPart == this.V) {
-                this.DataManager.set(LeftBallActiveKey, (Object)false);
+                this.DataManager.set(LeftBallActiveKey, false);
                 NetworkHandler.channel.sendToAllTracking((IMessage)new PacketSpawnEnergyBallParticles(this.V.getPositionVector(), false), (Entity)this);
             }
         }
@@ -3781,7 +3770,7 @@ LeftBallActiveKey {
         }
         try {
             if (multiPartEntityPart == this.b2) {
-                this.DataManager.set(RightBallActiveKey, (Object)false);
+                this.DataManager.set(RightBallActiveKey, false);
                 NetworkHandler.channel.sendToAllTracking((IMessage)new PacketSpawnEnergyBallParticles(this.b2.getPositionVector(), false), (Entity)this);
             }
         }
@@ -3791,8 +3780,7 @@ LeftBallActiveKey {
         return true;
     }
 
-    @Override
-    public void g() {
+    public void noop() {
         this.setTargetEntity((EntityLivingBase)null);
         this.aH();
     }
@@ -3809,12 +3797,12 @@ LeftBallActiveKey {
 
     @Override
     @Nullable
-    protected GirlAnimationState c(GirlAnimationState girlAnimationState) {
+    protected GirlAnimationState getFollowUpAction(GirlAnimationState girlAnimationState) {
         return null;
     }
 
     @Override
-    protected GirlAnimationState a(GirlAnimationState girlAnimationState) {
+    protected GirlAnimationState nextAnimationState(GirlAnimationState girlAnimationState) {
         block10: {
             try {
                 try {
@@ -3849,12 +3837,12 @@ LeftBallActiveKey {
     }
 
     @Override
-    public boolean c() {
+    public boolean shouldHideBody() {
         return this.bb;
     }
 
     @Override
-    public boolean boolean_a() {
+    public boolean isVisible() {
         try {
             switch (this.getCurrentAction()) {
                 case CORRUPT_SLOW: 
@@ -3943,7 +3931,7 @@ LeftBallActiveKey {
     public void readEntityFromNBT(NBTTagCompound nBTTagCompound) {
         try {
             super.readEntityFromNBT(nBTTagCompound);
-            this.DataManager.set(MasterUuidKey, (Object)nBTTagCompound.getString("sexmod:master"));
+            this.DataManager.set(MasterUuidKey, nBTTagCompound.getString("sexmod:master"));
             if (nBTTagCompound.getBoolean("sexmod:despawned")) {
                 this.P = true;
             }
@@ -4298,11 +4286,11 @@ LeftBallActiveKey {
                 break;
             }
             case PUSSY_LICKING: {
-                this.a(this.flag ? "animation.galath.pussy_licking_forward" : "animation.galath.pussy_licking", true, animEvent);
+                this.createAnimationOnce(this.a5 ? "animation.galath.pussy_licking_forward" : "animation.galath.pussy_licking", true, animEvent);
                 break;
             }
             case MASTERBATE_SITTING: {
-                this.a(this.bx ? "animation.galath.pussy_licking_back" : "animation.galath.masterbating_sitting", true, animEvent);
+                this.createAnimationOnce(this.bx ? "animation.galath.pussy_licking_back" : "animation.galath.masterbating_sitting", true, animEvent);
                 break;
             }
             case MASTERBATE_SITTING_CUM: {
@@ -4310,7 +4298,7 @@ LeftBallActiveKey {
                 break;
             }
             case MORNING_BLOWJOB_SLOW: {
-                this.a(this.bt ? "animation.shared.bed_back" : "animation.shared.bed_slow", true, animEvent);
+                this.createAnimationOnce(this.bt ? "animation.shared.bed_back" : "animation.shared.bed_slow", true, animEvent);
                 break;
             }
             case MORNING_BLOWJOB_FAST: {
@@ -4629,43 +4617,22 @@ LeftBallActiveKey {
         animationData.addAnimationController(this.MovementController);
     }
 
-    private static /* synthetic */ Vec3d lambda$null$10(GirlEntity girl) {
-        return girl.getModelBone("futaCockTip").add(girl.getTargetPos());
+ static RuntimeException rethrow(RuntimeException error) {
+
+       return error;
+
     }
 
-    private static /* synthetic */ Vec3d lambda$null$9(GirlEntity girl) {
-        Vec3d vec3d = girl.d("futaCockTip");
-        Vec3d vec3d2 = girl.d("futaCockTipDirHelp");
-        return vec3d.subtract(vec3d2).normalize();
-    }
 
-    private static /* synthetic */ Vec3d lambda$null$8(GirlEntity girl) {
-        return girl.getModelBone("creampiePos").add(girl.getTargetPos());
-    }
-
-    private /* synthetic */ Vec3d lambda$null$7(GirlEntity girl) {
-        return VectorMath.rotateYaw(new Vec3d(0.0, 0.0, (double)0.6f), this.I().floatValue());
-    }
-
-    private static /* synthetic */ Vec3d lambda$null$6(GirlEntity girl) {
-        return girl.getModelBone("futaCockTip").add(girl.getTargetPos());
-    }
-
-    private static /* synthetic */ Vec3d lambda$null$5(GirlEntity girl) {
-        Vec3d vec3d = girl.d("futaCockTip");
-        Vec3d vec3d2 = girl.d("futaCockTipDirHelp");
-        return vec3d.subtract(vec3d2).normalize();
-    }
-
-    private static Exception rethrow(Exception exception) {
-        return exception;
+    private static RuntimeException rethrow(Exception exception) {
+        return new RuntimeException(exception);
     }
 
     public static class EventHandler {
         boolean a(GalathNpc f_2) {
             boolean flag;
             try {
-                flag = f_2.getDisplayName() != null;
+                flag = f_2.EntityPlayer_ab() != null;
             }
             catch (ConcurrentModificationException concurrentModificationException) {
                 throw GalathNpc.EventHandler.rethrow(concurrentModificationException);
@@ -4764,7 +4731,7 @@ LeftBallActiveKey {
                         throw GalathNpc.EventHandler.rethrow(concurrentModificationException);
                     }
                     try {
-                        if (!minecraft.player.getPersistentID().equals(((GalathNpc)girl).ax())) {
+                        if (!minecraft.player.getPersistentID().equals(((GalathNpc)girl).getAttackPlayerUuid())) {
                             continue;
                         }
                     }
@@ -4884,7 +4851,7 @@ LeftBallActiveKey {
             GalathNpc f_2 = (GalathNpc)girl;
             try {
                 f_2.setTargetEntity((EntityLivingBase)null);
-                PacketResetGirl.Handler.openGui(girl);
+                PacketResetGirl.Handler.handle(girl);
                 NetworkHandler.channel.sendTo((IMessage)new PacketSetPlayerMovement(true), entityPlayerMP);
                 girl.setCurrentAction((GirlAnimationState)null);
                 if (f_2.CurrentDeathEvent == null) {
@@ -4962,7 +4929,7 @@ LeftBallActiveKey {
                         energyBall.setPosition(0.0, -500.0, 0.0);
                         energyBall.setDead();
                     }
-                    if (!((Boolean)girl.getDataManager().get(b7)).booleanValue()) continue;
+                    if (!((Boolean)girl.getDataManager().get(LeftBallActiveKey)).booleanValue()) continue;
                     vec3d2 = girl.getModelBone("energyBallL");
                     vec3d = vec3d3.add(vec3d2);
                     energyBall = new EnergyBallEntity(girl.world, (GalathNpc)girl);
@@ -5211,7 +5178,7 @@ LeftBallActiveKey {
             f_2.setTargetPos(vec3d2);
             f_2.b(f);
             f_2.getChildMangle(true);
-            f_2.e(entityPlayer.getPersistentID());
+            f_2.setChildMangleUuid(entityPlayer.getPersistentID());
             f_2.setCurrentAction(GirlAnimationState.MORNING_BLOWJOB_SLOW);
             NetworkHandler.channel.sendTo((IMessage)new PacketSetPlayerMovement(false), (EntityPlayerMP)entityPlayer);
             MathUtils.runAfterDelay(500, () -> {

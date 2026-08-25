@@ -19,6 +19,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -56,7 +57,7 @@ public class BedLogic {
       }
 
       BlockPos pos = new BlockPos(Math.floor(livingBase.posX), Math.floor(livingBase.posY), Math.floor(livingBase.posZ));
-      HashMap map = new HashMap();
+      HashMap<Vec3d, Integer> map = new HashMap<Vec3d, Integer>();
       int i = 0;
 
       for (int i2 = -1; i2 < 2; i2++) {
@@ -127,7 +128,7 @@ public class BedLogic {
    }
 
    public static boolean isBedBlock(World world, BlockPos pos) {
-      return a(world, pos, null, null, null);
+      return getBedRespawnPos(world, pos, null, null, null);
    }
 
 

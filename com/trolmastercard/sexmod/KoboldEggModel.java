@@ -12,7 +12,7 @@ public class KoboldEggModel extends AnimatedGeoModel<KoboldEggEntity> {
       return new ResourceLocation("sexmod", "textures/entity/kobold/koboldegg.png");
    }
 
-   public ResourceLocation getAnimationLocation(KoboldEggEntity egg) {
+   public ResourceLocation getAnimationFileLocation(KoboldEggEntity egg) {
       return new ResourceLocation("sexmod", "animations/kobold/egg.animation.json");
    }
 }

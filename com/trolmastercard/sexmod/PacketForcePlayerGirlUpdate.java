@@ -63,8 +63,8 @@ public class PacketForcePlayerGirlUpdate implements IMessage {
             catch (RuntimeException runtimeException) {
                 throw PacketForcePlayerGirlUpdate.Handler.rethrow(runtimeException);
             }
-            playerGirl.getDataManager().set(GirlEntity.CurrentActionKey, (Object)packet.Animation.toString());
-            playerGirl.getDataManager().set(GirlEntity.OutfitIndexKey, (Object)packet.Index);
+            playerGirl.getDataManager().set(GirlEntity.CurrentActionKey, packet.Animation.toString());
+            playerGirl.getDataManager().set(GirlEntity.OutfitIndexKey, packet.Index);
             return null;
         }
 

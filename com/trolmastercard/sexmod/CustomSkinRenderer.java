@@ -41,14 +41,10 @@ public class CustomSkinRenderer extends GeoItemRenderer<ItemAlliesLamp> {
             StringBuilder sb = new StringBuilder();
             int i3 = 0;
 
-            try {
                while (string.charAt(i2 + i3) != '"') {
                   sb.append(string.charAt(i2 + i3));
                   i3++;
                }
-            } catch (Exception error) {
-               throw rethrow(error);
-            }
 
             String string2 = new String(Base64.getDecoder().decode(sb.toString()));
             int i4 = string2.indexOf("\"url\" : ");
@@ -56,36 +52,28 @@ public class CustomSkinRenderer extends GeoItemRenderer<ItemAlliesLamp> {
             StringBuilder sb2 = new StringBuilder();
             int i6 = 0;
 
-            try {
                while (string2.charAt(i5 + i6) != '"') {
                   sb2.append(string2.charAt(i5 + i6));
                   i6++;
                }
-            } catch (Exception error2) {
-               throw rethrow(error2);
-            }
 
             URL url2 = new URL(sb2.toString());
             BufferedImage bufferedImage = ImageIO.read(url2);
-            BufferedImage bufferedImage2 = ImageIO.read(this.Mc.getResourceManager().getResource(new ModelAlliesLamp().c(new ItemAlliesLamp())).getInputStream());
+            BufferedImage bufferedImage2 = ImageIO.read(this.Mc.getResourceManager().getResource(new ModelAlliesLamp().getTextureLocation(new ItemAlliesLamp())).getInputStream());
 
             for (int i7 = 0; i7 < bufferedImage2.getWidth(); i7++) {
                for (int i8 = 0; i8 < bufferedImage2.getHeight(); i8++) {
                   int i9 = bufferedImage.getRGB(i7, i8);
 
-                  try {
                      if (i9 != 0) {
                         bufferedImage2.setRGB(i7, i8, i9);
                      }
-                  } catch (Exception error3) {
-                     throw rethrow(error3);
-                  }
                }
             }
 
             SkinTexture = Minecraft.getMinecraft().getRenderManager().renderEngine.getDynamicTextureLocation("lamptex", new DynamicTexture(bufferedImage2));
          } catch (Exception error4) {
-            SkinTexture = new ModelAlliesLamp().c(new ItemAlliesLamp());
+            SkinTexture = new ModelAlliesLamp().getTextureLocation(new ItemAlliesLamp());
          }
       }
 
@@ -123,7 +111,7 @@ public class CustomSkinRenderer extends GeoItemRenderer<ItemAlliesLamp> {
             this.b(bufferBuilder, item, bone, f, f2, f3, f4);
          }
       } catch (RuntimeException error) {
-         throw rethrow(error);
+         throw error;
       }
 
       MATRIX_STACK.pop();
@@ -140,12 +128,12 @@ public class CustomSkinRenderer extends GeoItemRenderer<ItemAlliesLamp> {
                             if (string.equals("leftArm") || string.equals("rightArm")) break block8;
                         }
                         catch (RuntimeException runtimeException) {
-                            throw CustomSkinRenderer.rethrow(runtimeException);
+                            throw runtimeException;
                         }
                         return true;
                     }
                     catch (RuntimeException runtimeException) {
-                        throw CustomSkinRenderer.rethrow(runtimeException);
+                        throw runtimeException;
                     }
                 }
                 try {
@@ -153,13 +141,13 @@ public class CustomSkinRenderer extends GeoItemRenderer<ItemAlliesLamp> {
                         if (!this.Mc.player.getEntityData().getBoolean("sexmodAllieInUse") || this.Mc.gameSettings.thirdPersonView != 0) break block9;
                     }
                     catch (RuntimeException runtimeException) {
-                        throw CustomSkinRenderer.rethrow(runtimeException);
+                        throw runtimeException;
                     }
                     flag = true;
                     break block10;
                 }
                 catch (RuntimeException runtimeException) {
-                    throw CustomSkinRenderer.rethrow(runtimeException);
+                    throw runtimeException;
                 }
             }
             flag = false;
@@ -183,7 +171,8 @@ public class CustomSkinRenderer extends GeoItemRenderer<ItemAlliesLamp> {
       }
    }
 
-   private static Exception rethrow(Exception error) {
-      return error;
+   private static RuntimeException rethrow(Exception error) {
+      return new RuntimeException(error);
    }
 }
+

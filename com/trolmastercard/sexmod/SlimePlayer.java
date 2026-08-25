@@ -46,12 +46,12 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    public boolean allowsBedInteraction() {
+    public boolean v() {
         return false;
     }
 
     @Override
-    public boolean suppressInventoryStripButton() {
+    public boolean A_() {
         return false;
     }
 
@@ -80,7 +80,7 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    public boolean openActionMenu(EntityPlayer entityPlayer) {
+    public boolean canInteract(EntityPlayer entityPlayer) {
         SlimePlayer.openActionMenu(entityPlayer, this, new String[]{"action.names.blowjob"}, false);
         return true;
     }
@@ -201,7 +201,7 @@ extends PlayerGirlEntity {
         catch (RuntimeException runtimeException) {
             throw SlimePlayer.rethrow(runtimeException);
         }
-        EntityPlayer entityPlayer = this.getRenderPosition();
+        EntityPlayer entityPlayer = this.j();
         try {
             if (entityPlayer == null) {
                 return;
@@ -211,7 +211,7 @@ extends PlayerGirlEntity {
             throw SlimePlayer.rethrow(runtimeException);
         }
         try {
-            if (entityPlayer.getPositionVector().distanceTo(this.getCustomName()) > 1.0) {
+            if (entityPlayer.getPositionVector().distanceTo(this.w()) > 1.0) {
                 return;
             }
         }
@@ -222,7 +222,7 @@ extends PlayerGirlEntity {
         this.hasGirl(entityPlayer.getPersistentID());
         entityPlayer.rotationYaw = this.I().floatValue();
         this.AimYaw = this.I().floatValue();
-        entityPlayer.setPosition(this.getCustomName().x, this.getCustomName().y, this.getCustomName().z);
+        entityPlayer.setPosition(this.w().x, this.w().y, this.w().z);
         entityPlayer.moveRelative(0.0f, 0.0f, 0.0f, 0.0f);
         this.a(0.0, 0.0, 0.4, 0.0f, 60.0f);
         this.setCurrentAction(GirlAnimationState.DOGGYSTART);
@@ -372,13 +372,13 @@ extends PlayerGirlEntity {
                 }
                 case "undress": {
                     if (!this.isLocalPlayerNearby()) break;
-                    this.DataManager.set(GirlEntity.OutfitIndexKey, (Object)0);
+                    this.DataManager.set(GirlEntity.OutfitIndexKey, 0);
                     this.resetAimTarget();
                     break;
                 }
                 case "dress": {
                     if (!this.isLocalPlayerNearby()) break;
-                    this.DataManager.set(GirlEntity.OutfitIndexKey, (Object)1);
+                    this.DataManager.set(GirlEntity.OutfitIndexKey, 1);
                     this.setCurrentAction((GirlAnimationState)null);
                     this.resetAimTarget();
                     break;
@@ -394,23 +394,23 @@ extends PlayerGirlEntity {
                     break;
                 }
                 case "bjiMSG11": {
-                    this.a(SoundEvents.ENTITY_SLIME_SQUISH, 0.5f);
+                    this.playSoundAtVolume(SoundEvents.ENTITY_SLIME_SQUISH, 0.5f);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.02);
                     break;
                 }
                 case "bjiMSG12": {
                     if (ModConstants.Random.nextInt(5) == 0) {
-                        this.a(SoundEvents.ENTITY_SLIME_JUMP, 0.5f);
+                        this.playSoundAtVolume(SoundEvents.ENTITY_SLIME_JUMP, 0.5f);
                     }
-                    this.a(SoundEvents.ENTITY_SLIME_SQUISH, 0.5f);
+                    this.playSoundAtVolume(SoundEvents.ENTITY_SLIME_SQUISH, 0.5f);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.02);
                     break;
                 }
                 case "bjtMSG1": {
-                    this.a(SoundEvents.BLOCK_SLIME_HIT);
-                    this.a(SoundEvents.ENTITY_SLIME_DEATH);
+                    this.playSoundEvent(SoundEvents.BLOCK_SLIME_HIT);
+                    this.playSoundEvent(SoundEvents.ENTITY_SLIME_DEATH);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.04);
                     break;
@@ -436,17 +436,17 @@ extends PlayerGirlEntity {
                     break;
                 }
                 case "bjcMSG1": {
-                    this.a(SoundEvents.ENTITY_SLIME_JUMP);
+                    this.playSoundEvent(SoundEvents.ENTITY_SLIME_JUMP);
                     break;
                 }
                 case "bjcMSG2": {
-                    this.a(SoundEvents.ENTITY_SLIME_JUMP);
+                    this.playSoundEvent(SoundEvents.ENTITY_SLIME_JUMP);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.forceShowHud();
                     break;
                 }
                 case "doggyslowMSG2": {
-                    this.a(SoundEvents.BLOCK_SLIME_HIT);
+                    this.playSoundEvent(SoundEvents.BLOCK_SLIME_HIT);
                     break;
                 }
                 case "bjcBlackScreen": {
@@ -462,7 +462,7 @@ extends PlayerGirlEntity {
                     break;
                 }
                 case "doggyGoOnBedMSG1": {
-                    this.a(SoundEvents.ENTITY_SLIME_SQUISH);
+                    this.playSoundEvent(SoundEvents.ENTITY_SLIME_SQUISH);
                     this.AimYaw = this.rotationYaw;
                     break;
                 }
@@ -472,26 +472,26 @@ extends PlayerGirlEntity {
                     break;
                 }
                 case "doggystartMSG1": {
-                    this.a(ModSounds.MISC_TOUCH[0]);
+                    this.playSoundEvent(ModSounds.MISC_TOUCH[0]);
                     break;
                 }
                 case "doggystartMSG2": {
-                    this.a(ModSounds.MISC_TOUCH[1]);
+                    this.playSoundEvent(ModSounds.MISC_TOUCH[1]);
                     break;
                 }
                 case "doggystartMSG3": {
-                    this.a(SoundEvents.ENTITY_SLIME_SQUISH, 0.25f);
+                    this.playSoundAtVolume(SoundEvents.ENTITY_SLIME_SQUISH, 0.25f);
                     break;
                 }
                 case "doggystartMSG4": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_SMALLINSERTS), 1.5f);
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.MISC_SMALLINSERTS), 1.5f);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.resetProgress();
                     break;
                 }
                 case "doggystartMSG5": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.33f);
-                    this.a(SoundEvents.BLOCK_SLIME_HIT);
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.33f);
+                    this.playSoundEvent(SoundEvents.BLOCK_SLIME_HIT);
                     break;
                 }
                 case "doggystartDone": {
@@ -501,24 +501,24 @@ extends PlayerGirlEntity {
                     break;
                 }
                 case "doggyslowMSG1": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.33f);
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.33f);
                     int n = ModConstants.Random.nextInt(4);
                     if (n == 0) {
                         n = ModConstants.Random.nextInt(2);
                         if (n == 0) {
-                            this.a(SoundEvents.ENTITY_SLIME_JUMP);
+                            this.playSoundEvent(SoundEvents.ENTITY_SLIME_JUMP);
                         } else {
-                            this.a(SoundEvents.ENTITY_SLIME_SQUISH);
+                            this.playSoundEvent(SoundEvents.ENTITY_SLIME_SQUISH);
                         }
                     } else {
-                        this.a(SoundEvents.BLOCK_SLIME_HIT);
+                        this.playSoundEvent(SoundEvents.BLOCK_SLIME_HIT);
                     }
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.00666);
                     break;
                 }
                 case "doggyfastMSG1": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.75f);
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.75f);
                     if (this.isOwnedByLocalPlayer()) {
                         GuiHud.addProgress(0.02);
                     }
@@ -526,13 +526,13 @@ extends PlayerGirlEntity {
                     if (this.aq % 2 == 0) {
                         int n = ModConstants.Random.nextInt(2);
                         if (n == 0) {
-                            this.a(SoundEvents.ENTITY_SLIME_JUMP);
+                            this.playSoundEvent(SoundEvents.ENTITY_SLIME_JUMP);
                             break;
                         }
-                        this.a(SoundEvents.ENTITY_SLIME_SQUISH);
+                        this.playSoundEvent(SoundEvents.ENTITY_SLIME_SQUISH);
                         break;
                     }
-                    this.a(SoundEvents.BLOCK_SLIME_HIT);
+                    this.playSoundEvent(SoundEvents.BLOCK_SLIME_HIT);
                     break;
                 }
                 case "doggyfastDone": {
@@ -540,9 +540,9 @@ extends PlayerGirlEntity {
                     break;
                 }
                 case "doggycumMSG1": {
-                    this.a(ModSounds.MISC_CUMINFLATION[0], 4.0f);
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 2.0f);
-                    this.a(SoundEvents.ENTITY_SLIME_DEATH);
+                    this.playSoundAtVolume(ModSounds.MISC_CUMINFLATION[0], 4.0f);
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 2.0f);
+                    this.playSoundEvent(SoundEvents.ENTITY_SLIME_DEATH);
                 }
             }
         };

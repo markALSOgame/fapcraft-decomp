@@ -37,7 +37,7 @@ public abstract class GirlEffectEntity extends GirlEntity {
                 throw GirlEffectEntity.rethrow(runtimeException);
             }
         }
-        this.DataManager.register(M, (Object)this.a(new StringBuilder()));
+        this.DataManager.register(M, this.a(new StringBuilder()));
     }
 
    @Override

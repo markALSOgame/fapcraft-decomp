@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.Vec3d;
 
 public class QuadRenderHelper {
-   public static void a(BufferBuilder bufferBuilder, Tessellator tessellator, Minecraft mc, QuadRenderHelper.QuadConfig quadConfig) {
+   public static void drawQuad(BufferBuilder bufferBuilder, Tessellator tessellator, Minecraft mc, QuadRenderHelper.QuadConfig quadConfig) {
       Vec3d[] vec3dArray = new Vec3d[]{
          new Vec3d(-quadConfig.HalfWidth, -quadConfig.HalfHeight, 0.0), new Vec3d(-quadConfig.HalfWidth, quadConfig.HalfHeight, 0.0), new Vec3d(quadConfig.HalfWidth, quadConfig.HalfHeight, 0.0), new Vec3d(quadConfig.HalfWidth, -quadConfig.HalfHeight, 0.0)
       };
@@ -29,17 +29,17 @@ public class QuadRenderHelper {
          }
 
          list.add(vec3dArray3);
-         vec3d = VectorMath.rotateEuler(vec3d, quadConfig.AngleX.a(i, f), quadConfig.AngleY.a(i, f), quadConfig.AngleZ.a(i, f));
+         vec3d = VectorMath.rotateEuler(vec3d, quadConfig.AngleX.apply(i, f), quadConfig.AngleY.apply(i, f), quadConfig.AngleZ.apply(i, f));
          vec3d2 = vec3d2.add(vec3d);
       }
 
       bufferBuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
-      a(bufferBuilder, vec3dArray2, (Vec3d[])list.get(0), quadConfig.Color);
+      drawFace(bufferBuilder, vec3dArray2, (Vec3d[])list.get(0), quadConfig.Color);
 
       for (int i3 = 0; i3 < quadConfig.SegmentCount - 1; i3++) {
          Vec3d[] vec3dArray4 = (Vec3d[])list.get(i3);
          Vec3d[] vec3dArray5 = (Vec3d[])list.get(i3 + 1);
-         a(bufferBuilder, vec3dArray4, vec3dArray5, quadConfig.Color);
+         drawFace(bufferBuilder, vec3dArray4, vec3dArray5, quadConfig.Color);
       }
 
       tessellator.draw();

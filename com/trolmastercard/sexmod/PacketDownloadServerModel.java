@@ -203,8 +203,8 @@ public class PacketDownloadServerModel implements IMessage {
             return null;
         }
 
-      private static Throwable rethrow(Throwable error) {
-         return error;
+      private static RuntimeException rethrow(Throwable error) {
+         return new RuntimeException(error);
       }
    }
 

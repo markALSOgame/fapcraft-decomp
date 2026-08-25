@@ -100,36 +100,24 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
 
    protected ResourceLocation d(T t) throws IOException {
       label38: {
-         try {
-            if (!(t.world instanceof PreviewWorld) && t.ae() != null) {
-               break label38;
-            }
-         } catch (IOException error) {
-            throw rethrow(error);
+         if (!(t.world instanceof PreviewWorld) && t.getSexPlayerUuid() != null) {
+            break label38;
          }
 
          ResourceLocation location = TextureCache.get(Mc.getSession().getProfile().getId());
 
-         try {
             if (location == null) {
                return this.a(Mc.getSession().getProfile().getId(), t.world);
             }
 
             return location;
-         } catch (IOException error2) {
-            throw rethrow(error2);
-         }
       }
 
-      ResourceLocation location2 = TextureCache.get(t.ae());
+      ResourceLocation location2 = TextureCache.get(t.getSexPlayerUuid());
 
-      try {
          if (location2 == null) {
-            return this.a(t.ae(), t.world);
+            return this.a(t.getSexPlayerUuid(), t.world);
          }
-      } catch (IOException error3) {
-         throw rethrow(error3);
-      }
 
       return location2;
    }
@@ -144,12 +132,8 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
          graphics.setColor(this.AccentColor);
          graphics.fillRect(4, 0, 3, 3);
       } catch (Exception error) {
-         try {
-            if (!this.Initialized) {
-               this.Initialized = true;
-            }
-         } catch (Exception error2) {
-            throw rethrow(error2);
+         if (!this.Initialized) {
+            this.Initialized = true;
          }
 
          bufferedImage = ImageIO.read(Mc.getResourceManager().getResource(new ResourceLocation("sexmod", "textures/player/steve.png")).getInputStream());
@@ -171,10 +155,10 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
       return LerpMath.lerp(girl.prevRenderYawOffset, girl.renderYawOffset, f);
    }
 
-   protected void d() {
+   protected void applyBodyScale() {
    }
 
-   protected void b() {
+   protected void undoBodyScale() {
    }
 
    float a(World world, Vec3d vec3d, float f, float f2) {
@@ -370,13 +354,13 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
             this.bindTexture(Objects.requireNonNull(this.getEntityTexture(this.RenderEntity)));
             this.ProcessedBones.clear();
             flag2 = ((GirlEntity)t).isTracked();
-            flag = ((GirlEntity)t).ah() == 0;
+            flag = ((GirlEntity)t).getOutfitIndex() == 0;
         }
         catch (IllegalStateException illegalStateException) {
             throw GeoGirlRenderer.rethrow(illegalStateException);
         }
         this.ProcessedBones = this.a(flag2, flag);
-        this.d();
+        this.applyBodyScale();
          BoneColorHelper.cacheBoneColors(((GirlEntity)t).b().getModelRendererList(), this.getFilteredBoneNames(), this);
         BoneColorHelper.setSkinColor(t, f);
         this.a(model, bufferBuilder, t, f2, f3, f4, f5, f);
@@ -401,7 +385,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
          IOException error;
          try {
             Tessellator.getInstance().draw();
-            this.b();
+            this.undoBodyScale();
             if (bone == null) {
                return;
             }
@@ -421,7 +405,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
          error.printStackTrace();
       }
 
-      this.renderRecursively(bufferBuilder, bone, f, f2, f3, this.RenderEntity.v());
+      this.renderRecursively(bufferBuilder, bone, f, f2, f3, this.RenderEntity.getScale());
       Tessellator.getInstance().draw();
    }
 
@@ -460,7 +444,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
       }
 
       try {
-         if (this.RenderEntity.y().hideNameTag) {
+          if (this.RenderEntity.getCurrentAction().hideNameTag) {
             return;
          }
       } catch (IllegalStateException error2) {
@@ -475,7 +459,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
          throw rethrow(error3);
       }
 
-      this.renderLivingLabel(this.RenderEntity, this.RenderEntity.ab(), d, d2 + this.RenderEntity.i(), d3, 300);
+      this.renderLivingLabel(this.RenderEntity, this.RenderEntity.getGirlName(), d, d2 + this.RenderEntity.getRenderLabelOffset(), d3, 300);
    }
 
    Vec3d a(EntityPlayer player2, float f) {
@@ -532,7 +516,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
                             throw GeoGirlRenderer.rethrow(illegalStateException);
                         }
                     }
-                    EntityPlayer entityPlayer = ((GirlEntity)t2).z();
+                    EntityPlayer entityPlayer = ((GirlEntity)t2).getSexPlayer();
                     try {
                         try {
                             try {
@@ -580,7 +564,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
                 }
             }
             Vec3d vec3d2 = LerpMath.lerpVec3d(new Vec3d(GeoGirlRenderer.Mc.player.lastTickPosX, GeoGirlRenderer.Mc.player.lastTickPosY, GeoGirlRenderer.Mc.player.lastTickPosZ), GeoGirlRenderer.Mc.player.getPositionVector(), (double)f2);
-            vec3d = ((GirlEntity)t2).o().subtract(vec3d2);
+            vec3d = ((GirlEntity)t2).getTargetPos().subtract(vec3d2);
         }
         ((GirlEntity)t2).rotationYaw = f3 = ((GirlEntity)t2).I().floatValue();
         ((GirlEntity)t2).prevRenderYawOffset = f3;
@@ -914,7 +898,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
          throw rethrow(error);
       }
 
-      UUID uuid = ((PlayerGirlEntity)t).m();
+      UUID uuid = ((PlayerGirlEntity)t).getBoundPlayerUuid();
 
       try {
          if (uuid == null) {
@@ -962,7 +946,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
       GlStateManager.rotate((float)(Math.signum(d4) * Math.acos(d3)) * 180.0F / (float) Math.PI, 0.0F, 1.0F, 0.0F);
    }
 
-   protected void a(BufferBuilder bufferBuilder, String string, GeoBone bone) {
+   protected void applyBoneState(BufferBuilder bufferBuilder, String string, GeoBone bone) {
    }
 
    protected void a(GirlEntity girl, double d, double d2, double d3, float f) {
@@ -1067,7 +1051,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
          this.a(bufferBuilder, bone);
       }
 
-      if (string.equals("itemRenderer") && ((GirlEntity)this.RenderEntity).y() == GirlAnimationState.PAYMENT) {
+      if (string.equals("itemRenderer") && ((GirlEntity)this.RenderEntity).getCurrentAction() == GirlAnimationState.PAYMENT) {
          this.b(bufferBuilder, bone);
       }
 
@@ -1076,7 +1060,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
       }
 
       n = bufferBuilder;
-      this.a(bufferBuilder, string, bone);
+      this.applyBoneState(bufferBuilder, string, bone);
       MATRIX_STACK.push();
       MATRIX_STACK.translate(bone);
       MATRIX_STACK.moveToPivot(bone);
@@ -1099,7 +1083,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
       }
 
       if (!bone.isHidden) {
-         Vector4f vector4f = this.a(string, f, f2, f3);
+         Vector4f vector4f = this.getBoneTint(string, f, f2, f3);
          f = vector4f.x;
          f2 = vector4f.y;
          f3 = vector4f.z;
@@ -1119,7 +1103,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
                continue;
             }
 
-            this.a(bufferBuilder, bone2, f, f2, f3, f4, d);
+            this.renderBone(bufferBuilder, bone2, f, f2, f3, f4, d);
          }
       }
 
@@ -1147,7 +1131,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
       return this.RenderEntity instanceof InventoryGirlEntity;
    }
 
-   protected Vector4f a(String string, float f, float f2, float f3) {
+   protected Vector4f getBoneTint(String string, float f, float f2, float f3) {
       try {
          if (!string.startsWith("armor")) {
             return this.a(f, f2, f3);
@@ -1165,7 +1149,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
       }
 
       try {
-         if ((Integer)this.RenderEntity.OpenProgress.get(GirlEntity.OutfitIndexKey) == 0) {
+         if ((Integer)this.RenderEntity.DataManager.get(GirlEntity.OutfitIndexKey) == 0) {
             return this.a(f, f2, f3);
          }
       } catch (IllegalStateException error3) {
@@ -1223,7 +1207,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
    }
 
 
-   public void a(BufferBuilder bufferBuilder, GeoBone bone, float f, float f2, float f3, float f4, double d) {
+   public void renderBone(BufferBuilder bufferBuilder, GeoBone bone, float f, float f2, float f3, float f4, double d) {
         block16: {
             block17: {
                 String string;
@@ -1262,7 +1246,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
                     f4 = 1.0f;
                 }
                 try {
-                    this.a(bufferBuilder, bone.getName(), bone);
+                    this.applyBoneState(bufferBuilder, bone.getName(), bone);
                     MATRIX_STACK.push();
                     MATRIX_STACK.translate(bone);
                     MATRIX_STACK.moveToPivot(bone);
@@ -1285,7 +1269,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
                 }
             }
             for (GeoBone geoBone2 : bone.childBones) {
-                this.a(bufferBuilder, geoBone2, f, f2, f3, f4, d);
+                this.renderBone(bufferBuilder, geoBone2, f, f2, f3, f4, d);
             }
         }
         MATRIX_STACK.pop();
@@ -1293,7 +1277,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
 
    protected boolean c() {
       try {
-         if (!this.RenderEntity.n()) {
+         if (!this.RenderEntity.isOwnedByLocalPlayer()) {
             return true;
          }
       } catch (IllegalStateException error) {
@@ -1398,7 +1382,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
     }
 
    protected ItemStack getHeldItem() {
-      String string = (String)this.RenderEntity.OpenProgress.get(GirlEntity.BlowjobStageKey);
+      String string = (String)this.RenderEntity.DataManager.get(GirlEntity.BlowjobStageKey);
       byte bv = -1;
 
       label76: {
@@ -1584,7 +1568,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
                                 throw GeoGirlRenderer.rethrow(illegalStateException);
                             }
                              this.a += 0.015f;
-                             inventoryGirl.getByPlayerUuid(Math.round(-this.a * 20.0f + (float)itemStack.getMaxItemUseDuration()));
+                             inventoryGirl.d(Math.round(-this.a * 20.0f + (float)itemStack.getMaxItemUseDuration()));
                              inventoryGirl.setActiveItemStack(itemStack);
                         }
                         catch (IllegalStateException illegalStateException) {
@@ -1746,8 +1730,15 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
       return null;
    }
 
-   @SuppressWarnings("unchecked")
-   private static <E extends Throwable> E rethrow(Throwable error) throws E {
-      throw (E) error;
+   private static RuntimeException rethrow(RuntimeException error) {
+      return error;
+   }
+
+   private static IllegalStateException rethrow(IllegalStateException error) {
+      return error;
+   }
+
+   private static IOException rethrow(IOException error) {
+      return error;
    }
 }

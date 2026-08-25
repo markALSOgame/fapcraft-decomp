@@ -1,7 +1,10 @@
 package com.trolmastercard.sexmod;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -38,21 +41,16 @@ public class HandItemRenderer {
                 block27: {
                     ItemStack itemStack;
                     ItemRenderer itemRenderer;
+                    EntityPlayerSP mcPlayer;
                     float f2;
                     float f3;
                     block25: {
                         PlayerGirlEntity.C_();
                         PlayerGirlEntity playerGirl = PlayerGirlEntity.getByUuid(Minecraft.getMinecraft().player.getPersistentID());
-                        try {
                             if (playerGirl == null) {
                                 return;
                             }
-                        }
-                        catch (Exception exception) {
-                            throw HandItemRenderer.rethrow(exception);
-                        }
                         int i = playerGirl.getOutfitIndex();
-                        try {
                             this.Hand = playerGirl.getHandModel(i);
                             this.Texture = new ResourceLocation("sexmod", playerGirl.getHandTexture(i));
                             this.Color = playerGirl.b(i);
@@ -60,21 +58,17 @@ public class HandItemRenderer {
                                 System.out.println("HAND IS NULL uwu did you forget to assign this girl a hand owo?");
                                 return;
                             }
-                        }
-                        catch (Exception exception) {
-                            throw HandItemRenderer.rethrow(exception);
-                        }
                         this.Mc = Minecraft.getMinecraft();
                         f3 = 0.0f;
                         f2 = 0.0f;
                         try {
                             itemRenderer = this.Mc.getItemRenderer();
                             if (DevConsole.isDeobfuscatedEnvironment()) {
-                                f3 = ((Float)ObfuscationReflectionHelper.getPrivateValue(ItemRenderer.class, (Object)itemRenderer, (String)"prevEquippedProgressMainHand")).floatValue();
-                                f2 = ((Float)ObfuscationReflectionHelper.getPrivateValue(ItemRenderer.class, (Object)itemRenderer, (String)"equippedProgressMainHand")).floatValue();
+                                f3 = ((Float)ObfuscationReflectionHelper.getPrivateValue(ItemRenderer.class, itemRenderer, "prevEquippedProgressMainHand")).floatValue();
+                                f2 = ((Float)ObfuscationReflectionHelper.getPrivateValue(ItemRenderer.class, itemRenderer, "equippedProgressMainHand")).floatValue();
                             } else {
-                                f3 = ((Float)ObfuscationReflectionHelper.getPrivateValue(ItemRenderer.class, (Object)itemRenderer, (String)"prevEquippedProgressMainHand")).floatValue();
-                                f2 = ((Float)ObfuscationReflectionHelper.getPrivateValue(ItemRenderer.class, (Object)itemRenderer, (String)"equippedProgressMainHand")).floatValue();
+                                f3 = ((Float)ObfuscationReflectionHelper.getPrivateValue(ItemRenderer.class, itemRenderer, "prevEquippedProgressMainHand")).floatValue();
+                                f2 = ((Float)ObfuscationReflectionHelper.getPrivateValue(ItemRenderer.class, itemRenderer, "equippedProgressMainHand")).floatValue();
                             }
                             this.EquipProgress = 2.0f - (f3 + (f2 - f3) * renderSpecificHandEvent.getPartialTicks());
                         }
@@ -84,10 +78,9 @@ public class HandItemRenderer {
                             exception.printStackTrace(new PrintWriter(stringWriter));
                             Minecraft.getMinecraft().player.sendChatMessage(stringWriter.toString());
                         }
-                        itemRenderer = this.Mc.player;
-                        f = itemRenderer.getSwingProgress(renderSpecificHandEvent.getPartialTicks());
+                        mcPlayer = this.Mc.player;
+                        f = mcPlayer.getSwingProgress(renderSpecificHandEvent.getPartialTicks());
                         itemStack = this.Mc.player.getHeldItemMainhand();
-                        try {
                             block24: {
                                 try {
                                     try {
@@ -105,15 +98,10 @@ public class HandItemRenderer {
                                 }
                             }
                             renderSpecificHandEvent.setCanceled(true);
-                            this.renderMainHandItem(itemStack, renderSpecificHandEvent.getPartialTicks(), (AbstractClientPlayer)itemRenderer, this.EquipProgress, f);
+                            this.renderMainHandItem(itemStack, renderSpecificHandEvent.getPartialTicks(), (AbstractClientPlayer)mcPlayer, this.EquipProgress, f);
                             this.IsRendering = true;
                             break block26;
-                        }
-                        catch (Exception exception) {
-                            throw HandItemRenderer.rethrow(exception);
-                        }
                     }
-                    try {
                         try {
                             if (!(f2 < f3)) break block27;
                             if (!this.IsRendering) break block26;
@@ -122,25 +110,16 @@ public class HandItemRenderer {
                             throw HandItemRenderer.rethrow(exception);
                         }
                         renderSpecificHandEvent.setCanceled(true);
-                        this.renderMainHandItem(itemStack, renderSpecificHandEvent.getPartialTicks(), (AbstractClientPlayer)itemRenderer, this.EquipProgress, f);
+                        this.renderMainHandItem(itemStack, renderSpecificHandEvent.getPartialTicks(), (AbstractClientPlayer)mcPlayer, this.EquipProgress, f);
                         break block26;
-                    }
-                    catch (Exception exception) {
-                        throw HandItemRenderer.rethrow(exception);
-                    }
                 }
                 this.IsRendering = false;
                 break block26;
             }
-            try {
                 if (this.Mc.player.getHeldItemOffhand().getItem() instanceof ItemMap) {
                     renderSpecificHandEvent.setCanceled(true);
                     this.renderSideHandItem(EnumHandSide.LEFT, this.EquipProgress - 1.0f, f, this.Mc.player.getHeldItemOffhand());
                 }
-            }
-            catch (Exception exception) {
-                throw HandItemRenderer.rethrow(exception);
-            }
         }
         GlStateManager.resetColor();
     }
@@ -209,7 +188,7 @@ public class HandItemRenderer {
                 GlStateManager.translate((float)0.44f, (float)1.3f, (float)1.0f);
             }
             Minecraft.getMinecraft().getTextureManager().bindTexture(this.Texture);
-            this.Hand.a().render(0.175f);
+            this.Hand.getRootModel().render(0.175f);
             GlStateManager.popMatrix();
         }
         GlStateManager.pushMatrix();
@@ -315,7 +294,7 @@ public class HandItemRenderer {
       }
 
       Minecraft.getMinecraft().getTextureManager().bindTexture(this.Texture);
-      this.Hand.a().render(0.175F);
+      this.Hand.getRootModel().render(0.175F);
       GlStateManager.popMatrix();
    }
 
@@ -330,7 +309,7 @@ public class HandItemRenderer {
       GlStateManager.pushMatrix();
       this.transformSecondHand(this.EquipProgress, f, EnumHandSide.RIGHT);
       Minecraft.getMinecraft().getTextureManager().bindTexture(this.Texture);
-      this.Hand.a().render(0.175F);
+      this.Hand.getRootModel().render(0.175F);
       GlStateManager.disableBlend();
       GlStateManager.enableCull();
       GlStateManager.popMatrix();
@@ -352,6 +331,8 @@ public class HandItemRenderer {
       }
 
       boolean flag2 = flag;
+
+      float f3;
 
       label22: {
          try {
@@ -384,8 +365,14 @@ public class HandItemRenderer {
       GlStateManager.translate(f4 * 5.6F, 0.0F, 0.0F);
       GlStateManager.translate(0.5F, 1.1F, 0.0F);
    }
+ static RuntimeException rethrow(RuntimeException error) {
 
-   private static Exception rethrow(Exception error) {
       return error;
+
+   }
+
+
+   private static RuntimeException rethrow(Exception error) {
+      return new RuntimeException(error);
    }
 }

@@ -139,7 +139,7 @@ public class GeoModelDrawer extends GeoItemRenderer<ItemGalathCoin> {
       }
 
       try {
-         return f2 <= 3000.0F ? LerpMath.a(120.0F, 240.0F, (f2 - 1000.0F) / 2000.0F) : 240.0F;
+         return f2 <= 3000.0F ? LerpMath.lerp(120.0F, 240.0F, (f2 - 1000.0F) / 2000.0F) : 240.0F;
       } catch (RuntimeException error2) {
          throw rethrow(error2);
       }
@@ -157,7 +157,7 @@ public class GeoModelDrawer extends GeoItemRenderer<ItemGalathCoin> {
       }
 
       try {
-         return f2 <= 3000.0F ? LerpMath.a(240.0F, 120.0F, (f2 - 1000.0F) / 2000.0F) : 120.0F;
+         return f2 <= 3000.0F ? LerpMath.lerp(240.0F, 120.0F, (f2 - 1000.0F) / 2000.0F) : 120.0F;
       } catch (RuntimeException error2) {
          throw rethrow(error2);
       }

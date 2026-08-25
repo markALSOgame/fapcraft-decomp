@@ -54,12 +54,12 @@ public class ModelManglelie extends GirlGeoModel<GirlEntity> {
    }
 
    @Override
-   public ResourceLocation b() {
+   public ResourceLocation getSkinLocation() {
       return SkinTexture;
    }
 
    @Override
-   public ResourceLocation b(GirlEntity girl) {
+   public ResourceLocation getAnimationFileLocation(GirlEntity girl) {
       return new ResourceLocation("sexmod", "animations/manglelie/manglelie.animation.json");
    }
 
@@ -318,7 +318,7 @@ public class ModelManglelie extends GirlGeoModel<GirlEntity> {
       }
 
       float f4 = AngleMath.degToRadians(i2);
-      float f5 = manglelie.b(f2);
+      float f5 = GirlAnimationState.getAnimationProgress(manglelie, f2);
       float f6 = (float)LerpMath.EaseOutQuart(Math.min(1.0F, f5));
       float f7;
       if (f6 != 1.0F) {

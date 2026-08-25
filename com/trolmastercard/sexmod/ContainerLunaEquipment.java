@@ -33,7 +33,7 @@ public class ContainerLunaEquipment extends Container {
             new EquipmentSlot(EquipmentSlot.SlotType.SHOES, handler, EquipmentSlot.SlotType.SHOES.SlotIndex, 138, 60),
             new EquipmentSlot(EquipmentSlot.SlotType.ROD, handler, EquipmentSlot.SlotType.ROD.SlotIndex, 22, 60)
          };
-         ArrayList list = new ArrayList();
+         ArrayList<Slot> list = new ArrayList<Slot>();
 
          for (int i = 0; i < 3; i++) {
             int i2 = 0;

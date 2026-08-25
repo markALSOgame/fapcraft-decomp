@@ -67,11 +67,11 @@ extends GirlEntity {
 
     public AllieNpc(World world, ItemStack itemStack) {
         this(world);
-        this.DataManager.set(SpawnItemStack, (Object)itemStack);
+        this.DataManager.set(SpawnItemStack, itemStack);
     }
 
     @Override
-    public String getDisplayName() {
+    public String getGirlName() {
         return "Allie";
     }
 
@@ -83,7 +83,7 @@ extends GirlEntity {
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.DataManager.register(SpawnItemStack, (Object)ItemStack.EMPTY);
+        this.DataManager.register(SpawnItemStack, ItemStack.EMPTY);
     }
 
     public boolean isFirstTimeWithItem() {
@@ -139,7 +139,7 @@ extends GirlEntity {
 
     @Override
     @SideOnly(value=Side.CLIENT)
-    public void onActionGuiClosed() {
+    public void ac() {
         try {
             if (!this.MenuOpen) {
                 this.PlayIntroAnim = true;
@@ -174,7 +174,7 @@ extends GirlEntity {
                     catch (RuntimeException runtimeException) {
                         throw AllieNpc.rethrow(runtimeException);
                     }
-                    NetworkHandler.channel.sendToServer((IMessage)new PacketUploadInventory(this.isFirstTimeWithItem()));
+                    NetworkHandler.channel.sendToServer((IMessage)new PacketUploadInventory(this.getGirlUuid()));
                     AnimationInputLock.setAnimationLocked(true);
                 }
                 catch (RuntimeException runtimeException) {
@@ -232,12 +232,12 @@ extends GirlEntity {
 
     @SideOnly(value=Side.CLIENT)
     void c() {
-        this.openActionMenu((EntityPlayer)Minecraft.getMinecraft().player);
+        this.canInteract((EntityPlayer)Minecraft.getMinecraft().player);
         this.PlayIntroAnim = false;
     }
 
     @Override
-    public boolean openActionMenu(EntityPlayer entityPlayer) {
+    public boolean canInteract(EntityPlayer entityPlayer) {
         this.MenuOpen = false;
         String[] stringArray = new String[]{"action.names.makemerichallie", "action.names.deepthroat", "Reverse cowgirl"};
         AllieNpc.openActionMenu(entityPlayer, this, stringArray, false);
@@ -245,7 +245,7 @@ extends GirlEntity {
     }
 
     @Override
-    protected GirlAnimationState c(GirlAnimationState girlAnimationState) {
+    protected GirlAnimationState getFollowUpAction(GirlAnimationState girlAnimationState) {
         try {
             if (girlAnimationState == GirlAnimationState.DEEPTHROAT_SLOW) {
                 return GirlAnimationState.DEEPTHROAT_FAST;
@@ -266,7 +266,7 @@ extends GirlEntity {
     }
 
     @Override
-    protected GirlAnimationState a(GirlAnimationState girlAnimationState) {
+    protected GirlAnimationState nextAnimationState(GirlAnimationState girlAnimationState) {
         block12: {
             block10: {
                 try {
@@ -500,12 +500,12 @@ extends GirlEntity {
             switch (arg1.sound) {
                 case "summonMSG1": {
                     this.a(I18n.format("allie.dialogue.summon1", new Object[0]));
-                    this.a(ModSounds.GIRLS_ALLIE_SCAWY[0], 0.5f);
+                    this.playSoundAtVolume(ModSounds.GIRLS_ALLIE_SCAWY[0], 0.5f);
                     break;
                 }
                 case "summonMSG2": {
                     this.a(I18n.format("allie.dialogue.summon2", new Object[0]));
-                    this.a(ModSounds.GIRLS_ALLIE_GIGGLE[this.getRNG().nextInt(4)]);
+                    this.playSoundEvent(ModSounds.GIRLS_ALLIE_GIGGLE[this.getRNG().nextInt(4)]);
                     break;
                 }
                 case "summonMSG3": {
@@ -514,17 +514,17 @@ extends GirlEntity {
                 }
                 case "summonMSG4": {
                     this.a(I18n.format("allie.dialogue.summon4", new Object[0]));
-                    this.a(ModSounds.GIRLS_ALLIE_LIGHTBREATHING[2]);
+                    this.playSoundEvent(ModSounds.GIRLS_ALLIE_LIGHTBREATHING[2]);
                     break;
                 }
                 case "summonMSG5": {
                     this.a(I18n.format("allie.dialogue.summon5", new Object[0]));
-                    this.a(ModSounds.GIRLS_ALLIE_HMPH[4]);
+                    this.playSoundEvent(ModSounds.GIRLS_ALLIE_HMPH[4]);
                     break;
                 }
                 case "summonMSG6": {
                     this.a(I18n.format("allie.dialogue.summon6", new Object[0]));
-                    this.a(ModSounds.GIRLS_ALLIE_GIGGLE[3]);
+                    this.playSoundEvent(ModSounds.GIRLS_ALLIE_GIGGLE[3]);
                     break;
                 }
                 case "summonMSG7": {
@@ -533,9 +533,9 @@ extends GirlEntity {
                 }
                 case "summonMSG8": {
                     this.a(I18n.format("allie.dialogue.summon8", new Object[0]));
-                    this.a(ModSounds.GIRLS_ALLIE_HUH, new int[0]);
+                    this.playRandomSound(ModSounds.GIRLS_ALLIE_HUH, new int[0]);
                     if (!this.isOwnedByLocalPlayer()) break;
-                    this.openActionMenu(this.world.getPlayerEntityByUUID(this.getSexPlayerUuid()));
+                    this.canInteract(this.world.getPlayerEntityByUUID(this.getSexPlayerUuid()));
                     break;
                 }
                 case "summonDone": {
@@ -544,16 +544,16 @@ extends GirlEntity {
                 }
                 case "deepthroat_prepareMSG1": {
                     this.a(I18n.format("allie.dialogue.hihi", new Object[0]));
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_GIGGLE));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_GIGGLE));
                     break;
                 }
                 case "deepthroat_prepareMSG2": {
                     this.a(I18n.format("allie.dialogue.boys", new Object[0]));
-                    this.a(ModSounds.GIRLS_ALLIE_SIGH[0]);
+                    this.playSoundEvent(ModSounds.GIRLS_ALLIE_SIGH[0]);
                     break;
                 }
                 case "scream": {
-                    this.a(ModSounds.MISC_SCREAM, new int[0]);
+                    this.playRandomSound(ModSounds.MISC_SCREAM, new int[0]);
                     break;
                 }
                 case "blackscreen": {
@@ -585,7 +585,7 @@ extends GirlEntity {
                     break;
                 }
                 case "deepthroat_fastMSG1": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_BJMOAN));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_BJMOAN));
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.showHud();
                     GuiHud.addProgress(0.04f);
@@ -593,9 +593,9 @@ extends GirlEntity {
                 }
                 case "deepthroat_slowMSG1": {
                     if (this.getRNG().nextFloat() > 0.33f) {
-                        this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_LIPSOUND));
+                        this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_LIPSOUND));
                     } else {
-                        this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_BJMOAN));
+                        this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_BJMOAN));
                     }
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.showHud();
@@ -603,9 +603,9 @@ extends GirlEntity {
                     break;
                 }
                 case "deepthroat_cumMSG1": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_MOAN));
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_LIPSOUND));
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_CUMINFLATION), 1.5f);
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_MOAN));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_LIPSOUND));
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.MISC_CUMINFLATION), 1.5f);
                     break;
                 }
                 case "cowgirl_cumDone": 
@@ -617,7 +617,7 @@ extends GirlEntity {
                 }
                 case "summon_normalMSG1": {
                     this.a(I18n.format("allie.dialogue.sup", new Object[0]));
-                    this.a(ModSounds.GIRLS_ALLIE_GIGGLE[this.getRNG().nextInt(4)]);
+                    this.playSoundEvent(ModSounds.GIRLS_ALLIE_GIGGLE[this.getRNG().nextInt(4)]);
                     break;
                 }
                 case "summon_normalMSG2": {
@@ -630,7 +630,7 @@ extends GirlEntity {
                     } else {
                         this.a(I18n.format("allie.dialogue.1wish", new Object[0]));
                     }
-                    this.a(ModSounds.GIRLS_ALLIE_HMPH[4]);
+                    this.playSoundEvent(ModSounds.GIRLS_ALLIE_HMPH[4]);
                     break;
                 }
                 case "summon_normalMSG4": {
@@ -639,23 +639,23 @@ extends GirlEntity {
                 }
                 case "summon_normalMSG5": {
                     this.a(I18n.format("allie.dialogue.tellme", new Object[0]));
-                    this.a(ModSounds.GIRLS_ALLIE_HUH, new int[0]);
+                    this.playRandomSound(ModSounds.GIRLS_ALLIE_HUH, new int[0]);
                     break;
                 }
                 case "summon_normalDone": {
                     this.setCurrentAction(GirlAnimationState.SUMMON_NORMAL_WAIT);
                     if (!this.isOwnedByLocalPlayer()) break;
-                    this.openActionMenu(Minecraft.getMinecraft().player);
+                    this.canInteract(Minecraft.getMinecraft().player);
                     break;
                 }
                 case "deepthroat_normal_prepareMSG1": {
                     this.a(I18n.format("allie.dialogue.alright", new Object[0]));
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_GIGGLE));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_GIGGLE));
                     break;
                 }
                 case "rich_MSG1": {
                     this.a(I18n.format("allie.dialogue.wishgranted", new Object[0]));
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_PLOB));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.MISC_PLOB));
                     if (!this.isOwnedByLocalPlayer()) break;
                     NetworkHandler.channel.sendToServer((IMessage)new PacketMakeRichWish(this.getPositionVector()));
                     break;
@@ -666,7 +666,7 @@ extends GirlEntity {
                 }
                 case "summon_sandMSG1": {
                     this.a(I18n.format("allie.dialogue.nooo", new Object[0]));
-                    this.a(ModSounds.GIRLS_ALLIE_SCAWY[2]);
+                    this.playSoundEvent(ModSounds.GIRLS_ALLIE_SCAWY[2]);
                     break;
                 }
                 case "summon_sandMSG2": {
@@ -675,28 +675,28 @@ extends GirlEntity {
                     break;
                 }
                 case "giggle": {
-                    this.a(ModSounds.GIRLS_ALLIE_GIGGLE, new int[0]);
+                    this.playRandomSound(ModSounds.GIRLS_ALLIE_GIGGLE, new int[0]);
                     break;
                 }
                 case "pounding": {
-                    this.a(ModSounds.MISC_POUNDING, new int[0]);
+                    this.playRandomSound(ModSounds.MISC_POUNDING, new int[0]);
                     break;
                 }
                 case "moan": {
-                    this.a(ModSounds.GIRLS_ALLIE_MOAN, new int[0]);
+                    this.playRandomSound(ModSounds.GIRLS_ALLIE_MOAN, new int[0]);
                     break;
                 }
                 case "mmm": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_MMM));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_MMM));
                     break;
                 }
                 case "slide": {
-                    this.a(ModSounds.MISC_SLIDE, 0, 1, 4, 6);
+                    this.playRandomSound(ModSounds.MISC_SLIDE, 0, 1, 4, 6);
                     break;
                 }
                 case "slowMoan": {
                     if (this.getRNG().nextBoolean()) {
-                        this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_AHH));
+                        this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_AHH));
                     }
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.02f);
@@ -714,7 +714,7 @@ extends GirlEntity {
                         GuiHud.addProgress(0.04f);
                     }
                     if (!this.M) {
-                        this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_MOAN));
+this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_ALLIE_MOAN));
                         this.M = true;
                         break;
                     }
@@ -741,11 +741,11 @@ extends GirlEntity {
                     break;
                 }
                 case "cum": {
-                    this.a(ModSounds.MISC_INSERTS, 6.0f);
+                    this.playRandomSoundWithChance(ModSounds.MISC_INSERTS, 6.0f);
                     break;
                 }
                 case "aftermoan": {
-                    this.a(ModSounds.GIRLS_ALLIE_AFTERSESSIONMOAN, new int[0]);
+                    this.playRandomSound(ModSounds.GIRLS_ALLIE_AFTERSESSIONMOAN, new int[0]);
                 }
             }
         };
@@ -756,7 +756,7 @@ extends GirlEntity {
     }
 
     @Override
-    public void performAction(String string, UUID uUID) {
+    public void a(String string, UUID uUID) {
         GirlAnimationState girlAnimationState;
         AllieNpc allie;
         String string2;

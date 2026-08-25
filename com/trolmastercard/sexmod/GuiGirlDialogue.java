@@ -49,8 +49,6 @@ public class GuiGirlDialogue extends GuiScreen {
             GuiButton guiButton3;
             this.Progress = Math.min(1.0, this.Progress + (double)(this.mc.getTickLength() / 5.0f));
             list = this.buttonList;
-            guiButton2 = guiButton3;
-            guiButton = guiButton3;
             i7 = 0;
             i6 = i8 / 2 - 119 + (int)(100.0 - 100.0 * this.Progress);
             i5 = 30;
@@ -61,7 +59,7 @@ public class GuiGirlDialogue extends GuiScreen {
         catch (RuntimeException runtimeException) {
             throw GuiGirlDialogue.rethrow(runtimeException);
         }
-        guiButton2(i7, i6, i5, i4, i3, string);
+        guiButton = new GuiButton(i7, i6, i5, i4, i3, string);
         list.add(guiButton);
         this.buttonList.add(new GuiButton(1, i8 / 2 + 19, 30, (int)(this.Progress * 100.0), 20, I18n.format((String)"action.names.gohome", (Object[])new Object[0])));
         this.mc.renderEngine.bindTexture(Texture);
@@ -75,37 +73,12 @@ public class GuiGirlDialogue extends GuiScreen {
         block10: {
             ScaledResolution scaledResolution = new ScaledResolution(this.mc);
             int i4 = scaledResolution.getScaledWidth();
-            try {
-                try {
-                    try {
-                        try {
-                            try {
-                                if (!((Boolean)this.Dialogue.getDataManager().get(ChestGirlEntity.K)).booleanValue() || i < i4 / 2 - 20) break block10;
-                            }
-                            catch (IOException iOException) {
-                                throw GuiGirlDialogue.rethrow(iOException);
-                            }
-                            if (i > i4 / 2 + 20) break block10;
-                        }
-                        catch (IOException iOException) {
-                            throw GuiGirlDialogue.rethrow(iOException);
-                        }
-                        if (i2 < 20) break block10;
-                    }
-                    catch (IOException iOException) {
-                        throw GuiGirlDialogue.rethrow(iOException);
-                    }
-                    if (i2 > 60) break block10;
-                }
-                catch (IOException iOException) {
-                    throw GuiGirlDialogue.rethrow(iOException);
-                }
-                NetworkHandler.channel.sendToServer((IMessage)new PacketBeeOpenChest(this.Dialogue.getGirlUuid(), this.Player.getPersistentID()));
-                this.onGuiClosed();
-            }
-            catch (IOException iOException) {
-                throw GuiGirlDialogue.rethrow(iOException);
-            }
+            if (!((Boolean)this.Dialogue.getDataManager().get(ChestGirlEntity.K)).booleanValue() || i < i4 / 2 - 20) break block10;
+            if (i > i4 / 2 + 20) break block10;
+            if (i2 < 20) break block10;
+            if (i2 > 60) break block10;
+            NetworkHandler.channel.sendToServer((IMessage)new PacketBeeOpenChest(this.Dialogue.getGirlUuid(), this.Player.getPersistentID()));
+            this.onGuiClosed();
         }
         super.mouseClicked(i, i2, i3);
     }
@@ -116,7 +89,6 @@ public class GuiGirlDialogue extends GuiScreen {
             boolean flag;
             block14: {
                 block13: {
-                    try {
                         try {
                             super.actionPerformed(gui);
                             if (gui.id != 0) break block12;
@@ -128,46 +100,31 @@ public class GuiGirlDialogue extends GuiScreen {
                         NetworkHandler.channel.sendToServer((IMessage)new PacketUpdateGirl(this.Dialogue.getGirlUuid(), "master", ""));
                         this.Player.sendMessage((ITextComponent)new TextComponentString(I18n.format((String)"bee.dialogue.sad", (Object[])new Object[0])));
                         break block14;
-                    }
-                    catch (IOException iOException) {
-                        throw GuiGirlDialogue.rethrow(iOException);
-                    }
                 }
                 NetworkHandler.channel.sendToServer((IMessage)new PacketUpdateGirl(this.Dialogue.getGirlUuid(), "master", this.Player.getPersistentID().toString()));
                 this.Player.sendMessage((ITextComponent)new TextComponentString(I18n.format((String)"bee.dialogue.exited", (Object[])new Object[0])));
             }
-            try {
-                GuiGirlDialogue gui2 = this;
-                flag = !this.HasUnlocked;
-            }
-            catch (IOException iOException) {
-                throw GuiGirlDialogue.rethrow(iOException);
-            }
-            gui2.HasUnlocked = flag;
+                this.HasUnlocked = !this.HasUnlocked;
             this.Player.closeScreen();
         }
-        try {
             if (gui.id == 1) {
                 NetworkHandler.channel.sendToServer((IMessage)new PacketSendCompanionHome(this.Dialogue.getGirlUuid()));
                 this.Player.closeScreen();
             }
-        }
-        catch (IOException iOException) {
-            throw GuiGirlDialogue.rethrow(iOException);
-        }
-        try {
             if (gui.id == 2) {
                 NetworkHandler.channel.sendToServer((IMessage)new PacketSetNewHome(this.Dialogue.getGirlUuid(), new Vec3d(this.Dialogue.posX, this.Dialogue.posY, this.Dialogue.posZ)));
                 this.Player.closeScreen();
                 this.Player.sendMessage((ITextComponent)new TextComponentString(I18n.format((String)"bee.dialogue.home", (Object[])new Object[0])));
             }
-        }
-        catch (IOException iOException) {
-            throw GuiGirlDialogue.rethrow(iOException);
-        }
     }
+ static RuntimeException rethrow(RuntimeException error) {
 
-   private static Exception rethrow(Exception error) {
       return error;
+
+   }
+
+
+   private static RuntimeException rethrow(Exception error) {
+      return new RuntimeException(error);
    }
 }

@@ -66,7 +66,7 @@ extends PlayerGirlEntity {
             if ("action.names.touchboobs".equals(string)) {
                 this.a(0, GirlAnimationState.TOUCH_BOOBS_INTRO);
                 this.setCurrentAction(GirlAnimationState.TOUCH_BOOBS_INTRO);
-                this.DataManager.set(D, (Object)0);
+                this.DataManager.set(OutfitIndexKey, 0);
                 this.b(uUID);
             }
         }
@@ -85,17 +85,17 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    public void setWaitState() {
+    public void u_() {
         this.setCurrentAction(GirlAnimationState.WAIT_CAT);
     }
 
     @Override
-    public boolean allowsBedInteraction() {
+    public boolean v() {
         return true;
     }
 
     @Override
-    public boolean openActionMenu(EntityPlayer entityPlayer) {
+    public boolean canInteract(EntityPlayer entityPlayer) {
         LunaPlayer.openActionMenu(entityPlayer, this, new String[]{"action.names.touchboobs", "action.names.headpat"}, false);
         return true;
     }
@@ -173,7 +173,7 @@ extends PlayerGirlEntity {
         block12: {
             EntityPlayer entityPlayer;
             block11: {
-                entityPlayer = this.getRenderPosition();
+                entityPlayer = this.j();
                 try {
                     if (entityPlayer == null) {
                         return;
@@ -183,7 +183,7 @@ extends PlayerGirlEntity {
                     throw LunaPlayer.rethrow(runtimeException);
                 }
                 try {
-                    if (entityPlayer.getDistance(this.posX, this.getCustomName().y, this.posZ) > 1.25) {
+                    if (entityPlayer.getDistance(this.posX, this.w().y, this.posZ) > 1.25) {
                         return;
                     }
                 }
@@ -203,14 +203,14 @@ extends PlayerGirlEntity {
                 if (this.WaitTicks == 25) {
                     this.hasGirl(entityPlayer.getPersistentID());
                     entityPlayer.moveRelative(0.0f, 0.0f, 0.0f, 0.0f);
-                    entityPlayer.setPositionAndUpdate(this.getPositionVector().x, this.getCustomName().y, this.getPositionVector().z);
+                    entityPlayer.setPositionAndUpdate(this.getPositionVector().x, this.w().y, this.getPositionVector().z);
                     this.setCurrentAction(GirlAnimationState.COWGIRL_SITTING_INTRO);
                     entityPlayer.setRotationYawHead(this.I().floatValue() + 180.0f);
                     entityPlayer.rotationYaw = this.I().floatValue() + 180.0f;
                     entityPlayer.prevRotationYaw = this.I().floatValue() + 180.0f;
                     this.AimYaw = this.I().floatValue() + 180.0f;
                     this.a(0.0, -0.075f, -0.7109375, 0.0f, 0.0f);
-                    this.DataManager.set(D, (Object)0);
+                    this.DataManager.set(OutfitIndexKey, 0);
                 }
             }
             catch (RuntimeException runtimeException) {

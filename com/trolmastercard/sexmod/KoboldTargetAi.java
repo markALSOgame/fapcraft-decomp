@@ -54,7 +54,7 @@ public class KoboldTargetAi extends EntityAINearestAttackableTarget<KoboldNpc> {
                 throw KoboldTargetAi.rethrow(runtimeException);
             }
         }
-        List list = this.taskOwner.world.getEntitiesWithinAABB(this.targetClass, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
+        List<KoboldNpc> list = this.taskOwner.world.getEntitiesWithinAABB(this.targetClass, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
         try {
             if (list.isEmpty()) {
                 return false;
@@ -81,8 +81,8 @@ public class KoboldTargetAi extends EntityAINearestAttackableTarget<KoboldNpc> {
         catch (RuntimeException runtimeException) {
             throw KoboldTargetAi.rethrow(runtimeException);
         }
-        arrayList.sort((Comparator<KoboldNpc>)this.sorter);
-        this.targetEntity = (EntityLivingBase)arrayList.get(0);
+        arrayList.sort(this.sorter);
+        this.targetEntity = arrayList.get(0);
         return true;
     }
 

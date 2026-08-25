@@ -1,5 +1,7 @@
 package com.trolmastercard.sexmod;
 
+import net.minecraft.world.DimensionType;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.EntityLiving;

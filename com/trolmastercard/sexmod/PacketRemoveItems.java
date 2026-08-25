@@ -2,6 +2,7 @@ package com.trolmastercard.sexmod;
 
 import io.netty.buffer.ByteBuf;
 import java.util.UUID;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;

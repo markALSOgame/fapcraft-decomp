@@ -43,7 +43,7 @@ public class GalathPlayerRenderer extends GirlPlayerRenderer {
 
    @Nullable
    @Override
-   protected Vec3f getRenderOffset(GirlEntity girl) {
+   protected Vec3f e(GirlEntity girl) {
       try {
          if (girl.world instanceof PreviewWorld) {
             return null;
@@ -53,7 +53,7 @@ public class GalathPlayerRenderer extends GirlPlayerRenderer {
       }
 
       try {
-         if (((BoxSource)girl).c()) {
+         if (((BoxSource)girl).shouldHideBody()) {
             return null;
          }
       } catch (RuntimeException error2) {
@@ -64,26 +64,26 @@ public class GalathPlayerRenderer extends GirlPlayerRenderer {
    }
 
    @Override
-   public HashSet<String> getAdultBoneParts() {
+   public HashSet<String> getFilteredBoneNames() {
       HashSet set = GalathNpcRenderer.E;
       GalathNpcRenderer.E.addAll(BoneColorHelper.AdultParts);
       return GalathNpcRenderer.E;
    }
 
    @Override
-   protected void renderWithTexture(Tessellator tessellator, BufferBuilder bufferBuilder, GirlEntity girl, Vec3f vec3f, float f) {
+   protected void b(Tessellator tessellator, BufferBuilder bufferBuilder, GirlEntity girl, Vec3f vec3f, float f) {
       a(tessellator, bufferBuilder, girl, vec3f, f);
    }
 
    @Override
 
-   public void render(GirlEntity girl, double d, double d2, double d3, float f, float f2) {
+   public void doRender(GirlEntity girl, double d, double d2, double d3, float f, float f2) {
         block6: {
             try {
                 try {
                     try {
-                        super.render(girl, d, d2, d3, f, f2);
-                        if (GalathPlayerRenderer.Mc.gameSettings.thirdPersonView != 0 || !GalathPlayerRenderer.Mc.player.getPersistentID().equals(((PlayerGirlEntity)girl).m())) break block6;
+                        super.doRender(girl, d, d2, d3, f, f2);
+                        if (GalathPlayerRenderer.Mc.gameSettings.thirdPersonView != 0 || !GalathPlayerRenderer.Mc.player.getPersistentID().equals(((PlayerGirlEntity)girl).getBoundPlayerUuid())) break block6;
                     }
                     catch (RuntimeException runtimeException) {
                         throw GalathPlayerRenderer.rethrow(runtimeException);
@@ -103,9 +103,9 @@ public class GalathPlayerRenderer extends GirlPlayerRenderer {
     }
 
    @Override
-   protected void applyRenderOffset(boolean flag) {
+   protected void applyHandOffset(boolean flag) {
       try {
-         super.applyRenderOffset(flag);
+         super.applyHandOffset(flag);
          if (flag) {
             GlStateManager.translate(0.15, 0.0, 0.0);
          }
@@ -116,12 +116,12 @@ public class GalathPlayerRenderer extends GirlPlayerRenderer {
 
    @Override
 
-   protected void applyPoseTransform(boolean flag, boolean flag2) {
+   protected void applyDualHandOffset(boolean flag, boolean flag2) {
         block8: {
             block7: {
                 try {
                     try {
-                        super.applyPoseTransform(flag, flag2);
+                        super.applyDualHandOffset(flag, flag2);
                         if (!flag) break block7;
                         GlStateManager.translate((double)0.0, (double)-0.05, (double)-0.05);
                         GlStateManager.rotate((float)15.0f, (float)1.0f, (float)0.0f, (float)0.0f);
@@ -153,7 +153,7 @@ public class GalathPlayerRenderer extends GirlPlayerRenderer {
     }
 
    @Override
-   protected Vector4f getBoneColor(String string, float f, float f2, float f3) {
+   protected Vector4f getBoneTint(String string, float f, float f2, float f3) {
       try {
          if (!ArmorTintedBones.contains(string)) {
             return this.a(f, f2, f3);
@@ -164,7 +164,7 @@ public class GalathPlayerRenderer extends GirlPlayerRenderer {
 
       try {
          if ("armorHelmet".equals(string)) {
-            return super.getBoneColor(string, f, f2, f3);
+            return super.getBoneTint(string, f, f2, f3);
          }
       } catch (RuntimeException error2) {
          throw rethrow(error2);
@@ -358,7 +358,7 @@ public class GalathPlayerRenderer extends GirlPlayerRenderer {
    }
 
    @Override
-   protected void renderModel(GeoModel model, BufferBuilder bufferBuilder, GirlEntity girl, float f, float f2, float f3, float f4, float f5) {
+   protected void a(GeoModel model, BufferBuilder bufferBuilder, GirlEntity girl, float f, float f2, float f3, float f4, float f5) {
       GeoBone bone = (GeoBone)model.topLevelBones.get(0);
       GeoBone bone2 = null;
       GeoBone bone3 = null;
@@ -369,20 +369,16 @@ public class GalathPlayerRenderer extends GirlPlayerRenderer {
 
          label44: {
             label43: {
-               try {
-                  switch (string.hashCode()) {
-                     case 3029410:
-                        break;
-                     case 109761491:
-                        if (!string.equals("steve")) {
-                           break label44;
-                        }
-                        break label43;
-                     default:
+               switch (string.hashCode()) {
+                  case 3029410:
+                     break;
+                  case 109761491:
+                     if (!string.equals("steve")) {
                         break label44;
-                  }
-               } catch (IOException error) {
-                  throw rethrow(error);
+                     }
+                     break label43;
+                  default:
+                     break label44;
                }
 
                if (string.equals("body")) {
@@ -423,8 +419,14 @@ public class GalathPlayerRenderer extends GirlPlayerRenderer {
       Tessellator.getInstance().draw();
       MATRIX_STACK.pop();
    }
+ static RuntimeException rethrow(RuntimeException error) {
 
-   private static Exception rethrow(Exception error) {
       return error;
+
+   }
+
+
+   private static RuntimeException rethrow(Exception error) {
+      return new RuntimeException(error);
    }
 }

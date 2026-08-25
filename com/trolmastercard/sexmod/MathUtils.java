@@ -199,34 +199,17 @@ public class MathUtils {
 
 
    public static void runAfterDelay(int i, Runnable runnable) {
-        String string;
-        StringBuilder stringBuilder;
-        Runnable runnable2;
-        Thread thread;
-        Thread thread2;
-        String string2 = UUID.randomUUID().toString();
-        try {
-            Thread thread3;
-            thread2 = thread3;
-            thread = thread3;
-            runnable2 = () -> {
-                try {
-                    Thread.sleep(i);
-                }
-                catch (Exception exception) {
-                    exception.printStackTrace();
-                }
-                runnable.run();
-            };
-            stringBuilder = new StringBuilder();
-            string = ServerThreadUtil.isServerThread() ? "server sexmod thread " : "client sexmod thread ";
-        }
-        catch (RuntimeException runtimeException) {
-            throw MathUtils.rethrow(runtimeException);
-        }
-        thread2(runnable2, stringBuilder.append(string).append(string2).toString());
-        thread.start();
-    }
+      String string = UUID.randomUUID().toString();
+      new Thread(() -> {
+         try {
+            Thread.sleep(i);
+         }
+         catch (Exception exception) {
+            exception.printStackTrace();
+         }
+         runnable.run();
+      }, (ServerThreadUtil.isServerThread() ? "server sexmod thread " : "client sexmod thread ") + string).start();
+   }
 
    private static RuntimeException rethrow(RuntimeException error) {
       return error;

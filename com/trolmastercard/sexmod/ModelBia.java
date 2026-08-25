@@ -2,7 +2,7 @@ package com.trolmastercard.sexmod;
 
 import net.minecraft.util.ResourceLocation;
 
-public class ModelBia extends GirlGeoModel {
+public class ModelBia extends GirlGeoModel<GirlEntity> {
    public ModelBia() {
       this.TextureLayers = this.a();
    }
@@ -13,12 +13,12 @@ public class ModelBia extends GirlGeoModel {
    }
 
    @Override
-   public ResourceLocation b() {
+   public ResourceLocation getSkinLocation() {
       return new ResourceLocation("sexmod", "textures/entity/bia/bia.png");
    }
 
    @Override
-   public ResourceLocation getAnimationFile(GirlEntity girl) {
+   public ResourceLocation getAnimationFileLocation(GirlEntity girl) {
       return new ResourceLocation("sexmod", "animations/bia/bia.animation.json");
    }
 
@@ -28,32 +28,32 @@ public class ModelBia extends GirlGeoModel {
    }
 
    @Override
-   public String[] getLeafBones() {
+   public String[] getHeadAccessoryBones() {
       return new String[]{"leaf7", "leaf8"};
    }
 
    @Override
-   public String[] getChestBones() {
+   public String[] getChestArmorBones() {
       return new String[]{"armorChest", "armorBoobs", "armorShoulderR", "armorShoulderL"};
    }
 
    @Override
-   public String[] a() {
+   public String[] getFleshTorsoBones() {
       return new String[]{"bra", "upperBodyR", "upperBodyL"};
    }
 
    @Override
-   public String[] getPantsBones() {
+   public String[] getPantsArmorBones() {
       return new String[]{"armorBootyR", "armorBootyL", "armorPantsLowL", "armorPantsLowR", "armorPantsLowR", "armorPantsUpR", "armorPantsUpL", "armorHip"};
    }
 
    @Override
-   public String[] getSkinBones() {
+   public String[] getFleshLegsBones() {
       return new String[]{"slip", "fleshL", "fleshR", "vagina", "curvesL", "curvesR", "kneeL", "kneeR"};
    }
 
    @Override
-   public String[] b() {
+   public String[] getBootsArmorBones() {
       return new String[]{"armorShoesL", "armorShoesR"};
    }
 }

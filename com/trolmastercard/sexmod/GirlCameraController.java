@@ -3,6 +3,10 @@ package com.trolmastercard.sexmod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBow;
+import net.minecraft.entity.item.EntityBoat;
+import javax.vecmath.Vector2f;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.client.event.EntityViewRenderEvent.CameraSetup;
@@ -52,10 +56,11 @@ public class GirlCameraController {
    public static void renderGirlAsPlayer(PlayerGirlEntity playerGirl, EntityPlayer player2, double d, double d2, double d3, float f) {
         float f2;
         boolean flag;
+        PlayerGirlEntity playerGirl2;
         Minecraft minecraft;
         block8: {
             minecraft = Minecraft.getMinecraft();
-            player2 = playerGirl.getByPlayer(player2);
+            player2 = playerGirl.asPlayer(player2);
             try {
                 try {
                     if (!player2.isInvisibleToPlayer((EntityPlayer)minecraft.player) || playerGirl.E_()) break block8;
@@ -89,7 +94,7 @@ public class GirlCameraController {
             playerGirl.aj = player2.isSprinting();
             playerGirl.ak = player2.isRiding();
             playerGirl.af = player2.onGround;
-            PlayerGirlEntity playerGirl2 = playerGirl;
+            playerGirl2 = playerGirl;
             flag = player2.getItemInUseCount() != 0;
         }
         catch (RuntimeException runtimeException) {
@@ -101,7 +106,7 @@ public class GirlCameraController {
         double d6 = Math.PI / 180 * (double)player2.rotationYaw;
         try {
             playerGirl.ao = new Vector2f((float)(d4 * Math.cos(d6) + d5 * Math.sin(d6)), (float)(d4 * Math.sin(d6) + d5 * Math.cos(d6)));
-            f2 = playerGirl.getSexPlayer() ? GirlCameraController.getRenderYOffset(playerGirl, player2) : 0.0f;
+            f2 = playerGirl.z() ? GirlCameraController.getRenderYOffset(playerGirl, player2) : 0.0f;
         }
         catch (RuntimeException runtimeException) {
             throw GirlCameraController.rethrow(runtimeException);
@@ -246,7 +251,7 @@ public class GirlCameraController {
             throw GirlCameraController.rethrow(runtimeException);
         }
         try {
-            if (!playerGirl.getTargetPos()) {
+            if (!playerGirl.Q()) {
                 return;
             }
         }

@@ -17,13 +17,9 @@ public class ModelAlliesLamp extends AnimatedGeoModel<ItemAlliesLamp> {
    }
 
    public ResourceLocation getTextureLocation(ItemAlliesLamp item) {
-      try {
          if (this.Texture != null) {
             return this.Texture;
          }
-      } catch (IOException error) {
-         throw rethrow(error);
-      }
 
       try {
          Minecraft mc = Minecraft.getMinecraft();
@@ -44,7 +40,7 @@ public class ModelAlliesLamp extends AnimatedGeoModel<ItemAlliesLamp> {
       return this.Texture;
    }
 
-   public ResourceLocation getAnimationLocation(ItemAlliesLamp item) {
+   public ResourceLocation getAnimationFileLocation(ItemAlliesLamp item) {
       return new ResourceLocation("sexmod", "animations/allie/lamp.animation.json");
    }
 

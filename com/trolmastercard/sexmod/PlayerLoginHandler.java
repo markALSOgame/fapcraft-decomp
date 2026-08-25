@@ -87,7 +87,7 @@ public class PlayerLoginHandler {
 
    void removePlayerGirls(World world, EntityPlayer player, PlayerGirlEntity playerGirl) {
         Predicate<PlayerGirlEntity> predicate = arg1 -> true;
-        List list = world.getEntities(PlayerGirlEntity.class, predicate::test);
+        List<PlayerGirlEntity> list = world.getEntities(PlayerGirlEntity.class, predicate::test);
         for (PlayerGirlEntity playerGirl2 : list) {
             if (!playerGirl2.getBoundPlayerUuid().equals(player.getPersistentID()) || playerGirl != null && playerGirl2.getEntityId() == playerGirl.getEntityId()) continue;
             world.removeEntity(playerGirl2);

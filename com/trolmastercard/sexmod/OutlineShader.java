@@ -18,22 +18,14 @@ public class OutlineShader {
    public static void initOutlineShader() {
       Minecraft mc = Minecraft.getMinecraft();
 
-      try {
          if (!OpenGlHelper.shadersSupported) {
             Main.LOGGER.warn("Shaders not supported");
             return;
          }
-      } catch (IOException error) {
-         throw rethrow(error);
-      }
 
-      try {
          if (ShaderLinkHelper.getStaticShaderLinkHelper() == null) {
             ShaderLinkHelper.setNewStaticShaderLinkHelper();
          }
-      } catch (IOException error2) {
-         throw rethrow(error2);
-      }
 
       try {
          ShaderGroup = new ShaderGroup(mc.getTextureManager(), mc.getResourceManager(), mc.getFramebuffer(), OutlineShaderLocation);

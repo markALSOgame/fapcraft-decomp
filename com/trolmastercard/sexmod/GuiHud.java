@@ -84,7 +84,7 @@ public class GuiHud extends Gui {
                                                 }
                                                 minecraft = Minecraft.getMinecraft();
                                                 try {
-                                                    if (!(GirlAiBase < 1.0f)) break block19;
+                                                    if (!(f < 1.0f)) break block19;
                                                     f += minecraft.getTickLength() / 25.0f;
                                                     break block20;
                                                 }
@@ -164,7 +164,7 @@ public class GuiHud extends Gui {
                         throw GuiHud.rethrow(runtimeException);
                     }
                 }
-                this.drawTexturedModalRect(67, (int)LerpMath.a(18.0f, -300.0f, g += minecraft.getTickLength() / 15.0f), 159, 8, 32, 160);
+                this.drawTexturedModalRect(67, (int)LerpMath.lerp(18.0f, -300.0f, g += minecraft.getTickLength() / 15.0f), 159, 8, 32, 160);
             }
             GL11.glPopMatrix();
         }

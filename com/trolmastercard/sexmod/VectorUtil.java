@@ -289,7 +289,7 @@ public class VectorUtil {
       Vec3d vec3d2 = vec3d;
       Vec3d vec3d3 = LerpMath.lerpVec3d(new Vec3d(mcPlayer.lastTickPosX, mcPlayer.lastTickPosY, mcPlayer.lastTickPosZ), mcPlayer.getPositionVector(), f);
       Vec3d vec3d4 = vec3d2.subtract(vec3d3);
-      vec3d4 = girl.a(vec3d4, f);
+      vec3d4 = girl.transformRenderPos(vec3d4, f);
       GlStateManager.translate(vec3d4.x, vec3d4.y, vec3d4.z);
    }
 

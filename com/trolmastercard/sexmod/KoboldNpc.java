@@ -150,7 +150,6 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.resource.GeckoLibCache;
 import java.util.Random;
-import net.minecraft.entity.ai.EntityAIOpenDoor;
 
 /*
  * Duplicate member names - consider using --renamedupmembers true
@@ -159,7 +158,7 @@ public class KoboldNpc
 extends GirlEffectEntity
 implements VoidCallback,
 IInventory,
-dr {
+BooleanCheck {
     public static final EyeAndKoboldColor DefaultTribeColor = EyeAndKoboldColor.PURPLE;
     public static final float Y = 0.25f;
     static final int ar = 20;
@@ -236,8 +235,8 @@ dr {
 
     KoboldNpc(World world, UUID uUID, float f) {
         this(world);
-        this.DataManager.set(BoundPlayerUuidKey, (Object)Optional.of((Object)uUID));
-        this.DataManager.set(BodySizeKey, (Object)Float.valueOf(f));
+        this.DataManager.set(BoundPlayerUuidKey,Optional.of(uUID));
+        this.DataManager.set(BodySizeKey,Float.valueOf(f));
     }
 
     public static KoboldNpc create(World world, UUID uUID) {
@@ -286,8 +285,8 @@ dr {
     public ArrayList<Integer> L() {
         ArrayList<Integer> arrayList = new ArrayList<Integer>();
         arrayList.add(Math.round(((Float)this.DataManager.get(BodySizeKey)).floatValue() * 100.0f / 0.25f));
-        arrayList.add(EyeAndKoboldColor.indexOf(EyeAndKoboldColor.safeValueOf((String)this.DataManager.get(BodyColorKey))));
-        arrayList.add(EyeAndKoboldColor.indexOf(EyeAndKoboldColor.safeValueOf((Vec3i)this.DataManager.get(EyeColorKey))));
+        arrayList.add(EyeAndKoboldColor.indexOf(EyeAndKoboldColor.safeValueOf((String)this.DataManager.get(TribeColorKey))));
+        arrayList.add(EyeAndKoboldColor.indexOf(EyeAndKoboldColor.safeValueOf((Vec3i)this.DataManager.get(K))));
         return arrayList;
     }
 
@@ -298,20 +297,20 @@ dr {
             int i2 = list.get(i);
             switch (i) {
                 case 0: {
-                    this.DataManager.set(BodySizeKey, (Object)Float.valueOf((float)i2 / 100.0f * 0.25f));
+                    this.DataManager.set(BodySizeKey,Float.valueOf((float)i2 / 100.0f * 0.25f));
                     continue block5;
                 }
                 case 1: {
-                    String string = (String)this.DataManager.get(BodyColorKey);
+                    String string = (String)this.DataManager.get(TribeColorKey);
                     String string2 = EyeAndKoboldColor.values()[i2].toString();
                     if (!string2.equals(string)) {
                         this.aA = true;
                     }
-                    this.DataManager.set(BodyColorKey, (Object)string2);
+                    this.DataManager.set(TribeColorKey,string2);
                     continue block5;
                 }
                 case 2: {
-                    this.DataManager.set(EyeColorKey, (Object)new BlockPos(EyeAndKoboldColor.values()[i2].getMainColor()));
+                    this.DataManager.set(K,new BlockPos(EyeAndKoboldColor.values()[i2].getMainColor()));
                     continue block5;
                 }
                 default: {
@@ -319,7 +318,7 @@ dr {
                 }
             }
         }
-        this.DataManager.set(M, (Object)stringBuilder.toString());
+        this.DataManager.set(M,stringBuilder.toString());
         KoboldNpcRenderer.clearColorCache();
     }
 
@@ -333,15 +332,15 @@ dr {
             int i2 = (Integer)((Map.Entry)entry.getValue()).getValue();
             switch (i) {
                 case 0: {
-                    this.DataManager.set(BodySizeKey, (Object)Float.valueOf((float)i2 / 100.0f * 0.25f));
+                    this.DataManager.set(BodySizeKey,Float.valueOf((float)i2 / 100.0f * 0.25f));
                     continue block5;
                 }
                 case 1: {
-                    this.DataManager.set(BodyColorKey, (Object)EyeAndKoboldColor.values()[i2].toString());
+                    this.DataManager.set(TribeColorKey,EyeAndKoboldColor.values()[i2].toString());
                     continue block5;
                 }
                 case 2: {
-                    this.DataManager.set(EyeColorKey, (Object)new BlockPos(EyeAndKoboldColor.values()[i2].getMainColor()));
+                    this.DataManager.set(K,new BlockPos(EyeAndKoboldColor.values()[i2].getMainColor()));
                     continue block5;
                 }
                 default: {
@@ -349,12 +348,12 @@ dr {
                 }
             }
         }
-        this.DataManager.set(M, (Object)stringBuilder.toString());
+        this.DataManager.set(M,stringBuilder.toString());
         KoboldNpcRenderer.clearColorCache();
     }
 
     @Override
-    public Vec2i g(int i) {
+    public Vec2i getSlotColor(int i) {
         switch (i) {
             case 0: {
                 return new Vec2i(160, 0);
@@ -394,12 +393,12 @@ dr {
     }
 
     @Override
-    public String getDisplayName() {
+    public String getGirlName() {
         return (String)this.DataManager.get(CustomNameKey);
     }
 
     @Override
-    public float getScaleOffset() {
+    public float getRenderLabelOffset() {
         return 0.2f - (0.25f - ((Float)this.DataManager.get(BodySizeKey)).floatValue());
     }
 
@@ -415,23 +414,23 @@ dr {
     protected void entityInit() {
         super.entityInit();
         EyeAndKoboldColor eyeAndKoboldColor = EyeAndKoboldColor.values()[this.getRNG().nextInt(EyeAndKoboldColor.values().length)];
-        this.DataManager.register(EyeColorKey, (Object)new BlockPos(eyeAndKoboldColor.getMainColor()));
-        this.DataManager.register(BodyColorKey, (Object)DefaultTribeColor.name());
-        this.DataManager.register(BoundPlayerUuidKey, (Object)Optional.absent());
-        this.DataManager.register(BodySizeKey, (Object)Float.valueOf(0.0f));
-        this.DataManager.register(CustomNameKey, (Object)SexAnimation.values()[this.getRNG().nextInt(SexAnimation.values().length)].toString());
-        this.DataManager.register(aC, (Object)false);
-        this.DataManager.register(aZ, (Object)false);
-        this.DataManager.register(TribeNameKey, (Object)"null");
-        this.DataManager.register(HasTribeKey, (Object)false);
-        this.DataManager.register(at, (Object)false);
+        this.DataManager.register(K,new BlockPos(eyeAndKoboldColor.getMainColor()));
+        this.DataManager.register(TribeColorKey,DefaultTribeColor.name());
+        this.DataManager.register(BoundPlayerUuidKey,Optional.absent());
+        this.DataManager.register(BodySizeKey,Float.valueOf(0.0f));
+        this.DataManager.register(CustomNameKey,SexAnimation.values()[this.getRNG().nextInt(SexAnimation.values().length)].toString());
+        this.DataManager.register(aC,false);
+        this.DataManager.register(aZ,false);
+        this.DataManager.register(TribeNameKey,"null");
+        this.DataManager.register(HasTribeKey,false);
+        this.DataManager.register(at,false);
     }
 
     @Override
     protected void initEntityAI() {
         this.WatchPlayerAI = new GirlWatchAi((EntityLiving)this, EntityPlayer.class, 3.0f, 1.0f);
         this.tasks.addTask(0, (EntityAIBase)new EntityAISwimming((EntityLiving)this));
-        this.tasks.addTask(2, (EntityAIBase)new EntityAITempt((EntityCreature)this, 0.4, false, new HashSet(I)));
+        this.tasks.addTask(2, (EntityAIBase)new EntityAITempt((EntityCreature)this, 0.4, false, new HashSet(PaymentItems)));
         this.tasks.addTask(3, (EntityAIBase)new EntityAIOpenDoor((EntityLiving)this));
         this.tasks.addTask(5, (EntityAIBase)this.WatchPlayerAI);
     }
@@ -476,12 +475,12 @@ dr {
                                     }
                                     try {
                                         try {
-                                            if (!itemStack2.getItem().equals(Items.NAME_TAG) || !entityPlayer.getPersistentID().toString().equals(this.DataManager.get(v))) break block39;
+                                            if (!itemStack2.getItem().equals(Items.NAME_TAG) || !entityPlayer.getPersistentID().toString().equals(this.DataManager.get(MasterUuidKey))) break block39;
                                         }
                                         catch (IllegalArgumentException illegalArgumentException) {
                                             throw KoboldNpc.rethrow(illegalArgumentException);
                                         }
-                                        this.DataManager.set(CustomNameKey, (Object)itemStack2.getDisplayName());
+                                        this.DataManager.set(CustomNameKey,itemStack2.getDisplayName());
                                         itemStack2.shrink(1);
                                         return true;
                                     }
@@ -556,7 +555,7 @@ dr {
                                 catch (IllegalArgumentException illegalArgumentException) {
                                     throw KoboldNpc.rethrow(illegalArgumentException);
                                 }
-                                if (!((String)this.DataManager.get(v)).equals(entityPlayer.getPersistentID().toString())) break block42;
+                                if (!((String)this.DataManager.get(MasterUuidKey)).equals(entityPlayer.getPersistentID().toString())) break block42;
                             }
                             catch (IllegalArgumentException illegalArgumentException) {
                                 throw KoboldNpc.rethrow(illegalArgumentException);
@@ -577,12 +576,12 @@ dr {
                             catch (IllegalArgumentException illegalArgumentException) {
                                 throw KoboldNpc.rethrow(illegalArgumentException);
                             }
-                            if (!((String)this.DataManager.get(v)).equals(entityPlayer.getPersistentID().toString())) break block44;
+                            if (!((String)this.DataManager.get(MasterUuidKey)).equals(entityPlayer.getPersistentID().toString())) break block44;
                         }
                         catch (IllegalArgumentException illegalArgumentException) {
                             throw KoboldNpc.rethrow(illegalArgumentException);
                         }
-                        this.playSoundEvent(ModSounds.GIRLS_KOBOLD_MASTER);
+                        this.playRandomSound(ModSounds.GIRLS_KOBOLD_MASTER);
                     }
                     catch (IllegalArgumentException illegalArgumentException) {
                         throw KoboldNpc.rethrow(illegalArgumentException);
@@ -595,7 +594,7 @@ dr {
             this.getNavigator().clearPath();
             this.b((float)(Math.atan2(this.posZ - entityPlayer.posZ, this.posX - entityPlayer.posX) * 57.29577951308232 + 90.0));
             this.setTargetPos(new Vec3d(this.posX, Math.floor(this.posY), this.posZ));
-            this.DataManager.set(G, (Object)true);
+            this.DataManager.set(BusyKey,true);
             this.setCurrentAction(GirlAnimationState.NULL);
         }
         return true;
@@ -612,7 +611,7 @@ dr {
         block7: {
             try {
                 try {
-                    if (!this.J() || !entityPlayer.getPersistentID().toString().equals(this.DataManager.get(v))) break block7;
+                    if (!this.J() || !entityPlayer.getPersistentID().toString().equals(this.DataManager.get(MasterUuidKey))) break block7;
                 }
                 catch (IllegalArgumentException illegalArgumentException) {
                     throw KoboldNpc.rethrow(illegalArgumentException);
@@ -650,11 +649,11 @@ dr {
             throw KoboldNpc.rethrow(illegalArgumentException);
         }
         this.handleGirlUuidEvent((UUID)null);
-        this.changeDataParameterFromClient("shouldbeattargetpos", "false");
+        this.a("shouldbeattargetpos", "false");
     }
 
     @Override
-    public void r() {
+    public void resetAimTarget() {
         this.Q = false;
         super.resetAimTarget();
     }
@@ -669,7 +668,7 @@ dr {
         try {
             this.az = true;
             if ("oral".equals(string)) {
-                this.changeDataParameterFromClient("animationFollowUp", GirlAnimationState.STARTBLOWJOB.toString());
+                this.a("animationFollowUp", GirlAnimationState.STARTBLOWJOB.toString());
                 this.a(true, uUID);
             }
         }
@@ -678,7 +677,7 @@ dr {
         }
         try {
             if ("anal".equals(string)) {
-                this.changeDataParameterFromClient("animationFollowUp", GirlAnimationState.KOBOLD_ANAL_START.toString());
+                this.a("animationFollowUp", GirlAnimationState.KOBOLD_ANAL_START.toString());
                 this.a(true, uUID);
             }
         }
@@ -687,7 +686,7 @@ dr {
         }
         try {
             if ("mating".equals(string)) {
-                this.changeDataParameterFromClient("animationFollowUp", GirlAnimationState.MATING_PRESS_START.toString());
+                this.a("animationFollowUp", GirlAnimationState.MATING_PRESS_START.toString());
                 this.a(true, uUID);
             }
         }
@@ -698,8 +697,8 @@ dr {
 
     @Override
     public void void_b() {
-        this.a2 = true;
-        this.DataManager.set(G, (Object)false);
+        this.flag = true;
+        this.DataManager.set(BusyKey,false);
     }
 
     @Override
@@ -709,7 +708,7 @@ dr {
 
     boolean g() {
         try {
-            if (!this.a2) {
+            if (!this.flag) {
                 return false;
             }
         }
@@ -720,11 +719,11 @@ dr {
         this.noClip = false;
         this.setNoGravity(false);
         if (this.aD > 40) {
-            this.a2 = false;
+            this.flag = false;
             this.aD = 0;
             EntityPlayer entityPlayer = this.world.getPlayerEntityByUUID(this.getSexPlayerUuid());
             this.b(entityPlayer.rotationYaw + 180.0f);
-            this.DataManager.set(G, (Object)true);
+            this.DataManager.set(BusyKey,true);
             entityPlayer.noClip = true;
             entityPlayer.setNoGravity(true);
             this.noClip = true;
@@ -822,7 +821,7 @@ dr {
     public void updateAITasks() {
         Optional optional;
         block39: {
-            Object object;
+            EntityPlayer object;
             block40: {
                 block38: {
                     block37: {
@@ -830,7 +829,7 @@ dr {
                         this.ax = false;
                         optional = (Optional)this.DataManager.get(BoundPlayerUuidKey);
                         if (optional.isPresent()) {
-                            this.getTargetPos((UUID)optional.get());
+                            this.o((UUID)optional.get());
                             GirlHomeBuilder.updateKoboldEntity((UUID)optional.get());
                             object = this.getSexPlayer();
                             try {
@@ -867,13 +866,13 @@ dr {
                                 catch (IllegalArgumentException illegalArgumentException) {
                                     throw KoboldNpc.rethrow(illegalArgumentException);
                                 }
-                                if (++this.a5 < 100) break block38;
+                                if (++this.i6 < 100) break block38;
                             }
                             catch (IllegalArgumentException illegalArgumentException) {
                                 throw KoboldNpc.rethrow(illegalArgumentException);
                             }
                             this.setHealth(this.getHealth() + 2.0f);
-                            this.a5 = 0;
+                            this.i6 = 0;
                             NetworkHandler.channel.sendToAllTracking((IMessage)new PacketSpawnParticle(this.getGirlUuid(), EnumParticleTypes.HEART.getParticleName()), (Entity)this);
                             break block38;
                         }
@@ -881,10 +880,10 @@ dr {
                             throw KoboldNpc.rethrow(illegalArgumentException);
                         }
                     }
-                    this.a5 = 0;
+                    this.i6 = 0;
                 }
                 try {
-                    if (!((Boolean)this.DataManager.get(G)).booleanValue()) {
+                    if (!((Boolean)this.DataManager.get(BusyKey)).booleanValue()) {
                         this.setNoGravity(false);
                     }
                 }
@@ -919,9 +918,9 @@ dr {
                 }
             }
             if (32 == this.U) {
-                object = GirlHomeBuilder.getNearbyEntities((UUID)optional.get());
+                HashSet<EntityLivingBase> nearbySet = GirlHomeBuilder.getNearbyEntities((UUID)optional.get());
                 HashSet<EntityLivingBase> hashSet = new HashSet<EntityLivingBase>();
-                Iterator iterator = ((HashSet)object).iterator();
+                Iterator iterator = nearbySet.iterator();
                 while (iterator.hasNext()) {
                     EntityLivingBase entityLivingBase = (EntityLivingBase)iterator.next();
                     try {
@@ -948,7 +947,7 @@ dr {
             try {
                 if (84 <= this.U) {
                     this.setCurrentAction(GirlAnimationState.NULL);
-                    this.DataManager.set(G, (Object)false);
+                    this.DataManager.set(BusyKey,false);
                     this.U = 0;
                 }
             }
@@ -957,12 +956,12 @@ dr {
             }
             return;
         }
-        this.DataManager.set(aC, (Object)this.getDisplayName((UUID)optional.get(), false));
-        this.DataManager.set(aZ, (Object)GirlHomeBuilder.isKoboldOfGirl((UUID)optional.get(), this));
-        this.DataManager.set(HasTribeKey, (Object)GirlHomeBuilder.hasTribe((UUID)optional.get()));
+        this.DataManager.set(aC,this.c((UUID)optional.get(), false));
+        this.DataManager.set(aZ,GirlHomeBuilder.isKoboldOfGirl((UUID)optional.get(), this));
+        this.DataManager.set(HasTribeKey,GirlHomeBuilder.hasTribe((UUID)optional.get()));
         this.d();
         this.isTracked();
-        this.WatchPlayerAI.Active = this.getTargetPos();
+        this.WatchPlayerAI.Active = this.boolean_o();
     }
 
     @Override
@@ -1011,7 +1010,7 @@ dr {
                 throw KoboldNpc.rethrow(illegalArgumentException);
             }
             try {
-                if (!"".equals(this.DataManager.get(h))) {
+                if (!"".equals(this.DataManager.get(BlowjobStageKey))) {
                     return;
                 }
             }
@@ -1026,7 +1025,7 @@ dr {
             catch (IllegalArgumentException illegalArgumentException) {
                 throw KoboldNpc.rethrow(illegalArgumentException);
             }
-            String string = (String)this.DataManager.get(v);
+            String string = (String)this.DataManager.get(MasterUuidKey);
             EntityPlayer entityPlayer = this.world.getClosestPlayerToEntity((Entity)this, 10.0);
             try {
                 if (entityPlayer == null) {
@@ -1054,7 +1053,7 @@ dr {
                     throw KoboldNpc.rethrow(illegalArgumentException);
                 }
                 this.b(ModSounds.pickRandomSound(ModSounds.GIRLS_KOBOLD_HEYMASTER));
-                this.void_a("Hey master!");
+                this.a("Hey master!");
                 aV = this.world.getTotalWorldTime();
             }
             catch (IllegalArgumentException illegalArgumentException) {
@@ -1097,7 +1096,7 @@ dr {
         catch (IllegalArgumentException illegalArgumentException) {
             throw KoboldNpc.rethrow(illegalArgumentException);
         }
-        EntityPlayer entityPlayer = this.world.getPlayerEntityByUUID(UUID.fromString((String)this.DataManager.get(v)));
+        EntityPlayer entityPlayer = this.world.getPlayerEntityByUUID(UUID.fromString((String)this.DataManager.get(MasterUuidKey)));
         try {
             if (entityPlayer == null) {
                 return;
@@ -1182,8 +1181,8 @@ dr {
                     }
                 }
                 if (d > 2.0) {
-                    KoboldNpc kobold2;
-                    kobold2 = this.getDisplayName(entityPlayer.getPosition());
+                    BlockPos kobold2;
+                    kobold2 = this.c(entityPlayer.getPosition());
                     pathNavigate.tryMoveToXYZ((double)kobold2.getX(), (double)kobold2.getY(), (double)kobold2.getZ(), (double)0.35f);
                 }
             }
@@ -1213,7 +1212,7 @@ dr {
                                 boolean flag4 = flag3;
                                 boolean flag5 = false;
                                 if (this.J()) {
-                                    flag5 = ((String)this.DataManager.get(v)).equals(this.getSexPlayerUuid().toString());
+                                    flag5 = ((String)this.DataManager.get(MasterUuidKey)).equals(this.getSexPlayerUuid().toString());
                                 }
                                 try {
                                     try {
@@ -1311,7 +1310,7 @@ dr {
             throw KoboldNpc.rethrow(illegalArgumentException);
         }
         try {
-            if (!((Boolean)this.DataManager.get(G)).booleanValue()) {
+            if (!((Boolean)this.DataManager.get(BusyKey)).booleanValue()) {
                 return;
             }
         }
@@ -1342,14 +1341,10 @@ dr {
         float f;
         double d;
         double d2;
-        double d3;
         Vec3d vec3d;
         Vec3d vec3d2;
         PlayerGirlEntity playerGirl = PlayerGirlEntity.getByUuid(entityPlayer.getPersistentID());
         try {
-            Vec3d vec3d3;
-            vec3d2 = vec3d3;
-            vec3d = vec3d3;
             d2 = entityPlayer.posX;
             d = entityPlayer.posY;
             f = playerGirl == null ? entityPlayer.eyeHeight : playerGirl.getEyeHeight();
@@ -1357,7 +1352,7 @@ dr {
         catch (IllegalArgumentException illegalArgumentException) {
             throw KoboldNpc.rethrow(illegalArgumentException);
         }
-        vec3d2(d2, d + (double)f, entityPlayer.posZ);
+        vec3d = new Vec3d(d2, d + (double)f, entityPlayer.posZ);
         Vec3d vec3d4 = vec3d;
         Vec3d vec3d5 = new Vec3d(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ);
         double d3 = vec3d5.distanceTo(vec3d4);
@@ -1448,7 +1443,7 @@ dr {
                         if (!treeCluster.isAssigned(this)) continue;
                         treeCluster.unassignKobold(this);
                         this.setCurrentAction(GirlAnimationState.NULL);
-                        this.DataManager.set(G, (Object)false);
+                        this.DataManager.set(BusyKey,false);
                     }
                     catch (IllegalArgumentException illegalArgumentException) {
                         throw KoboldNpc.rethrow(illegalArgumentException);
@@ -1484,7 +1479,7 @@ dr {
                 throw KoboldNpc.rethrow(illegalArgumentException);
             }
         }
-        this.isOwnedByLocalPlayer(uUID);
+        this.n(uUID);
     }
 
     protected double a(EntityPlayer entityPlayer, double d) {
@@ -1600,7 +1595,7 @@ dr {
             }
             kobold.noClip = false;
             kobold.setNoGravity(false);
-            kobold.getDataManager().set(G, (Object)false);
+            kobold.getDataManager().set(BusyKey, false);
             kobold.setCurrentAction(GirlAnimationState.NULL);
         }
     }
@@ -1648,7 +1643,7 @@ dr {
                         boolean flag2 = flag;
                         Vec3d vec3d3 = LerpMath.lerpVec3d(vec3d, vec3d2, 0.5);
                         try {
-                            this.DataManager.set(G, (Object)true);
+                            this.DataManager.set(BusyKey,true);
                             this.setTargetPos(vec3d3);
                             kobold = this;
                             f = flag2 ? 0.0f : 90.0f;
@@ -1718,7 +1713,7 @@ dr {
                         catch (IllegalArgumentException illegalArgumentException) {
                             throw KoboldNpc.rethrow(illegalArgumentException);
                         }
-                        this.appendRandomGauss(blockPos.add(0, 1, 0));
+                        this.b(blockPos.add(0, 1, 0));
                         break block29;
                     }
                     catch (IllegalArgumentException illegalArgumentException) {
@@ -1729,7 +1724,7 @@ dr {
                 try {
                     this.getNavigator().tryMoveToXYZ((double)blockPos3.getX(), (double)blockPos3.getY(), (double)blockPos3.getZ(), (double)0.35f);
                     if (this.getNavigator().getPath() == null) {
-                        this.appendRandomGauss(blockPos.add(0, 1, 0));
+                        this.b(blockPos.add(0, 1, 0));
                     }
                 }
                 catch (IllegalArgumentException illegalArgumentException) {
@@ -1802,7 +1797,7 @@ dr {
             catch (IllegalArgumentException illegalArgumentException) {
                 throw KoboldNpc.rethrow(illegalArgumentException);
             }
-            kobold.aF = blockPos.add(i3, i2, i * (this.getRNG().nextInt(2) + 1));
+            this.aF = blockPos.add(i3, i2, i * (this.getRNG().nextInt(2) + 1));
         }
         this.getNavigator().tryMoveToXYZ((double)this.aF.getX(), (double)this.aF.getY(), (double)this.aF.getZ(), (double)0.35f);
         this.k();
@@ -1814,7 +1809,7 @@ dr {
             block8: {
                 try {
                     if (this.J()) {
-                        GirlHomeBuilder.b(uUID, null);
+                        GirlHomeBuilder.setHomePos(uUID, null);
                         this.getGirlsByOwner(uUID);
                         return;
                     }
@@ -1849,7 +1844,7 @@ dr {
         try {
             if (collection.isEmpty()) {
                 this.ao = false;
-                this.resetAimTarget(uUID);
+                this.r(uUID);
                 this.h("Lets go somewhere else");
             }
         }
@@ -1866,7 +1861,7 @@ dr {
                     blockPos = GirlHomeBuilder.getHomePos(uUID);
                     try {
                         if (blockPos == null) {
-                            this.resetAimTarget(uUID);
+                            this.r(uUID);
                             return;
                         }
                     }
@@ -1881,7 +1876,7 @@ dr {
                         catch (IllegalArgumentException illegalArgumentException) {
                             throw KoboldNpc.rethrow(illegalArgumentException);
                         }
-                        this.resetAimTarget(uUID);
+                        this.r(uUID);
                         this.aM = null;
                     }
                     catch (IllegalArgumentException illegalArgumentException) {
@@ -1918,13 +1913,13 @@ dr {
         int i = GirlHomeBuilder.getKoboldCount(uUID);
         try {
             for (int i3 = 1; i3 < i; ++i3) {
-                this.getDisplayName(uUID, collection);
+                this.c(uUID, collection);
             }
         }
         catch (IllegalArgumentException illegalArgumentException) {
             throw KoboldNpc.rethrow(illegalArgumentException);
         }
-        GirlHomeBuilder.b(uUID, null);
+        GirlHomeBuilder.setHomePos(uUID, null);
     }
 
     protected void void_c(EntityPlayer entityPlayer) {
@@ -2023,7 +2018,7 @@ dr {
     }
 
     void c(UUID uUID, Collection<TreeCluster> collection) {
-        List<BlockPos> list = this.a(this.getPosition(), BlockLog.class, 30, 4, null);
+        List<BlockPos> list = this.findBlockPositions(this.getPosition(), BlockLog.class, 30, 4, null);
         BlockPos blockPos = null;
         for (BlockPos blockPos2 : list) {
             Block block = this.world.getBlockState(blockPos2.down()).getBlock();
@@ -2076,8 +2071,7 @@ dr {
     }
 
     boolean c(UUID uUID, boolean flag) {
-        Iterator<Object> iterator;
-        Object object2;
+        Iterator iterator;
         HashSet<EntityLivingBase> hashSet = GirlHomeBuilder.getNearbyEntities(uUID);
         KoboldNpc kobold = GirlHomeBuilder.getKoboldEntity(uUID);
         try {
@@ -2088,7 +2082,7 @@ dr {
         catch (IllegalArgumentException illegalArgumentException) {
             throw KoboldNpc.rethrow(illegalArgumentException);
         }
-        for (Object object2 : this.world.getEntitiesWithinAABB(KoboldNpc.class, new AxisAlignedBB(kobold.posX - 30.0, kobold.posY - 30.0, kobold.posZ - 30.0, kobold.posX + 30.0, kobold.posY + 30.0, kobold.posZ + 30.0))) {
+        for (KoboldNpc object2 : this.world.getEntitiesWithinAABB(KoboldNpc.class, new AxisAlignedBB(kobold.posX - 30.0, kobold.posY - 30.0, kobold.posZ - 30.0, kobold.posX + 30.0, kobold.posY + 30.0, kobold.posZ + 30.0))) {
             try {
                 if (!this.canEntityBeSeen((Entity)object2)) {
                     continue;
@@ -2110,9 +2104,9 @@ dr {
             catch (IllegalArgumentException illegalArgumentException) {
                 throw KoboldNpc.rethrow(illegalArgumentException);
             }
-            iterator = (Optional)object2.getDataManager().get(BoundPlayerUuidKey);
+            Optional<UUID> optional = object2.getDataManager().get(BoundPlayerUuidKey);
             try {
-                if (!iterator.isPresent()) {
+                if (!optional.isPresent()) {
                     hashSet.add((EntityLivingBase)object2);
                     continue;
                 }
@@ -2121,7 +2115,7 @@ dr {
                 throw KoboldNpc.rethrow(illegalArgumentException);
             }
             try {
-                if (((UUID)iterator.get()).equals(uUID)) continue;
+                if (((UUID)optional.get()).equals(uUID)) continue;
                 hashSet.add((EntityLivingBase)object2);
             }
             catch (IllegalArgumentException illegalArgumentException) {
@@ -2129,11 +2123,11 @@ dr {
             }
         }
         EntityLivingBase entityLivingBase = null;
-        object2 = new ArrayList();
+        ArrayList arrayList = new ArrayList();
         for (EntityLivingBase entityLivingBase2 : hashSet) {
             try {
                 if (entityLivingBase2.isDead) {
-                    object2.add(entityLivingBase2);
+                    arrayList.add(entityLivingBase2);
                     continue;
                 }
             }
@@ -2156,7 +2150,7 @@ dr {
             }
             entityLivingBase = entityLivingBase2;
         }
-        iterator = object2.iterator();
+        iterator = arrayList.iterator();
         while (iterator.hasNext()) {
             EntityLivingBase entityLivingBase2;
             entityLivingBase2 = (EntityLivingBase)iterator.next();
@@ -2180,16 +2174,16 @@ dr {
         }
         try {
             if (this.getCurrentAction() != GirlAnimationState.ATTACK) {
-                this.DataManager.set(G, (Object)false);
+                this.DataManager.set(BusyKey,false);
                 this.setCurrentAction(GirlAnimationState.NULL);
             }
         }
         catch (IllegalArgumentException illegalArgumentException) {
             throw KoboldNpc.rethrow(illegalArgumentException);
         }
-        iterator = this.getDisplayName(entityLivingBase.getPosition());
+        BlockPos blockTarget2 = this.c(entityLivingBase.getPosition());
         try {
-            this.getNavigator().tryMoveToXYZ((double)iterator.getX(), (double)iterator.getY(), (double)iterator.getZ(), 0.7);
+            this.getNavigator().tryMoveToXYZ((double)blockTarget2.getX(), (double)blockTarget2.getY(), (double)blockTarget2.getZ(), 0.7);
             this.k();
             if (this.getDistance((Entity)entityLivingBase) > 1.5f) {
                 return true;
@@ -2378,7 +2372,7 @@ dr {
                 treeCluster = treeCluster3;
                 try {
                     this.aI = null;
-                    if (treeCluster3.getTaskType() == KoboldTask.FALL_TREE) {
+                    if (treeCluster3.getTaskType() == TreeCluster.KoboldTask.FALL_TREE) {
                         this.h("Ima fall this tree owo");
                         break;
                     }
@@ -2402,7 +2396,7 @@ dr {
             throw KoboldNpc.rethrow(illegalArgumentException);
         }
         try {
-            if (treeCluster.getTaskType() == KoboldTask.FALL_TREE) {
+            if (treeCluster.getTaskType() == TreeCluster.KoboldTask.FALL_TREE) {
                 this.a(uUID, treeCluster.getAnchorPos(), treeCluster);
             }
         }
@@ -2410,7 +2404,7 @@ dr {
             throw KoboldNpc.rethrow(illegalArgumentException);
         }
         try {
-            if (treeCluster.getTaskType() == KoboldTask.MINE) {
+            if (treeCluster.getTaskType() == TreeCluster.KoboldTask.MINE) {
                 this.b(uUID, treeCluster);
             }
         }
@@ -2442,10 +2436,10 @@ dr {
             IBlockState iBlockState2 = this.world.getBlockState(this.aI.up());
             if (!(iBlockState2.getBlock() instanceof BlockFalling)) {
                 treeCluster.removeLogPos(this.aI);
-                iBlockState = this.getSexPlayer();
+                EntityPlayer entityPlayer3 = this.getSexPlayer();
                 try {
-                    if (iBlockState != null) {
-                        NetworkHandler.channel.sendTo((IMessage)new PacketSendBlocks(this.aI, false), (EntityPlayerMP)iBlockState);
+                    if (entityPlayer3 != null) {
+                        NetworkHandler.channel.sendTo((IMessage)new PacketSendBlocks(this.aI, false), (EntityPlayerMP)entityPlayer3);
                     }
                 }
                 catch (IllegalArgumentException illegalArgumentException) {
@@ -2511,7 +2505,7 @@ dr {
                         }
                         try {
                             if (!flag) {
-                                entityPlayer.sendMessage((ITextComponent)new TextComponentString(String.format("<%s> It's impossible to mine here...", this.getDisplayName())));
+                                entityPlayer.sendMessage((ITextComponent)new TextComponentString(String.format("<%s> It's impossible to mine here...", this.getGirlName())));
                             }
                         }
                         catch (IllegalArgumentException illegalArgumentException) {
@@ -2573,7 +2567,7 @@ dr {
         this.aK = 0;
         this.setCurrentAction(GirlAnimationState.MINE);
         this.rotationYaw = this.rotationYawHead = (float)(Math.atan2(this.posZ - (double)this.aI.getZ(), this.posX - (double)this.aI.getX()) * 57.29577951308232 + 90.0);
-        this.DataManager.set(at, (Object)false);
+        this.DataManager.set(at,false);
     }
 
     BlockPos a(TreeCluster treeCluster, UUID uuid) {
@@ -2779,7 +2773,7 @@ dr {
                     catch (IllegalArgumentException illegalArgumentException) {
                         throw KoboldNpc.rethrow(illegalArgumentException);
                     }
-                    i3 = -1;
+                    i3 = i2 = -1;
                     break block33;
                 }
                 catch (IllegalArgumentException illegalArgumentException) {
@@ -2915,7 +2909,7 @@ dr {
                                         catch (IllegalArgumentException illegalArgumentException) {
                                             throw KoboldNpc.rethrow(illegalArgumentException);
                                         }
-                                        if (!((String)this.DataManager.get(v)).equals(entityPlayer.getPersistentID().toString())) break block20;
+                                        if (!((String)this.DataManager.get(MasterUuidKey)).equals(entityPlayer.getPersistentID().toString())) break block20;
                                     }
                                     catch (IllegalArgumentException illegalArgumentException) {
                                         throw KoboldNpc.rethrow(illegalArgumentException);
@@ -2932,7 +2926,7 @@ dr {
                                     block21: {
                                         try {
                                             try {
-                                                if (this.WanderTargetPos == null || this.getDistance(this.WanderTargetPos.getX(), this.WanderTargetPos.getY(), this.WanderTargetPos.getZ()) > this.isOwnedByLocalPlayer()) break block21;
+                                                if (this.WanderTargetPos == null || this.getDistance(this.WanderTargetPos.getX(), this.WanderTargetPos.getY(), this.WanderTargetPos.getZ()) > this.double_n()) break block21;
                                             }
                                             catch (IllegalArgumentException illegalArgumentException) {
                                                 throw KoboldNpc.rethrow(illegalArgumentException);
@@ -2999,7 +2993,7 @@ dr {
             }
             try {
                 if (this.a(uUID, flag)) {
-                    this.a0 = 0;
+                    this.i7 = 0;
                     return true;
                 }
             }
@@ -3008,7 +3002,7 @@ dr {
             }
             try {
                 try {
-                    if (--this.a0 < 0 && this.ax) break block13;
+                    if (--this.i7 < 0 && this.ax) break block13;
                 }
                 catch (IllegalArgumentException illegalArgumentException) {
                     throw KoboldNpc.rethrow(illegalArgumentException);
@@ -3019,12 +3013,12 @@ dr {
                 throw KoboldNpc.rethrow(illegalArgumentException);
             }
         }
-        this.a0 = 300;
-        EntityPlayer entityPlayer = this.world.getPlayerEntityByUUID(UUID.fromString((String)this.DataManager.get(v)));
-        EyeAndKoboldColor eyeAndKoboldColor = EyeAndKoboldColor.valueOf((String)this.DataManager.get(BodyColorKey));
+        this.i7 = 300;
+        EntityPlayer entityPlayer = this.world.getPlayerEntityByUUID(UUID.fromString((String)this.DataManager.get(MasterUuidKey)));
+        EyeAndKoboldColor eyeAndKoboldColor = EyeAndKoboldColor.valueOf((String)this.DataManager.get(TribeColorKey));
         try {
             if (entityPlayer != null) {
-                entityPlayer.sendStatusMessage((ITextComponent)new TextComponentString(eyeAndKoboldColor.getTextColor() + this.getDisplayName() + "s " + TextFormatting.WHITE + "inventory is full and there are either no chests to put her items in or said chests are full as well"), false);
+                entityPlayer.sendStatusMessage((ITextComponent)new TextComponentString(eyeAndKoboldColor.getTextColor() + this.getGirlName() + "s " + TextFormatting.WHITE + "inventory is full and there are either no chests to put her items in or said chests are full as well"), false);
             }
         }
         catch (IllegalArgumentException illegalArgumentException) {
@@ -3053,8 +3047,8 @@ dr {
                             throw KoboldNpc.rethrow(illegalArgumentException);
                         }
                         blockPos2 = null;
-                        for (BlockPos blockPos3 : hashSet) {
-                            TileEntityChest tileEntityChest2 = (TileEntityChest)this.world.getTileEntity(blockPos3);
+                        for (BlockPos blockPos4 : hashSet) {
+                            TileEntityChest tileEntityChest2 = (TileEntityChest)this.world.getTileEntity(blockPos4);
                             iItemHandler = tileEntityChest2.getSingleChestHandler();
                             i = 0;
                             for (int i5 = 0; i5 < this.Inventory.getSlots(); ++i5) {
@@ -3090,11 +3084,11 @@ dr {
                                 throw KoboldNpc.rethrow(illegalArgumentException);
                             }
                             if (blockPos2 == null) {
-                                blockPos2 = blockPos3;
+                                blockPos2 = blockPos4;
                                 continue;
                             }
-                            if (!(this.getDistanceSq(blockPos2) > this.getDistanceSq(blockPos3))) continue;
-                            blockPos2 = blockPos3;
+                            if (!(this.getDistanceSq(blockPos2) > this.getDistanceSq(blockPos4))) continue;
+                            blockPos2 = blockPos4;
                         }
                         try {
                             if (blockPos2 == null) {
@@ -3106,19 +3100,19 @@ dr {
                         }
                         if (this.getDistance(blockPos2.getX(), blockPos2.getY(), blockPos2.getZ()) < 2.0) {
                             tileEntityChest = (TileEntityChest)this.world.getTileEntity(blockPos2);
-                            blockPos3 = tileEntityChest.getSingleChestHandler();
+                            IItemHandler iItemHandler2 = tileEntityChest.getSingleChestHandler();
                             block25: for (int i7 = 0; i7 < this.Inventory.getSlots(); ++i7) {
-                                iItemHandler = this.Inventory.getStackInSlot(i7);
+                                ItemStack invStack = this.Inventory.getStackInSlot(i7);
                                 try {
-                                    if (iItemHandler.isEmpty()) {
+                                    if (invStack.isEmpty()) {
                                         continue;
                                     }
                                 }
                                 catch (IllegalArgumentException illegalArgumentException) {
                                     throw KoboldNpc.rethrow(illegalArgumentException);
                                 }
-                                for (i = 0; i < blockPos3.getSlots(); ++i) {
-                                    ItemStack itemStack = blockPos3.insertItem(i, (ItemStack)iItemHandler, false);
+                                for (i = 0; i < iItemHandler2.getSlots(); ++i) {
+                                    ItemStack itemStack = iItemHandler2.insertItem(i, invStack, false);
                                     try {
                                         if (itemStack.getCount() <= 0) {
                                             this.Inventory.setStackInSlot(i7, ItemStack.EMPTY);
@@ -3129,7 +3123,7 @@ dr {
                                         throw KoboldNpc.rethrow(illegalArgumentException);
                                     }
                                     this.Inventory.setStackInSlot(i7, itemStack);
-                                    iItemHandler = itemStack;
+                                    invStack = itemStack;
                                 }
                             }
                             this.world.playSound(null, blockPos2, SoundEvents.BLOCK_CHEST_LOCKED, SoundCategory.BLOCKS, 1.0f, 1.0f);
@@ -3152,12 +3146,12 @@ dr {
                     }
                     return false;
                 }
-                tileEntityChest = this.getNavigator();
-                blockPos3 = this.c(blockPos2);
+                PathNavigate pathNavigate2 = this.getNavigator();
+                BlockPos pathTarget = this.c(blockPos2);
                 try {
                     try {
-                        tileEntityChest.tryMoveToXYZ((double)blockPos3.getX(), (double)blockPos3.getY(), (double)blockPos3.getZ(), (double)0.35f);
-                        if (tileEntityChest.getPath() != null) break block37;
+                        pathNavigate2.tryMoveToXYZ((double)pathTarget.getX(), (double)pathTarget.getY(), (double)pathTarget.getZ(), (double)0.35f);
+                        if (pathNavigate2.getPath() != null) break block37;
                         if (!flag) break block38;
                     }
                     catch (IllegalArgumentException illegalArgumentException) {
@@ -3214,11 +3208,11 @@ dr {
     }
 
     void a(UUID uuid, TreeCluster treeCluster, BlockPos pos) {
-        if (this.ad == null) {
+        if (this.CarriedItem == null) {
             this.aR = 24;
             this.W = 0;
             this.setCurrentAction(GirlAnimationState.NULL);
-            this.DataManager.set(G, (Object)false);
+            this.DataManager.set(BusyKey,false);
             EntityPlayer entityPlayer = this.getSexPlayer();
             HashSet<BlockPos> hashSet = treeCluster.getLogPositions();
             if (entityPlayer != null && !hashSet.isEmpty()) {
@@ -3227,22 +3221,22 @@ dr {
             GirlHomeBuilder.updateKoboldEntity(uuid);
             return;
         }
-        switch (this.ad.getMetadata()) {
+        switch (this.CarriedItem.getMetadata()) {
             case 3:
             case 5: {
-                this.world.setBlockState(pos, Blocks.SAPLING.getStateForPlacement(this.world, pos, EnumFacing.NORTH, pos.getX(), pos.getY(), pos.getZ(), this.ad.getMetadata(), this, EnumHand.MAIN_HAND));
-                this.world.setBlockState(pos.north(), Blocks.SAPLING.getStateForPlacement(this.world, pos.north(), EnumFacing.NORTH, pos.getX(), pos.getY(), pos.getZ() + 1, this.ad.getMetadata(), this, EnumHand.MAIN_HAND));
-                this.world.setBlockState(pos.west(), Blocks.SAPLING.getStateForPlacement(this.world, pos.west(), EnumFacing.NORTH, pos.getX() + 1, pos.getY(), pos.getZ(), this.ad.getMetadata(), this, EnumHand.MAIN_HAND));
-                this.world.setBlockState(pos.north().west(), Blocks.SAPLING.getStateForPlacement(this.world, pos.north().west(), EnumFacing.NORTH, pos.getX() + 1, pos.getY(), pos.getZ() + 1, this.ad.getMetadata(), this, EnumHand.MAIN_HAND));
+                this.world.setBlockState(pos, Blocks.SAPLING.getStateForPlacement(this.world, pos, EnumFacing.NORTH, pos.getX(), pos.getY(), pos.getZ(), this.CarriedItem.getMetadata(), this, EnumHand.MAIN_HAND));
+                this.world.setBlockState(pos.north(), Blocks.SAPLING.getStateForPlacement(this.world, pos.north(), EnumFacing.NORTH, pos.getX(), pos.getY(), pos.getZ() + 1, this.CarriedItem.getMetadata(), this, EnumHand.MAIN_HAND));
+                this.world.setBlockState(pos.west(), Blocks.SAPLING.getStateForPlacement(this.world, pos.west(), EnumFacing.NORTH, pos.getX() + 1, pos.getY(), pos.getZ(), this.CarriedItem.getMetadata(), this, EnumHand.MAIN_HAND));
+                this.world.setBlockState(pos.north().west(), Blocks.SAPLING.getStateForPlacement(this.world, pos.north().west(), EnumFacing.NORTH, pos.getX() + 1, pos.getY(), pos.getZ() + 1, this.CarriedItem.getMetadata(), this, EnumHand.MAIN_HAND));
                 break;
             }
             default: {
-                this.world.setBlockState(pos, Blocks.SAPLING.getStateForPlacement(this.world, pos, EnumFacing.NORTH, pos.getX(), pos.getY(), pos.getZ(), this.ad.getMetadata(), this, EnumHand.MAIN_HAND));
+                this.world.setBlockState(pos, Blocks.SAPLING.getStateForPlacement(this.world, pos, EnumFacing.NORTH, pos.getX(), pos.getY(), pos.getZ(), this.CarriedItem.getMetadata(), this, EnumHand.MAIN_HAND));
             }
         }
         this.aR = 24;
         this.W = 0;
-        this.ad = null;
+        this.CarriedItem = null;
         this.setCurrentAction(GirlAnimationState.NULL);
         this.setShouldBeAtTargetPos(false);
         EntityPlayer entityPlayer = this.getSexPlayer();
@@ -3540,8 +3534,8 @@ dr {
                     throw KoboldNpc.rethrow(illegalArgumentException);
                 }
             }
-            entityPlayer = this.c(blockPos2);
-            this.getNavigator().tryMoveToXYZ((double)entityPlayer.getX() + 0.5, (double)entityPlayer.getY(), (double)entityPlayer.getZ() + 0.5, 0.35);
+            BlockPos blockTarget = this.c(blockPos2);
+            this.getNavigator().tryMoveToXYZ((double)blockTarget.getX() + 0.5, (double)blockTarget.getY(), (double)blockTarget.getZ() + 0.5, 0.35);
             this.k();
             return;
         }
@@ -3560,8 +3554,8 @@ dr {
         }
         this.setTargetPos(new Vec3d((double)blockPos2.getX() + 0.5, (double)blockPos2.getY(), (double)blockPos2.getZ() + 0.5));
         this.b(f);
-        this.DataManager.set(G, (Object)true);
-        this.DataManager.set(at, (Object)true);
+        this.DataManager.set(BusyKey,true);
+        this.DataManager.set(at,true);
         this.setCurrentAction(GirlAnimationState.MINE);
         this.world.destroyBlock(blockPos2.up(), false);
     }
@@ -3584,7 +3578,7 @@ dr {
         catch (IllegalArgumentException illegalArgumentException) {
             throw KoboldNpc.rethrow(illegalArgumentException);
         }
-        this.DataManager.set(BodyColorKey, (Object)GirlHomeBuilder.getTribeColor((UUID)optional.get()).toString());
+        this.DataManager.set(TribeColorKey,GirlHomeBuilder.getTribeColor((UUID)optional.get()).toString());
     }
 
     @Override
@@ -3691,10 +3685,10 @@ dr {
         UUID uUID = (UUID)optional.get();
         GirlHomeBuilder.removeKobold(uUID, this);
         if (this.J()) {
-            EntityPlayer entityPlayer = this.world.getPlayerEntityByUUID(UUID.fromString((String)this.getDataManager().get(v)));
+            EntityPlayer entityPlayer = this.world.getPlayerEntityByUUID(UUID.fromString((String)this.getDataManager().get(MasterUuidKey)));
             try {
                 if (entityPlayer != null) {
-                    entityPlayer.sendMessage((ITextComponent)new TextComponentString(String.format("%s%s%s has perished %suwu", TextFormatting.RED, this.getDisplayName(), TextFormatting.WHITE, TextFormatting.RED)));
+                    entityPlayer.sendMessage((ITextComponent)new TextComponentString(String.format("%s%s%s has perished %suwu", TextFormatting.RED, this.getGirlName(), TextFormatting.WHITE, TextFormatting.RED)));
                 }
             }
             catch (IllegalArgumentException illegalArgumentException) {
@@ -3775,14 +3769,14 @@ dr {
     public void writeEntityToNBT(NBTTagCompound nBTTagCompound) {
         super.writeEntityToNBT(nBTTagCompound);
         nBTTagCompound.setFloat("body_size", ((Float)this.DataManager.get(BodySizeKey)).floatValue());
-        nBTTagCompound.setInteger("eyeColorX", ((BlockPos)this.DataManager.get(EyeColorKey)).getX());
-        nBTTagCompound.setInteger("eyeColorY", ((BlockPos)this.DataManager.get(EyeColorKey)).getY());
-        nBTTagCompound.setInteger("eyeColorZ", ((BlockPos)this.DataManager.get(EyeColorKey)).getZ());
+        nBTTagCompound.setInteger("eyeColorX", ((BlockPos)this.DataManager.get(K)).getX());
+        nBTTagCompound.setInteger("eyeColorY", ((BlockPos)this.DataManager.get(K)).getY());
+        nBTTagCompound.setInteger("eyeColorZ", ((BlockPos)this.DataManager.get(K)).getZ());
         nBTTagCompound.setString("model", (String)this.DataManager.get(M));
         nBTTagCompound.setString("name", (String)this.DataManager.get(CustomNameKey));
-        nBTTagCompound.setString("master", (String)this.DataManager.get(v));
+        nBTTagCompound.setString("master", (String)this.DataManager.get(MasterUuidKey));
         nBTTagCompound.setTag("inventory", (NBTBase)this.Inventory.serializeNBT());
-        nBTTagCompound.setString("bodyColor", (String)this.DataManager.get(BodyColorKey));
+        nBTTagCompound.setString("bodyColor", (String)this.DataManager.get(TribeColorKey));
         nBTTagCompound.setBoolean("editedColorManually", this.aA);
         Optional optional = (Optional)this.DataManager.get(BoundPlayerUuidKey);
         try {
@@ -3806,7 +3800,7 @@ dr {
                 String string = nBTTagCompound.getString("model");
                 try {
                     if (!"".equals(string)) {
-                        this.DataManager.set(M, (Object)string);
+                        this.DataManager.set(M,string);
                     }
                 }
                 catch (IllegalArgumentException illegalArgumentException) {
@@ -3815,20 +3809,20 @@ dr {
                 BlockPos blockPos = new BlockPos(nBTTagCompound.getInteger("eyeColorX"), nBTTagCompound.getInteger("eyeColorY"), nBTTagCompound.getInteger("eyeColorZ"));
                 try {
                     if (!BlockPos.ORIGIN.equals((Object)blockPos)) {
-                        this.DataManager.set(EyeColorKey, (Object)blockPos);
+                        this.DataManager.set(K,blockPos);
                     }
                 }
                 catch (IllegalArgumentException illegalArgumentException) {
                     throw KoboldNpc.rethrow(illegalArgumentException);
                 }
-                this.DataManager.set(BodySizeKey, (Object)Float.valueOf(nBTTagCompound.getFloat("body_size")));
-                this.DataManager.set(CustomNameKey, (Object)nBTTagCompound.getString("name"));
-                this.DataManager.set(v, (Object)nBTTagCompound.getString("master"));
+                this.DataManager.set(BodySizeKey,Float.valueOf(nBTTagCompound.getFloat("body_size")));
+                this.DataManager.set(CustomNameKey,nBTTagCompound.getString("name"));
+                this.DataManager.set(MasterUuidKey,nBTTagCompound.getString("master"));
                 this.Inventory.deserializeNBT(nBTTagCompound.getCompoundTag("inventory"));
                 String string2 = nBTTagCompound.getString("bodyColor");
                 try {
                     if (!"".equals(string2)) {
-                        this.DataManager.set(BodyColorKey, (Object)nBTTagCompound.getString("bodyColor"));
+                        this.DataManager.set(TribeColorKey,nBTTagCompound.getString("bodyColor"));
                     }
                 }
                 catch (IllegalArgumentException illegalArgumentException) {
@@ -3844,13 +3838,13 @@ dr {
                         catch (IllegalArgumentException illegalArgumentException) {
                             throw KoboldNpc.rethrow(illegalArgumentException);
                         }
-                        this.DataManager.set(BoundPlayerUuidKey, (Object)Optional.of((Object)uUID));
+                        this.DataManager.set(BoundPlayerUuidKey,Optional.of(uUID));
                         if (GirlHomeBuilder.hasHomeData(uUID)) break block19;
                     }
                     catch (IllegalArgumentException illegalArgumentException) {
                         throw KoboldNpc.rethrow(illegalArgumentException);
                     }
-                    GirlHomeBuilder.registerTribe(uUID, EyeAndKoboldColor.valueOf((String)this.DataManager.get(BodyColorKey)));
+                    GirlHomeBuilder.registerTribe(uUID, EyeAndKoboldColor.valueOf((String)this.DataManager.get(TribeColorKey)));
                 }
                 catch (IllegalArgumentException illegalArgumentException) {
                     throw KoboldNpc.rethrow(illegalArgumentException);
@@ -3865,7 +3859,7 @@ dr {
             catch (IllegalArgumentException illegalArgumentException) {
                 throw KoboldNpc.rethrow(illegalArgumentException);
             }
-            this.DataManager.set(TribeNameKey, (Object)nBTTagCompound.getString("tribeName"));
+            this.DataManager.set(TribeNameKey,nBTTagCompound.getString("tribeName"));
         }
     }
 
@@ -4350,29 +4344,29 @@ dr {
                     break;
                 }
                 case "giggle": {
-                    this.playSoundEvent(ModSounds.GIRLS_KOBOLD_GIGGLE);
+                    this.playRandomSound(ModSounds.GIRLS_KOBOLD_GIGGLE);
                     break;
                 }
                 case "moan": {
-                    this.playSoundEvent(ModSounds.GIRLS_KOBOLD_MOAN);
+                    this.playRandomSound(ModSounds.GIRLS_KOBOLD_MOAN);
                     break;
                 }
                 case "moanMating": {
                     --this.aN;
                     if (this.aN > 0) break;
                     this.aN = 3;
-                    this.playSoundEvent(ModSounds.GIRLS_KOBOLD_MOAN);
+                    this.playRandomSound(ModSounds.GIRLS_KOBOLD_MOAN);
                     break;
                 }
                 case "analHardMSG1": {
                     --this.aN;
                     if (this.aN > 0) break;
                     this.aN = 4;
-                    this.playSoundEvent(ModSounds.GIRLS_KOBOLD_MOAN);
+                    this.playRandomSound(ModSounds.GIRLS_KOBOLD_MOAN);
                     break;
                 }
                 case "orgasm": {
-                    this.playSoundEvent(ModSounds.GIRLS_KOBOLD_ORGASM);
+                    this.playRandomSound(ModSounds.GIRLS_KOBOLD_ORGASM);
                     break;
                 }
                 case "breath": {
@@ -4384,11 +4378,11 @@ dr {
                     break;
                 }
                 case "interested": {
-                    this.playSoundEvent(ModSounds.GIRLS_KOBOLD_INTERESTED);
+                    this.playRandomSound(ModSounds.GIRLS_KOBOLD_INTERESTED);
                     break;
                 }
                 case "yep": {
-                    this.playSoundEvent(ModSounds.GIRLS_KOBOLD_YEP);
+                    this.playRandomSound(ModSounds.GIRLS_KOBOLD_YEP);
                     break;
                 }
                 case "bjmoan": {
@@ -4445,7 +4439,7 @@ dr {
                     break;
                 }
                 case "cumMsg": {
-                    this.void_a("I.. hope I am satisfying you sir");
+                    this.a("I.. hope I am satisfying you sir");
                     this.b(ModSounds.GIRLS_KOBOLD_SAD[this.getRNG().nextInt(1)]);
                     break;
                 }
@@ -4589,7 +4583,7 @@ dr {
                 throw KoboldNpc.DeathLootHandler.rethrow(concurrentModificationException);
             }
             KoboldNpc kobold = (KoboldNpc)entity;
-            Optional optional = (Optional)kobold.getDataManager().get(aL);
+            Optional optional = (Optional)kobold.getDataManager().get(BoundPlayerUuidKey);
             try {
                 if (!optional.isPresent()) {
                     return;
@@ -4659,7 +4653,7 @@ dr {
                         throw KoboldNpc.DeathLootHandler.rethrow(concurrentModificationException);
                     }
                     KoboldNpc kobold = (KoboldNpc)girl;
-                    Optional optional = (Optional)kobold.getDataManager().get(aL);
+                    Optional optional = (Optional)kobold.getDataManager().get(BoundPlayerUuidKey);
                     try {
                         if (!optional.isPresent()) {
                             continue;

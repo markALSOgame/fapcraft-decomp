@@ -7,6 +7,7 @@ import net.minecraft.world.World;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLiving;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.living.BabyEntitySpawnEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
 public class VillagerBreedAi extends EntityAIBase {
@@ -109,11 +110,11 @@ public class VillagerBreedAi extends EntityAIBase {
                 throw VillagerBreedAi.rethrow(runtimeException);
             }
         }
-        entityVillager = babyEntitySpawnEvent.getChild();
-        entityVillager.setGrowingAge(-24000);
-        entityVillager.setLocationAndAngles(this.Villager.posX, this.Villager.posY, this.Villager.posZ, 0.0f, 0.0f);
-        this.WorldObj.spawnEntity((Entity)entityVillager);
-        this.WorldObj.setEntityState((Entity)entityVillager, (byte)12);
+        EntityVillager entityVillager2 = (EntityVillager)babyEntitySpawnEvent.getChild();
+        entityVillager2.setGrowingAge(-24000);
+        entityVillager2.setLocationAndAngles(this.Villager.posX, this.Villager.posY, this.Villager.posZ, 0.0f, 0.0f);
+        this.WorldObj.spawnEntity((Entity)entityVillager2);
+        this.WorldObj.setEntityState((Entity)entityVillager2, (byte)12);
     }
 
    private static RuntimeException rethrow(RuntimeException error) {

@@ -182,7 +182,7 @@ public class SlimeRainEntity extends EntityLiving {
             SlimeNpc slime = new SlimeNpc(this.world);
             slime.setPositionAndRotation(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
             this.world.spawnEntity(slime);
-            slime.a(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP);
+            slime.playSoundEvent(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP);
             this.world.removeEntity(this);
         }
         this.SquishFactor += (this.SquishTarget - this.SquishFactor) * 0.5f;
@@ -374,8 +374,8 @@ public class SlimeRainEntity extends EntityLiving {
       return false;
    }
 
-   private static Exception rethrow(Exception error) {
-      return error;
+   private static RuntimeException rethrow(Exception error) {
+      return new RuntimeException(error);
    }
 
    static class RandomLookAi extends EntityAIBase {

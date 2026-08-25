@@ -2,6 +2,7 @@ package com.trolmastercard.sexmod;
 
 import java.io.IOException;
 import net.minecraft.client.Minecraft;
+import org.lwjgl.input.Keyboard;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -112,19 +113,9 @@ public class GuiGirlPreview extends GuiScreen {
 
    public void handleKeyboardInput() throws IOException {
         block4: {
-            try {
-                try {
-                    if (ClientProxy.keyBindings[0].getKeyCode() != Keyboard.getEventKey() || Keyboard.getEventKeyState()) break block4;
-                }
-                catch (IOException iOException) {
-                    throw GuiGirlPreview.rethrow(iOException);
-                }
-                Minecraft.getMinecraft().player.closeScreen();
-                return;
-            }
-            catch (IOException iOException) {
-                throw GuiGirlPreview.rethrow(iOException);
-            }
+            if (ClientProxy.keyBindings[0].getKeyCode() != Keyboard.getEventKey() || Keyboard.getEventKeyState()) break block4;
+            Minecraft.getMinecraft().player.closeScreen();
+            return;
         }
         super.handleKeyboardInput();
     }
@@ -268,8 +259,14 @@ public class GuiGirlPreview extends GuiScreen {
    public boolean doesGuiPauseGame() {
       return false;
    }
+ static RuntimeException rethrow(RuntimeException error) {
 
-   private static Exception rethrow(Exception error) {
       return error;
+
+   }
+
+
+   private static RuntimeException rethrow(Exception error) {
+      return new RuntimeException(error);
    }
 }

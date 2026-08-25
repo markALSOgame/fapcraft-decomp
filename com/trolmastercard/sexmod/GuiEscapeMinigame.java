@@ -2,6 +2,8 @@ package com.trolmastercard.sexmod;
 
 import java.util.Random;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.GameSettings;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -12,7 +14,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent;
 
 @SideOnly(Side.CLIENT)
 public class GuiEscapeMinigame extends Gui {
@@ -102,7 +104,7 @@ public class GuiEscapeMinigame extends Gui {
             }
             try {
                 k = Math.max(0.0f, k - 0.006f);
-                if (GuiStructureBuilder < 20.0f) {
+                if (SpawnTimerTicks < 20.0f) {
                     return;
                 }
             }

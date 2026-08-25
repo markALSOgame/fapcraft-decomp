@@ -3,6 +3,7 @@ package com.trolmastercard.sexmod;
 import javax.vecmath.Vector4f;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3i;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
@@ -19,8 +20,8 @@ public class KoboldPlayerRenderer extends CustomColorGirlRenderer {
    protected Vec3i getBoneColor(String string) {
         block10: {
             EntityDataManager entityDataManager = this.RenderEntity.getDataManager();
-            EyeAndKoboldColor eyeAndKoboldColor = EyeAndKoboldColor.valueOf((String)entityDataManager.get(KoboldNpc.BodyColorKey));
-            BlockPos blockPos = (BlockPos)entityDataManager.get(KoboldNpc.EyeColorKey);
+            EyeAndKoboldColor eyeAndKoboldColor = EyeAndKoboldColor.valueOf((String)entityDataManager.get(KoboldNpc.TribeColorKey));
+            BlockPos blockPos = (BlockPos)entityDataManager.get(KoboldNpc.K);
             try {
                 if (KoboldNpcRenderer.MainColorBones.contains(string)) {
                     return eyeAndKoboldColor.getMainColor();
@@ -50,11 +51,11 @@ public class KoboldPlayerRenderer extends CustomColorGirlRenderer {
                 throw KoboldPlayerRenderer.rethrow(runtimeException);
             }
         }
-        return z;
+        return DefaultColor;
     }
 
    @Override
-   protected Vector4f getBoneColorRGBA(String string, float f, float f2, float f3) {
+   protected Vector4f getBoneTint(String string, float f, float f2, float f3) {
       if ("mouth".equals(string)) {
          String[] stringArray = GirlEffectEntity.getAttributeStrings(this.RenderEntity);
          int i = Integer.parseInt(stringArray[7]);
@@ -68,37 +69,37 @@ public class KoboldPlayerRenderer extends CustomColorGirlRenderer {
          }
       }
 
-      return super.getBoneColorRGBA(string, f, f2, f3);
+      return super.getBoneTint(string, f, f2, f3);
    }
 
    @Override
-   protected void applyBodySizeScale() {
+   protected void applyBodyScale() {
       float f = 0.25F - (Float)this.RenderEntity.getDataManager().get(KoboldPlayer.BodySizeKey);
       GlStateManager.scale(1.0F - f, 1.0F - f, 1.0F - f);
    }
 
    @Override
-   protected void undoBodySizeScale() {
+   protected void undoBodyScale() {
       float f = 0.25F - (Float)this.RenderEntity.getDataManager().get(KoboldPlayer.BodySizeKey);
       double d = 1.0 / (1.0 - f);
       GlStateManager.scale(d, d, d);
    }
 
    @Override
-   protected void applyHeadRenderTransform() {
+   protected void applyScaleOffset() {
       GlStateManager.translate(0.0, -0.8F, 0.05);
       GlStateManager.scale(0.5, 0.5, 0.5);
    }
 
    @Override
 
-   protected void applyHeldItemPose(boolean flag, ItemStack stack) {
+   protected void applyHeldItemTransform(boolean flag, ItemStack stack) {
         float f;
         block9: {
             block10: {
                 try {
                     try {
-                        super.applyHeldItemPose(flag, stack);
+                        super.applyHeldItemTransform(flag, stack);
                         if (stack.getItem().getItemUseAction(stack) != EnumAction.BOW) break block9;
                         if (flag) break block10;
                     }
@@ -132,14 +133,14 @@ public class KoboldPlayerRenderer extends CustomColorGirlRenderer {
 
    @Override
 
-   protected void applyArmPose(boolean flag, boolean flag2) {
+   protected void applyDualHandOffset(boolean flag, boolean flag2) {
         block8: {
             block9: {
                 block6: {
                     block7: {
                         try {
                             try {
-                                super.applyArmPose(flag, flag2);
+                                super.applyDualHandOffset(flag, flag2);
                                 if (!flag) break block6;
                                 if (!flag2) break block7;
                             }

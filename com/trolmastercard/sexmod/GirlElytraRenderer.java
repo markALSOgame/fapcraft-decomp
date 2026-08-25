@@ -37,7 +37,7 @@ public class GirlElytraRenderer extends GeoLayerRenderer {
       ItemStack stack = (ItemStack)inventoryGirl.getDataManager().get(InventoryGirlEntity.ChestKey);
       EntityPlayer player = null;
       if (inventoryGirl instanceof PlayerGirlEntity) {
-         UUID uuid = ((PlayerGirlEntity)inventoryGirl).m();
+         UUID uuid = ((PlayerGirlEntity)inventoryGirl).getBoundPlayerUuid();
          if (uuid != null) {
             player = livingBase.world.getPlayerEntityByUUID(uuid);
          }
@@ -59,50 +59,17 @@ public class GirlElytraRenderer extends GeoLayerRenderer {
       GlStateManager.translate(0.0F, 0.0F, 0.125F);
       float f7 = this.getScaleFactor();
 
-      ModelElytra model;
-      float f8;
-      float f9;
-      float f10;
-      float f11;
-      float f12;
-      float f13;
-      Object obj;
-      label42: {
-         try {
-            model = this.Model;
-            f8 = f;
-            f9 = f2;
-            f10 = f4;
-            f11 = f5;
-            f12 = f6;
-            f13 = f7;
-            if (player == null) {
-               obj = livingBase;
-               break label42;
-            }
-         } catch (RuntimeException error3) {
-            throw rethrow(error3);
-         }
+      ModelElytra model = this.Model;
+      float f8 = f;
+      float f9 = f2;
+      float f10 = f4;
+      float f11 = f5;
+      float f12 = f6;
+      float f13 = f7;
+      Entity renderEntity = player == null ? (Entity)livingBase : player;
 
-         obj = player;
-      }
-
-      label35: {
-         try {
-            model.setRotationAngles(f8, f9, f10, f11, f12, f13, (Entity)obj);
-            model = this.Model;
-            if (player == null) {
-               livingBase2 = livingBase;
-               break label35;
-            }
-         } catch (RuntimeException error4) {
-            throw rethrow(error4);
-         }
-
-         livingBase2 = player;
-      }
-
-      model.render((Entity)livingBase2, f, f2, f4, f5, f6, f7);
+      model.setRotationAngles(f8, f9, f10, f11, f12, f13, renderEntity);
+      model.render(renderEntity, f, f2, f4, f5, f6, f7);
       GlStateManager.disableBlend();
       GlStateManager.popMatrix();
    }

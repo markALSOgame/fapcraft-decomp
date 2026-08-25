@@ -2,12 +2,15 @@ package com.trolmastercard.sexmod;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityEnderPearl;
+import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityEndGateway;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EnumParticleTypes;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
@@ -73,10 +76,10 @@ public class CustomEnderPearl extends EntityEnderPearl {
                 GirlEntity girl = (GirlEntity)entityLivingBase;
                 if (girl.HomePos.distanceTo(this.getPositionVector()) < 5.0) {
                     block19: {
-                        tileEntity = new EnderTeleportEvent(entityLivingBase, this.posX, this.posY, this.posZ, 5.0f);
+                        EnderTeleportEvent enderTeleportEvent = new EnderTeleportEvent(entityLivingBase, this.posX, this.posY, this.posZ, 5.0f);
                         try {
                             try {
-                                if (MinecraftForge.EVENT_BUS.post((Event)tileEntity)) break block18;
+                                if (MinecraftForge.EVENT_BUS.post((Event)enderTeleportEvent)) break block18;
                                 if (!entityLivingBase.isRiding()) break block19;
                             }
                             catch (RuntimeException runtimeException) {

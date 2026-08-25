@@ -1,12 +1,13 @@
 package com.trolmastercard.sexmod;
 
+import java.util.Arrays;
 import javax.vecmath.Vector3f;
 import net.minecraft.util.ResourceLocation;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.AnimationProcessor;
 import software.bernie.geckolib3.core.processor.IBone;
 
-public class ModelSlime extends GirlGeoModel {
+public class ModelSlime extends GirlGeoModel<GirlEntity> {
    GirlAnimationState[] BedDoggyAnimations = new GirlAnimationState[]{GirlAnimationState.STARTDOGGY, GirlAnimationState.DOGGYCUM, GirlAnimationState.DOGGYSLOW, GirlAnimationState.DOGGYFAST, GirlAnimationState.DOGGYCUM, GirlAnimationState.DOGGYSTART, GirlAnimationState.WAITDOGGY};
 
    @Override
@@ -19,7 +20,7 @@ public class ModelSlime extends GirlGeoModel {
    }
 
    @Override
-   public ResourceLocation getModelForGirl(GirlEntity girl) {
+   public ResourceLocation getTextureLocation(GirlEntity girl) {
       try {
          if (girl.world instanceof PreviewWorld) {
             return this.TextureLayers[0];
@@ -57,7 +58,7 @@ public class ModelSlime extends GirlGeoModel {
    }
 
    @Override
-   public ResourceLocation b() {
+   public ResourceLocation getSkinLocation() {
       return new ResourceLocation("sexmod", "textures/entity/slime/slime.png");
    }
 
@@ -68,7 +69,7 @@ public class ModelSlime extends GirlGeoModel {
 
    @Override
 
-   public void applyBedAnimations(GirlEntity girl, Integer i, AnimationEvent animEvent) {
+   public void setLivingAnimations(GirlEntity girl, Integer i, AnimationEvent animEvent) {
         block13: {
             boolean flag;
             IBone iBone;
@@ -77,7 +78,7 @@ public class ModelSlime extends GirlGeoModel {
             AnimationProcessor animationProcessor;
             block15: {
                 block14: {
-                    super.applyBedAnimations(girl, i, animEvent);
+                    super.setLivingAnimations(girl, i, animEvent);
                     animationProcessor = this.getAnimationProcessor();
                     try {
                         try {
@@ -167,32 +168,32 @@ public class ModelSlime extends GirlGeoModel {
    }
 
    @Override
-   public String[] getMainBodyBones() {
+   public String[] getHeadAccessoryBones() {
       return new String[]{"bigblob"};
    }
 
    @Override
-   public String[] getUpperArmorBones() {
+   public String[] getChestArmorBones() {
       return new String[]{"armorShoulderR", "armorShoulderL", "armorChest", "armorBoobs"};
    }
 
    @Override
-   public String[] a() {
+   public String[] getFleshTorsoBones() {
       return new String[]{"boobsFlesh", "upperBodyL", "upperBodyR", "cloth"};
    }
 
    @Override
-   public String[] getLegsArmorBones() {
+   public String[] getPantsArmorBones() {
       return new String[]{"armorBootyR", "armorBootyL", "armorPantsLowL", "armorPantsLowR", "armorPantsLowR", "armorPantsUpR", "armorPantsUpL", "armorHip"};
    }
 
    @Override
-   public String[] getLegsFleshBones() {
+   public String[] getFleshLegsBones() {
       return new String[]{"fleshL", "fleshR", "vagina", "curvesL", "curvesR", "kneeL", "kneeR"};
    }
 
    @Override
-   public String[] b() {
+   public String[] getBootsArmorBones() {
       return new String[]{"armorShoesL", "armorShoesR"};
    }
 

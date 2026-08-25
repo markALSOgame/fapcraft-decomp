@@ -37,7 +37,7 @@ public class GuiChest extends GuiContainer {
    }
 
    protected void drawGuiContainerForegroundLayer(int i, int i2) {
-      this.fontRenderer.drawString(this.Girl.getDisplayName(), 8, 6, 4210752);
+      this.fontRenderer.drawString(this.Girl.getDisplayName().getUnformattedText(), 8, 6, 4210752);
       this.fontRenderer.drawString(this.PlayerInventory.getDisplayName().getUnformattedText(), 8, this.ySize - 96 + 2, 4210752);
    }
 

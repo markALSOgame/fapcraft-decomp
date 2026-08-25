@@ -168,7 +168,7 @@ public class ManglelieNpcRenderer extends GeoGirlRenderer<ManglelieNpc> {
          throw rethrow(error2);
       }
 
-      return galath.boolean_b();
+      return galath.hasMangleCompanion();
    }
 
    public void doRenderShadowAndFire(Entity entity, double d2, double d3, double d4, float f, float f2) {
@@ -233,7 +233,7 @@ public class ManglelieNpcRenderer extends GeoGirlRenderer<ManglelieNpc> {
    }
 
    public static void renderGirl(GirlEntity girl, float f) {
-      EntityPlayerSP mcPlayer = KoboldEggEntity.player;
+      EntityPlayerSP mcPlayer = Minecraft.getMinecraft().player;
 
       try {
          if (mcPlayer == null) {
@@ -265,11 +265,11 @@ public class ManglelieNpcRenderer extends GeoGirlRenderer<ManglelieNpc> {
             throw rethrow(error3);
          }
 
-         VectorUtil.drawGirlBones(i, girl, f);
+         VectorUtil.drawGirlBones(Minecraft.getMinecraft(), girl, f);
          rotateHeadToTwin(girl, f);
       }
 
-      KoboldEggEntity.getTextureManager().bindTexture(e);
+      Minecraft.getMinecraft().getTextureManager().bindTexture(GeoGirlRenderer.LineTexture);
       GlStateManager.disableCull();
       GlStateManager.disableLighting();
       renderGirlGeometryWithAlpha(girl, bufferBuilder, tessellator, GeoGirlRenderer.a(girl, f));
@@ -403,12 +403,12 @@ public class ManglelieNpcRenderer extends GeoGirlRenderer<ManglelieNpc> {
 
    @Override
 
-   protected void a(BufferBuilder bufferBuilder, String string, GeoBone bone) {
+   protected void applyBoneState(BufferBuilder bufferBuilder, String string, GeoBone bone) {
         block12: {
             Entity entity;
             block11: {
                 ManglelieNpcRenderer.applyModelPartColor(this.RenderEntity, string, bone, false);
-                entity = ((ManglelieNpc)this.RenderEntity).b();
+                entity = ((ManglelieNpc)this.RenderEntity).getTargetEntity();
                 try {
                     if (entity == null) {
                         return;
@@ -419,7 +419,7 @@ public class ManglelieNpcRenderer extends GeoGirlRenderer<ManglelieNpc> {
                 }
                 try {
                     try {
-                        if (!"weapon".equals(string) || !((ManglelieNpc)this.RenderEntity).a(entity, KoboldEggEntity.getRenderPartialTicks())) break block11;
+                        if (!"weapon".equals(string) || !((ManglelieNpc)this.RenderEntity).a(entity, Minecraft.getMinecraft().getRenderPartialTicks())) break block11;
                     }
                     catch (NumberFormatException numberFormatException) {
                         throw ManglelieNpcRenderer.rethrow(numberFormatException);
@@ -432,7 +432,7 @@ public class ManglelieNpcRenderer extends GeoGirlRenderer<ManglelieNpc> {
             }
             try {
                 try {
-                    if (!"offhand".equals(string) || ((ManglelieNpc)this.RenderEntity).a(entity, KoboldEggEntity.getRenderPartialTicks())) break block12;
+                    if (!"offhand".equals(string) || ((ManglelieNpc)this.RenderEntity).a(entity, Minecraft.getMinecraft().getRenderPartialTicks())) break block12;
                 }
                 catch (NumberFormatException numberFormatException) {
                     throw ManglelieNpcRenderer.rethrow(numberFormatException);
@@ -471,7 +471,7 @@ public class ManglelieNpcRenderer extends GeoGirlRenderer<ManglelieNpc> {
 
       GlStateManager.scale(0.7, 0.7, 0.7);
       ItemStack stack = new ItemStack(Items.BOW);
-      float f = this.RenderEntity.b(KoboldEggEntity.getRenderPartialTicks());
+      float f = this.RenderEntity.float_b(Minecraft.getMinecraft().getRenderPartialTicks());
       if (f < 1.0F) {
          float f2 = (float)LerpMath.EaseOutQuart(f);
           this.RenderEntity.d((int)(11.0F * (1.0F - f2) + 71980.0F));
@@ -513,7 +513,7 @@ public class ManglelieNpcRenderer extends GeoGirlRenderer<ManglelieNpc> {
                         try {
                             try {
                                 if (!MathUtils.isInRange((double)i, 17.0, 35.0)) break block23;
-                                if (!KoboldEggEntity.isGamePaused()) break block24;
+                                if (!Minecraft.getMinecraft().isGamePaused()) break block24;
                             }
                             catch (NumberFormatException numberFormatException) {
                                 throw ManglelieNpcRenderer.rethrow(numberFormatException);
@@ -533,7 +533,7 @@ public class ManglelieNpcRenderer extends GeoGirlRenderer<ManglelieNpc> {
                     if (flag) {
                         string2 = string2 + "2";
                     }
-                    f = AngleMath.d(girl.b().getBone(string2).getRotationX());
+                    f = AngleMath.radToDegrees(girl.b().getBone(string2).getRotationX());
                     try {
                         if (f < 0.0f) {
                             return;
@@ -567,7 +567,7 @@ public class ManglelieNpcRenderer extends GeoGirlRenderer<ManglelieNpc> {
             if (flag) {
                 string2 = string2 + "2";
             }
-            f = AngleMath.d(girl.b().getBone(string2).getRotationX());
+            f = AngleMath.radToDegrees(girl.b().getBone(string2).getRotationX());
             try {
                 if (f < 0.0f) {
                     return;
@@ -603,14 +603,10 @@ public class ManglelieNpcRenderer extends GeoGirlRenderer<ManglelieNpc> {
    }
 
    protected void a(GeoModel model, BufferBuilder bufferBuilder, ManglelieNpc manglelie, float f, float f2, float f3, float f4, float f5) {
-      try {
          if (!ModelManglelie.isInThreesomeAnimation(manglelie)) {
             super.a(model, bufferBuilder, manglelie, f, f2, f3, f4, f5);
             return;
          }
-      } catch (IOException error) {
-         throw rethrow(error);
-      }
 
       GeoBone bone = (GeoBone)model.topLevelBones.get(0);
       GeoBone bone2 = null;
@@ -622,7 +618,6 @@ public class ManglelieNpcRenderer extends GeoGirlRenderer<ManglelieNpc> {
 
          label48: {
             label47: {
-               try {
                   switch (string.hashCode()) {
                      case 93911760:
                         break;
@@ -634,9 +629,6 @@ public class ManglelieNpcRenderer extends GeoGirlRenderer<ManglelieNpc> {
                      default:
                         break label48;
                   }
-               } catch (IOException error2) {
-                  throw rethrow(error2);
-               }
 
                if (string.equals("body2")) {
                   bv = 1;
@@ -672,7 +664,7 @@ public class ManglelieNpcRenderer extends GeoGirlRenderer<ManglelieNpc> {
          error3.printStackTrace();
       }
 
-      this.renderRecursively(bufferBuilder, bone3, f, f2, f3, this.RenderEntity.getMommyUuid());
+      this.renderRecursively(bufferBuilder, bone3, f, f2, f3, this.RenderEntity.getScale());
       Tessellator.getInstance().draw();
       MATRIX_STACK.pop();
    }
@@ -820,15 +812,25 @@ public class ManglelieNpcRenderer extends GeoGirlRenderer<ManglelieNpc> {
         return flag;
     }
 
+   public static Vec3d rotateHeadToTwin(GalathNpc galath, float f) {
+      return VecMath.getPlayerRelativeOffset(galath, Minecraft.getMinecraft().player, f).add(galath.getModelBone("mangPos"));
+   }
+
    public static Vec3d b(GalathNpc galath, float f) {
-      return VecMath.a(galath, KoboldEggEntity.player, f).add(galath.getModelBone("mangPos"));
+      return rotateHeadToTwin(galath, f);
    }
 
    public static Vec3d a(GalathNpc galath, float f) {
       return VecMath.getPositionOffset(galath, f).add(galath.getModelBone("mangPos"));
    }
+ static RuntimeException rethrow(RuntimeException error) {
 
-   private static Exception rethrow(Exception error) {
       return error;
+
+   }
+
+
+   private static RuntimeException rethrow(Exception error) {
+      return new RuntimeException(error);
    }
 }

@@ -57,10 +57,10 @@ public class PacketSexPrompt implements IMessage {
          }
 
          try {
-            if (ctx.side.equals(Side.CLIENT)) {
-               ClientChatHandler.Entry.openGui(new ClientChatHandler.Entry(packet.Message, packet.PlayerUuid, packet.GirlUuid, packet.Accept));
-               return null;
-            }
+             if (ctx.side.equals(Side.CLIENT)) {
+                ClientChatHandler.Instance.a(new ClientChatHandler.Entry(packet.Message, packet.PlayerUuid, packet.GirlUuid, packet.Accept));
+                return null;
+             }
          } catch (RuntimeException error2) {
             throw rethrow(error2);
          }
@@ -106,7 +106,7 @@ public class PacketSexPrompt implements IMessage {
                player4 = player3;
             }
 
-            simpleNetworkWrapper.sendTo(packet2, (EntityPlayerMP & EntityPlayerMP)player4);
+            simpleNetworkWrapper.sendTo(packet2, (EntityPlayerMP)player4);
          });
          return null;
       }

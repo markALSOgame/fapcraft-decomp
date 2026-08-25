@@ -15,7 +15,8 @@ public class SlimeRainLayer implements LayerRenderer<SlimeRainEntity> {
       this.Renderer = renderer;
    }
 
-   public void render(SlimeRainEntity slimeRainEntity, float f, float f2, float f3, float f4, float f5, float f6, float f7) {
+   @Override
+   public void doRenderLayer(SlimeRainEntity slimeRainEntity, float f, float f2, float f3, float f4, float f5, float f6, float f7) {
       try {
          if (!slimeRainEntity.isInvisible()) {
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);

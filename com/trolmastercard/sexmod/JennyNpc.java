@@ -72,7 +72,7 @@ import java.util.Random;
 public class JennyNpc
 extends InventoryGirlEntity
 implements VoidCallback,
-fg {
+EmptyAction {
     public boolean SeekingDoggyPos = false;
     public boolean Teleporting = false;
     public boolean StartDoggyPending = false;
@@ -99,7 +99,7 @@ fg {
     }
 
     @Override
-    public String getDisplayName() {
+    public String getGirlName() {
         return "Jenny";
     }
 
@@ -111,13 +111,13 @@ fg {
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.DataManager.register(HornyPotionActive, (Object)false);
+        this.DataManager.register(HornyPotionActive,false);
     }
 
     @Override
     public void c() {
-        this.performAction("Alright, this is my new Home~");
-        this.a(ModSounds.GIRLS_JENNY_HAPPYOH[1]);
+        this.a("Alright, this is my new Home~");
+        this.playSoundEvent(ModSounds.GIRLS_JENNY_HAPPYOH[1]);
     }
 
     public float getEyeHeight() {
@@ -156,11 +156,11 @@ fg {
                                     throw JennyNpc.rethrow(runtimeException);
                                 }
                                 this.StartDoggyPending = false;
-                                this.DataManager.set(GirlEntity.SexPlayerUuidKey, (Object)this.world.getClosestPlayerToEntity((Entity)this, 15.0).getPersistentID().toString());
+                                this.DataManager.set(GirlEntity.SexPlayerUuidKey,this.world.getClosestPlayerToEntity((Entity)this, 15.0).getPersistentID().toString());
                                 entityPlayerMP = this.getServer().getPlayerList().getPlayerByUUID(this.getSexPlayerUuid());
-                                this.DataManager.set(GirlEntity.SexPlayerUuidKey, (Object)entityPlayerMP.getPersistentID().toString());
+                                this.DataManager.set(GirlEntity.SexPlayerUuidKey,entityPlayerMP.getPersistentID().toString());
                                 entityPlayerMP.setPositionAndUpdate(this.getPositionVector().x, this.getPositionVector().y, this.getPositionVector().z);
-                                this.a(entityPlayerMP, false);
+                                this.teleportServerPlayerInFront(entityPlayerMP, false);
                                 entityPlayerMP.moveRelative(0.0f, 0.0f, 0.0f, 0.0f);
                                 this.a(0.0, 0.0, 0.4, 0.0f, 60.0f);
                                 this.AimTarget = null;
@@ -184,7 +184,7 @@ fg {
                                     }
                                 }
                                 this.SeekingDoggyPos = false;
-                                this.DataManager.set(GirlEntity.BusyKey, (Object)true);
+                                this.DataManager.set(GirlEntity.BusyKey,true);
                                 this.SeekTicks = 0;
                                 this.noClip = true;
                                 this.setNoGravity(true);
@@ -233,8 +233,8 @@ fg {
                             }
                             this.Teleporting = false;
                             this.TeleportTicks = 0;
-                            this.openActionMenu(this.world.getMinecraftServer().getPlayerList().getPlayerByUUID((UUID)this.getSexPlayerUuid()).rotationYaw + 180.0f);
-                            this.DataManager.set(GirlEntity.BusyKey, (Object)true);
+                            this.b(this.world.getMinecraftServer().getPlayerList().getPlayerByUUID((UUID)this.getSexPlayerUuid()).rotationYaw + 180.0f);
+                            this.DataManager.set(GirlEntity.BusyKey,true);
                             this.getNavigator().clearPath();
                             if (!((Boolean)this.DataManager.get(HornyPotionActive)).booleanValue()) break block29;
                         }
@@ -254,8 +254,8 @@ fg {
             this.rotationYaw = this.I().floatValue();
             this.setTargetPos(this.getPlayerFrontPos());
             this.setNoGravity(false);
-            entityPlayerMP = LerpMath.stepTowards(this.getPositionVector(), this.getTargetPos(), 40 - this.TeleportTicks);
-            this.setPosition(entityPlayerMP.x, entityPlayerMP.y, entityPlayerMP.z);
+            Vec3d vec3d = LerpMath.stepTowards(this.getPositionVector(), this.getTargetPos(), 40 - this.TeleportTicks);
+            this.setPosition(vec3d.x, vec3d.y, vec3d.z);
         }
     }
 
@@ -271,12 +271,12 @@ fg {
             }
             try {
                 try {
-                    if (!this.world.isRemote || this.openActionMenu(entityPlayer)) break block7;
+                    if (!this.world.isRemote || this.canInteract(entityPlayer)) break block7;
                 }
                 catch (RuntimeException runtimeException) {
                     throw JennyNpc.rethrow(runtimeException);
                 }
-                this.create(I18n.format((String)"jenny.dialogue.busy", (Object[])new Object[0]));
+                this.a(I18n.format((String)"jenny.dialogue.busy", (Object[])new Object[0]));
             }
             catch (RuntimeException runtimeException) {
                 throw JennyNpc.rethrow(runtimeException);
@@ -290,7 +290,7 @@ fg {
         try {
             super.onUpdate();
             if (!this.world.isRemote) {
-                this.DataManager.set(HornyPotionActive, (Object)this.isPotionActive(PotionHandler.b));
+                this.DataManager.set(HornyPotionActive,this.isPotionActive(PotionHandler.b));
             }
         }
         catch (RuntimeException runtimeException) {
@@ -299,98 +299,28 @@ fg {
     }
 
     @Override
-    public boolean openActionMenu(EntityPlayer entityPlayer) {
-        block13: {
-            ItemStack itemStack;
-            ItemStack[] itemStackArray;
-            String[] stringArray;
-            JennyNpc jenny;
-            EntityPlayer entityPlayer2;
-            String string;
-            String[] stringArray2;
-            block16: {
-                block15: {
-                    try {
-                        try {
-                            block14: {
-                                try {
-                                    try {
-                                        if (this.getSexPlayerUuid() != null) break block13;
-                                        if (!this.J()) break block14;
-                                    }
-                                    catch (RuntimeException runtimeException) {
-                                        throw JennyNpc.rethrow(runtimeException);
-                                    }
-                                    if (!((String)this.DataManager.get(GirlEntity.MasterUuidKey)).equals(Minecraft.getMinecraft().player.getPersistentID().toString())) break block13;
-                                }
-                                catch (RuntimeException runtimeException) {
-                                    throw JennyNpc.rethrow(runtimeException);
-                                }
-                            }
-                            String[] stringArray3 = new String[4];
-                            stringArray3[0] = "action.names.blowjob";
-                            stringArray3[1] = "action.names.boobjob";
-                            stringArray3[2] = "action.names.doggy";
-                            String[] stringArray4 = stringArray3;
-                            stringArray2 = stringArray3;
-                            int i = 3;
-                            if ((Integer)this.DataManager.get(GirlEntity.OutfitIndexKey) != 1) break block15;
-                        }
-                        catch (RuntimeException runtimeException) {
-                            throw JennyNpc.rethrow(runtimeException);
-                        }
-                        string = "action.names.strip";
-                        break block16;
-                    }
-                    catch (RuntimeException runtimeException) {
-                        throw JennyNpc.rethrow(runtimeException);
-                    }
-                }
-                string = "action.names.dressup";
+    public boolean canInteract(EntityPlayer entityPlayer) {
+        if (this.getSexPlayerUuid() == null && (!this.J() || ((String)this.DataManager.get(GirlEntity.MasterUuidKey)).equals(Minecraft.getMinecraft().player.getPersistentID().toString()))) {
+            String[] stringArray = new String[]{"action.names.blowjob", "action.names.boobjob", "action.names.doggy", (Integer)this.DataManager.get(GirlEntity.OutfitIndexKey) == 1 ? "action.names.strip" : "action.names.dressup"};
+            if (((Boolean)this.DataManager.get(HornyPotionActive)).booleanValue()) {
+                GirlEntity.openActionMenu(entityPlayer, this, stringArray, true);
+                return true;
             }
-            stringArray4[i] = string;
-            String[] stringArray5 = stringArray2;
-            try {
-                if (((Boolean)this.DataManager.get(HornyPotionActive)).booleanValue()) {
-                    GirlEntity.openActionMenu(entityPlayer, this, stringArray5, true);
-                    return true;
-                }
-            }
-            catch (RuntimeException runtimeException) {
-                throw JennyNpc.rethrow(runtimeException);
-            }
-            try {
-                entityPlayer2 = entityPlayer;
-                jenny = this;
-                stringArray = stringArray5;
-                ItemStack[] itemStackArray2 = new ItemStack[4];
-                itemStackArray2[0] = new ItemStack(Items.EMERALD, 3);
-                itemStackArray2[1] = new ItemStack(Items.ENDER_PEARL, 2);
-                itemStackArray2[2] = new ItemStack(Items.DIAMOND, 2);
-                ItemStack[] itemStackArray3 = itemStackArray2;
-                itemStackArray = itemStackArray2;
-                int i2 = 3;
-                itemStack = (Integer)this.DataManager.get(GirlEntity.OutfitIndexKey) == 1 ? new ItemStack(Items.GOLD_INGOT, 1) : new ItemStack(Items.AIR, 0);
-            }
-            catch (RuntimeException runtimeException) {
-                throw JennyNpc.rethrow(runtimeException);
-            }
-            itemStackArray3[i2] = itemStack;
-            GirlEntity.openActionMenuWithItems(entityPlayer2, jenny, stringArray, itemStackArray, true);
+            GirlEntity.openActionMenuWithItems(entityPlayer, this, stringArray, new ItemStack[]{new ItemStack(Items.EMERALD, 3), new ItemStack(Items.ENDER_PEARL, 2), new ItemStack(Items.DIAMOND, 2), (Integer)this.DataManager.get(GirlEntity.OutfitIndexKey) == 1 ? new ItemStack(Items.GOLD_INGOT, 1) : new ItemStack(Items.AIR, 0)}, true);
             return true;
         }
         return false;
     }
 
     @Override
-    public void performAction(String string, UUID uUID) {
+    public void a(String string, UUID uUID) {
         block12: {
             block15: {
                 block14: {
                     block13: {
                         block11: {
                             try {
-                                super.performAction(string, uUID);
+                                super.a(string, uUID);
                                 if (!"action.names.blowjob".equals(string)) break block11;
                                 this.a("animationFollowUp", "blowjob");
                                 this.a(true, uUID);
@@ -447,15 +377,15 @@ fg {
     }
 
     @Override
-    public void a() {
+    public void goToSexBed() {
         block9: {
             BlockPos blockPos;
             block8: {
-                blockPos = this.create(this.getPosition());
+                blockPos = this.findNearbyBedPos(this.getPosition());
                 try {
                     if (blockPos != null) break block8;
-                    this.a(ModSounds.GIRLS_JENNY_HMPH[2]);
-                    this.create(I18n.format((String)"jenny.dialogue.nobedinsight", (Object[])new Object[0]));
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_HMPH[2]);
+                    this.a(I18n.format((String)"jenny.dialogue.nobedinsight", (Object[])new Object[0]));
                     break block9;
                 }
                 catch (RuntimeException runtimeException) {
@@ -488,8 +418,8 @@ fg {
             }
             try {
                 if (i == -1) {
-                    this.a(ModSounds.GIRLS_JENNY_HMPH[2]);
-                    this.create(I18n.format((String)"jenny.dialogue.bedobscured", (Object[])new Object[0]));
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_HMPH[2]);
+                    this.a(I18n.format((String)"jenny.dialogue.bedobscured", (Object[])new Object[0]));
                     return;
                 }
             }
@@ -619,7 +549,7 @@ fg {
     }
 
     @Override
-    protected GirlAnimationState a(GirlAnimationState girlAnimationState) {
+    protected GirlAnimationState nextAnimationState(GirlAnimationState girlAnimationState) {
         block14: {
             block13: {
                 block12: {
@@ -667,7 +597,7 @@ fg {
     }
 
     @Override
-    protected GirlAnimationState c(GirlAnimationState girlAnimationState) {
+    protected GirlAnimationState getFollowUpAction(GirlAnimationState girlAnimationState) {
         switch (girlAnimationState) {
             case SUCKBLOWJOB: {
                 return GirlAnimationState.THRUSTBLOWJOB;
@@ -692,7 +622,7 @@ fg {
     }
 
     @Override
-    public void g() {
+    protected void initEntityAI() {
         this.WanderAI = new EntityAIWanderAvoidWater((EntityCreature)this, 0.35);
         this.WatchPlayerAI = new GirlWatchAi((EntityLiving)this, EntityPlayer.class, 3.0f, 1.0f);
         this.tasks.addTask(5, (EntityAIBase)this.WatchPlayerAI);
@@ -731,13 +661,13 @@ fg {
                     break;
                 }
                 this.s();
-                this.a();
+                this.goToSexBed();
             }
         }
         if (this.world.isRemote) {
             this.a("animationFollowUp", "");
         } else {
-            this.DataManager.set(BlowjobStageKey, (Object)"");
+            this.DataManager.set(BlowjobStageKey,"");
         }
     }
 
@@ -905,7 +835,7 @@ fg {
         AnimationController.ISoundListener iSoundListener = arg1 -> {
             block71: switch (arg1.sound) {
                 case "attackSound": {
-                    this.a(SoundEvents.ENTITY_PLAYER_ATTACK_STRONG);
+                    this.playSoundEvent(SoundEvents.ENTITY_PLAYER_ATTACK_STRONG);
                     break;
                 }
                 case "attackDone": {
@@ -928,16 +858,16 @@ fg {
                 }
                 case "stripMSG1": {
                     this.h(I18n.format("jenny.dialogue.hihi", new Object[0]));
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_GIGGLE));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_GIGGLE));
                     break;
                 }
                 case "paymentMSG1": {
                     this.h(I18n.format("jenny.dialogue.huh", new Object[0]));
-                    this.a(ModSounds.GIRLS_JENNY_HUH[1]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_HUH[1]);
                     break;
                 }
                 case "paymentMSG2": {
-                    this.a(ModSounds.MISC_PLOB[0], 0.5f);
+                    this.playSoundAtVolume(ModSounds.MISC_PLOB[0], 0.5f);
                     String string = "<" + Minecraft.getMinecraft().player.getName() + "> ";
                     switch ((String)this.DataManager.get(BlowjobStageKey)) {
                         case "strip": {
@@ -962,7 +892,7 @@ fg {
                 }
                 case "paymentMSG3": {
                     this.h(I18n.format("jenny.dialogue.hehe", new Object[0]));
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_GIGGLE));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_GIGGLE));
                     break;
                 }
                 case "sexUiOn": {
@@ -971,7 +901,7 @@ fg {
                     break;
                 }
                 case "paymentMSG4": {
-                    this.a(ModSounds.MISC_PLOB[0], 0.25f);
+                    this.playSoundAtVolume(ModSounds.MISC_PLOB[0], 0.25f);
                     break;
                 }
                 case "paymentDone": {
@@ -980,7 +910,7 @@ fg {
                 }
                 case "bjiMSG1": {
                     this.h(I18n.format("jenny.dialogue.blowjobtext1", new Object[0]));
-                    this.a(ModSounds.GIRLS_JENNY_MMM[8]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_MMM[8]);
                     this.AimYaw = this.rotationYaw + 180.0f;
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.resetProgress();
@@ -988,43 +918,43 @@ fg {
                 }
                 case "bjiMSG2": {
                     this.h(I18n.format("jenny.dialogue.blowjobtext2", new Object[0]));
-                    this.a(ModSounds.GIRLS_JENNY_LIGHTBREATHING[8]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_LIGHTBREATHING[8]);
                     break;
                 }
                 case "bjiMSG3": {
                     this.h(I18n.format("jenny.dialogue.blowjobtext3", new Object[0]));
-                    this.a(ModSounds.GIRLS_JENNY_AFTERSESSIONMOAN[0]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_AFTERSESSIONMOAN[0]);
                     break;
                 }
                 case "bjiMSG4": {
-                    this.a(ModSounds.MISC_BELLJINGLE[0]);
+                    this.playSoundEvent(ModSounds.MISC_BELLJINGLE[0]);
                     break;
                 }
                 case "bjiMSG5": {
                     this.h(I18n.format("jenny.dialogue.blowjobtext4", new Object[0]));
-                    this.a(ModSounds.GIRLS_JENNY_HMPH[1], 0.5f);
+                    this.playSoundAtVolume(ModSounds.GIRLS_JENNY_HMPH[1], 0.5f);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.resetProgress();
                     break;
                 }
                 case "bjiMSG6": {
                     this.h(I18n.format("jenny.dialogue.blowjobtext5", new Object[0]));
-                    this.a(ModSounds.GIRLS_JENNY_LIGHTBREATHING[8]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_LIGHTBREATHING[8]);
                     break;
                 }
                 case "bjiMSG7": {
                     this.h(I18n.format("jenny.dialogue.blowjobtext6", new Object[0]));
-                    this.a(ModSounds.GIRLS_JENNY_GIGGLE[4]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_GIGGLE[4]);
                     break;
                 }
                 case "bjiMSG8": {
                     this.b("<" + Minecraft.getMinecraft().player.getName() + "> " + I18n.format("jenny.dialogue.blowjobtext7", new Object[0]), true);
-                    this.a(ModSounds.MISC_PLOB[0], 0.5f);
+                    this.playSoundAtVolume(ModSounds.MISC_PLOB[0], 0.5f);
                     break;
                 }
                 case "bjiMSG9": {
                     this.h(I18n.format("jenny.dialogue.blowjobtext8", new Object[0]));
-                    this.a(ModSounds.GIRLS_JENNY_GIGGLE[2]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_GIGGLE[2]);
                     break;
                 }
                 case "bjiMSG10": {
@@ -1036,23 +966,23 @@ fg {
                     if (this.isOwnedByLocalPlayer() && AnimationInputLock.SneakPressed) {
                         this.N();
                     }
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_LIPSOUND));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_LIPSOUND));
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.02);
                     break;
                 }
                 case "bjiMSG12": {
                     if (ModConstants.Random.nextInt(5) == 0) {
-                        this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_BJMOAN));
+                        this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_BJMOAN));
                     }
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_LIPSOUND));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_LIPSOUND));
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.02);
                     break;
                 }
                 case "bjtMSG1": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_MMM));
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_LIPSOUND));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_MMM));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_LIPSOUND));
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.04);
                     break;
@@ -1080,33 +1010,33 @@ fg {
                     break;
                 }
                 case "bjcMSG1": {
-                    this.a(ModSounds.GIRLS_JENNY_BJMOAN[1]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_BJMOAN[1]);
                     break;
                 }
                 case "bjcMSG2": {
-                    this.a(ModSounds.GIRLS_JENNY_BJMOAN[7]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_BJMOAN[7]);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.forceShowHud();
                     break;
                 }
                 case "bjcMSG3": {
-                    this.a(ModSounds.GIRLS_JENNY_AFTERSESSIONMOAN[1]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_AFTERSESSIONMOAN[1]);
                     break;
                 }
                 case "bjcMSG4": {
-                    this.a(ModSounds.GIRLS_JENNY_LIGHTBREATHING[0]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_LIGHTBREATHING[0]);
                     break;
                 }
                 case "bjcMSG5": {
-                    this.a(ModSounds.GIRLS_JENNY_LIGHTBREATHING[1]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_LIGHTBREATHING[1]);
                     break;
                 }
                 case "bjcMSG6": {
-                    this.a(ModSounds.GIRLS_JENNY_LIGHTBREATHING[2]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_LIGHTBREATHING[2]);
                     break;
                 }
                 case "bjcMSG7": {
-                    this.a(ModSounds.GIRLS_JENNY_LIGHTBREATHING[3]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_LIGHTBREATHING[3]);
                     break;
                 }
                 case "bjcBlackScreen": {
@@ -1123,22 +1053,22 @@ fg {
                     break;
                 }
                 case "doggyGoOnBedMSG1": {
-                    this.a(ModSounds.MISC_BEDRUSTLE[0]);
+                    this.playSoundEvent(ModSounds.MISC_BEDRUSTLE[0]);
                     this.AimYaw = this.rotationYaw;
                     break;
                 }
                 case "doggyGoOnBedMSG2": {
                     this.a(I18n.format("jenny.dialogue.doggytext1", new Object[0]));
-                    this.a(ModSounds.GIRLS_JENNY_LIGHTBREATHING[9]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_LIGHTBREATHING[9]);
                     break;
                 }
                 case "doggyGoOnBedMSG3": {
                     this.a(I18n.format("jenny.dialogue.doggytext2", new Object[0]));
-                    this.a(ModSounds.GIRLS_JENNY_GIGGLE[0]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_GIGGLE[0]);
                     break;
                 }
                 case "doggyGoOnBedMSG4": {
-                    this.a(ModSounds.MISC_SLAP[0], 0.75f);
+                    this.playSoundAtVolume(ModSounds.MISC_SLAP[0], 0.75f);
                     break;
                 }
                 case "doggyGoOnBedDone": {
@@ -1147,27 +1077,27 @@ fg {
                     break;
                 }
                 case "doggystartMSG1": {
-                    this.a(ModSounds.MISC_TOUCH[0]);
+                    this.playSoundEvent(ModSounds.MISC_TOUCH[0]);
                     break;
                 }
                 case "doggystartMSG2": {
-                    this.a(ModSounds.MISC_TOUCH[1]);
+                    this.playSoundEvent(ModSounds.MISC_TOUCH[1]);
                     break;
                 }
                 case "doggystartMSG3": {
-                    this.a(ModSounds.MISC_BEDRUSTLE[1], 0.5f);
+                    this.playSoundAtVolume(ModSounds.MISC_BEDRUSTLE[1], 0.5f);
                     break;
                 }
                 case "doggystartMSG4": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_SMALLINSERTS));
-                    this.a(ModSounds.GIRLS_JENNY_MMM[1]);
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.MISC_SMALLINSERTS));
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_MMM[1]);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.resetProgress();
                     break;
                 }
                 case "doggystartMSG5": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.33f);
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_MOAN));
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.33f);
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_MOAN));
                     break;
                 }
                 case "doggystartDone": {
@@ -1178,28 +1108,28 @@ fg {
                 }
                 case "doggyslowMSG1": {
                     this.aa = false;
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.33f);
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.33f);
                     int n = ModConstants.Random.nextInt(4);
                     if (n == 0) {
                         n = ModConstants.Random.nextInt(2);
                         if (n == 0) {
-                            this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_MMM));
+                            this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_MMM));
                         } else {
-                            this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_MOAN));
+                            this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_MOAN));
                         }
                     } else {
-                        this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_HEAVYBREATHING));
+                        this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_HEAVYBREATHING));
                     }
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.00666);
                     break;
                 }
                 case "doggyslowMSG2": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_LIGHTBREATHING), 0.5f);
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_LIGHTBREATHING), 0.5f);
                     break;
                 }
                 case "doggyfastMSG1": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.75f);
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.75f);
                     if (this.isOwnedByLocalPlayer()) {
                         GuiHud.addProgress(0.02);
                     }
@@ -1207,13 +1137,13 @@ fg {
                     if (this.ag % 2 == 0) {
                         int n = ModConstants.Random.nextInt(2);
                         if (n == 0) {
-                            this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_MOAN));
+                            this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_MOAN));
                             break;
                         }
-                        this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_HEAVYBREATHING));
+                        this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_HEAVYBREATHING));
                         break;
                     }
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_AHH));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_AHH));
                     break;
                 }
                 case "doggyfastDone": {
@@ -1222,25 +1152,25 @@ fg {
                     break;
                 }
                 case "doggycumMSG1": {
-                    this.a(ModSounds.MISC_CUMINFLATION[0], 2.0f);
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 2.0f);
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_MOAN));
+                    this.playSoundAtVolume(ModSounds.MISC_CUMINFLATION[0], 2.0f);
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 2.0f);
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_MOAN));
                     break;
                 }
                 case "doggycumMSG2": {
-                    this.a(ModSounds.GIRLS_JENNY_HEAVYBREATHING[4]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_HEAVYBREATHING[4]);
                     break;
                 }
                 case "doggycumMSG3": {
-                    this.a(ModSounds.GIRLS_JENNY_HEAVYBREATHING[5]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_HEAVYBREATHING[5]);
                     break;
                 }
                 case "doggycumMSG4": {
-                    this.a(ModSounds.GIRLS_JENNY_HEAVYBREATHING[6]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_HEAVYBREATHING[6]);
                     break;
                 }
                 case "doggycumMSG5": {
-                    this.a(ModSounds.GIRLS_JENNY_HEAVYBREATHING[7]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_HEAVYBREATHING[7]);
                     break;
                 }
                 case "pearl": {
@@ -1265,11 +1195,11 @@ fg {
                     break;
                 }
                 case "paizuriFastMSG1": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING));
                     if (this.getRNG().nextBoolean()) {
-                        this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_MMM));
+                        this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_MMM));
                     } else {
-                        this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_AHH));
+                        this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_AHH));
                     }
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.04);
@@ -1277,7 +1207,7 @@ fg {
                 }
                 case "paizuriSlowMSG1": 
                 case "paizuriStartMSG1": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING));
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.02);
                     break;
@@ -1291,7 +1221,7 @@ fg {
                 }
                 case "paizuri_startStep": {
                     IBlockState iBlockState = this.world.getBlockState(this.getPosition().subtract(new Vec3i(0, 1, 0)));
-                    this.a(iBlockState.getBlock().getSoundType(iBlockState, this.world, this.getPosition(), this).getStepSound());
+                    this.playSoundEvent(iBlockState.getBlock().getSoundType(iBlockState, this.world, this.getPosition(), this).getStepSound());
                     break;
                 }
                 case "paizuri_cumStart": {

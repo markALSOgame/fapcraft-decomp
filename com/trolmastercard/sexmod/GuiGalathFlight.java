@@ -42,7 +42,7 @@ public class GuiGalathFlight extends Gui {
 
    public static boolean canStartFlight() {
       try {
-         if (CultistRenderer <= 0) {
+         if (AttemptsLeft <= 0) {
             return false;
          }
       } catch (RuntimeException error) {
@@ -129,10 +129,10 @@ public class GuiGalathFlight extends Gui {
 
       f = MathUtils.clamp(f, 0.0F, 1.0F);
       GlStateManager.color(1.0F, 1.0F, 1.0F, f);
-      this.a(BarRect, i3 - BarRect.EggAgeKey / 2, i2 - 70);
-      this.a(SpriteRect3, (int)(i3 - 1.5F * SpriteRect1.c + 1.0F), i2 - 70 + 3);
-      this.a(SpriteRect3, i3 - SpriteRect1.c / 2 + 1, i2 - 70 + 3);
-      this.a(SpriteRect3, i3 + SpriteRect1.c / 2 + 1, i2 - 70 + 3);
+      this.a(BarRect, i3 - BarRect.Width / 2, i2 - 70);
+      this.a(SpriteRect3, (int)(i3 - 1.5F * SpriteRect1.Width + 1.0F), i2 - 70 + 3);
+      this.a(SpriteRect3, i3 - SpriteRect1.Width / 2 + 1, i2 - 70 + 3);
+      this.a(SpriteRect3, i3 + SpriteRect1.Width / 2 + 1, i2 - 70 + 3);
       float f2 = (float)LerpMath.easeOutSine(Math.min(1.0F, (float)(l2 - LastAttemptMs) / 150.0F));
 
       float f3;
@@ -150,16 +150,16 @@ public class GuiGalathFlight extends Gui {
       }
 
       float f4 = f3;
-      this.a(1, -1.5F * SpriteRect1.c, f4, f2, i3, i2, f);
-      this.a(2, -SpriteRect1.c / 2.0F, f4, f2, i3, i2, f);
-      this.a(3, SpriteRect1.c / 2.0F, f4, f2, i3, i2, f);
+      this.a(1, -1.5F * SpriteRect1.Width, f4, f2, i3, i2, f);
+      this.a(2, -SpriteRect1.Width / 2.0F, f4, f2, i3, i2, f);
+      this.a(3, SpriteRect1.Width / 2.0F, f4, f2, i3, i2, f);
    }
 
    void a(int i4, float f5, float f6, float f7, int i5, int i6, float f8) {
       float f9;
       if (AttemptsLeft >= i4) {
          f9 = 0.0F;
-      } else if (CultistRenderer < i4 - 1) {
+      } else if (AttemptsLeft < i4 - 1) {
          f9 = 1.0F;
       } else {
          f9 = f7;
@@ -175,7 +175,7 @@ public class GuiGalathFlight extends Gui {
       float f11 = 1.0F + f9 * 0.075F + f10 * -0.15F;
       GlStateManager.pushMatrix();
       GlStateManager.scale(f11, f11, f11);
-      GlStateManager.translate(f9 * NullNetworkManager[i4 - 1] + f10 * PacketRemoveItems[i4 - 1], f9 * -11.25F + f10 * 37.5F, 0.0F);
+      GlStateManager.translate(f9 * StageOffsetX[i4 - 1] + f10 * StageOffsetY[i4 - 1], f9 * -11.25F + f10 * 37.5F, 0.0F);
       GlStateManager.color(1.0F, 1.0F, 1.0F, f8 - f9 - f10);
       this.a(SpriteRect1, (int)(i5 + f5), i6 - 70);
       GlStateManager.resetColor();

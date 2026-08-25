@@ -102,15 +102,11 @@ public class Main {
             String string;
             String string2 = string = reader.readLine();
 
-            try {
                if (string2 == null) {
                   break;
                }
 
                sb.append(string);
-            } catch (Throwable error3) {
-               throw rethrow(error3);
-            }
          }
       } catch (Throwable error4) {
          error2 = error4;
@@ -118,7 +114,6 @@ public class Main {
       } finally {
          label130: {
             label129: {
-               try {
                   if (reader == null) {
                      break label130;
                   }
@@ -126,9 +121,6 @@ public class Main {
                   if (error2 == null) {
                      break label129;
                   }
-               } catch (Throwable error5) {
-                  throw rethrow(error5);
-               }
 
                try {
                   reader.close();
@@ -160,42 +152,30 @@ public class Main {
 
          boolean flag;
          label152: {
-            try {
                if ('t' == string3.charAt(i + 20)) {
                   flag = true;
                   break label152;
                }
-            } catch (Throwable error7) {
-               throw rethrow(error7);
-            }
 
             flag = false;
          }
 
          label145: {
-            try {
                KoboldVillageGenerator.ShouldGenBuildings = flag;
                if ('t' == string3.charAt(i2 + 22)) {
                   flag = true;
                   break label145;
                }
-            } catch (Throwable error8) {
-               throw rethrow(error8);
-            }
 
             flag = false;
          }
 
          label138: {
-            try {
                GirlGeoModel.RenderBraStrings = flag;
                if ('t' == string3.charAt(i3 + 13)) {
                   flag = true;
                   break label138;
                }
-            } catch (Throwable error9) {
-               throw rethrow(error9);
-            }
 
             flag = false;
          }
@@ -203,8 +183,14 @@ public class Main {
          PlayerGirlEntity.FeatureEnabled = flag;
       }
    }
+ static RuntimeException rethrow(RuntimeException error) {
 
-   private static Throwable rethrow(Throwable error10) {
-      return error10;
+      return error;
+
+   }
+
+
+   private static RuntimeException rethrow(Throwable error10) {
+      return new RuntimeException(error10);
    }
 }

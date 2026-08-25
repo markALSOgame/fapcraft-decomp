@@ -109,7 +109,7 @@ public class GoblinPlayerRenderer extends CustomColorGirlRenderer {
     }
 
    @Override
-   protected Vector4f a(String string, float f, float f2, float f3) {
+   protected Vector4f getBoneTint(String string, float f, float f2, float f3) {
       if (string.startsWith("crown")) {
          ItemStack stack = (ItemStack)this.RenderEntity.getDataManager().get(InventoryGirlEntity.HelmetKey);
 
@@ -163,7 +163,7 @@ public class GoblinPlayerRenderer extends CustomColorGirlRenderer {
    }
 
    @Override
-   public HashSet<String> getAdultParts() {
+   public HashSet<String> getFilteredBoneNames() {
       return new HashSet<String>() {
          {
             this.add("boobs");
@@ -534,7 +534,7 @@ public class GoblinPlayerRenderer extends CustomColorGirlRenderer {
 
    @Override
 
-   protected void applyItemPose(boolean flag, ItemStack stack) {
+   protected void applyHeldItemTransform(boolean flag, ItemStack stack) {
         float f;
         block6: {
             block8: {
@@ -576,14 +576,14 @@ public class GoblinPlayerRenderer extends CustomColorGirlRenderer {
 
    @Override
 
-   protected void applyArmPose(boolean flag, boolean flag2) {
+   protected void applyDualHandOffset(boolean flag, boolean flag2) {
         block8: {
             block9: {
                 block6: {
                     block7: {
                         try {
                             try {
-                                super.a(flag, flag2);
+                                super.applyDualHandOffset(flag, flag2);
                                 if (!flag) break block6;
                                 if (!flag2) break block7;
                             }

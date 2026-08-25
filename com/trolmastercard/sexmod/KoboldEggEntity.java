@@ -31,7 +31,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import java.util.List;
 import java.util.Random;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EnumParticleTypes;
+import net.minecraft.util.EnumParticleTypes;
 
 public class KoboldEggEntity extends EntityLivingBase implements IAnimatable {
    static final int HatchDuration = 12000;
@@ -157,7 +157,7 @@ public class KoboldEggEntity extends EntityLivingBase implements IAnimatable {
         UUID uUID = GirlHomeBuilder.getTribeMasterUuid(this.TribeUuid);
         try {
             if (uUID != null) {
-                kobold.getDataManager().set(GirlEntity.MasterUuidKey, (Object)uUID.toString());
+                kobold.getDataManager().set(GirlEntity.MasterUuidKey, uUID.toString());
             }
         }
         catch (RuntimeException runtimeException) {

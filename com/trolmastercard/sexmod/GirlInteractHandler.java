@@ -2,6 +2,7 @@ package com.trolmastercard.sexmod;
 
 import java.util.ArrayList;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,6 +29,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.eventhandler.Event;
@@ -111,7 +113,7 @@ public class GirlInteractHandler {
          throw rethrow(error5);
       }
 
-      ArrayList list = new ArrayList();
+      ArrayList<BlockPos> list = new ArrayList<BlockPos>();
 
       try {
          if (world2.getBlockState(pos.north()).getBlock() == Blocks.AIR) {
@@ -453,8 +455,8 @@ public class GirlInteractHandler {
                     entityPlayer.setPosition(vec3d2.x, Math.floor(vec3d.y), vec3d2.z);
                     playerGirl.setTargetPos(vec3d2);
                     playerGirl.b(entityPlayer.rotationYaw);
-                    playerGirl.getDataManager().set(GirlEntity.BusyKey, (Object)true);
-                    playerGirl.getDataManager().set(GirlEntity.OutfitIndexKey, (Object)0);
+                    playerGirl.getDataManager().set(GirlEntity.BusyKey, true);
+                    playerGirl.getDataManager().set(GirlEntity.OutfitIndexKey, 0);
                     playerGirl.setCurrentAction(GirlAnimationState.STARTDOGGY);
                     if (!rightClickBlock.getWorld().isRemote || !Minecraft.getMinecraft().player.getPersistentID().equals(entityPlayer.getPersistentID())) break block28;
                 }

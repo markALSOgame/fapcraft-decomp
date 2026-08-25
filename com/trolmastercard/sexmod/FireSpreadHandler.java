@@ -36,7 +36,7 @@ public class FireSpreadHandler {
          pos.getY() + 3,
          pos.getZ() + 3
       );
-      List list = breakEvent.getWorld().getEntitiesWithinAABB(GirlEntity.class, bbox);
+      List<GirlEntity> list = breakEvent.getWorld().getEntitiesWithinAABB(GirlEntity.class, bbox);
       boolean flag = false;
 
       for (GirlEntity girl : list) {

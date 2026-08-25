@@ -102,7 +102,7 @@ extends ChestGirlEntity {
     }
 
     @Override
-    public String getDisplayName() {
+    public String getGirlName() {
         return "Bee";
     }
 
@@ -114,7 +114,7 @@ extends ChestGirlEntity {
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.DataManager.register(IsTamedKey, (Object)false);
+        this.DataManager.register(IsTamedKey, false);
     }
 
     protected PathNavigate createNavigator(World world) {
@@ -176,7 +176,7 @@ extends ChestGirlEntity {
             }
         }
         try {
-            this.getDisplayName();
+            this.c();
             if (this.getCurrentAction().equals((Object)GirlAnimationState.CITIZEN_CUM)) {
                 this.ParticlePhaseTicks = Math.max(1, this.ParticlePhaseTicks);
             }
@@ -270,7 +270,7 @@ extends ChestGirlEntity {
         if (entityPlayer.getDistance((Entity)this) < 1.5f) {
             this.WildTimer = 0.0f;
             this.handleGirlUuidEvent(entityPlayer.getPersistentID());
-            this.DataManager.set(BusyKey, (Object)true);
+            this.DataManager.set(BusyKey, true);
             this.setTargetPos(this.getPlayerFrontPos());
             this.b(entityPlayer.rotationYaw - 180.0f);
             this.Navigation.clearPath();
@@ -360,7 +360,7 @@ extends ChestGirlEntity {
                 block27: {
                     try {
                         if (this.ParticlePhaseTicks != 200) break block27;
-                        this.DataManager.set(IsTamedKey, (Object)this.getRNG().nextBoolean());
+                        this.DataManager.set(IsTamedKey, this.getRNG().nextBoolean());
                         break block28;
                     }
                     catch (RuntimeException runtimeException) {
@@ -369,35 +369,13 @@ extends ChestGirlEntity {
                 }
                 if (this.ParticlePhaseTicks < 250) {
                     for (EntityPlayer entityPlayer : this.world.playerEntities) {
-                        EnumParticleTypes enumParticleTypes;
-                        SPacketParticles sPacketParticles;
-                        SPacketParticles sPacketParticles2;
-                        NetHandlerPlayServer netHandlerPlayServer;
-                        block30: {
-                            block29: {
-                                try {
-                                    try {
-                                        SPacketParticles sPacketParticles3;
-                                        if (!(entityPlayer.getDistance((Entity)this) < 15.0f)) continue;
-                                        netHandlerPlayServer = ((EntityPlayerMP)entityPlayer).connection;
-                                        sPacketParticles2 = sPacketParticles3;
-                                        sPacketParticles = sPacketParticles3;
-                                        if (!((Boolean)this.DataManager.get(IsTamedKey)).booleanValue()) break block29;
-                                    }
-                                    catch (RuntimeException runtimeException) {
-                                        throw BeeNpc.rethrow(runtimeException);
-                                    }
-                                    enumParticleTypes = EnumParticleTypes.HEART;
-                                    break block30;
-                                }
-                                catch (RuntimeException runtimeException) {
-                                    throw BeeNpc.rethrow(runtimeException);
-                                }
-                            }
-                            enumParticleTypes = EnumParticleTypes.VILLAGER_ANGRY;
+                        try {
+                            if (!(entityPlayer.getDistance((Entity)this) < 15.0f)) continue;
                         }
-                        sPacketParticles2(enumParticleTypes, true, (float)this.posX, (float)this.posY + 0.3f, (float)this.posZ, 0.2f, 0.3f, 0.2f, 0.25f, 3, new int[0]);
-                        netHandlerPlayServer.sendPacket((Packet)sPacketParticles);
+                        catch (RuntimeException runtimeException) {
+                            throw BeeNpc.rethrow(runtimeException);
+                        }
+                        ((EntityPlayerMP)entityPlayer).connection.sendPacket((Packet)new SPacketParticles(((Boolean)this.DataManager.get(IsTamedKey)).booleanValue() ? EnumParticleTypes.HEART : EnumParticleTypes.VILLAGER_ANGRY, true, (float)this.posX, (float)this.posY + 0.3f, (float)this.posZ, 0.2f, 0.3f, 0.2f, 0.25f, 3, new int[0]));
                     }
                 } else {
                     this.ParticlePhaseTicks = 0;
@@ -459,7 +437,7 @@ extends ChestGirlEntity {
                     catch (RuntimeException runtimeException) {
                         throw BeeNpc.rethrow(runtimeException);
                     }
-                    this.DataManager.set(K, (Object)true);
+                    this.DataManager.set(K, true);
                     entityPlayer.getHeldItem(enumHand).shrink(1);
                     return super.processInteract(entityPlayer, enumHand);
                 }
@@ -494,11 +472,11 @@ extends ChestGirlEntity {
     }
 
     @Override
-    public void performAction(String string, UUID uUID) {
+    public void a(String string, UUID uUID) {
     }
 
     @Override
-    protected GirlAnimationState c(GirlAnimationState girlAnimationState) {
+    protected GirlAnimationState getFollowUpAction(GirlAnimationState girlAnimationState) {
         try {
             if (girlAnimationState == GirlAnimationState.CITIZEN_SLOW) {
                 return GirlAnimationState.CITIZEN_FAST;
@@ -511,7 +489,7 @@ extends ChestGirlEntity {
     }
 
     @Override
-    protected GirlAnimationState a(GirlAnimationState girlAnimationState) {
+    protected GirlAnimationState nextAnimationState(GirlAnimationState girlAnimationState) {
         block4: {
             try {
                 try {
@@ -545,13 +523,13 @@ extends ChestGirlEntity {
         try {
             super.readFromNBT(nBTTagCompound);
             if (nBTTagCompound.hasKey("isTamed")) {
-                this.DataManager.set(IsTamedKey, (Object)nBTTagCompound.getBoolean("isTamed"));
+                this.DataManager.set(IsTamedKey, nBTTagCompound.getBoolean("isTamed"));
             }
         }
         catch (RuntimeException runtimeException) {
             throw BeeNpc.rethrow(runtimeException);
         }
-        this.DataManager.set(K, (Object)nBTTagCompound.getBoolean("hasChest"));
+        this.DataManager.set(K, nBTTagCompound.getBoolean("hasChest"));
         this.Inventory.deserializeNBT(nBTTagCompound.getCompoundTag("inventory"));
     }
 
@@ -620,13 +598,13 @@ extends ChestGirlEntity {
                     break;
                 }
                 case "sex_fastMSG1": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING));
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.04f);
                     break;
                 }
                 case "sex_startMSG1": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING));
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.02f);
                     break;
@@ -641,8 +619,8 @@ extends ChestGirlEntity {
                     break;
                 }
                 case "sex_cumMSG1": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_CUMINFLATION), 2.0f);
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING));
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.MISC_CUMINFLATION), 2.0f);
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING));
                     break;
                 }
                 case "blackscreen": {

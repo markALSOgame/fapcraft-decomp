@@ -59,7 +59,7 @@ extends PlayerGirlEntity {
         try {
             if ("anal".equals(string)) {
                 this.setCurrentAction(GirlAnimationState.ANAL_PREPARE);
-                this.f(0);
+                this.setOutfitIndex(0);
                 return true;
             }
         }
@@ -69,7 +69,7 @@ extends PlayerGirlEntity {
         try {
             if ("doggy".equals(string)) {
                 this.setCurrentAction(GirlAnimationState.SITDOWN);
-                this.f(0);
+                this.setOutfitIndex(0);
                 return true;
             }
         }
@@ -81,7 +81,7 @@ extends PlayerGirlEntity {
 
     @Override
     @SideOnly(value=Side.CLIENT)
-    public void openActionMenu() {
+    public void H_() {
         GirlEntity.openActionMenu((EntityPlayer)Minecraft.getMinecraft().player, this, new String[]{"anal", "doggy"}, false);
     }
 
@@ -110,22 +110,22 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    public float getCameraPitch() {
+    public float T() {
         return 35.0f;
     }
 
     @Override
-    public float getCameraYaw() {
+    public float ai() {
         return 140.0f;
     }
 
     @Override
-    public boolean isMenuOpenable() {
+    public boolean A_() {
         return false;
     }
 
     @Override
-    public boolean onPlayerInteract(EntityPlayer entityPlayer) {
+    public boolean canInteract(EntityPlayer entityPlayer) {
         GirlEntity.openActionMenu(entityPlayer, this, new String[]{"action.names.headpat"}, false);
         return true;
     }
@@ -238,12 +238,12 @@ extends PlayerGirlEntity {
     @Override
     public void onUpdate() {
         super.onUpdate();
-        this.a();
+        this.void_d();
     }
 
     @Override
-    protected void resetAction() {
-        super.resetAction();
+    protected void V() {
+        super.V();
         this.ActionCountdown = -1;
     }
 
@@ -252,7 +252,7 @@ extends PlayerGirlEntity {
         return Minecraft.getMinecraft().player.getPersistentID().equals(entityPlayer.getPersistentID());
     }
 
-    void a() {
+    void void_d() {
         float f2;
         EntityPlayer entityPlayer;
         block35: {
@@ -278,7 +278,7 @@ extends PlayerGirlEntity {
                                             throw BiaPlayer.rethrow(runtimeException);
                                         }
                                     }
-                                    entityPlayer = this.getRenderPosition();
+                                    entityPlayer = this.j();
                                     try {
                                         if (entityPlayer == null) {
                                             return;
@@ -366,7 +366,7 @@ extends PlayerGirlEntity {
         entityPlayer.rotationYaw = f2 = this.I().floatValue();
         entityPlayer.rotationPitch = 60.0f;
         if (!this.world.isRemote) {
-            this.f(0);
+            this.setOutfitIndex(0);
             this.setCurrentAction(GirlAnimationState.PRONE_DOGGY_INTRO);
             Vec3d vec3d = this.getTargetPos();
             Vec3d vec3d2 = vec3d.add(VectorMath.rotatePitch(0.0, 0.0, 1.0, f2));
@@ -388,7 +388,7 @@ extends PlayerGirlEntity {
 
     @Override
     @SideOnly(value=Side.CLIENT)
-    public void ag() {
+    public void resetTickOffset() {
         try {
             super.resetTickOffset();
             if (this.getCurrentAction() != GirlAnimationState.PRONE_DOGGY_HARD) {

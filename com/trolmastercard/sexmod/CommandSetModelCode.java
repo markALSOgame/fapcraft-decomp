@@ -48,63 +48,43 @@ public class CommandSetModelCode extends CommandBase implements IClientCommand {
       RayTraceResult hit = Minecraft.getMinecraft().objectMouseOver;
       GirlEntity girl = this.a(hit);
 
-      try {
-         if (girl == null) {
-            mcPlayer.sendStatusMessage(new TextComponentString("You gotta transform into the girl you want to apply the model-code to"), true);
-            return;
-         }
-      } catch (CommandException command) {
-         throw rethrow(command);
+      if (girl == null) {
+         mcPlayer.sendStatusMessage(new TextComponentString("You gotta transform into the girl you want to apply the model-code to"), true);
+         return;
       }
 
-      try {
-         if ("".equals(string2)) {
-            NetworkHandler.channel.sendToServer(new PacketUploadModelString(string, girl.getGirlUuid()));
-            mcPlayer.sendStatusMessage(new TextComponentString(this.a(girl)), true);
-            return;
-         }
-      } catch (CommandException command2) {
-         throw rethrow(command2);
+      if (!"".equals(string2)) {
+         NetworkHandler.channel.sendToServer(new PacketUploadModelString(string, girl.getGirlUuid(), GirlEntity.stringToColors(string2)));
+         mcPlayer.sendStatusMessage(new TextComponentString(this.a(girl)), true);
+         return;
       }
 
-      NetworkHandler.channel.sendToServer(new PacketUploadModelString(string, girl.getGirlUuid(), GirlEntity.stringToColors(string2)));
+      NetworkHandler.channel.sendToServer(new PacketUploadModelString(string, girl.getGirlUuid()));
       mcPlayer.sendStatusMessage(new TextComponentString(this.a(girl)), true);
-   }
+    }
 
-   String a(GirlEntity girl) {
-      try {
-         if (girl instanceof PlayerGirlEntity) {
-            return TextFormatting.YELLOW + "applied model code to your player-" + MathUtils.capitalize(GirlRegistry.getByEntity(girl).toString());
-         }
-      } catch (RuntimeException error) {
-         throw rethrow(error);
+    String a(GirlEntity girl) {
+      if (girl instanceof PlayerGirlEntity) {
+         return TextFormatting.YELLOW + "applied model code to your player-" + MathUtils.capitalize(GirlRegistry.getByEntity(girl).toString());
       }
 
       return TextFormatting.YELLOW + "applied model code to this " + girl.getDisplayName();
-   }
+    }
 
-   @SideOnly(Side.CLIENT)
-   GirlEntity a(RayTraceResult hit) {
-      try {
-         if (hit == null) {
-            return PlayerGirlEntity.getByPlayer(Minecraft.getMinecraft().player);
-         }
-      } catch (RuntimeException error) {
-         throw rethrow(error);
+    @SideOnly(Side.CLIENT)
+    GirlEntity a(RayTraceResult hit) {
+      if (hit == null) {
+         return PlayerGirlEntity.getByPlayer(Minecraft.getMinecraft().player);
       }
 
-      try {
-         if (GirlEntity.isGirlEntity(hit.entityHit)) {
-            return (GirlEntity)hit.entityHit;
-         }
-      } catch (RuntimeException error2) {
-         throw rethrow(error2);
+      if (GirlEntity.isGirlEntity(hit.entityHit)) {
+         return (GirlEntity)hit.entityHit;
       }
 
       return PlayerGirlEntity.getByPlayer(Minecraft.getMinecraft().player);
-   }
+    }
 
-   private static Exception rethrow(Exception error) {
-      return error;
+   private static RuntimeException rethrow(Exception error) {
+      return new RuntimeException(error);
    }
 }

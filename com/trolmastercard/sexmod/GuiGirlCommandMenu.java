@@ -1,8 +1,10 @@
 package com.trolmastercard.sexmod;
 
+import java.util.Arrays;
 import java.util.List;
 import javax.annotation.Nullable;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -119,7 +121,7 @@ public class GuiGirlCommandMenu extends GuiScreen {
             }
         }
         this.Player.sendMessage((ITextComponent)new TextComponentString("<" + this.Girl.getName() + "> you cannot afford that..."));
-        this.Girl.a(ModSounds.GIRLS_JENNY_SADOH[1]);
+        this.Girl.playSoundEvent(ModSounds.GIRLS_JENNY_SADOH[1]);
     }
 
    void a(GuiButton gui) {
@@ -320,8 +322,6 @@ public class GuiGirlCommandMenu extends GuiScreen {
                 this.mc.renderEngine.bindTexture(Texture);
                 this.drawTexturedModalRect(this.d[i7] + i5 - 18 + (int)LerpMath.lerp(0.0f, 23.0f, this.n), i6 + 2, this.j[i7], 0, 16, 16);
                 list = this.buttonList;
-                guiButton2 = guiButton3;
-                guiButton = guiButton3;
                 i12 = i7;
                 i11 = i5 + 1;
                 i10 = i6;
@@ -332,7 +332,7 @@ public class GuiGirlCommandMenu extends GuiScreen {
             catch (RuntimeException runtimeException) {
                 throw GuiGirlCommandMenu.rethrow(runtimeException);
             }
-            guiButton2(i12, i11, i10, i9, i8, string);
+            guiButton = new GuiButton(i12, i11, i10, i9, i8, string);
             list.add(guiButton);
             i6 += 30;
             ++i7;

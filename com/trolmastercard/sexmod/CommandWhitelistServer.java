@@ -35,52 +35,29 @@ public class CommandWhitelistServer extends CommandBase implements IClientComman
         block14: {
             block13: {
                 string = FilePersistence.getServerAddress();
-                try {
-                    if (string == null) {
-                        sender.sendMessage((ITextComponent)new TextComponentString(TextFormatting.YELLOW + "This is a multiplayer feature only"));
-                        return;
-                    }
+                if (string == null) {
+                    sender.sendMessage((ITextComponent)new TextComponentString(TextFormatting.YELLOW + "This is a multiplayer feature only"));
+                    return;
                 }
-                catch (CommandException commandException) {
-                    throw CommandWhitelistServer.rethrow(commandException);
+                if (FilePersistence.isWhitelistedByFile(string)) {
+                    sender.sendMessage((ITextComponent)new TextComponentString(TextFormatting.GREEN + "Server is already whitelisted :)"));
+                    return;
                 }
-                try {
-                    if (FilePersistence.isWhitelistedByFile(string)) {
-                        sender.sendMessage((ITextComponent)new TextComponentString(TextFormatting.GREEN + "Server is already whitelisted :)"));
-                        return;
-                    }
-                }
-                catch (CommandException commandException) {
-                    throw CommandWhitelistServer.rethrow(commandException);
-                }
-                try {
-                    try {
-                        if (stringArray.length <= 0 || !"confirm".equals(stringArray[0])) break block13;
-                    }
-                    catch (CommandException commandException) {
-                        throw CommandWhitelistServer.rethrow(commandException);
-                    }
-                    flag = true;
+                if (stringArray.length <= 0 || !"confirm".equals(stringArray[0])) {
+                    flag = false;
                     break block14;
                 }
-                catch (CommandException commandException) {
-                    throw CommandWhitelistServer.rethrow(commandException);
-                }
+                flag = true;
+                break block14;
             }
-            flag = false;
         }
         boolean flag2 = flag;
-        try {
-            if (!flag2) {
-                sender.sendMessage((ITextComponent)new TextComponentString(TextFormatting.YELLOW + "By whitelisting this server, you allow the server to send you the custom models that are used on it"));
-                sender.sendMessage((ITextComponent)new TextComponentString(TextFormatting.RED + "ONLY WHITELIST SERVERS, WHOSE SERVER OWNER YOU KNOW AND TRUST"));
-                sender.sendMessage((ITextComponent)new TextComponentString(TextFormatting.YELLOW + "to confirm your decision type:"));
-                sender.sendMessage((ITextComponent)new TextComponentString(TextFormatting.GREEN + "/whitelistserver confirm"));
-                return;
-            }
-        }
-        catch (CommandException commandException) {
-            throw CommandWhitelistServer.rethrow(commandException);
+        if (!flag2) {
+            sender.sendMessage((ITextComponent)new TextComponentString(TextFormatting.YELLOW + "By whitelisting this server, you allow the server to send you the custom models that are used on it"));
+            sender.sendMessage((ITextComponent)new TextComponentString(TextFormatting.RED + "ONLY WHITELIST SERVERS, WHOSE SERVER OWNER YOU KNOW AND TRUST"));
+            sender.sendMessage((ITextComponent)new TextComponentString(TextFormatting.YELLOW + "to confirm your decision type:"));
+            sender.sendMessage((ITextComponent)new TextComponentString(TextFormatting.GREEN + "/whitelistserver confirm"));
+            return;
         }
         FilePersistence.whitelistServer(string);
         sender.sendMessage((ITextComponent)new TextComponentString(TextFormatting.GREEN + "confirmed :)"));

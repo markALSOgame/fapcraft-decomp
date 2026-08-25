@@ -73,20 +73,11 @@ public class Ballistics {
             double d6 = (this.PrevPos.z - this.CurrentPos.z) / (this.PrevPos.x - this.CurrentPos.x);
             double d7 = this.CurrentPos.z - d6 * this.CurrentPos.x;
             double d8 = d6 * d2 + d7;
-            try {
-                Vec3d vec3d3;
-                Ballistics ballistics = this;
-                vec3d2 = vec3d3;
-                vec3d = vec3d3;
-                d = d2;
-                f = 0.03f;
-                i5 = i3 > i4 ? -1 : 1;
-            }
-            catch (RuntimeException runtimeException) {
-                throw Ballistics.rethrow(runtimeException);
-            }
-            vec3d2(d + (double)(f * (float)i5), d5, d8);
-            ballistics.CurrentPos = vec3d;
+            d = d2;
+            f = 0.03f;
+            i5 = i3 > i4 ? -1 : 1;
+            vec3d = new Vec3d(d + (double)(f * (float)i5), d5, d8);
+            this.CurrentPos = vec3d;
             this.Velocity = new Vec3d(0.0, 0.0, 0.0);
             return;
         }
@@ -105,21 +96,12 @@ public class Ballistics {
             double d42 = (this.PrevPos.z - this.CurrentPos.z) / (this.PrevPos.y - this.CurrentPos.y);
             double d43 = this.CurrentPos.z - d42 * this.CurrentPos.y;
             double d44 = d42 * d38 + d43;
-            try {
-                Vec3d vec3d5;
-                Ballistics ballistics2 = this;
-                vec3d4 = vec3d5;
-                vec3d = vec3d5;
-                d37 = d41;
-                d9 = d38;
-                f2 = 0.03f;
-                i7 = i6 > i2 ? -1 : 1;
-            }
-            catch (RuntimeException runtimeException) {
-                throw Ballistics.rethrow(runtimeException);
-            }
-            vec3d4(d37, d9 + (double)(f2 * (float)i7), d44);
-            ballistics2.CurrentPos = vec3d;
+            d37 = d41;
+            d9 = d38;
+            f2 = 0.03f;
+            i7 = i6 > i2 ? -1 : 1;
+            vec3d = new Vec3d(d37, d9 + (double)(f2 * (float)i7), d44);
+            this.CurrentPos = vec3d;
             this.Velocity = new Vec3d(0.0, 0.0, 0.0);
             return;
         }
@@ -139,22 +121,13 @@ public class Ballistics {
             double d52 = (this.PrevPos.x - this.CurrentPos.x) / (this.PrevPos.z - this.CurrentPos.z);
             double d53 = this.CurrentPos.x - d52 * this.CurrentPos.z;
             double d54 = d52 * d48 + d53;
-            try {
-                Vec3d vec3d7;
-                Ballistics ballistics3 = this;
-                vec3d6 = vec3d7;
-                vec3d = vec3d7;
-                d47 = d54;
-                d46 = d51;
-                d45 = d48;
-                f3 = 0.03f;
-                i9 = i8 > i ? -1 : 1;
-            }
-            catch (RuntimeException runtimeException) {
-                throw Ballistics.rethrow(runtimeException);
-            }
-            vec3d6(d47, d46, d45 + (double)(f3 * (float)i9));
-            ballistics3.CurrentPos = vec3d;
+            d47 = d54;
+            d46 = d51;
+            d45 = d48;
+            f3 = 0.03f;
+            i9 = i8 > i ? -1 : 1;
+            vec3d = new Vec3d(d47, d46, d45 + (double)(f3 * (float)i9));
+            this.CurrentPos = vec3d;
             this.Velocity = new Vec3d(0.0, 0.0, 0.0);
             return;
         }

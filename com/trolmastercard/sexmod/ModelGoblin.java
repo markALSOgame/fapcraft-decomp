@@ -4,7 +4,7 @@ import java.util.UUID;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -12,7 +12,7 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.AnimationProcessor;
 import software.bernie.geckolib3.core.processor.IBone;
 
-public class ModelGoblin extends GirlGeoModel {
+public class ModelGoblin extends GirlGeoModel<GirlEntity> {
    final float g = 60.0F;
    Minecraft Mc = Minecraft.getMinecraft();
 
@@ -24,12 +24,12 @@ public class ModelGoblin extends GirlGeoModel {
    }
 
    @Override
-   public ResourceLocation b() {
+   public ResourceLocation getSkinLocation() {
       return new ResourceLocation("sexmod", "textures/entity/goblin/goblin.png");
    }
 
    @Override
-   public ResourceLocation b(GirlEntity girl) {
+   public ResourceLocation getAnimationFileLocation(GirlEntity girl) {
       return new ResourceLocation("sexmod", "animations/goblin/goblin.animation.json");
    }
 
@@ -73,7 +73,7 @@ public class ModelGoblin extends GirlGeoModel {
 
    @Override
 
-   public void handleAnimations(GirlEntity girl, Integer i, AnimationEvent animEvent) {
+   public void setLivingAnimations(GirlEntity girl, Integer i, AnimationEvent animEvent) {
         boolean flag;
         AnimationProcessor animationProcessor;
         block48: {
@@ -92,7 +92,7 @@ public class ModelGoblin extends GirlGeoModel {
                                             boolean flag2;
                                             IBone iBone3;
                                             try {
-                                                super.handleAnimations(girl, i, animEvent);
+                                                super.setLivingAnimations(girl, i, animEvent);
                                                 if (girl.world instanceof PreviewWorld) {
                                                     return;
                                                 }
@@ -209,7 +209,7 @@ public class ModelGoblin extends GirlGeoModel {
                         throw ModelGoblin.rethrow(runtimeException);
                     }
                 }
-                Vec3d vec3d = ModelGoblin.getMeatFootBoneNames(girl);
+                Vec3d vec3d = new Vec3d(-1.5707964F, 0.5F, 0.0F);
                 iBone.setRotationX((float)vec3d.x);
                 iBone.setPositionY((float)vec3d.y);
                 iBone.setPositionZ((float)vec3d.z);
@@ -287,7 +287,7 @@ public class ModelGoblin extends GirlGeoModel {
             }
             try {
                 try {
-                    if (this.Mc.gameSettings.thirdPersonView != 0 || !this.Mc.player.getPersistentID().equals(((GirlMaster)((Object)girl)).e())) break block13;
+                    if (this.Mc.gameSettings.thirdPersonView != 0 || !this.Mc.player.getPersistentID().equals(((GirlMaster)((Object)girl)).getGirlUuid())) break block13;
                 }
                 catch (RuntimeException runtimeException) {
                     throw ModelGoblin.rethrow(runtimeException);
@@ -483,37 +483,37 @@ public class ModelGoblin extends GirlGeoModel {
    }
 
    @Override
-   public String[] getHelmetBoneNames() {
+   public String[] getHelmetBones() {
       return new String[]{"armorHelmet"};
    }
 
    @Override
-   public String[] getBoobArmorBoneNames() {
+   public String[] getChestArmorBones() {
       return new String[]{"armorBoobL", "armorBoobR"};
    }
 
    @Override
-   public String[] a() {
+   public String[] getFleshTorsoBones() {
       return new String[]{"nippleL", "nippleR"};
    }
 
    @Override
-   public String[] getLowerArmorBoneNames() {
+   public String[] getPantsArmorBones() {
       return new String[]{"armorCheekR", "armorCheekL", "armorLegL", "armorLegR", "armorShinL", "armorShinR", "armorTorso"};
    }
 
    @Override
-   public String[] getMeatBoneNames() {
+   public String[] getFleshLegsBones() {
       return new String[]{"fuckhole", "vagina", "meatCheekR", "meatCheekL", "meatLegL", "meatLegR", "meatShinL", "meatShinR"};
    }
 
    @Override
-   public String[] b() {
+   public String[] getBootsArmorBones() {
       return new String[]{"armorFootL", "armorFootR"};
    }
 
    @Override
-   public String[] getMeatFootBoneNames() {
+   public String[] getFleshFeetBones() {
       return new String[]{"meatFootL", "meatFootR"};
    }
 

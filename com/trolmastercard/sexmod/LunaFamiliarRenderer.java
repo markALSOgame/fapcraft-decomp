@@ -1,10 +1,13 @@
 package com.trolmastercard.sexmod;
 
 import javax.annotation.Nullable;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -12,6 +15,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemFishingRod;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -66,8 +70,8 @@ public class LunaFamiliarRenderer extends Render<LunaFamiliarEntity> {
             }
             luna.Z += 60.0f / f3 * 0.01666f * 2.0f;
             luna.Z = Math.min(1.0f, luna.Z);
-            bufferBuilder = Minecraft.getMinecraft().player;
-            Vec3d vec3d2 = LerpMath.lerpVec3d(new Vec3d(bufferBuilder.lastTickPosX, bufferBuilder.lastTickPosY, bufferBuilder.lastTickPosZ), bufferBuilder.getPositionVector(), (double)f2);
+            EntityPlayerSP mcPlayer = Minecraft.getMinecraft().player;
+            Vec3d vec3d2 = LerpMath.lerpVec3d(new Vec3d(mcPlayer.lastTickPosX, mcPlayer.lastTickPosY, mcPlayer.lastTickPosZ), mcPlayer.getPositionVector(), (double)f2);
             vec3d = new Vec3d(d, d2, d3);
             Vec3d vec3d3 = LerpMath.lerpVec3d(new Vec3d(luna.lastTickPosX, luna.lastTickPosY + 0.875, luna.lastTickPosZ), luna.getPositionVector().add(0.0, 0.875, 0.0), (double)f2);
             vec3d3 = vec3d3.subtract(vec3d2);
@@ -139,8 +143,8 @@ public class LunaFamiliarRenderer extends Render<LunaFamiliarEntity> {
             throw LunaFamiliarRenderer.rethrow(runtimeException);
         }
         int i4 = i;
-        vec3d = luna.getHeldItemMainhand();
-        if (!(vec3d.getItem() instanceof ItemFishingRod)) {
+        ItemStack heldStack = luna.getHeldItemMainhand();
+        if (!(heldStack.getItem() instanceof ItemFishingRod)) {
             i4 = -i4;
         }
         luna.rotationYaw = luna.I().floatValue();
@@ -183,7 +187,7 @@ public class LunaFamiliarRenderer extends Render<LunaFamiliarEntity> {
         }
         GlStateManager.enableLighting();
         GlStateManager.enableTexture2D();
-        super.doRender((Entity)familiar, d, d2, d3, f, f2);
+        super.doRender(familiar, d, d2, d3, f, f2);
     }
 
    @Nullable

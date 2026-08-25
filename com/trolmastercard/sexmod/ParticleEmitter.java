@@ -40,7 +40,7 @@ public class ParticleEmitter {
                .add(
                   new Ballistics(
                      mc.world,
-                     this.EndAnchor.canSeeEntity(this.Girl),
+                     this.EndAnchor.anchorPos(this.Girl),
                      new Vec3d(
                         vec3d.x + (ModConstants.Random.nextFloat() * 2.0F - 1.0F) * this.SpreadRadius,
                         vec3d.y + (ModConstants.Random.nextFloat() * 2.0F - 1.0F) * this.SpreadRadius,
@@ -116,7 +116,7 @@ public class ParticleEmitter {
             try {
                 while (true) {
                     try {
-                        if (i3 < 0 || !(vec3d.distanceTo(this.Particles.get((int)i3).f) < vec3d.distanceTo(this.Particles.get((int)(i3 + 1)).f))) break;
+                        if (i3 < 0 || !(vec3d.distanceTo(this.Particles.get((int)i3).CurrentPos) < vec3d.distanceTo(this.Particles.get((int)(i3 + 1)).CurrentPos))) break;
                     }
                     catch (RuntimeException runtimeException) {
                         throw ParticleEmitter.rethrow(runtimeException);

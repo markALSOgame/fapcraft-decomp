@@ -2,8 +2,12 @@ package com.trolmastercard.sexmod;
 
 import io.netty.buffer.ByteBuf;
 import java.util.UUID;
+import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketUpdateGirl implements IMessage {
    boolean Loaded;
@@ -55,21 +59,61 @@ public class PacketUpdateGirl implements IMessage {
       return error;
    }
 
-// $VF: Couldn't be decompiled
-// Please report this to the Vineflower issue tracker, at https://github.com/Vineflower/vineflower/issues with a copy of the class file (if you have the rights to distribute it!)
-// java.lang.NullPointerException: Cannot invoke "org.jetbrains.java.decompiler.modules.decompiler.stats.Statement.getVarDefinitions()" because "stat" is null
-//   at org.jetbrains.java.decompiler.modules.decompiler.vars.VarDefinitionHelper.iterateClashingNames(VarDefinitionHelper.java:1592)
-//   at org.jetbrains.java.decompiler.modules.decompiler.vars.VarDefinitionHelper.iterateClashingExprent(VarDefinitionHelper.java:1835)
-//   at org.jetbrains.java.decompiler.modules.decompiler.vars.VarDefinitionHelper.iterateClashingExprent(VarDefinitionHelper.java:2029)
-//   at org.jetbrains.java.decompiler.modules.decompiler.vars.VarDefinitionHelper.iterateClashingNames(VarDefinitionHelper.java:1619)
-//   at org.jetbrains.java.decompiler.modules.decompiler.vars.VarDefinitionHelper.iterateClashingNames(VarDefinitionHelper.java:1739)
-//   at org.jetbrains.java.decompiler.modules.decompiler.vars.VarDefinitionHelper.iterateClashingNames(VarDefinitionHelper.java:1739)
-//   at org.jetbrains.java.decompiler.modules.decompiler.vars.VarDefinitionHelper.remapClashingNames(VarDefinitionHelper.java:1584)
-//   at org.jetbrains.java.decompiler.modules.decompiler.vars.VarProcessor.rerunClashing(VarProcessor.java:99)
-//   at org.jetbrains.java.decompiler.main.ClassWriter.invokeProcessors(ClassWriter.java:145)
-//   at org.jetbrains.java.decompiler.main.ClassWriter.writeClass(ClassWriter.java:379)
-//   at org.jetbrains.java.decompiler.main.ClassWriter.writeClass(ClassWriter.java:520)
-//   at org.jetbrains.java.decompiler.main.ClassesProcessor.writeClass(ClassesProcessor.java:521)
-//   at org.jetbrains.java.decompiler.main.Fernflower.getClassContent(Fernflower.java:200)
-//   at org.jetbrains.java.decompiler.struct.ContextUnit.lambda$save$3(ContextUnit.java:221)
+   public static class Handler implements IMessageHandler<PacketUpdateGirl, IMessage> {
+      public IMessage onMessage(PacketUpdateGirl packet, MessageContext ctx) {
+         if (!packet.Loaded) {
+            System.out.println("received an invalid message @ChangeDataParameter :(");
+            return null;
+         }
+
+         FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() -> {
+            GirlEntity girl = GirlEntity.getServerSideByUuid(packet.GirlUuid);
+            if (girl == null) {
+               return;
+            }
+
+            switch (packet.Key) {
+               case "pregnant":
+                  girl.getDataManager().set(SlimeNpc.TicksUntilBirthKey, Integer.valueOf(packet.Value));
+                  break;
+               case "currentModel":
+                  girl.getDataManager().set(GirlEntity.OutfitIndexKey, Integer.valueOf(packet.Value));
+                  break;
+               case "currentAction":
+                  if (GirlAnimationState.valueOf(packet.Value) == GirlAnimationState.ATTACK && girl.getCurrentAction() != GirlAnimationState.NULL) {
+                     break;
+                  }
+
+                  girl.setCurrentAction(GirlAnimationState.valueOf(packet.Value));
+                  break;
+               case "animationFollowUp":
+                  girl.getDataManager().set(GirlEntity.BlowjobStageKey, packet.Value);
+                  break;
+               case "playerSheHasSexWith":
+                  if (packet.Value.equals("null")) {
+                     girl.handleGirlUuidEvent((UUID)null);
+                     break;
+                  }
+
+                  girl.handleGirlUuidEvent(UUID.fromString(packet.Value));
+                  break;
+               case "targetPos": {
+                  String[] stringArray = packet.Value.split("f");
+                  Vec3d vec3d = new Vec3d(Double.parseDouble(stringArray[0]), Double.parseDouble(stringArray[1]), Double.parseDouble(stringArray[2]));
+                  girl.setTargetPos(vec3d);
+                  break;
+               }
+               case "master":
+                  girl.getDataManager().set(GirlEntity.MasterUuidKey, packet.Value);
+                  break;
+               case "walk speed":
+                  girl.getDataManager().set(GirlEntity.WalkStateKey, packet.Value);
+                  break;
+               case "shouldbeattargetpos":
+                  girl.getDataManager().set(GirlEntity.BusyKey, Boolean.valueOf(packet.Value));
+            }
+         });
+         return null;
+      }
+   }
 }

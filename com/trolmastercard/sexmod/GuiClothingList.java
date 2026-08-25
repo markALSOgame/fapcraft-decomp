@@ -2,10 +2,13 @@ package com.trolmastercard.sexmod;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map.Entry;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.ISound;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiListExtended;
 import net.minecraft.client.gui.GuiListExtended.IGuiListEntry;
@@ -105,11 +108,6 @@ public class GuiClothingList extends GuiListExtended {
 
 
    public void drawScreen(int i, int i2, float f) {
-        boolean flag;
-        GuiClothingList gui;
-        Entry entry3;
-        Entry entry4;
-        List<WidthTemplate> list;
         this.Entries.clear();
         int i3 = 0;
         for (Map.Entry<GirlBodySlot, Map.Entry<List<String>, Integer>> entry : GuiCustomizeGirl.ClothingOptions) {
@@ -124,28 +122,18 @@ public class GuiClothingList extends GuiListExtended {
                 throw GuiClothingList.rethrow(runtimeException);
             }
         }
-        this.Entries.sort(Comparator.comparingInt(arg1 -> BodySlots.indexOf((Object)arg1.SelectedSlot)));
+        this.Entries.sort(Comparator.comparingInt(arg1 -> BodySlots.indexOf(arg1.BodySlot)));
         List<String> list2 = FilePersistence.getModelNames(this.ParentGui.Girl).get((Object)GirlBodySlot.CUSTOM_BONE);
-        try {
-            Entry entry5;
-            list2.add(0, "cross");
-            list = this.Entries;
-            entry4 = entry5;
-            entry3 = entry5;
-            gui = this;
-            flag = i3 > 1;
-        }
-        catch (RuntimeException runtimeException) {
-            throw GuiClothingList.rethrow(runtimeException);
-        }
-        entry4(flag);
-        list.add(entry3);
+
+        list2.add(0, "cross");
+        this.Entries.add(new Entry(i3 > 1));
         this.a();
         this.a(i, i2, f);
         if (!this.h) {
             return;
         }
         this.scrollBy(999999);
+        this.h = false;
         this.h = false;
     }
 
@@ -284,7 +272,7 @@ public class GuiClothingList extends GuiListExtended {
 
       public Entry(boolean flag) {
          this.Selected = flag;
-         this.WidthTemplate = true;
+         this.a = true;
       }
 
       boolean b(int i2, int i3, int i4, int i5, int i6, int i7) {
@@ -343,7 +331,7 @@ public class GuiClothingList extends GuiListExtended {
                         i15 = this.b(i9, i10, i19, i8, i19 + 20, i8 + 20) ? 40 : 20;
                     }
                     catch (RuntimeException runtimeException) {
-                        throw GuiClothingList.Entry.rethrow(runtimeException);
+                        throw GuiClothingList.rethrow(runtimeException);
                     }
                     try {
                         gui2.drawTexturedModalRect(i18, i17, i16, i15, 20, 20);
@@ -353,20 +341,20 @@ public class GuiClothingList extends GuiListExtended {
                         i12 = this.Selected ? 60 : 80;
                     }
                     catch (RuntimeException runtimeException) {
-                        throw GuiClothingList.Entry.rethrow(runtimeException);
+                        throw GuiClothingList.rethrow(runtimeException);
                     }
                     try {
                         try {
                             if (!this.Selected || !this.b(i9, i10, i19, i8, i19 + 20, i8 + 20)) break block8;
                         }
                         catch (RuntimeException runtimeException) {
-                            throw GuiClothingList.Entry.rethrow(runtimeException);
+                            throw GuiClothingList.rethrow(runtimeException);
                         }
                         i11 = 40;
                         break block9;
                     }
                     catch (RuntimeException runtimeException) {
-                        throw GuiClothingList.Entry.rethrow(runtimeException);
+                        throw GuiClothingList.rethrow(runtimeException);
                     }
                 }
                 i11 = 20;
@@ -375,36 +363,6 @@ public class GuiClothingList extends GuiListExtended {
         }
 
 
-      void a(int i20, int i21, int i22) {
-        try {
-            if (i20 > this.width) {
-                return;
-            }
-        }
-        catch (RuntimeException runtimeException) {
-            throw GuiClothingList.rethrow(runtimeException);
-        }
-        int i23 = this.getAmountScrolled();
-        float f = i23 + i21 - 5 - this.top;
-        int i24 = Math.round((float)Math.floor(f / (float)this.slotHeight));
-        int i25 = (int)Math.round(((double)(f / (float)this.slotHeight) - Math.floor(f / (float)this.slotHeight)) * (double)this.slotHeight);
-        try {
-            if (i24 < 0) {
-                return;
-            }
-        }
-        catch (RuntimeException runtimeException) {
-            throw GuiClothingList.rethrow(runtimeException);
-        }
-        try {
-            if (i24 < this.BoneList.size()) {
-                this.BoneList.get(i24).a(i20, i25, i22, i24);
-            }
-        }
-        catch (RuntimeException runtimeException) {
-            throw GuiClothingList.rethrow(runtimeException);
-        }
-    }
 
       int c(int i26, int i27, int i28, int i29) {
          GuiCustomizeGirl gui3;
@@ -496,7 +454,7 @@ public class GuiClothingList extends GuiListExtended {
                     }
                 }
                 catch (RuntimeException runtimeException) {
-                    throw GuiClothingList.Entry.rethrow(runtimeException);
+                    throw GuiClothingList.rethrow(runtimeException);
                 }
                 try {
                     if ((float)i45 > 0.33333334f * (float)GuiClothingList.this.ParentGui.width) {
@@ -504,19 +462,19 @@ public class GuiClothingList extends GuiListExtended {
                     }
                 }
                 catch (RuntimeException runtimeException) {
-                    throw GuiClothingList.Entry.rethrow(runtimeException);
+                    throw GuiClothingList.rethrow(runtimeException);
                 }
                 try {
                     try {
                         if (i46 >= i42 && i46 <= i42 + 20) break block16;
                     }
                     catch (RuntimeException runtimeException) {
-                        throw GuiClothingList.Entry.rethrow(runtimeException);
+                        throw GuiClothingList.rethrow(runtimeException);
                     }
                     return this.a(i47);
                 }
                 catch (RuntimeException runtimeException) {
-                    throw GuiClothingList.Entry.rethrow(runtimeException);
+                    throw GuiClothingList.rethrow(runtimeException);
                 }
             }
             try {
@@ -525,7 +483,7 @@ public class GuiClothingList extends GuiListExtended {
                 }
             }
             catch (RuntimeException runtimeException) {
-                throw GuiClothingList.Entry.rethrow(runtimeException);
+                throw GuiClothingList.rethrow(runtimeException);
             }
             try {
                 if (i45 > i44) {
@@ -533,14 +491,14 @@ public class GuiClothingList extends GuiListExtended {
                 }
             }
             catch (RuntimeException runtimeException) {
-                throw GuiClothingList.Entry.rethrow(runtimeException);
+                throw GuiClothingList.rethrow(runtimeException);
             }
             return (float)(i45 -= i43) / (float)(i44 -= i43);
         }
 
       float a(int i48) {
-         Entry entry = GuiClothingList.this.ParentGui.Girl.d(GuiClothingList.this.ParentGui.GirlUuid).get(i48);
-         return ((Integer)((Entry)entry.getValue()).getValue()).intValue() / 100.0F;
+         Map.Entry<GirlBodySlot, Map.Entry<List<String>, Integer>> entry = GuiClothingList.this.ParentGui.ClothingOptions.get(i48);
+         return (float)((Integer)entry.getValue().getValue()).intValue() / 100.0F;
       }
 
       void b(int i49, int i50, int i51, int i52) {
@@ -564,7 +522,7 @@ public class GuiClothingList extends GuiListExtended {
 
          try {
             i49 += 5;
-            GuiClothingList.this.ParentGui.a(i53, i49, GuiClothingList.this.ParentGui.Girl.g(i52));
+            GuiClothingList.this.ParentGui.a(i53, i49, GuiClothingList.this.ParentGui.Girl.getSlotColor(i52));
             i53 += 25;
             if (flag2) {
                this.a(i53, i49, i50, i51, i52);
@@ -579,7 +537,7 @@ public class GuiClothingList extends GuiListExtended {
 
       public void drawEntry(int i54, int i55, int i56, int i57, int i58, int i59, int i60, boolean flag3, float f3) {
          try {
-            if (this.WidthTemplate) {
+            if (this.a) {
                this.b(i56, i59, i60);
                return;
             }
@@ -599,6 +557,49 @@ public class GuiClothingList extends GuiListExtended {
          this.a(i56, i59, i60);
       }
 
+      void a(int i56, int i59, int i60) {
+         GuiClothingList.this.mc.renderEngine.bindTexture(GuiCustomizeGirl.Texture);
+         GuiClothingList.this.ParentGui.drawTexturedModalRect(GuiClothingList.ItemOffsetY, i56, 0, 60, this.RowY == 0 ? 119 : 256, 30);
+         int i = GuiClothingList.ItemOffsetY + 10;
+         GuiClothingList.this.ParentGui.a(i, i56 += 5, this.BodySlot.iconXPos);
+         i += 25;
+         i = this.c(i, i56, i59, i60);
+         GirlEntity girl = GuiClothingList.this.ParentGui.Girl;
+         PreviewEntity previewEntity = this.RowY == 0
+            ? PreviewEntity.a(GuiClothingList.this.mc.world, girl.getGirlUuid(), this.BodySlot)
+            : new PreviewEntity(girl.world, girl.getGirlUuid(), this.BoneList.get(this.RowY));
+         FilePersistence.WhitelistFile whitelistFile = FilePersistence.getModelData(previewEntity.getModelName());
+         float f = previewEntity.f || whitelistFile == null ? 1.0F : whitelistFile.d();
+         int i2 = whitelistFile == null ? 0 : (int)(-whitelistFile.g());
+         GuiClothingList.this.ParentGui.a(i, i56 + 10 + (previewEntity.f ? 0 : 6) + i2, 30.0F * f, previewEntity);
+         if (this.RowY != 0) {
+            GuiClothingList.this.ParentGui.a(previewEntity);
+         }
+         GuiClothingList.this.mc.world.removeEntityDangerously(previewEntity);
+         i = (int)((float)i + 30.0F);
+         if (this.RowY == 0) {
+            return;
+         }
+
+         int i3 = i;
+         String string = this.BoneList.get(this.RowY);
+         String string2 = string.length() > WidthTemplate.length() ? string.substring(0, WidthTemplate.length() - 3) + "..." : string;
+         this.a(string2, i, i56 + 10);
+         int i4 = i += this.FontRenderer.getStringWidth(WidthTemplate);
+         int i5 = i;
+         String string3 = FilePersistence.d(string);
+         String string4 = string3.length() > WidthTemplate.length() ? string3.substring(0, WidthTemplate.length() - 3) + "..." : string3;
+         this.a(string4, i, i56 + 10);
+         int i6 = i += this.FontRenderer.getStringWidth(WidthTemplate);
+         if (this.b(i59, i60, i3, i56 + 10, i4, i56 + 10 + this.FontRenderer.FONT_HEIGHT)) {
+            GuiClothingList.this.ParentGui.a(string, i59, i60);
+         }
+         if (this.b(i59, i60, i5, i56 + 10, i6, i56 + 10 + this.FontRenderer.FONT_HEIGHT)) {
+            GuiClothingList.this.ParentGui.a(string3, i59, i60);
+         }
+         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+      }
+
       void a(String string, int i61, int i62) {
          this.FontRenderer.drawString(string, i61, i62, 3809871);
          GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -614,10 +615,10 @@ public class GuiClothingList extends GuiListExtended {
                         if (i63 <= i65 || i63 >= i65 + 20) break block9;
                     }
                     catch (RuntimeException runtimeException) {
-                        throw GuiClothingList.Entry.rethrow(runtimeException);
+                        throw GuiClothingList.rethrow(runtimeException);
                     }
                     GuiClothingList.this.h = true;
-                    GuiClothingList.this.mc.getSoundHandler().playSound((ISound)PositionedSoundRecord.getMasterRecord((SoundEvent)SoundEvents.UI_BUTTON_CLICK, (float)1.0f));
+                    GuiClothingList.this.mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
                     ArrayList<String> arrayList = new ArrayList<String>();
                     arrayList.add("cross");
                     arrayList.addAll((Collection)FilePersistence.getModelNames(GuiClothingList.this.ParentGui.Girl).get((Object)GirlBodySlot.CUSTOM_BONE));
@@ -629,20 +630,20 @@ public class GuiClothingList extends GuiListExtended {
                     }
                 }
                 catch (RuntimeException runtimeException) {
-                    throw GuiClothingList.Entry.rethrow(runtimeException);
+                    throw GuiClothingList.rethrow(runtimeException);
                 }
                 try {
                     try {
                         if (i63 <= (i65 += 40) || i63 >= i65 + 20) break block10;
                     }
                     catch (RuntimeException runtimeException) {
-                        throw GuiClothingList.Entry.rethrow(runtimeException);
+                        throw GuiClothingList.rethrow(runtimeException);
                     }
-                    GuiClothingList.this.mc.getSoundHandler().playSound((ISound)PositionedSoundRecord.getMasterRecord((SoundEvent)SoundEvents.UI_BUTTON_CLICK, (float)1.0f));
+                    GuiClothingList.this.mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
                     GuiCustomizeGirl.ClothingOptions.remove(GuiCustomizeGirl.ClothingOptions.size() - 1);
                 }
                 catch (RuntimeException runtimeException) {
-                    throw GuiClothingList.Entry.rethrow(runtimeException);
+                    throw GuiClothingList.rethrow(runtimeException);
                 }
             }
         }
@@ -656,12 +657,12 @@ public class GuiClothingList extends GuiListExtended {
                             if (i66 <= 40 || i66 >= 60) break block8;
                         }
                         catch (RuntimeException runtimeException) {
-                            throw GuiClothingList.Entry.rethrow(runtimeException);
+                            throw GuiClothingList.rethrow(runtimeException);
                         }
                         GuiClothingList.this.ParentGui.a(this.BodySlot, false, i67);
                     }
                     catch (RuntimeException runtimeException) {
-                        throw GuiClothingList.Entry.rethrow(runtimeException);
+                        throw GuiClothingList.rethrow(runtimeException);
                     }
                 }
                 try {
@@ -669,12 +670,12 @@ public class GuiClothingList extends GuiListExtended {
                         if (i66 <= 60 || i66 >= 80) break block9;
                     }
                     catch (RuntimeException runtimeException) {
-                        throw GuiClothingList.Entry.rethrow(runtimeException);
+                        throw GuiClothingList.rethrow(runtimeException);
                     }
                     GuiClothingList.this.ParentGui.a(this.BodySlot, true, i67);
                 }
                 catch (RuntimeException runtimeException) {
-                    throw GuiClothingList.Entry.rethrow(runtimeException);
+                    throw GuiClothingList.rethrow(runtimeException);
                 }
             }
         }
@@ -715,7 +716,7 @@ public class GuiClothingList extends GuiListExtended {
          }
 
          try {
-            if (this.WidthTemplate) {
+            if (this.a) {
                this.b(i70, i71);
                return;
             }
@@ -745,8 +746,5 @@ public class GuiClothingList extends GuiListExtended {
       public void mouseReleased(int i83, int i84, int i85, int i86, int i87, int i88) {
       }
 
-      private static RuntimeException rethrow(RuntimeException error18) {
-         return error18;
-      }
    }
 }

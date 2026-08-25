@@ -61,7 +61,7 @@ extends PlayerGirlEntity {
     @Override
     public void startAction(String string, UUID uUID) {
         this.a(0, GirlAnimationState.CITIZEN_START);
-        this.f(0);
+        this.setOutfitIndex(0);
         this.setCurrentAction(GirlAnimationState.CITIZEN_START);
         this.b(uUID);
         EntityPlayer entityPlayer = this.world.getPlayerEntityByUUID(uUID);
@@ -78,7 +78,7 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    public boolean onPlayerInteract(EntityPlayer entityPlayer) {
+    public boolean canInteract(EntityPlayer entityPlayer) {
         BeePlayer.openActionMenu(entityPlayer, this, new String[]{"action.names.sex"}, false);
         return true;
     }
@@ -117,7 +117,7 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    public boolean isCustomModel() {
+    public boolean v() {
         return false;
     }
 
@@ -154,9 +154,9 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    public void onActionCleanup() {
-        super.onActionCleanup();
-        this.f(1);
+    public void noop() {
+        super.noop();
+        this.setOutfitIndex(1);
     }
 
     @Override
@@ -241,13 +241,13 @@ extends PlayerGirlEntity {
                     break;
                 }
                 case "sex_fastMSG1": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING));
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.04f);
                     break;
                 }
                 case "sex_startMSG1": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING));
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.02f);
                     break;
@@ -267,8 +267,8 @@ extends PlayerGirlEntity {
                     break;
                 }
                 case "sex_cumMSG1": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_CUMINFLATION), 2.0f);
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING));
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.MISC_CUMINFLATION), 2.0f);
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING));
                     break;
                 }
                 case "blackscreen": {

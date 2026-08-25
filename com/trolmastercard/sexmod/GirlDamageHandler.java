@@ -50,8 +50,8 @@ public class GirlDamageHandler {
 
       InventoryGirlEntity inventoryGirl = (InventoryGirlEntity)livingDamageEvent.getEntity();
       ItemStack[] stackArray = new ItemStack[]{inventoryGirl.Inventory.getStackInSlot(2), inventoryGirl.Inventory.getStackInSlot(3), inventoryGirl.Inventory.getStackInSlot(4), inventoryGirl.Inventory.getStackInSlot(5)};
-      ArrayList list = new ArrayList();
-      ArrayList list2 = new ArrayList();
+      ArrayList<ItemArmor> list = new ArrayList<ItemArmor>();
+      ArrayList<ItemStack> list2 = new ArrayList<ItemStack>();
 
       for (ItemStack stack : stackArray) {
          try {

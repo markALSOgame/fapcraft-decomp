@@ -15,16 +15,20 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 import java.util.Random;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EnumParticleTypes;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootTableList;
 
 public class LunaFamiliarEntity extends Entity {
    public static final int m = 15;
@@ -159,7 +163,7 @@ public class LunaFamiliarEntity extends Entity {
                 catch (RuntimeException runtimeException) {
                     throw LunaFamiliarEntity.rethrow(runtimeException);
                 }
-                this.getOwnerNpc().o();
+                this.getOwnerNpc().void_o();
             }
             catch (RuntimeException runtimeException) {
                 throw LunaFamiliarEntity.rethrow(runtimeException);
@@ -502,7 +506,7 @@ public class LunaFamiliarEntity extends Entity {
                     vec3d2 = new Vec3d(rayTraceResult.hitVec.x, rayTraceResult.hitVec.y, rayTraceResult.hitVec.z);
                 }
                 Entity entity = null;
-                List list = this.world.getEntitiesWithinAABBExcludingEntity((Entity)this, this.getEntityBoundingBox().expand(this.motionX, this.motionY, this.motionZ).grow(1.0));
+                List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity((Entity)this, this.getEntityBoundingBox().expand(this.motionX, this.motionY, this.motionZ).grow(1.0));
                 double d = 0.0;
                 for (Entity entity2 : list) {
                     AxisAlignedBB axisAlignedBB;
@@ -788,7 +792,7 @@ public class LunaFamiliarEntity extends Entity {
                 }
                 if (this.DiveTicks > 0) {
                     LootContext.Builder builder = new LootContext.Builder((WorldServer)this.world);
-                    List list = this.world.getLootTableManager().getLootTableFromLocation(LootTableList.GAMEPLAY_FISHING).generateLootForPools(this.rand, builder.build());
+                    List<ItemStack> list = this.world.getLootTableManager().getLootTableFromLocation(LootTableList.GAMEPLAY_FISHING).generateLootForPools(this.rand, builder.build());
                     for (ItemStack itemStack : list) {
                         LunaNpc luna = this.getOwnerNpc();
                         luna.b(itemStack);
@@ -801,7 +805,7 @@ public class LunaFamiliarEntity extends Entity {
                 i2 = 2;
             }
             try {
-                i = obj == null ? i2 : obj.getRodDamage();
+                i = i2;
             }
             catch (RuntimeException runtimeException) {
                 throw LunaFamiliarEntity.rethrow(runtimeException);

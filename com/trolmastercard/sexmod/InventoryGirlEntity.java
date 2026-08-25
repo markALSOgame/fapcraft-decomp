@@ -3,6 +3,7 @@ package com.trolmastercard.sexmod;
 import java.util.UUID;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,7 +20,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import java.util.List;
 import java.util.Random;
-import net.minecraft.entity.EnumParticleTypes;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldServer;
@@ -116,7 +117,7 @@ public abstract class InventoryGirlEntity extends GirlEntity {
                         throw InventoryGirlEntity.rethrow(runtimeException);
                     }
                 }
-                List list = this.world.getEntitiesWithinAABB(EntityMob.class, new AxisAlignedBB(new BlockPos(this.posX - 7.0, this.posY - 1.0, this.posZ - 7.0), new BlockPos(this.posX + 7.0, this.posY + 1.0, this.posZ + 7.0)));
+                List<EntityMob> list = this.world.getEntitiesWithinAABB(EntityMob.class, new AxisAlignedBB(this.posX - 7.0, this.posY - 1.0, this.posZ - 7.0, this.posX + 7.0, this.posY + 1.0, this.posZ + 7.0));
                 try {
                     i = list.isEmpty() ? 4 : 1;
                 }
@@ -140,13 +141,13 @@ public abstract class InventoryGirlEntity extends GirlEntity {
                 throw InventoryGirlEntity.rethrow(runtimeException);
             }
         }
-        this.DataManager.set(HAND_STATES, (Object)Byte.valueOf("1"));
-        this.DataManager.set(L, (Object)this.Inventory.getStackInSlot(0));
-        this.DataManager.set(R, (Object)this.Inventory.getStackInSlot(1));
-        this.DataManager.set(HelmetKey, (Object)this.Inventory.getStackInSlot(2));
-        this.DataManager.set(ChestKey, (Object)this.Inventory.getStackInSlot(3));
-        this.DataManager.set(PantsKey, (Object)this.Inventory.getStackInSlot(4));
-        this.DataManager.set(BootsKey, (Object)this.Inventory.getStackInSlot(5));
+        this.DataManager.set(HAND_STATES, Byte.valueOf("1"));
+        this.DataManager.set(L, this.Inventory.getStackInSlot(0));
+        this.DataManager.set(R, this.Inventory.getStackInSlot(1));
+        this.DataManager.set(HelmetKey, this.Inventory.getStackInSlot(2));
+        this.DataManager.set(ChestKey, this.Inventory.getStackInSlot(3));
+        this.DataManager.set(PantsKey, this.Inventory.getStackInSlot(4));
+        this.DataManager.set(BootsKey, this.Inventory.getStackInSlot(5));
     }
 
    @SideOnly(Side.CLIENT)

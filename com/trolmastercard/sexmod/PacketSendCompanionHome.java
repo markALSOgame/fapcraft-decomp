@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumParticleTypes;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -69,7 +69,7 @@ public class PacketSendCompanionHome implements IMessage {
                             girl.setCurrentAction(GirlAnimationState.THROW_PEARL);
                             girl.b((float)Math.atan2(girl.posZ - girl.HomePos.z, girl.posX - girl.HomePos.x) * 57.29578f + 90.0f);
                             girl.setTargetPos(girl.getPositionVector());
-                            girl.getDataManager().set(GirlEntity.BusyKey, (Object)true);
+                            girl.getDataManager().set(GirlEntity.BusyKey, true);
                             girl.EnderPearl = null;
                             continue;
                         }
@@ -96,7 +96,7 @@ public class PacketSendCompanionHome implements IMessage {
                     girl.setPosition(girl.HomePos.x, girl.HomePos.y, girl.HomePos.z);
                     girl.EnderPearl = null;
                     girl.setCurrentAction(GirlAnimationState.NULL);
-                    girl.getDataManager().set(GirlEntity.BusyKey, (Object)false);
+                    girl.getDataManager().set(GirlEntity.BusyKey, false);
                     girl.resetMasterAndWalkSpeed();
                 }
             });

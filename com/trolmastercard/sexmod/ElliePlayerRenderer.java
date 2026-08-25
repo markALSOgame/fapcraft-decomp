@@ -11,14 +11,14 @@ public class ElliePlayerRenderer extends GirlPlayerRenderer {
    }
 
    @Override
-   protected void applyBodyOffset() {
+   protected void applyScaleOffset() {
       GlStateManager.translate(0.0F, -1.5F, 0.0F);
    }
 
    @Override
-   protected void applyHeldItemPose(boolean flag, ItemStack stack) {
+   protected void applyHeldItemTransform(boolean flag, ItemStack stack) {
       try {
-         super.applyHeldItemPose(flag, stack);
+         super.applyHeldItemTransform(flag, stack);
          switch (stack.getItem().getItemUseAction(stack)) {
             case BLOCK:
             case BOW:
@@ -56,7 +56,7 @@ public class ElliePlayerRenderer extends GirlPlayerRenderer {
    }
 
    @Override
-   protected void applyPose(boolean flag) {
+   protected void applyHandOffset(boolean flag) {
       float f;
       label24: {
          try {
@@ -83,7 +83,7 @@ public class ElliePlayerRenderer extends GirlPlayerRenderer {
 
    @Override
 
-   protected void applyDualHandPose(boolean flag, boolean flag2) {
+   protected void applyDualHandOffset(boolean flag, boolean flag2) {
         block7: {
             block8: {
                 block6: {

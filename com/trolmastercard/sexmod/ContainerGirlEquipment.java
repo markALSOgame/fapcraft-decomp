@@ -32,7 +32,7 @@ public class ContainerGirlEquipment extends Container {
             new EquipmentSlot(EquipmentSlot.SlotType.PANTS, handler, EquipmentSlot.SlotType.PANTS.SlotIndex, 110, 60),
             new EquipmentSlot(EquipmentSlot.SlotType.SHOES, handler, EquipmentSlot.SlotType.SHOES.SlotIndex, 129, 60)
          };
-         ArrayList list = new ArrayList();
+         ArrayList<Slot> list = new ArrayList<Slot>();
 
          for (int i = 0; i < 3; i++) {
             int i2 = 0;

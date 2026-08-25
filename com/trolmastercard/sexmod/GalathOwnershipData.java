@@ -41,7 +41,7 @@ public class GalathOwnershipData extends WorldSavedData {
 
    public static void clearOwnershipData() {
       OnlineOwners.clear();
-      h.getMoveSpeed();
+      h.clear();
    }
 
    public static void markOwnerOnline(UUID uuid) {
@@ -63,7 +63,7 @@ public class GalathOwnershipData extends WorldSavedData {
    }
 
    public static boolean isPlayerNearOwnedGalath(GalathNpc galath) {
-      UUID uuid = h.b(galath.getGirlUuid());
+      UUID uuid = h.getByValue(galath.getGirlUuid());
 
       try {
          if (uuid == null) {
@@ -100,7 +100,7 @@ public class GalathOwnershipData extends WorldSavedData {
    }
 
    public static boolean isGalathOwnedByPlayer(EntityPlayer player, GalathNpc galath) {
-      return galath.getGirlUuid().equals(h.c(player.getPersistentID()));
+      return galath.getGirlUuid().equals(h.get(player.getPersistentID()));
    }
 
    public static void releaseOwnedGalath(GalathNpc galath) {
@@ -114,7 +114,7 @@ public class GalathOwnershipData extends WorldSavedData {
          throw rethrow(error);
       }
 
-      UUID uuid = h.b(galath.getGirlUuid());
+      UUID uuid = h.getByValue(galath.getGirlUuid());
 
       try {
          if (uuid == null) {
@@ -130,7 +130,7 @@ public class GalathOwnershipData extends WorldSavedData {
 
       try {
          galath.world.removeEntity(galath);
-         h.a(uuid);
+         h.remove(uuid);
          if (player != null) {
             NetworkHandler.channel.sendTo(new PacketInformOfOwnership(false), (EntityPlayerMP)player);
          }
@@ -141,7 +141,7 @@ public class GalathOwnershipData extends WorldSavedData {
 
    public static boolean hasOwnershipData(UUID uuid) {
       try {
-         if (h.c(uuid) != null) {
+         if (h.get(uuid) != null) {
             return true;
          }
       } catch (RuntimeException error) {
@@ -152,7 +152,7 @@ public class GalathOwnershipData extends WorldSavedData {
    }
 
    public static UUID getOwnerUuid(UUID uuid) {
-      return h.b(uuid);
+      return h.getByValue(uuid);
    }
 
    public static UUID getGalathOwnerUuidByEntity(GalathNpc galath) {
@@ -168,7 +168,7 @@ public class GalathOwnershipData extends WorldSavedData {
    }
 
    public static UUID getGalathByOwnerUuid(UUID uuid) {
-      return h.c(uuid);
+      return h.get(uuid);
    }
 
    public static UUID getGalathByPlayer(EntityPlayer player) {
@@ -184,7 +184,7 @@ public class GalathOwnershipData extends WorldSavedData {
    }
 
    public static void setOwnership(UUID uuid, UUID uuid2) {
-      h.a(uuid, uuid2);
+      h.put(uuid, uuid2);
    }
 
    public static void setOwnershipByPlayer(EntityPlayer player, GalathNpc galath) {
@@ -208,7 +208,7 @@ public class GalathOwnershipData extends WorldSavedData {
    }
 
    public static void removeOwnershipByGalathUuid(UUID uuid) {
-      h.a(uuid);
+      h.remove(uuid);
    }
 
    public static void removeOwnershipByPlayer(EntityPlayer player) {
@@ -277,9 +277,9 @@ public class GalathOwnershipData extends WorldSavedData {
       }
 
       World world = FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld();
-      ArrayList list = new ArrayList();
+      ArrayList<EntityPlayer> list = new ArrayList<EntityPlayer>();
 
-      for (Entry entry : h.moveToRandomNearbyPos()) {
+      for (Entry entry : h.entrySet()) {
          UUID uuid = (UUID)entry.getKey();
          UUID uuid2 = (UUID)entry.getValue();
          EntityPlayer player = world.getPlayerEntityByUUID(uuid);
@@ -302,7 +302,7 @@ public class GalathOwnershipData extends WorldSavedData {
       }
 
       for (EntityPlayer player2 : list) {
-         h.a(player2.getPersistentID());
+         h.remove(player2.getPersistentID());
          NetworkHandler.channel.sendTo(new PacketInformOfOwnership(false), (EntityPlayerMP)player2);
       }
    }
@@ -346,7 +346,7 @@ public class GalathOwnershipData extends WorldSavedData {
                     throw GalathOwnershipData.rethrow(runtimeException);
                 }
             }
-            h.a(uUID2, uUID);
+            h.put(uUID2, uUID);
             b.put(uUID2, l);
         }
         NBTTagCompound nBTTagCompound3 = tagCompound.getCompoundTag(NbtKeyManglelieOwnership);
@@ -369,10 +369,10 @@ public class GalathOwnershipData extends WorldSavedData {
 
    public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
       NBTTagCompound tagCompound2 = new NBTTagCompound();
-      tagCompound2.setInteger("amount", h.e());
+      tagCompound2.setInteger("amount", h.size());
       int i = 0;
 
-      for (Entry entry : h.moveToRandomNearbyPos()) {
+      for (Entry entry : h.entrySet()) {
          UUID uuid = (UUID)entry.getKey();
          UUID uuid2 = (UUID)entry.getValue();
          Long l = b.get(uuid);

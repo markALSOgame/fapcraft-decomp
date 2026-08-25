@@ -65,14 +65,14 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    public void startDoggy() {
+    public void u_() {
         this.setCurrentAction(GirlAnimationState.STARTDOGGY);
-        this.DataManager.set(GirlEntity.OutfitIndexKey, (Object)0);
+        this.DataManager.set(GirlEntity.OutfitIndexKey, 0);
         this.AimYaw = ((Float)this.DataManager.get(GirlEntity.RotationYawKey)).floatValue();
     }
 
     @Override
-    public boolean suppressInventoryStripButton() {
+    public boolean A_() {
         return false;
     }
 
@@ -98,7 +98,7 @@ extends PlayerGirlEntity {
     public void startAction(String string, UUID uUID) {
         try {
             if ("action.names.boobjob".equals(string)) {
-                this.DataManager.set(GirlEntity.OutfitIndexKey, (Object)0);
+                this.DataManager.set(GirlEntity.OutfitIndexKey, 0);
                 this.setCurrentAction(GirlAnimationState.PAIZURI_START);
                 this.a(0, GirlAnimationState.PAIZURI_START);
                 this.b(uUID);
@@ -126,11 +126,11 @@ extends PlayerGirlEntity {
             if (this.getCurrentAction() == GirlAnimationState.WAITDOGGY) {
                 EntityPlayer entityPlayer;
                 block8: {
-                    entityPlayer = this.getRenderPosition();
+                    entityPlayer = this.j();
                     try {
                         try {
                             try {
-                                if (entityPlayer == null || !(entityPlayer.getDistance(this.getCustomName().x, this.getCustomName().y, this.getCustomName().z) < 1.0)) break block7;
+                                if (entityPlayer == null || !(entityPlayer.getDistance(this.w().x, this.w().y, this.w().z) < 1.0)) break block7;
                             }
                             catch (RuntimeException runtimeException) {
                                 throw JennyPlayer.rethrow(runtimeException);
@@ -148,8 +148,8 @@ extends PlayerGirlEntity {
                     }
                 }
                 this.hasGirl(entityPlayer.getPersistentID());
-                entityPlayer.setPositionAndUpdate(this.getPositionVector().x, this.getCustomName().y, this.getPositionVector().z);
-                this.a((EntityPlayerMP)entityPlayer, false);
+                entityPlayer.setPositionAndUpdate(this.getPositionVector().x, this.w().y, this.getPositionVector().z);
+                this.teleportServerPlayerInFront((EntityPlayerMP)entityPlayer, false);
                 entityPlayer.moveRelative(0.0f, 0.0f, 0.0f, 0.0f);
                 entityPlayer.capabilities.isFlying = true;
                 this.world.getPlayerEntityByUUID((UUID)this.getBoundPlayerUuid()).capabilities.isFlying = true;
@@ -162,7 +162,7 @@ extends PlayerGirlEntity {
     }
 
     @Override
-    public boolean openActionMenu(EntityPlayer entityPlayer) {
+    public boolean canInteract(EntityPlayer entityPlayer) {
         GirlEntity.openActionMenu(entityPlayer, this, new String[]{"action.names.blowjob", "action.names.boobjob"}, false);
         return true;
     }
@@ -474,16 +474,16 @@ extends PlayerGirlEntity {
                 }
                 case "stripMSG1": {
                     this.h("Hihi~");
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_GIGGLE));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_GIGGLE));
                     break;
                 }
                 case "paymentMSG1": {
                     this.h("Huh?");
-                    this.a(ModSounds.GIRLS_JENNY_HUH[1]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_HUH[1]);
                     break;
                 }
                 case "paymentMSG2": {
-                    this.a(ModSounds.MISC_PLOB[0], 0.5f);
+                    this.playSoundAtVolume(ModSounds.MISC_PLOB[0], 0.5f);
                     String string = "<" + Minecraft.getMinecraft().player.getName() + "> ";
                     switch (this.DataManager.get(GirlEntity.BlowjobStageKey)) {
                         case "strip": {
@@ -508,7 +508,7 @@ extends PlayerGirlEntity {
                 }
                 case "paymentMSG3": {
                     this.h("Hehe~");
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_GIGGLE));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_GIGGLE));
                     break;
                 }
                 case "sexUiOn": {
@@ -517,7 +517,7 @@ extends PlayerGirlEntity {
                     break;
                 }
                 case "paymentMSG4": {
-                    this.a(ModSounds.MISC_PLOB[0], 0.25f);
+                    this.playSoundAtVolume(ModSounds.MISC_PLOB[0], 0.25f);
                     break;
                 }
                 case "paymentDone": {
@@ -526,7 +526,7 @@ extends PlayerGirlEntity {
                 }
                 case "bjiMSG1": {
                     this.h("What are you...");
-                    this.a(ModSounds.GIRLS_JENNY_MMM[8]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_MMM[8]);
                     this.AimYaw = 180.0f;
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.resetProgress();
@@ -534,43 +534,43 @@ extends PlayerGirlEntity {
                 }
                 case "bjiMSG2": {
                     this.h("eh... boys...");
-                    this.a(ModSounds.GIRLS_JENNY_LIGHTBREATHING[8]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_LIGHTBREATHING[8]);
                     break;
                 }
                 case "bjiMSG3": {
                     this.h("OHOhh...!");
-                    this.a(ModSounds.GIRLS_JENNY_AFTERSESSIONMOAN[0]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_AFTERSESSIONMOAN[0]);
                     break;
                 }
                 case "bjiMSG4": {
-                    this.a(ModSounds.MISC_BELLJINGLE[0]);
+                    this.playSoundEvent(ModSounds.MISC_BELLJINGLE[0]);
                     break;
                 }
                 case "bjiMSG5": {
                     this.h("Was this really necessary?!");
-                    this.a(ModSounds.GIRLS_JENNY_HMPH[1], 0.5f);
+                    this.playSoundAtVolume(ModSounds.GIRLS_JENNY_HMPH[1], 0.5f);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.resetProgress();
                     break;
                 }
                 case "bjiMSG6": {
                     this.h("Oh~");
-                    this.a(ModSounds.GIRLS_JENNY_LIGHTBREATHING[8]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_LIGHTBREATHING[8]);
                     break;
                 }
                 case "bjiMSG7": {
                     this.h("You like it?~");
-                    this.a(ModSounds.GIRLS_JENNY_GIGGLE[4]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_GIGGLE[4]);
                     break;
                 }
                 case "bjiMSG8": {
                     this.b("<" + Minecraft.getMinecraft().player.getName() + "> Yee", true);
-                    this.a(ModSounds.MISC_PLOB[0], 0.5f);
+                    this.playSoundAtVolume(ModSounds.MISC_PLOB[0], 0.5f);
                     break;
                 }
                 case "bjiMSG9": {
                     this.h("Hihihi~");
-                    this.a(ModSounds.GIRLS_JENNY_GIGGLE[2]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_GIGGLE[2]);
                     break;
                 }
                 case "bjiMSG10": {
@@ -579,23 +579,23 @@ extends PlayerGirlEntity {
                     break;
                 }
                 case "bjiMSG11": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_LIPSOUND));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_LIPSOUND));
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.02);
                     break;
                 }
                 case "bjiMSG12": {
                     if (ModConstants.Random.nextInt(5) == 0) {
-                        this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_BJMOAN));
+                        this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_BJMOAN));
                     }
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_LIPSOUND));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_LIPSOUND));
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.02);
                     break;
                 }
                 case "bjtMSG1": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_MMM));
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_LIPSOUND));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_MMM));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_LIPSOUND));
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.04);
                     break;
@@ -623,33 +623,33 @@ extends PlayerGirlEntity {
                     break;
                 }
                 case "bjcMSG1": {
-                    this.a(ModSounds.GIRLS_JENNY_BJMOAN[1]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_BJMOAN[1]);
                     break;
                 }
                 case "bjcMSG2": {
-                    this.a(ModSounds.GIRLS_JENNY_BJMOAN[7]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_BJMOAN[7]);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.forceShowHud();
                     break;
                 }
                 case "bjcMSG3": {
-                    this.a(ModSounds.GIRLS_JENNY_AFTERSESSIONMOAN[1]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_AFTERSESSIONMOAN[1]);
                     break;
                 }
                 case "bjcMSG4": {
-                    this.a(ModSounds.GIRLS_JENNY_LIGHTBREATHING[0]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_LIGHTBREATHING[0]);
                     break;
                 }
                 case "bjcMSG5": {
-                    this.a(ModSounds.GIRLS_JENNY_LIGHTBREATHING[1]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_LIGHTBREATHING[1]);
                     break;
                 }
                 case "bjcMSG6": {
-                    this.a(ModSounds.GIRLS_JENNY_LIGHTBREATHING[2]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_LIGHTBREATHING[2]);
                     break;
                 }
                 case "bjcMSG7": {
-                    this.a(ModSounds.GIRLS_JENNY_LIGHTBREATHING[3]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_LIGHTBREATHING[3]);
                     break;
                 }
                 case "bjcBlackScreen": {
@@ -666,22 +666,22 @@ extends PlayerGirlEntity {
                     break;
                 }
                 case "doggyGoOnBedMSG1": {
-                    this.a(ModSounds.MISC_BEDRUSTLE[0]);
+                    this.playSoundEvent(ModSounds.MISC_BEDRUSTLE[0]);
                     this.AimYaw = this.rotationYaw;
                     break;
                 }
                 case "doggyGoOnBedMSG2": {
                     this.a("what are you waiting for?~");
-                    this.a(ModSounds.GIRLS_JENNY_LIGHTBREATHING[9]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_LIGHTBREATHING[9]);
                     break;
                 }
                 case "doggyGoOnBedMSG3": {
                     this.a("this ass ain't gonna fuck itself...");
-                    this.a(ModSounds.GIRLS_JENNY_GIGGLE[0]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_GIGGLE[0]);
                     break;
                 }
                 case "doggyGoOnBedMSG4": {
-                    this.a(ModSounds.MISC_SLAP[0], 0.75f);
+                    this.playSoundAtVolume(ModSounds.MISC_SLAP[0], 0.75f);
                     break;
                 }
                 case "doggyGoOnBedDone": {
@@ -690,27 +690,27 @@ extends PlayerGirlEntity {
                     break;
                 }
                 case "doggystartMSG1": {
-                    this.a(ModSounds.MISC_TOUCH[0]);
+                    this.playSoundEvent(ModSounds.MISC_TOUCH[0]);
                     break;
                 }
                 case "doggystartMSG2": {
-                    this.a(ModSounds.MISC_TOUCH[1]);
+                    this.playSoundEvent(ModSounds.MISC_TOUCH[1]);
                     break;
                 }
                 case "doggystartMSG3": {
-                    this.a(ModSounds.MISC_BEDRUSTLE[1], 0.5f);
+                    this.playSoundAtVolume(ModSounds.MISC_BEDRUSTLE[1], 0.5f);
                     break;
                 }
                 case "doggystartMSG4": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_SMALLINSERTS));
-                    this.a(ModSounds.GIRLS_JENNY_MMM[1]);
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.MISC_SMALLINSERTS));
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_MMM[1]);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.resetProgress();
                     break;
                 }
                 case "doggystartMSG5": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.33f);
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_MOAN));
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.33f);
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_MOAN));
                     break;
                 }
                 case "doggystartDone": {
@@ -721,28 +721,28 @@ extends PlayerGirlEntity {
                 }
                 case "doggyslowMSG1": {
                     this.ar = false;
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.33f);
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.33f);
                     int n = ModConstants.Random.nextInt(4);
                     if (n == 0) {
                         n = ModConstants.Random.nextInt(2);
                         if (n == 0) {
-                            this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_MMM));
+                            this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_MMM));
                         } else {
-                            this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_MOAN));
+                            this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_MOAN));
                         }
                     } else {
-                        this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_HEAVYBREATHING));
+                        this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_HEAVYBREATHING));
                     }
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.00666);
                     break;
                 }
                 case "doggyslowMSG2": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_LIGHTBREATHING), 0.5f);
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_LIGHTBREATHING), 0.5f);
                     break;
                 }
                 case "doggyfastMSG1": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.75f);
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 0.75f);
                     if (this.isOwnedByLocalPlayer()) {
                         GuiHud.addProgress(0.02);
                     }
@@ -750,13 +750,13 @@ extends PlayerGirlEntity {
                     if (this.aq % 2 == 0) {
                         int n = ModConstants.Random.nextInt(2);
                         if (n == 0) {
-                            this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_MOAN));
+                            this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_MOAN));
                             break;
                         }
-                        this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_HEAVYBREATHING));
+                        this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_HEAVYBREATHING));
                         break;
                     }
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_AHH));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_AHH));
                     break;
                 }
                 case "doggyfastDone": {
@@ -765,25 +765,25 @@ extends PlayerGirlEntity {
                     break;
                 }
                 case "doggycumMSG1": {
-                    this.a(ModSounds.MISC_CUMINFLATION[0], 2.0f);
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 2.0f);
-                    this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_MOAN));
+                    this.playSoundAtVolume(ModSounds.MISC_CUMINFLATION[0], 2.0f);
+                    this.playSoundAtVolume(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING), 2.0f);
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_MOAN));
                     break;
                 }
                 case "doggycumMSG2": {
-                    this.a(ModSounds.GIRLS_JENNY_HEAVYBREATHING[4]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_HEAVYBREATHING[4]);
                     break;
                 }
                 case "doggycumMSG3": {
-                    this.a(ModSounds.GIRLS_JENNY_HEAVYBREATHING[5]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_HEAVYBREATHING[5]);
                     break;
                 }
                 case "doggycumMSG4": {
-                    this.a(ModSounds.GIRLS_JENNY_HEAVYBREATHING[6]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_HEAVYBREATHING[6]);
                     break;
                 }
                 case "doggycumMSG5": {
-                    this.a(ModSounds.GIRLS_JENNY_HEAVYBREATHING[7]);
+                    this.playSoundEvent(ModSounds.GIRLS_JENNY_HEAVYBREATHING[7]);
                     break;
                 }
                 case "pearl": {
@@ -805,11 +805,11 @@ extends PlayerGirlEntity {
                     break;
                 }
                 case "paizuriFastMSG1": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING));
                     if (this.getRNG().nextBoolean()) {
-                        this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_MMM));
+                        this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_MMM));
                     } else {
-                        this.a(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_AHH));
+                        this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.GIRLS_JENNY_AHH));
                     }
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.04);
@@ -817,7 +817,7 @@ extends PlayerGirlEntity {
                 }
                 case "paizuriSlowMSG1":
                 case "paizuriStartMSG1": {
-                    this.a(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING));
+                    this.playSoundEvent(ModSounds.pickRandomSound(ModSounds.MISC_POUNDING));
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.02);
                     break;
@@ -831,7 +831,7 @@ extends PlayerGirlEntity {
                 }
                 case "paizuri_startStep": {
                     IBlockState iBlockState = this.world.getBlockState(this.getPosition().subtract(new Vec3i(0, 1, 0)));
-                    this.a(iBlockState.getBlock().getSoundType(iBlockState, this.world, this.getPosition(), this).getStepSound());
+                    this.playSoundEvent(iBlockState.getBlock().getSoundType(iBlockState, this.world, this.getPosition(), this).getStepSound());
                     break;
                 }
                 case "paizuri_cumStart": {

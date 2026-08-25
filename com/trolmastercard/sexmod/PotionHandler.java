@@ -17,6 +17,8 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.passive.EntityVillager;
 
 public class PotionHandler extends Potion {
    public static final Potion b = new PotionHandler("horny potion", false, 16736968, 0, 0);
@@ -80,6 +82,7 @@ public class PotionHandler extends Potion {
    public void a(LivingUpdateEvent livingUpdateEvent) {
         block11: {
             EntityVillager entityVillager;
+            EntityAnimal entityAnimal;
             block12: {
                 if (livingUpdateEvent.getEntity() instanceof EntityVillager) {
                     entityVillager = (EntityVillager)livingUpdateEvent.getEntity();
@@ -101,24 +104,24 @@ public class PotionHandler extends Potion {
                 catch (RuntimeException runtimeException) {
                     throw PotionHandler.rethrow(runtimeException);
                 }
-                entityVillager = (EntityAnimal)livingUpdateEvent.getEntity();
+                entityAnimal = (EntityAnimal)livingUpdateEvent.getEntity();
                 try {
                     try {
-                        if (!entityVillager.isPotionActive(b)) break block11;
-                        if (entityVillager.getGrowingAge() < 0) break block12;
+                        if (!entityAnimal.isPotionActive(b)) break block11;
+                        if (entityAnimal.getGrowingAge() < 0) break block12;
                     }
                     catch (RuntimeException runtimeException) {
                         throw PotionHandler.rethrow(runtimeException);
                     }
-                    entityVillager.setGrowingAge(0);
-                    entityVillager.resetInLove();
-                    entityVillager.setInLove(entityVillager.world.getClosestPlayerToEntity((Entity)entityVillager, 30.0));
+                    entityAnimal.setGrowingAge(0);
+                    entityAnimal.resetInLove();
+                    entityAnimal.setInLove(entityAnimal.world.getClosestPlayerToEntity((Entity)entityAnimal, 30.0));
                 }
                 catch (RuntimeException runtimeException) {
                     throw PotionHandler.rethrow(runtimeException);
                 }
             }
-            entityVillager.removePotionEffect(b);
+            entityAnimal.removePotionEffect(b);
         }
     }
 

@@ -46,54 +46,26 @@ public class ClientChatHandler {
    }
 
 
-   public void a(@Nonnull ClientChatHandler.Entry entry) {
-        String string;
-        StringBuilder stringBuilder;
-        TextComponentString textComponentString;
-        TextComponentString textComponentString2;
-        EntityPlayer entityPlayer;
-        EntityPlayer entityPlayer2;
-        block6: {
-            World world = Minecraft.getMinecraft().player.world;
-            entityPlayer2 = world.getPlayerEntityByUUID(entry.d);
-            entityPlayer = world.getPlayerEntityByUUID(entry.c);
-            try {
-                try {
-                    if (entityPlayer != null && entityPlayer2 != null) break block6;
-                }
-                catch (RuntimeException runtimeException) {
-                    throw ClientChatHandler.rethrow(runtimeException);
-                }
-                return;
-            }
-            catch (RuntimeException runtimeException) {
-                throw ClientChatHandler.rethrow(runtimeException);
-            }
+    public void a(@Nonnull ClientChatHandler.Entry entry) {
+        World world = Minecraft.getMinecraft().player.world;
+        EntityPlayer entityPlayer2 = world.getPlayerEntityByUUID(entry.d);
+        EntityPlayer entityPlayer = world.getPlayerEntityByUUID(entry.c);
+        if (entityPlayer != null && entityPlayer2 != null) {
+            String string = entry.PendingEntry ? entityPlayer.getName() : entityPlayer2.getName();
+            TextComponentString textComponentString4 = new TextComponentString(TextFormatting.LIGHT_PURPLE + string + " " + TextFormatting.DARK_PURPLE + I18n.format((String)"genderswap.sexpromt.playerxaskedfory", new Object[0]) + " " + TextFormatting.LIGHT_PURPLE + I18n.format((String)entry.Instance, new Object[0]));
+            TextComponentString textComponentString5 = new TextComponentString(TextFormatting.DARK_PURPLE + I18n.format((String)"genderswap.sexpromt.autodeletion", new Object[0]));
+            TextComponentString textComponentString6 = new TextComponentString(TextFormatting.DARK_PURPLE + "[ " + TextFormatting.LIGHT_PURPLE + I18n.format((String)"genderswap.sexpromt.accept", new Object[0]) + TextFormatting.DARK_PURPLE + " | " + TextFormatting.LIGHT_PURPLE + I18n.format((String)"genderswap.sexpromt.decline", new Object[0]) + TextFormatting.DARK_PURPLE + " ]");
+            entityPlayer2.sendMessage(textComponentString4);
+            entityPlayer2.sendMessage(textComponentString5);
+            entityPlayer2.sendMessage(textComponentString6);
+            this.PendingEntry = entry;
         }
-        try {
-            TextComponentString textComponentString3;
-            textComponentString2 = textComponentString3;
-            textComponentString = textComponentString3;
-            stringBuilder = new StringBuilder().append(TextFormatting.LIGHT_PURPLE);
-            string = entry.PendingEntry ? entityPlayer.getName() : entityPlayer2.getName();
-        }
-        catch (RuntimeException runtimeException) {
-            throw ClientChatHandler.rethrow(runtimeException);
-        }
-        textComponentString2(stringBuilder.append(string).append(" ").append(TextFormatting.DARK_PURPLE).append(I18n.format((String)"genderswap.sexpromt.playerxaskedfory", (Object[])new Object[0])).append(" ").append(TextFormatting.LIGHT_PURPLE).append(I18n.format((String)entry.Instance, (Object[])new Object[0])).toString());
-        TextComponentString textComponentString4 = textComponentString;
-        TextComponentString textComponentString5 = new TextComponentString(TextFormatting.DARK_PURPLE + I18n.format((String)"genderswap.sexpromt.autodeletion", (Object[])new Object[0]));
-        TextComponentString textComponentString6 = new TextComponentString(TextFormatting.DARK_PURPLE + "[ " + TextFormatting.LIGHT_PURPLE + I18n.format((String)"genderswap.sexpromt.accept", (Object[])new Object[0]) + TextFormatting.DARK_PURPLE + " | " + TextFormatting.LIGHT_PURPLE + I18n.format((String)"genderswap.sexpromt.decline", (Object[])new Object[0]) + TextFormatting.DARK_PURPLE + " ]");
-        entityPlayer2.sendMessage((ITextComponent)textComponentString4);
-        entityPlayer2.sendMessage((ITextComponent)textComponentString5);
-        entityPlayer2.sendMessage((ITextComponent)textComponentString6);
-        this.PendingEntry = entry;
     }
 
    @SubscribeEvent
    public void a(ClientChatEvent clientChatEvent) {
       try {
-         if (Instance.getSelectedClothingOptions() == null) {
+         if (Instance.b() == null) {
             return;
          }
       } catch (RuntimeException error) {
@@ -102,7 +74,7 @@ public class ClientChatHandler {
 
       String string = clientChatEvent.getMessage().toLowerCase();
       if (string.equals(I18n.format("genderswap.sexpromt.accept", new Object[0]).toLowerCase())) {
-         ClientChatHandler.Entry entry = Instance.getSelectedClothingOptions();
+         ClientChatHandler.Entry entry = Instance.b();
          this.a(entry.Instance, entry.d, entry.c);
          this.c();
          clientChatEvent.setCanceled(true);

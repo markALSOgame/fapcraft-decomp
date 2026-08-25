@@ -52,7 +52,7 @@ public class PacketSendGirlToSex implements IMessage {
 
                try {
                   if (girl instanceof EmptyAction) {
-                     ((EmptyAction)girl).a();
+                     ((EmptyAction)girl).goToSexBed();
                   }
                } catch (RuntimeException error3) {
                   throw rethrow(error3);

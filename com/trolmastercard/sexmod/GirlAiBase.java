@@ -67,7 +67,7 @@ public abstract class GirlAiBase extends EntityAIBase {
       }
 
       this.Navigation.setSpeed(d);
-      this.Girl.a(walkState);
+      this.Girl.setWalkState(walkState);
       return d;
    }
 
@@ -128,13 +128,14 @@ public abstract class GirlAiBase extends EntityAIBase {
    public void updateTask() {
         block4: {
             boolean flag;
+            GirlWatchAi ai = null;
             block6: {
                 block5: {
                     try {
                         try {
                             this.State = this.getState();
                             if (this.Girl.WatchPlayerAI == null) break block4;
-                            GirlWatchAi ai = this.Girl.WatchPlayerAI;
+                            ai = this.Girl.WatchPlayerAI;
                             if (this.State != GirlAiBase.AiState.IDLE) break block5;
                         }
                         catch (RuntimeException runtimeException) {

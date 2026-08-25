@@ -48,7 +48,7 @@ public class PacketSetNewHome implements IMessage {
          }
 
          FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() -> {
-            ArrayList list = GirlEntity.getGirlsByOwner(packet.GirlUuid);
+            ArrayList<GirlEntity> list = GirlEntity.getGirlsByOwner(packet.GirlUuid);
 
             try {
                if (list.isEmpty()) {

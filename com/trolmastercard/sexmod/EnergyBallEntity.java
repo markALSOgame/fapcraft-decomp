@@ -119,7 +119,7 @@ public class EnergyBallEntity extends EntityLiving {
       AxisAlignedBB bbox = new AxisAlignedBB(
          vec3d2.x, vec3d2.y, vec3d2.z, vec3d3.x, vec3d3.y, vec3d3.z
       );
-      List list = this.world.getEntitiesWithinAABB(GalathNpc.class, bbox);
+      List<GalathNpc> list = this.world.getEntitiesWithinAABB(GalathNpc.class, bbox);
 
       try {
          if (list.isEmpty()) {

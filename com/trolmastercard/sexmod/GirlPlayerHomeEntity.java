@@ -45,7 +45,7 @@ public abstract class GirlPlayerHomeEntity extends PlayerGirlEntity {
                 throw GirlPlayerHomeEntity.rethrow(runtimeException);
             }
         }
-        this.DataManager.register(AttributeStringKey, (Object)this.generateAttributeString(new StringBuilder()));
+        this.DataManager.register(AttributeStringKey, this.generateAttributeString(new StringBuilder()));
     }
 
    protected abstract String generateAttributeString(StringBuilder sb);

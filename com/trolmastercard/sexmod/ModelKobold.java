@@ -10,7 +10,7 @@ import software.bernie.geckolib3.core.processor.AnimationProcessor;
 import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.model.provider.data.EntityModelData;
 
-public class ModelKobold extends GirlGeoModel {
+public class ModelKobold extends GirlGeoModel<GirlEntity> {
    static final float g = 1.2F;
    static final float f = 1.0F;
 
@@ -22,7 +22,7 @@ public class ModelKobold extends GirlGeoModel {
    }
 
    @Override
-   public ResourceLocation b() {
+   public ResourceLocation getSkinLocation() {
       return new ResourceLocation("sexmod", "textures/entity/kobold/kobold.png");
    }
 
@@ -33,8 +33,8 @@ public class ModelKobold extends GirlGeoModel {
 
    @Override
 
-   public void a(GirlEntity girl, Integer i, AnimationEvent animEvent) {
-      super.a(girl, i, animEvent);
+   public void setLivingAnimations(GirlEntity girl, Integer i, AnimationEvent animEvent) {
+      super.setLivingAnimations(girl, i, animEvent);
       if (girl.world instanceof PreviewWorld) {
          return;
       }
@@ -391,7 +391,7 @@ public class ModelKobold extends GirlGeoModel {
 
    @Override
 
-   protected void a(GirlEntity girl, AnimationProcessor animationProcessor, AnimationEvent animEvent) {
+   protected void applyAnimationTransforms(GirlEntity girl, AnimationProcessor animationProcessor, AnimationEvent animEvent) {
       if (girl.world instanceof PreviewWorld) {
          return;
       }
@@ -421,17 +421,17 @@ public class ModelKobold extends GirlGeoModel {
    }
 
    @Override
-   public String[] getChestBones() {
+   public String[] getChestArmorBones() {
       return new String[]{"armorShoulderR", "armorShoulderL", "armorChest", "armorBoobs"};
    }
 
    @Override
-   public String[] a() {
+   public String[] getFleshTorsoBones() {
       return new String[]{"boobsFlesh", "upperBodyL", "upperBodyR"};
    }
 
    @Override
-   public String[] getPantsBones() {
+   public String[] getPantsArmorBones() {
       return new String[]{
          "armorBootyR",
          "armorBootyL",
@@ -447,17 +447,17 @@ public class ModelKobold extends GirlGeoModel {
    }
 
    @Override
-   public String[] getLowerFleshBones() {
+   public String[] getFleshLegsBones() {
       return new String[]{"fleshL", "fleshR", "vagina", "fuckhole", "curvesL", "curvesR", "kneeL", "kneeR"};
    }
 
    @Override
-   public String[] b() {
+   public String[] getBootsArmorBones() {
       return new String[]{"armorShoesL", "armorShoesR"};
    }
 
    @Override
-   public String[] getToeBones() {
+   public String[] getFleshFeetBones() {
       return new String[]{"toesR", "toesL"};
    }
 

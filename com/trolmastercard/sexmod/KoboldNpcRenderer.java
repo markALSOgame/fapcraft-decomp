@@ -107,8 +107,8 @@ public class KoboldNpcRenderer extends ScaledGirlGeoRenderer<KoboldNpc> {
    protected Vec3i getBoneColor(String string) {
         block10: {
             EntityDataManager entityDataManager = ((KoboldNpc)this.RenderEntity).getDataManager();
-            EyeAndKoboldColor eyeAndKoboldColor = EyeAndKoboldColor.valueOf((String)entityDataManager.get(KoboldNpc.BodyColorKey));
-            BlockPos blockPos = (BlockPos)entityDataManager.get(KoboldNpc.EyeColorKey);
+            EyeAndKoboldColor eyeAndKoboldColor = EyeAndKoboldColor.valueOf((String)entityDataManager.get(KoboldNpc.TribeColorKey));
+            BlockPos blockPos = (BlockPos)entityDataManager.get(KoboldNpc.K);
             try {
                 if (MainColorBones.contains(string)) {
                     return eyeAndKoboldColor.getMainColor();
@@ -138,12 +138,12 @@ public class KoboldNpcRenderer extends ScaledGirlGeoRenderer<KoboldNpc> {
                 throw KoboldNpcRenderer.rethrow(runtimeException);
             }
         }
-        return r;
+        return DefaultColor;
     }
 
-   @Override
+    @Override
 
-   protected ItemStack a(@Nullable ItemStack stack) {
+    protected ItemStack a(@Nullable ItemStack stack) {
       label31: {
          switch (((KoboldNpc)this.RenderEntity).getCurrentAction()) {
             case MINE:
@@ -221,7 +221,8 @@ public class KoboldNpcRenderer extends ScaledGirlGeoRenderer<KoboldNpc> {
       }
    }
 
-   public void render(KoboldNpc kobold, double d, double d2, double d3, float f, float f2) {
+   @Override
+   public void doRender(KoboldNpc kobold, double d, double d2, double d3, float f, float f2) {
       String string = (String)kobold.getDataManager().get(GirlEffectEntity.TribeColorKey);
 
       try {
@@ -234,7 +235,7 @@ public class KoboldNpcRenderer extends ScaledGirlGeoRenderer<KoboldNpc> {
 
       try {
          if (!kobold.as.equals(string)) {
-            c();
+            clearColorCache();
             kobold.as = string;
          }
       } catch (RuntimeException error2) {
@@ -242,26 +243,26 @@ public class KoboldNpcRenderer extends ScaledGirlGeoRenderer<KoboldNpc> {
       }
 
       this.RenderPosition = new Vector3f((float)d, (float)d2, (float)d3);
-      super.render(kobold, d, d2, d3, f, f2);
+      super.doRender(kobold, d, d2, d3, f, f2);
    }
 
    @Override
-   protected void renderNameTag(double d, double d2, double d3) {
+   protected void renderNameLabel(double d, double d2, double d3) {
       EntityDataManager entityDataManager = this.RenderEntity.getDataManager();
       String string = (String)entityDataManager.get(KoboldNpc.TribeNameKey);
 
       try {
          if ("null".equals(string)) {
-            super.renderNameTag(d, d2, d3);
+            super.renderNameLabel(d, d2, d3);
             return;
          }
       } catch (RuntimeException error) {
          throw rethrow(error);
       }
 
-      EyeAndKoboldColor eyeColor = EyeAndKoboldColor.valueOf((String)entityDataManager.get(KoboldNpc.BodyColorKey));
+      EyeAndKoboldColor eyeColor = EyeAndKoboldColor.valueOf((String)entityDataManager.get(KoboldNpc.TribeColorKey));
       string = eyeColor.getTextColor() + " -" + string + "-";
-      this.renderLivingLabel(this.RenderEntity, this.RenderEntity.getDisplayName() + string, d, d2 + this.RenderEntity.getScaleOffset(), d3, 300);
+      this.renderLivingLabel(this.RenderEntity, this.RenderEntity.getGirlName() + string, d, d2 + this.RenderEntity.getRenderLabelOffset(), d3, 300);
    }
 
    private static RuntimeException rethrow(RuntimeException error) {

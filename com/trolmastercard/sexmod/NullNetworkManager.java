@@ -222,7 +222,7 @@ public class NullNetworkManager extends NetworkManager {
             return false;
          }
 
-         public int a(Channel channel) {
+         public int compareTo(Channel channel) {
             return 0;
          }
       };

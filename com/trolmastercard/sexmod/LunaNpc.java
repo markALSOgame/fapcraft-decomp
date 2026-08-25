@@ -90,6 +90,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -110,7 +111,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 public class LunaNpc
 extends InventoryGirlEntity
 implements VoidCallback,
-fg {
+EmptyAction {
     public static double FamiliarSpawnScale = 0.01;
     public ItemStack HeldRodStack = new ItemStack((Item)ItemLunaRod.Instance);
     public static final DataParameter<Float> Y = EntityDataManager.createKey(LunaNpc.class, (DataSerializer)DataSerializers.FLOAT).getSerializer().createKey(121);
@@ -161,27 +162,27 @@ fg {
     }
 
     @Override
-    public String getDisplayName() {
+    public String getGirlName() {
         return "Luna";
     }
 
     @Override
-    public float i() {
+    public float getRenderLabelOffset() {
         return -0.2f;
     }
 
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.DataManager.register(Y, (Object)Float.valueOf(0.0f));
-        this.DataManager.register(ActiveItemStackKey, (Object)ItemStack.EMPTY);
-        this.DataManager.register(IsBoundKey, (Object)false);
-        this.DataManager.register(HeldItemStackKey, (Object)ItemStack.EMPTY);
+        this.DataManager.register(Y, Float.valueOf(0.0f));
+        this.DataManager.register(ActiveItemStackKey, ItemStack.EMPTY);
+        this.DataManager.register(IsBoundKey, false);
+        this.DataManager.register(HeldItemStackKey, ItemStack.EMPTY);
     }
 
     @Override
     public void c() {
-        this.void_a("Love it here owo");
+        this.a("Love it here owo");
         this.playRandomSound(ModSounds.GIRLS_LUNA_OWO, new int[0]);
     }
 
@@ -303,11 +304,11 @@ fg {
     }
 
     public void b(ItemStack itemStack) {
-        this.DataManager.set(HeldItemStackKey, (Object)itemStack);
+        this.DataManager.set(HeldItemStackKey, itemStack);
     }
 
     @Override
-    public void g() {
+    public void noop() {
         this.WanderAI = new EntityAIWanderAvoidWater((EntityCreature)this, 0.35);
         this.WatchPlayerAI = new GirlWatchAi((EntityLiving)this, EntityPlayer.class, 3.0f, 1.0f);
         this.tasks.addTask(5, (EntityAIBase)this.WatchPlayerAI);
@@ -361,7 +362,7 @@ fg {
                         }
                         try {
                             try {
-                                entityDataManager.set(dataParameter, (Object)flag);
+                                entityDataManager.set(dataParameter, flag);
                                 if (this.FamiliarCheckTime != this.world.getTotalWorldTime() || this.Familiar == null) break block29;
                             }
                             catch (RuntimeException runtimeException) {
@@ -386,7 +387,7 @@ fg {
                                 }
                                 this.ay = false;
                                 this.ak = 0;
-                                this.DataManager.set(BusyKey, (Object)true);
+                                this.DataManager.set(BusyKey, true);
                                 this.noClip = true;
                                 this.setNoGravity(true);
                                 this.motionX = 0.0;
@@ -434,7 +435,7 @@ fg {
                     this.ac = false;
                     this.aw = 0;
                     this.b(this.world.getMinecraftServer().getPlayerList().getPlayerByUUID((UUID)this.getSexPlayerUuid()).rotationYaw + 180.0f);
-                    this.DataManager.set(BusyKey, (Object)true);
+                    this.DataManager.set(BusyKey, true);
                     this.getNavigator().clearPath();
                     this.U();
                     break block32;
@@ -449,7 +450,7 @@ fg {
             this.setPosition(vec3d.x, vec3d.y, vec3d.z);
         }
         this.void_d();
-        this.DataManager.set(ActiveItemStackKey, (Object)this.Inventory.getStackInSlot(6));
+        this.DataManager.set(ActiveItemStackKey, this.Inventory.getStackInSlot(6));
     }
 
     void void_d() {
@@ -526,7 +527,7 @@ fg {
                     entityPlayer.prevRotationYaw = this.I().floatValue() + 180.0f;
                     this.AimYaw = this.I().floatValue() + 180.0f;
                     this.a(0.0, -0.075f, -0.7109375, 0.0f, 0.0f);
-                    this.DataManager.set(OutfitIndexKey, (Object)0);
+                    this.DataManager.set(OutfitIndexKey, 0);
                 }
             }
             catch (RuntimeException runtimeException) {
@@ -566,18 +567,18 @@ fg {
     }
 
     @Override
-    public void a() {
+    public void goToSexBed() {
         block9: {
             BlockPos blockPos;
             block8: {
-                this.DataManager.set(BusyKey, (Object)false);
+                this.DataManager.set(BusyKey, false);
                 this.setCurrentAction(GirlAnimationState.NULL);
                 this.ar = true;
-                blockPos = this.a(this.getPosition());
+                blockPos = this.findNearbyBedPos(this.getPosition());
                 try {
                     if (blockPos != null) break block8;
                     this.playRandomSound(ModSounds.GIRLS_LUNA_GIGGLE, new int[0]);
-                    NetworkHandler.channel.sendToAllAround((IMessage)new PacketSendChatMessage("<" + this.getDisplayName() + "> Heh.. there is no bed nearby.. but I already ate the fish so nya~ hehe", this.dimension, this.getGirlUuid()), this.P());
+                    NetworkHandler.channel.sendToAllAround((IMessage)new PacketSendChatMessage("<" + this.getGirlName() + "> Heh.. there is no bed nearby.. but I already ate the fish so nya~ hehe", this.dimension, this.getGirlUuid()), this.P());
                     break block9;
                 }
                 catch (RuntimeException runtimeException) {
@@ -609,7 +610,7 @@ fg {
             try {
                 if (i == -1) {
                     this.playRandomSound(ModSounds.GIRLS_LUNA_GIGGLE, new int[0]);
-                    this.void_a("Heh.. the bed is obscured.. but I already ate the fish so nya~ hehe");
+                    this.a("Heh.. the bed is obscured.. but I already ate the fish so nya~ hehe");
                     return;
                 }
             }
@@ -634,7 +635,7 @@ fg {
         entityItem.motionY = vec3d.y;
         entityItem.motionZ = vec3d.z;
         this.world.spawnEntity((Entity)entityItem);
-        this.DataManager.set(HeldItemStackKey, (Object)ItemStack.EMPTY);
+        this.DataManager.set(HeldItemStackKey, ItemStack.EMPTY);
     }
 
     public void q() {
@@ -643,8 +644,8 @@ fg {
             this.at = 0;
             this.as = 0;
             this.am = false;
-            this.DataManager.set(BusyKey, (Object)false);
-            this.DataManager.set(HeldItemStackKey, (Object)ItemStack.EMPTY);
+            this.DataManager.set(BusyKey, false);
+            this.DataManager.set(HeldItemStackKey, ItemStack.EMPTY);
             this.setSilent(false);
             this.setCurrentAction(GirlAnimationState.NULL);
             if (this.Familiar != null) {
@@ -728,7 +729,7 @@ fg {
                             return;
                         }
                         try {
-                            int i;
+                            int i = this.FamiliarAgeTicks;
                             ++this.FamiliarAgeTicks;
                             if ((float)i < 1200.0f) {
                                 return;
@@ -738,7 +739,7 @@ fg {
                             throw LunaNpc.rethrow(runtimeException);
                         }
                         try {
-                            if (this.Familiar == null || this.Familiar.CurrentColor != 15) break block40;
+                            if (this.Familiar == null || this.Familiar.DiveTicks != 15) break block40;
                         }
                         catch (RuntimeException runtimeException) {
                             throw LunaNpc.rethrow(runtimeException);
@@ -798,7 +799,7 @@ fg {
             catch (RuntimeException runtimeException) {
                 throw LunaNpc.rethrow(runtimeException);
             }
-            itemStack = this.world.rayTraceBlocks(this.getPositionVector().add(0.0, (double)this.getEyeHeight(), 0.0), new Vec3d((double)this.MoveTargetPos.getX(), (double)this.MoveTargetPos.getY(), (double)this.MoveTargetPos.getZ()), true);
+            RayTraceResult rayTraceResult = this.world.rayTraceBlocks(this.getPositionVector().add(0.0, (double)this.getEyeHeight(), 0.0), new Vec3d((double)this.MoveTargetPos.getX(), (double)this.MoveTargetPos.getY(), (double)this.MoveTargetPos.getZ()), true);
             try {
                 this.setSilent(true);
                 if (this.WanderAI != null) {
@@ -822,7 +823,7 @@ fg {
                 if (this.getCurrentAction() == GirlAnimationState.NULL) {
                     this.setCurrentAction(GirlAnimationState.FISHING_START);
                     this.setTargetPos(this.getPositionVector());
-                    this.DataManager.set(BusyKey, (Object)true);
+                    this.DataManager.set(BusyKey, true);
                     this.b((float)Math.atan2(this.posZ - (double)this.MoveTargetPos.getZ(), this.posX - (double)this.MoveTargetPos.getX()) * 57.29578f + 90.0f);
                 }
             }
@@ -910,7 +911,7 @@ fg {
                     blockPos = null;
                     i = 0;
                     while (++i2 < 50) {
-                        BlockPos blockPos2 = this.a(this.getPosition(), i2 + 1, (Block)Blocks.WATER, 60, 10, new HashSet<Biome>(Arrays.asList(Biomes.RIVER, Biomes.OCEAN, Biomes.DEEP_OCEAN, Biomes.BEACH, Biomes.STONE_BEACH, Biomes.SWAMPLAND, Biomes.MUTATED_SWAMPLAND)));
+                        BlockPos blockPos2 = this.findBlockPos(this.getPosition(), i2 + 1, (Block)Blocks.WATER, 60, 10, new HashSet<Biome>(Arrays.asList(Biomes.RIVER, Biomes.OCEAN, Biomes.DEEP_OCEAN, Biomes.BEACH, Biomes.STONE_BEACH, Biomes.SWAMPLAND, Biomes.MUTATED_SWAMPLAND)));
                         try {
                             if (blockPos2 == null) {
                                 break;
@@ -1015,7 +1016,7 @@ fg {
         catch (RuntimeException runtimeException) {
             throw LunaNpc.rethrow(runtimeException);
         }
-        this.DataManager.set(Y, (Object)Float.valueOf(pathPoint.distanceTo(pathPoint2)));
+        this.DataManager.set(Y, Float.valueOf(pathPoint.distanceTo(pathPoint2)));
     }
 
     @Override
@@ -1025,8 +1026,8 @@ fg {
             if ("action.names.touchboobs".equals(string)) {
                 this.handleGirlUuidEvent(uUID);
                 this.a(true, true, uUID);
-                this.changeDataParameterFromClient("animationFollowUp", "touch_boobs");
-                this.changeDataParameterFromClient("currentModel", "0");
+                this.a("animationFollowUp", "touch_boobs");
+                this.a("currentModel", "0");
                 AnimationInputLock.setAnimationLocked(false);
             }
         }
@@ -1037,7 +1038,7 @@ fg {
             if ("action.names.sex".equals(string)) {
                 this.handleGirlUuidEvent(uUID);
                 this.a(true, true, uUID);
-                this.changeDataParameterFromClient("animationFollowUp", "sex");
+                this.a("animationFollowUp", "sex");
                 AnimationInputLock.setAnimationLocked(false);
             }
         }
@@ -1049,7 +1050,7 @@ fg {
                 this.handleGirlUuidEvent(uUID);
                 this.a(true, true, uUID);
                 AnimationInputLock.setAnimationLocked(false);
-                this.changeDataParameterFromClient("animationFollowUp", "headpat");
+                this.a("animationFollowUp", "headpat");
             }
         }
         catch (RuntimeException runtimeException) {
@@ -1058,7 +1059,7 @@ fg {
     }
 
     @Override
-    protected GirlAnimationState c(GirlAnimationState girlAnimationState) {
+    protected GirlAnimationState getFollowUpAction(GirlAnimationState girlAnimationState) {
         try {
             if (girlAnimationState == GirlAnimationState.TOUCH_BOOBS_SLOW) {
                 return GirlAnimationState.TOUCH_BOOBS_FAST;
@@ -1079,7 +1080,7 @@ fg {
     }
 
     @Override
-    protected GirlAnimationState a(GirlAnimationState girlAnimationState) {
+    protected GirlAnimationState nextAnimationState(GirlAnimationState girlAnimationState) {
         block9: {
             block8: {
                 try {
@@ -1136,9 +1137,9 @@ fg {
             }
         }
         if (this.world.isRemote) {
-            this.changeDataParameterFromClient("animationFollowUp", "");
+            this.a("animationFollowUp", "");
         } else {
-            this.DataManager.set(BlowjobStageKey, (Object)"");
+            this.DataManager.set(BlowjobStageKey, "");
         }
     }
 
@@ -1201,7 +1202,7 @@ fg {
                 }
                 if (Math.abs(this.prevPosX - this.posX) + Math.abs(this.prevPosZ - this.posZ) > 0.0) {
                     if (this.onGround && Math.abs(Math.abs(this.prevPosY) - Math.abs(this.posY)) < (double)0.1f) {
-                        this.createAnimation(((Float)this.DataManager.get(Y)).floatValue() < 3.0f ? "animation.cat.walk" : "animation.cat.run", true, animEvent);
+                        this.createAnimationOnce(((Float)this.DataManager.get(Y)).floatValue() < 3.0f ? "animation.cat.walk" : "animation.cat.run", true, animEvent);
                     } else {
                         this.createAnimationOnce("animation.cat.fly", true, animEvent);
                     }
@@ -1316,7 +1317,7 @@ fg {
         AnimationController.ISoundListener iSoundListener = arg1 -> {
             switch (arg1.sound) {
                 case "attackSound": {
-                    this.a(SoundEvents.ENTITY_PLAYER_ATTACK_STRONG);
+                    this.playSoundEvent(SoundEvents.ENTITY_PLAYER_ATTACK_STRONG);
                     break;
                 }
                 case "attackDone": {
@@ -1358,7 +1359,7 @@ fg {
                     break;
                 }
                 case "burp": {
-                    this.a(SoundEvents.ENTITY_PLAYER_BURP, 0.5f, this.rand.nextFloat() * 0.1f + 0.9f);
+                    this.playSoundAt(SoundEvents.ENTITY_PLAYER_BURP, 0.5f, this.rand.nextFloat() * 0.1f + 0.9f);
                     break;
                 }
                 case "eatingDone": {
@@ -1388,19 +1389,19 @@ fg {
                     break;
                 }
                 case "paymentMSG2": {
-                    this.void_a("huh~?");
+                    this.a("huh~?");
                     this.playRandomSound(ModSounds.GIRLS_LUNA_HUH, new int[0]);
                     break;
                 }
                 case "paymentMSG3": {
-                    this.void_a("nyyyaaaa~ :D");
+                    this.a("nyyyaaaa~ :D");
                     int[] nArray = new int[]{1, 7, 10, 11};
                     int i = nArray[this.getRNG().nextInt(nArray.length)];
                     this.playSoundEvent(ModSounds.GIRLS_LUNA_CUTENYA[i]);
                     break;
                 }
                 case "paymentMSG4": {
-                    this.void_a("tankuuuu owowowo");
+                    this.a("tankuuuu owowowo");
                     this.playRandomSound(ModSounds.GIRLS_LUNA_OWO, new int[0]);
                     break;
                 }
@@ -1446,7 +1447,7 @@ fg {
                     break;
                 }
                 case "touch_boobsMSG1": {
-                    this.void_a("comon~ touch me hihi~");
+                    this.a("comon~ touch me hihi~");
                     this.playRandomSound(ModSounds.GIRLS_LUNA_GIGGLE, new int[0]);
                     break;
                 }
@@ -1538,7 +1539,7 @@ fg {
                 }
                 case "call_playerMSG1": {
                     this.playRandomSound(ModSounds.GIRLS_LUNA_GIGGLE, new int[0]);
-                    this.void_a("come here - big guy hehe~");
+                    this.a("come here - big guy hehe~");
                     break;
                 }
                 case "pounding": {
@@ -1547,7 +1548,7 @@ fg {
                 }
                 case "sitting_introMSG1": {
                     this.playRandomSound(ModSounds.GIRLS_LUNA_GIGGLE, new int[0]);
-                    this.void_a("hehe~");
+                    this.a("hehe~");
                     break;
                 }
                 case "sitting_introDone": {
@@ -1597,7 +1598,7 @@ fg {
                     break;
                 }
                 case "headpatMSG1": {
-                    this.void_a("huh?~");
+                    this.a("huh?~");
                     this.playRandomSound(ModSounds.GIRLS_LUNA_HUH, new int[0]);
                     break;
                 }
@@ -1606,7 +1607,7 @@ fg {
                     break;
                 }
                 case "headpatMSG3": {
-                    this.void_a("nya~");
+                    this.a("nya~");
                     this.playSoundEvent(ModSounds.GIRLS_LUNA_HORNINYA[0]);
                 }
             }

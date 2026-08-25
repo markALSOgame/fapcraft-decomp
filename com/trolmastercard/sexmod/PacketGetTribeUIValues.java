@@ -103,9 +103,9 @@ public class PacketGetTribeUIValues implements IMessage {
 
             boolean flag = GirlHomeBuilder.hasTribe(uuid);
             EntityPlayerMP serverPlayer = ctx.getServerHandler().player;
-            HashMap map = GirlHomeBuilder.getLoadedHomes(uuid, serverPlayer.world);
-            List list = GirlHomeBuilder.getKobolds(uuid);
-            ArrayList list2 = new ArrayList();
+            HashMap<UUID, BlockPos> map = GirlHomeBuilder.getLoadedHomes(uuid, serverPlayer.world);
+            List<KoboldNpc> list = GirlHomeBuilder.getKobolds(uuid);
+            ArrayList<Vector4d> list2 = new ArrayList<Vector4d>();
             int i = GirlHomeBuilder.getTribeColor(uuid).getWoolMeta();
             HashSet set = new HashSet();
 

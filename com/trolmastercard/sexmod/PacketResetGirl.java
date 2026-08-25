@@ -54,7 +54,7 @@ public class PacketResetGirl implements IMessage {
          label36: {
             try {
                girl.noop();
-               if (!(girl instanceof PlayerGirlEntity) || girl.world.getPlayerEntityByUUID(((PlayerGirlEntity)girl).m()) == null) {
+               if (!(girl instanceof PlayerGirlEntity) || girl.world.getPlayerEntityByUUID(((PlayerGirlEntity)girl).getBoundPlayerUuid()) == null) {
                   break label36;
                }
             } catch (RuntimeException error) {
@@ -64,10 +64,10 @@ public class PacketResetGirl implements IMessage {
             NetworkHandler.channel
                .sendTo(
                   new PacketSetPlayerMovement(true),
-                  (EntityPlayerMP)FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(girl.dimension).getPlayerEntityByUUID(((PlayerGirlEntity)girl).m())
+                  (EntityPlayerMP)FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(girl.dimension).getPlayerEntityByUUID(((PlayerGirlEntity)girl).getBoundPlayerUuid())
                );
             girl.getDataManager().set(GirlEntity.OutfitIndexKey, 1);
-            EntityPlayer player = girl.world.getPlayerEntityByUUID(((PlayerGirlEntity)girl).m());
+            EntityPlayer player = girl.world.getPlayerEntityByUUID(((PlayerGirlEntity)girl).getBoundPlayerUuid());
             player.capabilities.isFlying = false;
             player.setNoGravity(false);
             player.noClip = false;

@@ -58,10 +58,10 @@ public enum DeadClass {
         boolean flag;
         World world = f_2.world;
         BlockPos blockPos = f_2.getPosition();
-        BlockPos blockPos2 = f_2.M().getPosition();
+        BlockPos blockPos2 = f_2.getTargetEntity().getPosition();
         ArrayList<BlockPos> arrayList = new ArrayList<BlockPos>();
         HashMap<BlockPos, Integer> hashMap = new HashMap<BlockPos, Integer>();
-        int i = 0;
+        int iMax = 0;
         try {
             flag = !world.isAirBlock(blockPos.down());
         }
@@ -234,8 +234,8 @@ public enum DeadClass {
                             }
                         }
                         hashMap.put(blockPos3, i8);
-                        if (i8 > i) {
-                            i = i8;
+                        if (i8 > iMax) {
+                            iMax = i8;
                         }
                     }
                     ++i7;
@@ -243,9 +243,9 @@ public enum DeadClass {
             }
         }
         if (!hashMap.isEmpty()) {
-            ArrayList arrayList2 = new ArrayList(hashMap.entrySet());
+            ArrayList<Map.Entry<BlockPos, Integer>> arrayList2 = new ArrayList<Map.Entry<BlockPos, Integer>>(hashMap.entrySet());
             arrayList2.sort((entry, entry2) -> ((Integer)entry2.getValue()).compareTo((Integer)entry.getValue()));
-            f_2.O = new Vec3d((Vec3i)((Map.Entry)arrayList2.get(MathUtils.weightedRandomIndex(arrayList2.size() - 1))).getKey());
+            f_2.O = new Vec3d((Vec3i)arrayList2.get(MathUtils.weightedRandomIndex(arrayList2.size() - 1)).getKey());
         } else {
             try {
                 f_2.O = arrayList.isEmpty() ? new Vec3d((Vec3i)blockPos2.add((double)MathUtils.randomJitter(10.0f, true), (double)MathUtils.randomJitter(10.0f, false), (double)MathUtils.randomJitter(10.0f, true))) : new Vec3d((Vec3i)arrayList.get(ModConstants.Random.nextInt(arrayList.size())));
@@ -257,7 +257,7 @@ public enum DeadClass {
         f_2.bL = null;
         f_2.b(0);
         f_2.setCurrentAction(GirlAnimationState.FLY);
-        NetworkHandler.channel.sendToAllTracking((IMessage)new PacketResetController(f_2.f()), (Entity)f_2);
+        NetworkHandler.channel.sendToAllTracking((IMessage)new PacketResetController(f_2.getGirlUuid()), (Entity)f_2);
     }, f_2 -> {
         Vec3d vec3d = f_2.getPositionVector();
         Vec3d vec3d2 = f_2.O;
@@ -270,7 +270,7 @@ public enum DeadClass {
             throw DeadClass.rethrow(runtimeException);
         }
         f_2.bL = vec3d;
-        int i6 = f_2.ar();
+        int i6 = f_2.getCombatTargetId();
         try {
             f_2.b(i6 + 1);
             if (i6 != 0) {
@@ -288,14 +288,14 @@ public enum DeadClass {
     }, f_2 -> {
         boolean flag3;
         try {
-            flag3 = f_2.ar() > 23;
+            flag3 = f_2.getCombatTargetId() > 23;
         }
         catch (RuntimeException runtimeException) {
             throw DeadClass.rethrow(runtimeException);
         }
         return flag3;
     }, f_2 -> {
-        f_2.b(Vec3d.ZERO);
+        f_2.setMotionVector(Vec3d.ZERO);
         f_2.b(0);
         f_2.bL = null;
     }, false, f_2 -> true, false),
@@ -303,9 +303,9 @@ public enum DeadClass {
         f_2.setCurrentAction(GirlAnimationState.SUMMON_SKELETON);
         f_2.ad = 0;
         EntityDataManager entityDataManager = f_2.getDataManager();
-        entityDataManager.set(GalathNpc.RightBallActiveKey, (Object)true);
-        entityDataManager.set(GalathNpc.LeftBallActiveKey, (Object)true);
-        entityDataManager.set(GalathNpc.FlipSideKey, (Object)f_2.getRNG().nextBoolean());
+        entityDataManager.set(GalathNpc.RightBallActiveKey, true);
+        entityDataManager.set(GalathNpc.LeftBallActiveKey, true);
+        entityDataManager.set(GalathNpc.FlipSideKey, f_2.getRNG().nextBoolean());
         GirlEntity.playSoundRandom((GirlEntity)f_2, ModSounds.GIRLS_GALATH_STRONGCHARGE, true);
     }, f_2 -> {
         block14: {
@@ -326,18 +326,18 @@ public enum DeadClass {
                         Vec3d vec3d9;
                         block13: {
                             block12: {
-                                try {
-                                    f_2.b(Vec3d.ZERO);
-                                    if ((float)f_2.ad != 30.0f) {
-                                        return;
-                                    }
-                                }
+                try {
+                    f_2.setMotionVector(Vec3d.ZERO);
+                    if ((float)f_2.ad != 30.0f) {
+                        return;
+                    }
+                }
                                 catch (RuntimeException runtimeException) {
                                     throw DeadClass.rethrow(runtimeException);
                                 }
                                 GalathNpc.rotateToTarget(f_2, 0.0f);
                                 vec3d7 = f_2.getPositionVector();
-                                vec3d6 = f_2.M().getPositionVector();
+                                vec3d6 = f_2.getTargetEntity().getPositionVector();
                                 random = f_2.getRNG();
                                 flag4 = (Boolean)f_2.getDataManager().get(GalathNpc.FlipSideKey);
                                 try {
@@ -358,7 +358,7 @@ public enum DeadClass {
                             }
                             vec3d8 = GalathNpc.RightBallOffset;
                         }
-                        vec3d5 = vec3d9.add(VectorMath.a(vec3d8, 180.0f + f_2.renderYawOffset));
+                        vec3d5 = vec3d9.add(VectorMath.rotateYaw(vec3d8, 180.0f + f_2.renderYawOffset));
                         vec3d4 = vec3d6.subtract(vec3d5).normalize();
                         vec3d4 = new Vec3d(vec3d4.x + random.nextDouble() * (double)0.3f, vec3d4.y + random.nextDouble() * (double)0.3f, vec3d4.z + random.nextDouble() * (double)0.3f);
                         vec3d4 = vec3d4.normalize();
@@ -385,7 +385,7 @@ public enum DeadClass {
                 }
                 vec3d = GalathNpc.LeftBallOffset;
             }
-            vec3d5 = vec3d2.add(VectorMath.a(vec3d, 180.0f + f_2.renderYawOffset));
+            vec3d5 = vec3d2.add(VectorMath.rotateYaw(vec3d, 180.0f + f_2.renderYawOffset));
             vec3d4 = vec3d6.subtract(vec3d5).normalize();
             vec3d4 = new Vec3d(vec3d4.x + random.nextDouble() * (double)0.3f, vec3d4.y + random.nextDouble() * (double)0.3f, vec3d4.z + random.nextDouble() * (double)0.3f);
             vec3d4 = vec3d4.normalize();
@@ -418,10 +418,10 @@ public enum DeadClass {
     ATTACK_SWORD(f_2 -> {
         f_2.a(0);
         f_2.setCurrentAction(GirlAnimationState.ATTACK_SWORD);
-        f_2.b(Vec3d.ZERO);
+        f_2.setMotionVector(Vec3d.ZERO);
         Vec3d vec3d = f_2.getPositionVector();
-        f_2.e(vec3d);
-        Vec3d vec3d2 = f_2.M().getPositionVector();
+        f_2.setManglePos(vec3d);
+        Vec3d vec3d2 = f_2.getTargetEntity().getPositionVector();
         Vec2d vec2d = new Vec2d(vec3d2.x - vec3d.x, vec3d2.z - vec3d.z);
         double d = AngleMath.radToDegrees(Math.atan2(vec2d.Y, vec2d.X)) - 90.0;
         f_2.setShouldBeAtTargetPos(true);
@@ -429,8 +429,8 @@ public enum DeadClass {
         f_2.b((float)d);
         GirlEntity.playSoundRandom((GirlEntity)f_2, ModSounds.GIRLS_GALATH_STRONGCHARGE, true);
     }, f_2 -> {
-        EntityLivingBase entityLivingBase = f_2.M();
-        int i7 = f_2.az() + 1;
+        EntityLivingBase entityLivingBase = f_2.getTargetEntity();
+        int i7 = f_2.getSpecialState() + 1;
         f_2.a(i7);
         if (MathUtils.isInRange((double)i7, 24.0, 32.0)) {
             Vec3d vec3d = entityLivingBase.getPositionVector().add(0.0, (double)entityLivingBase.getEyeHeight(), 0.0);
@@ -438,7 +438,7 @@ public enum DeadClass {
             double d = AngleMath.radToDegrees(Math.atan2(vec2d.Y, vec2d.X)) - 90.0;
             f_2.b((float)d);
             Vec3d vec3d2 = VectorMath.rotateYaw(new Vec3d(0.0, 0.0, 3.0), (float)(d + 180.0));
-            Vec3d vec3d3 = f_2.B();
+            Vec3d vec3d3 = f_2.getManglePos();
             Vec3d vec3d4 = vec3d.add(vec3d2);
             float f = (float)(i7 - 24) / 8.0f;
             Vec3d vec3d5 = LerpMath.lerpVec3d(vec3d3, vec3d4, (double)f);
@@ -446,7 +446,7 @@ public enum DeadClass {
             return;
         }
         if (MathUtils.isInRange((double)i7, 32.0, 54.0)) {
-            Vec3d vec3d = VectorMath.a(new Vec3d(0.0, 0.0, 1.5), f_2.I().floatValue() + 180.0f);
+            Vec3d vec3d = VectorMath.rotateYaw(new Vec3d(0.0, 0.0, 1.5), f_2.I().floatValue() + 180.0f);
             Vec3d vec3d6 = entityLivingBase.getPositionVector().add(vec3d);
             f_2.setTargetPos(vec3d6);
             GalathProjectileDamageSource galathProjectileDamageSource = new GalathProjectileDamageSource(f_2);
@@ -479,12 +479,12 @@ public enum DeadClass {
             f_2.b(1);
             return;
         } else {
-            f_2.b(f_2.ar() + 1);
+            f_2.b(f_2.getCombatTargetId() + 1);
         }
     }, f_2 -> {
         boolean flag7;
         try {
-            flag7 = f_2.ar() > 23;
+            flag7 = f_2.getCombatTargetId() > 23;
         }
         catch (RuntimeException runtimeException) {
             throw DeadClass.rethrow(runtimeException);
@@ -492,7 +492,7 @@ public enum DeadClass {
         return flag7;
     }, f_2 -> {
         f_2.b(0);
-        f_2.b(Vec3d.ZERO);
+        f_2.setMotionVector(Vec3d.ZERO);
         f_2.a(-1);
         f_2.setShouldBeAtTargetPos(false);
     }, true, f_2 -> true, false),
@@ -501,13 +501,13 @@ public enum DeadClass {
         f_2.aF = 0;
         f_2.bd = null;
         f_2.O = null;
-        f_2.getDataManager().set(GalathNpc.bO, (Object)Float.valueOf(0.0f));
+        f_2.getDataManager().set(GalathNpc.bO, Float.valueOf(0.0f));
     }, f_2 -> {
         boolean flag8;
         Vec3d vec3d;
         double d2;
         Vec3d vec3d2;
-        EntityPlayer entityPlayer2;
+        Vec3d vec3dO;
         Vec3d vec3d3;
         block29: {
             double d3;
@@ -521,7 +521,7 @@ public enum DeadClass {
                 throw DeadClass.rethrow(runtimeException);
             }
             f_2.setCurrentAction(GirlAnimationState.RAPE_CHARGE);
-            EntityLivingBase entityLivingBase = f_2.M();
+            EntityLivingBase entityLivingBase = f_2.getTargetEntity();
             if (f_2.bd == null) {
                 f_2.O = entityLivingBase.getPositionVector().add(0.0, (double)(entityLivingBase.getEyeHeight() / 2.0f), 0.0);
                 f_2.bd = f_2.getPositionVector();
@@ -532,7 +532,7 @@ public enum DeadClass {
             Vec3d vec3d5 = vec3d3.subtract((double)0.65f, (double)0.65f, (double)0.65f);
             Vec3d vec3d6 = vec3d3.add((double)0.65f, (double)0.65f, (double)0.65f);
             AxisAlignedBB axisAlignedBB = new AxisAlignedBB(vec3d5.x, vec3d5.y, vec3d5.z, vec3d6.x, vec3d6.y, vec3d6.z);
-            List list = f_2.world.getEntitiesWithinAABB(EntityPlayer.class, axisAlignedBB);
+            List<EntityPlayer> list = f_2.world.getEntitiesWithinAABB(EntityPlayer.class, axisAlignedBB);
             for (EntityPlayer entityPlayer2 : list) {
                 try {
                     if (entityPlayer2.isDead) {
@@ -560,7 +560,7 @@ public enum DeadClass {
                 }
                 vec3d4 = entityPlayer2.getPositionVector();
                 vec3d2 = vec3d3.subtract(vec3d4);
-                Vec3d vec3d7 = VectorMath.a(vec3d2, f_2.I().floatValue());
+                Vec3d vec3d7 = VectorMath.rotateYaw(vec3d2, f_2.I().floatValue());
                 d2 = Math.abs(vec3d7.x);
                 try {
                     if (d2 > (double)0.65f) {
@@ -578,19 +578,19 @@ public enum DeadClass {
                 f_2.bI.clear();
                 EntityPlayerMP entityPlayerMP = (EntityPlayerMP)entityPlayer2;
                 f_2.setTargetPos(entityPlayer2.getPositionVector());
-                f_2.e(entityPlayer2.getPersistentID());
+                f_2.handleGirlUuidEvent(entityPlayer2.getPersistentID());
                 f_2.setShouldBeAtTargetPos(true);
                 f_2.setCurrentAction(GirlAnimationState.RAPE_INTRO);
                 byte bv = (byte)MathHelper.floor((float)((f_2.I().floatValue() + 180.0f) * 256.0f / 360.0f));
                 NetworkHandler.channel.sendTo((IMessage)new PacketSetPlayerMovement(false), entityPlayerMP);
                 entityPlayerMP.connection.sendPacket((Packet)new SPacketEntityVelocity(entityPlayerMP.getEntityId(), 0.0, 0.0, 0.0));
-                entityPlayerMP.connection.sendPacket((Packet)new SPacketEntity.S16PacketEntityLook(entityPlayerMP.getEntityId(), bv, -14, true));
+                entityPlayerMP.connection.sendPacket((Packet)new SPacketEntity.S16PacketEntityLook(entityPlayerMP.getEntityId(), bv, (byte)-14, true));
                 return;
             }
             vec3d = f_2.bd;
-            entityPlayer2 = f_2.O;
-            vec3d4 = entityPlayer2.subtract(vec3d);
-            vec3d2 = entityPlayer2.add(vec3d4);
+            vec3dO = f_2.O;
+            vec3d4 = vec3dO.subtract(vec3d);
+            vec3d2 = vec3dO.add(vec3d4);
             vec3d2 = new Vec3d(vec3d2.x, vec3d.y, vec3d2.z);
             try {
                 boolean flag9 = flag8 = vec3d3.distanceTo(new Vec3d(vec3d.x, vec3d3.y, vec3d.z)) > vec3d3.distanceTo(new Vec3d(vec3d2.x, vec3d3.y, vec3d2.z));
@@ -599,11 +599,11 @@ public enum DeadClass {
                 throw DeadClass.rethrow(runtimeException);
             }
             if (flag8) {
-                d2 = VectorMath.inverseLerpComponent((Vec3d)entityPlayer2, vec3d2, vec3d3);
-                d3 = entityPlayer2.distanceTo(vec3d2);
+                d2 = VectorMath.inverseLerpComponent(vec3dO, vec3d2, vec3d3);
+                d3 = vec3dO.distanceTo(vec3d2);
             } else {
-                d2 = VectorMath.inverseLerpComponent(vec3d, (Vec3d)entityPlayer2, vec3d3);
-                d3 = vec3d.distanceTo((Vec3d)entityPlayer2);
+                d2 = VectorMath.inverseLerpComponent(vec3d, vec3dO, vec3d3);
+                d3 = vec3d.distanceTo(vec3dO);
             }
             double d4 = d3 / (double)0.05f;
             double d5 = 1.0 / d4 * 20.0;
@@ -621,11 +621,11 @@ public enum DeadClass {
                 throw DeadClass.rethrow(runtimeException);
             }
         }
-        vec3d3 = flag8 ? new Vec3d(LerpMath.b(entityPlayer2.x, vec3d2.x, Math.min(1.0, d2)), LerpMath.b(entityPlayer2.y, vec3d2.y, Math.min(1.0, LerpMath.easeInCubic(d2))), LerpMath.b(entityPlayer2.z, vec3d2.z, Math.min(1.0, d2))) : new Vec3d(LerpMath.b(vec3d.x, entityPlayer2.x, d2), LerpMath.b(vec3d.y, entityPlayer2.y, LerpMath.EaseOutCubic(d2)), LerpMath.b(vec3d.z, entityPlayer2.z, d2));
+        vec3d3 = flag8 ? new Vec3d(LerpMath.lerp(vec3dO.x, vec3d2.x, Math.min(1.0, d2)), LerpMath.lerp(vec3dO.y, vec3d2.y, Math.min(1.0, LerpMath.easeInCubic(d2))), LerpMath.lerp(vec3dO.z, vec3d2.z, Math.min(1.0, d2))) : new Vec3d(LerpMath.lerp(vec3d.x, vec3dO.x, d2), LerpMath.lerp(vec3d.y, vec3dO.y, LerpMath.EaseOutCubic(d2)), LerpMath.lerp(vec3d.z, vec3dO.z, d2));
         try {
             f_2.setPosition(vec3d3.x, vec3d3.y, vec3d3.z);
             if (flag8) {
-                f_2.getDataManager().set(GalathNpc.bO, (Object)Float.valueOf((float)d2));
+                f_2.getDataManager().set(GalathNpc.bO, Float.valueOf((float)d2));
             }
         }
         catch (RuntimeException runtimeException) {
@@ -665,7 +665,7 @@ public enum DeadClass {
         f_2.O = null;
         f_2.bd = null;
         f_2.aF = 0;
-        f_2.getDataManager().set(GalathNpc.bO, (Object)Float.valueOf(0.0f));
+        f_2.getDataManager().set(GalathNpc.bO, Float.valueOf(0.0f));
     }, true, f_2 -> true, true);
 
     final GirlPredicate CanDoPredicate;
@@ -691,7 +691,7 @@ public enum DeadClass {
     }
 
     public boolean isDone(GalathNpc f_2) {
-        return this.CanDoPredicate.openGui(f_2);
+        return this.CanDoPredicate.a(f_2);
     }
 
     public void apply(GalathNpc f_2) {
@@ -703,7 +703,7 @@ public enum DeadClass {
     }
 
     public boolean canDo(GalathNpc f_2) {
-        return this.ConditionalPredicate.canSeeEntity(f_2);
+        return this.ConditionalPredicate.a(f_2);
     }
 
     private static RuntimeException rethrow(RuntimeException runtimeException) {

@@ -126,17 +126,17 @@ implements GirlMaster {
         catch (RuntimeException runtimeException) {
             throw GoblinPlayer.rethrow(runtimeException);
         }
-        return GirlColor.values()[Integer.parseInt(stringArray[7])].a();
+        return GirlColor.values()[Integer.parseInt(stringArray[7])].getColor();
     }
 
     @Override
     protected void entityInit() {
         super.entityInit();
         TribeColor tribeColor = TribeColor.values()[this.getRNG().nextInt(TribeColor.values().length)];
-        this.DataManager.register(au, (Object)new BlockPos(tribeColor.getColor()));
-        this.DataManager.register(as, (Object)GoblinNpc.DefaultTribeColor.name());
-        this.DataManager.register(aA, (Object)false);
-        this.DataManager.register(ax, (Object)"");
+        this.DataManager.register(HomePosKey, new BlockPos(tribeColor.getColor()));
+        this.DataManager.register(TribeColorKey, GoblinNpc.DefaultTribeColor.name());
+        this.DataManager.register(aA, false);
+        this.DataManager.register(ax, "");
     }
 
     @Override
@@ -308,7 +308,7 @@ implements GirlMaster {
     }
 
     @Override
-    protected String a(StringBuilder stringBuilder) {
+    protected String generateAttributeString(StringBuilder stringBuilder) {
         GirlEffectEntity.appendRandomNumber(stringBuilder, 3);
         GirlEffectEntity.appendRandomNumber(stringBuilder, 2);
         GirlEffectEntity.appendRandomNumber(stringBuilder, 2);
@@ -345,7 +345,7 @@ implements GirlMaster {
     }
 
     @Override
-    protected void clearColorCaches() {
+    protected void resetHomeData() {
         GoblinPlayerRenderer.clearColorCache();
         GoblinNpcRenderer.clearColorCache();
     }
@@ -737,16 +737,11 @@ implements GirlMaster {
 
     @Override
     @Nullable
-    public UUID e() {
+    public UUID getGirlUuid() {
         String string = (String)this.DataManager.get(ax);
-        try {
             if ("".equals(string)) {
                 return null;
             }
-        }
-        catch (Exception exception) {
-            throw GoblinPlayer.rethrow(exception);
-        }
         try {
             return UUID.fromString((String)this.DataManager.get(ax));
         }
@@ -760,14 +755,14 @@ implements GirlMaster {
     public void a(UUID uUID) {
         try {
             if (uUID == null) {
-                this.DataManager.set(ax, (Object)"");
+                this.DataManager.set(ax, "");
                 return;
             }
         }
         catch (RuntimeException runtimeException) {
             throw GoblinPlayer.rethrow(runtimeException);
         }
-        this.DataManager.set(ax, (Object)uUID.toString());
+        this.DataManager.set(ax, uUID.toString());
     }
 
     public EntityPlayer r() {
@@ -811,7 +806,7 @@ implements GirlMaster {
     }
 
     @Override
-    public void b(int i) {
+    public void setPickupCountdown(int i) {
         this.aE = i;
     }
 
@@ -820,10 +815,10 @@ implements GirlMaster {
     }
 
     @Override
-    public void g() {
+    public void noop() {
         try {
-            super.g();
-            this.DataManager.set(aA, (Object)false);
+            super.noop();
+            this.DataManager.set(aA, false);
             if (this.getGirlUuid() == null) {
                 return;
             }
@@ -907,7 +902,7 @@ implements GirlMaster {
             GirlEffectEntity.appendZeroPaddedNumber(stringBuilder, i);
         }
         GirlEffectEntity.appendZeroPaddedNumber(stringBuilder, 1);
-        this.DataManager.set(at, (Object)stringBuilder.toString());
+        this.DataManager.set(AttributeStringKey, stringBuilder.toString());
     }
 
     @Override
@@ -1035,7 +1030,7 @@ implements GirlMaster {
             }
             try {
                 if (girlAnimationState == GirlAnimationState.NELSON_CUM) {
-                    this.DataManager.set(aA, (Object)true);
+                    this.DataManager.set(aA, true);
                 }
             }
             catch (RuntimeException runtimeException) {
@@ -1048,7 +1043,7 @@ implements GirlMaster {
                 catch (RuntimeException runtimeException) {
                     throw GoblinPlayer.rethrow(runtimeException);
                 }
-                this.DataManager.set(aA, (Object)false);
+                this.DataManager.set(aA, false);
             }
             catch (RuntimeException runtimeException) {
                 throw GoblinPlayer.rethrow(runtimeException);
@@ -1096,7 +1091,7 @@ implements GirlMaster {
     }
 
     @Override
-    public boolean l() {
+    public boolean isInteractionAllowed() {
         boolean flag;
         try {
             flag = this.getGirlUuid() == null;
@@ -1116,7 +1111,7 @@ implements GirlMaster {
         catch (RuntimeException runtimeException) {
             throw GoblinPlayer.rethrow(runtimeException);
         }
-        PacketResetGirl.Handler.openGui(this);
+        PacketResetGirl.Handler.handle(this);
         this.setShouldBeAtTargetPos(false);
         this.setCurrentAction(GirlAnimationState.NULL);
         this.a((UUID)null);
@@ -1346,27 +1341,27 @@ implements GirlMaster {
                 }
                 case "catchEh": {
                     this.a("ehh..");
-                    this.a(ModSounds.MISC_PLOB, new int[0]);
+                    this.playRandomSound(ModSounds.MISC_PLOB);
                     break;
                 }
                 case "catchAkward": {
                     this.a("awkward..");
-                    this.a(ModSounds.MISC_PLOB, new int[0]);
+                    this.playRandomSound(ModSounds.MISC_PLOB);
                     break;
                 }
                 case "catchWell": {
                     this.a("well...");
-                    this.a(ModSounds.MISC_PLOB, new int[0]);
+                    this.playRandomSound(ModSounds.MISC_PLOB);
                     break;
                 }
                 case "catchRather": {
                     this.a("would you rather have this stupid... thing?");
-                    this.a(ModSounds.MISC_PLOB, new int[0]);
+                    this.playRandomSound(ModSounds.MISC_PLOB);
                     break;
                 }
                 case "catchMe": {
                     this.a("...or use me?~");
-                    this.a(ModSounds.MISC_PLOB, new int[0]);
+                    this.playRandomSound(ModSounds.MISC_PLOB);
                     break;
                 }
                 case "catchDone": {
@@ -1383,17 +1378,17 @@ implements GirlMaster {
                 }
                 case "paizuriChoice": {
                     this.a("good choice!~");
-                    this.a(ModSounds.MISC_PLOB, new int[0]);
+                    this.playRandomSound(ModSounds.MISC_PLOB);
                     break;
                 }
                 case "paizuriBoth": {
                     this.a("...for both of us!");
-                    this.a(ModSounds.MISC_PLOB, new int[0]);
+                    this.playRandomSound(ModSounds.MISC_PLOB);
                     break;
                 }
                 case "paizruiUse": {
                     this.a("now use me like a fuck toy!~");
-                    this.a(ModSounds.MISC_PLOB, new int[0]);
+                    this.playRandomSound(ModSounds.MISC_PLOB);
                     break;
                 }
                 case "paizuriSwitch": {
@@ -1402,11 +1397,11 @@ implements GirlMaster {
                     break;
                 }
                 case "touch": {
-                    this.a(ModSounds.MISC_TOUCH, 3.0f);
+                    this.playRandomSoundWithChance(ModSounds.MISC_TOUCH, 3.0f);
                     break;
                 }
                 case "pound": {
-                    this.a(ModSounds.MISC_POUNDING, new int[0]);
+                    this.playRandomSound(ModSounds.MISC_POUNDING);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.04f);
                     break;
@@ -1433,7 +1428,7 @@ implements GirlMaster {
                     break;
                 }
                 case "smallPound": {
-                    this.a(ModSounds.MISC_POUNDING, 0.25f);
+                    this.playRandomSoundWithChance(ModSounds.MISC_POUNDING, 0.25f);
                     if (!this.isOwnedByLocalPlayer()) break;
                     GuiHud.addProgress(0.02f);
                     break;
@@ -1451,7 +1446,7 @@ implements GirlMaster {
                     break;
                 }
                 case "cumSound": {
-                    this.a(ModSounds.MISC_SMALLINSERTS, 3.0f);
+                    this.playRandomSoundWithChance(ModSounds.MISC_SMALLINSERTS, 3.0f);
                     break;
                 }
                 case "jumpCam": {
@@ -1472,17 +1467,17 @@ implements GirlMaster {
                         minecraft.gameSettings.thirdPersonView = 0;
                     }
                     this.a("hmm...");
-                    this.a(ModSounds.MISC_PLOB, new int[0]);
+                    this.playRandomSound(ModSounds.MISC_PLOB);
                     break;
                 }
                 case "breedingFound": {
                     this.a("guess we found a worthy breeding partner!");
-                    this.a(ModSounds.MISC_PLOB, new int[0]);
+                    this.playRandomSound(ModSounds.MISC_PLOB);
                     break;
                 }
                 case "breedingEnough": {
                     this.a("Eh.. go pin him down, before he runs off!");
-                    this.a(ModSounds.MISC_PLOB, new int[0]);
+                    this.playRandomSound(ModSounds.MISC_PLOB);
                     break;
                 }
                 case "breedingCam2": {
@@ -1522,7 +1517,7 @@ implements GirlMaster {
                     break;
                 }
                 case "cum": {
-                    this.a(ModSounds.MISC_SMALLINSERTS, 2.0f);
+                    this.playRandomSoundWithChance(ModSounds.MISC_SMALLINSERTS, 2.0f);
                     break;
                 }
                 case "breeding_intro_3Done": {
@@ -1594,8 +1589,8 @@ implements GirlMaster {
         animationData.addAnimationController(this.EyesController);
     }
 
-    private static Exception rethrow(Exception exception) {
-        return exception;
+    private static RuntimeException rethrow(Exception exception) {
+        return new RuntimeException(exception);
     }
 
     public static class EventHandler {
@@ -1691,7 +1686,7 @@ implements GirlMaster {
                 }
                 try {
                     try {
-                        if (girlAnimationState != GirlAnimationState.START_THROWING || ((GirlMaster)((Object)playerGirl)).a() <= 15) break block16;
+                        if (girlAnimationState != GirlAnimationState.START_THROWING || ((GirlMaster)((Object)playerGirl)).getThrowCounter() <= 15) break block16;
                     }
                     catch (RuntimeException runtimeException) {
                         throw GoblinPlayer.EventHandler.rethrow(runtimeException);

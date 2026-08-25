@@ -9,19 +9,19 @@ public interface GirlMaster {
 
    void a(UUID uuid);
 
-   int c();
+   int getPickupCountdown();
 
    void c(int i);
 
-   int a();
+   int getThrowCounter();
 
    void a(int i2);
 
-   int d();
+   int getThrowTicks();
 
    void a(GirlAnimationState girlAnimationState);
 
-   GirlAnimationState b();
+   GirlAnimationState getShadowAction();
 
-   void b(int i3);
+   void setPickupCountdown(int i3);
 }

@@ -14,6 +14,7 @@ import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.AnimationProcessor;
 import software.bernie.geckolib3.core.processor.IBone;
+import software.bernie.geckolib3.model.provider.data.EntityModelData;
 import software.bernie.geckolib3.core.controller.AnimationController;
 
 public abstract class GirlGeoModel<T extends GirlEntity> extends GirlAnimatedGeoModel<T> implements GirlBoneList {
@@ -47,12 +48,18 @@ public abstract class GirlGeoModel<T extends GirlEntity> extends GirlAnimatedGeo
 
    protected abstract ResourceLocation[] a();
 
-   public abstract ResourceLocation b();
+   public ResourceLocation getSkinLocation() {
+      return null;
+   }
 
-   public abstract ResourceLocation b(GirlEntity girl);
+   @Override
+   public ResourceLocation getTextureLocation(T girl) {
+      return this.a(girl);
+   }
 
-   public ResourceLocation c(GirlEntity girl) {
-      return this.b(girl);
+   @Override
+   public ResourceLocation getModelLocation(T girl) {
+      return this.TextureLayers[0];
    }
 
    public ResourceLocation a(GirlEntity girl) {
@@ -77,7 +84,7 @@ public abstract class GirlGeoModel<T extends GirlEntity> extends GirlAnimatedGeo
    }
 
    public ResourceLocation g(GirlEntity girl) {
-      return this.b();
+      return this.getSkinLocation();
    }
 
    public void setMolangQueries(IAnimatable iAnimatable, double d) {
@@ -91,89 +98,53 @@ public abstract class GirlGeoModel<T extends GirlEntity> extends GirlAnimatedGeo
    }
 
 
-   public void a(T t, Integer i, AnimationEvent animEvent) {
+   @Override
+   public void setLivingAnimations(T t, Integer i, AnimationEvent animEvent) {
         block24: {
             AnimationProcessor animationProcessor;
-            block23: {
-                block18: {
-                    double d;
-                    block21: {
-                        block20: {
-                            super.setLivingAnimations(t, i, animEvent);
-                            animationProcessor = this.getAnimationProcessor();
-                            try {
-                                this.a(t, animationProcessor);
-                                if (((GirlEntity)t).world instanceof PreviewWorld) {
-                                    return;
-                                }
-                            }
-                            catch (RuntimeException runtimeException) {
-                                throw GirlGeoModel.rethrow(runtimeException);
-                            }
-                            try {
-                                if (((Boolean)t.getDataManager().get(GirlEntity.BusyKey)).booleanValue()) {
-                                    t.setPositionAndRotationDirect(((GirlEntity)t).o().x, ((GirlEntity)t).o().y, ((GirlEntity)t).o().z, ((GirlEntity)t).I().floatValue(), 0.0f, 3, true);
-                                }
-                            }
-                            catch (RuntimeException runtimeException) {
-                                throw GirlGeoModel.rethrow(runtimeException);
-                            }
-                            try {
-                                block19: {
-                                    try {
-                                        try {
-                                            if (((GirlEntity)t).C == null) break block18;
-                                            AnimationController animationController = ((GirlEntity)t).C;
-                                            if (((GirlEntity)t).world instanceof PreviewWorld) break block19;
-                                        }
-                                        catch (RuntimeException runtimeException) {
-                                            throw GirlGeoModel.rethrow(runtimeException);
-                                        }
-                                        if (((GirlEntity)t).y() != null) break block20;
-                                    }
-                                    catch (RuntimeException runtimeException) {
-                                        throw GirlGeoModel.rethrow(runtimeException);
-                                    }
-                                }
-                                d = 5.0;
-                                break block21;
-                            }
-                            catch (RuntimeException runtimeException) {
-                                throw GirlGeoModel.rethrow(runtimeException);
-                            }
-                        }
-                        d = ((GirlEntity)t).y().transitionTick;
-                    }
-                    animationController.transitionLengthTicks = d;
-                }
+            block18: {
+                double d;
+                super.setLivingAnimations(t, i, animEvent);
+                animationProcessor = this.getAnimationProcessor();
                 try {
-                    block22: {
-                        try {
-                            try {
-                                this.a(t, animationProcessor, animEvent);
-                                if (!(t instanceof InventoryGirlEntity) || ((GirlEntity)t).isTracked()) break block22;
-                            }
-                            catch (RuntimeException runtimeException) {
-                                throw GirlGeoModel.rethrow(runtimeException);
-                            }
-                            if (((GirlEntity)t).ah() != 0) break block23;
-                        }
-                        catch (RuntimeException runtimeException) {
-                            throw GirlGeoModel.rethrow(runtimeException);
-                        }
+                    this.a(t, animationProcessor);
+                    if (((GirlEntity)t).world instanceof PreviewWorld) {
+                        return;
                     }
-                    this.a(animationProcessor);
-                    break block24;
                 }
                 catch (RuntimeException runtimeException) {
                     throw GirlGeoModel.rethrow(runtimeException);
                 }
+                try {
+                    if (((Boolean)t.getDataManager().get(GirlEntity.BusyKey)).booleanValue()) {
+                        t.setPositionAndRotationDirect(((GirlEntity)t).getTargetPos().x, ((GirlEntity)t).getTargetPos().y, ((GirlEntity)t).getTargetPos().z, ((GirlEntity)t).I().floatValue(), 0.0f, 3, true);
+                    }
+                }
+                catch (RuntimeException runtimeException) {
+                    throw GirlGeoModel.rethrow(runtimeException);
+                }
+                if (((GirlEntity)t).ActionController != null && !(((GirlEntity)t).world instanceof PreviewWorld)) {
+                    GirlAnimationState girlAnimationState = ((GirlEntity)t).getCurrentAction();
+                    d = girlAnimationState != null ? (double)girlAnimationState.transitionTick : 5.0;
+                    ((GirlEntity)t).ActionController.transitionLengthTicks = d;
+                }
             }
-            this.a(animationProcessor, (ItemStack)((GirlEntity)t).m.get(InventoryGirlEntity.HelmetKey), (ItemStack)((GirlEntity)t).m.get(InventoryGirlEntity.ChestKey), (ItemStack)((GirlEntity)t).m.get(InventoryGirlEntity.PantsKey), (ItemStack)((GirlEntity)t).m.get(InventoryGirlEntity.BootsKey));
+                try {
+                    this.applyAnimationTransforms(t, animationProcessor, animEvent);
+                }
+                catch (RuntimeException runtimeException) {
+                    throw GirlGeoModel.rethrow(runtimeException);
+                }
+                boolean flag = t instanceof InventoryGirlEntity && !((GirlEntity)t).isTracked();
+                if (!flag || ((GirlEntity)t).getOutfitIndex() == 0) {
+                    this.a(animationProcessor);
+                    return;
+                }
+                this.a(animationProcessor, (ItemStack)((GirlEntity)t).DataManager.get(InventoryGirlEntity.HelmetKey), (ItemStack)((GirlEntity)t).DataManager.get(InventoryGirlEntity.ChestKey), (ItemStack)((GirlEntity)t).DataManager.get(InventoryGirlEntity.PantsKey), (ItemStack)((GirlEntity)t).DataManager.get(InventoryGirlEntity.BootsKey));
         }
     }
 
-   public static Vec3d d(GirlEntity girl) {
+    public static Vec3d d(GirlEntity girl) {
       return a(new Vec3d(girl.lastTickPosX, girl.lastTickPosY, girl.lastTickPosZ), girl.getPositionVector());
    }
 
@@ -194,15 +165,12 @@ public abstract class GirlGeoModel<T extends GirlEntity> extends GirlAnimatedGeo
         double d2 = vec3d6.y / (vec3d6.x + vec3d6.y + vec3d6.z);
         double d3 = vec3d6.z / (vec3d6.x + vec3d6.y + vec3d6.z);
         try {
-            Vec3d vec3d7;
-            vec3d4 = vec3d7;
-            vec3d3 = vec3d7;
             i = vec3d5.x > 0.0 ? 1 : -1;
         }
         catch (RuntimeException runtimeException) {
             throw GirlGeoModel.rethrow(runtimeException);
         }
-        vec3d4((double)i * d, (double)(vec3d5.y > 0.0 ? 1 : -1) * d2, (double)(vec3d5.z > 0.0 ? 1 : -1) * d3);
+        vec3d3 = new Vec3d((double)i * d, (double)(vec3d5.y > 0.0 ? 1 : -1) * d2, (double)(vec3d5.z > 0.0 ? 1 : -1) * d3);
         Vec3d vec3d8 = vec3d3;
         double d4 = vec3d8.y / 2.0 + 0.5;
         float f3 = (float)LerpMath.lerp(-180.0, 0.0, d4);
@@ -412,8 +380,8 @@ public abstract class GirlGeoModel<T extends GirlEntity> extends GirlAnimatedGeo
       iBone.setHidden(flag2);
    }
 
-   protected boolean f(T t) {
-      UUID uuid = t.ae();
+   protected boolean isDefaultSkin(T t) {
+      UUID uuid = t.getSexPlayerUuid();
 
       try {
          if (uuid == null) {
@@ -452,7 +420,7 @@ public abstract class GirlGeoModel<T extends GirlEntity> extends GirlAnimatedGeo
                     IBone iBone4;
                     boolean flag5;
                     IBone iBone5;
-                    boolean flag6 = this.f(t);
+                    boolean flag6 = this.isDefaultSkin(t);
                     try {
                         animationProcessor.getBone("rightArmAlex").setHidden(flag6);
                         animationProcessor.getBone("rightLowerArmAlex").setHidden(flag6);
@@ -494,7 +462,7 @@ public abstract class GirlGeoModel<T extends GirlEntity> extends GirlAnimatedGeo
                         try {
                             if (iBone6 == null) break block12;
                             iBone = iBone6;
-                            if (((GirlEntity)t).y().hasPlayer) break block13;
+                            if (((GirlEntity)t).getCurrentAction().hasPlayer) break block13;
                         }
                         catch (RuntimeException runtimeException) {
                             throw GirlGeoModel.rethrow(runtimeException);
@@ -517,7 +485,7 @@ public abstract class GirlGeoModel<T extends GirlEntity> extends GirlAnimatedGeo
    }
 
 
-   protected void a(T t, AnimationProcessor<T> animationProcessor, AnimationEvent animEvent) {
+   protected void applyAnimationTransforms(T t, AnimationProcessor<T> animationProcessor, AnimationEvent animEvent) {
         IBone iBone;
         block14: {
             try {
@@ -539,12 +507,12 @@ public abstract class GirlGeoModel<T extends GirlEntity> extends GirlAnimatedGeo
             try {
                 try {
                     try {
-                        if (((GirlEntity)t).y() == GirlAnimationState.NULL || ((GirlEntity)t).y() == GirlAnimationState.ATTACK) break block14;
+                        if (((GirlEntity)t).getCurrentAction() == GirlAnimationState.NULL || ((GirlEntity)t).getCurrentAction() == GirlAnimationState.ATTACK) break block14;
                     }
                     catch (RuntimeException runtimeException) {
                         throw GirlGeoModel.rethrow(runtimeException);
                     }
-                    if (((GirlEntity)t).y() == GirlAnimationState.BOW) break block14;
+                    if (((GirlEntity)t).getCurrentAction() == GirlAnimationState.BOW) break block14;
                 }
                 catch (RuntimeException runtimeException) {
                     throw GirlGeoModel.rethrow(runtimeException);
@@ -555,7 +523,7 @@ public abstract class GirlGeoModel<T extends GirlEntity> extends GirlAnimatedGeo
                 throw GirlGeoModel.rethrow(runtimeException);
             }
         }
-        EntityModelData entityModelData = animEvent.getExtraDataOfType(EntityModelData.class).get(0);
+        EntityModelData entityModelData = (EntityModelData)animEvent.getExtraDataOfType(EntityModelData.class).get(0);
         IBone iBone2 = animationProcessor.getBone("neck");
         iBone2.setRotationY(entityModelData.netHeadYaw * 0.5f * ((float)Math.PI / 180));
         IBone iBone3 = animationProcessor.getBone("head");
@@ -589,7 +557,7 @@ public abstract class GirlGeoModel<T extends GirlEntity> extends GirlAnimatedGeo
       }
 
       try {
-         if (Arrays.asList(this.h()).contains(string)) {
+         if (Arrays.asList(this.getPantsArmorBones()).contains(string)) {
             return (ItemStack)girl.DataManager.get(InventoryGirlEntity.PantsKey);
          }
       } catch (RuntimeException error3) {
@@ -597,7 +565,7 @@ public abstract class GirlGeoModel<T extends GirlEntity> extends GirlAnimatedGeo
       }
 
       try {
-         if (Arrays.asList(this.b()).contains(string)) {
+         if (Arrays.asList(this.getBootsArmorBones()).contains(string)) {
             return (ItemStack)girl.DataManager.get(InventoryGirlEntity.BootsKey);
          }
       } catch (RuntimeException error4) {

@@ -23,11 +23,11 @@ public class LunaPlayerRenderer extends GirlPlayerRenderer {
    }
 
    @Override
-   protected ItemStack getFishingRod(@Nullable ItemStack stack) {
+   protected ItemStack a(@Nullable ItemStack stack) {
       switch (this.RenderEntity.getCurrentAction()) {
          case FISHING_IDLE:
          case FISHING_START:
-            ItemStack stack2 = ((LunaNpc)this.RenderEntity).ao;
+            ItemStack stack2 = ((LunaNpc)this.RenderEntity).HeldRodStack;
             this.RenderEntity.setHeldItem(EnumHand.MAIN_HAND, stack2);
             return stack2;
          default:
@@ -146,9 +146,9 @@ public class LunaPlayerRenderer extends GirlPlayerRenderer {
    }
 
    @Override
-   protected void poseHeldItem(boolean flag, ItemStack stack) {
+   protected void applyHeldItemTransform(boolean flag, ItemStack stack) {
       try {
-         super.poseHeldItem(flag, stack);
+         super.applyHeldItemTransform(flag, stack);
          switch (stack.getItem().getItemUseAction(stack)) {
             case BLOCK:
             case BOW:
@@ -177,7 +177,7 @@ public class LunaPlayerRenderer extends GirlPlayerRenderer {
    }
 
    @Override
-   protected void poseHand(boolean flag) {
+   protected void applyHandOffset(boolean flag) {
       float f;
       label24: {
          try {
@@ -204,13 +204,13 @@ public class LunaPlayerRenderer extends GirlPlayerRenderer {
 
    @Override
 
-   protected void poseBody(boolean flag, boolean flag2) {
+   protected void applyDualHandOffset(boolean flag, boolean flag2) {
         block14: {
             block13: {
                 block12: {
                     try {
                         try {
-                            super.poseBody(flag, flag2);
+                            super.applyDualHandOffset(flag, flag2);
                             if (flag || !flag2) break block12;
                         }
                         catch (RuntimeException runtimeException) {

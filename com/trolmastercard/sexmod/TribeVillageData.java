@@ -14,7 +14,6 @@ public class TribeVillageData extends WorldSavedData {
    public static final List<BlockPos> GalathSpawnPositions = new ArrayList<>();
    public static final List<BlockPos> ManglelieSpawnPositions = new ArrayList<>();
    static final String SaveKey = "sexmod:galath_spawn_list";
-   static final String SaveKey = "sexmod:galath_spawn_list";
 
    public TribeVillageData() {
       super("sexmod:galath_spawn_list");

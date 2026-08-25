@@ -44,13 +44,9 @@ public class GuiNameTribe extends GuiScreen {
       this.NameField.textboxKeyTyped(ch, i);
       String string = this.NameField.getText();
 
-      try {
          if (string.length() > 15) {
             this.NameField.setText(string.substring(0, 15));
          }
-      } catch (IOException error) {
-         throw rethrow(error);
-      }
 
       super.keyTyped(ch, i);
    }
@@ -59,13 +55,9 @@ public class GuiNameTribe extends GuiScreen {
       super.actionPerformed(gui);
       String string = this.NameField.getText().trim();
 
-      try {
          if (string.length() == 0) {
             return;
          }
-      } catch (IOException error) {
-         throw rethrow(error);
-      }
 
       NetworkHandler.channel.sendToServer(new PacketClaimTribe(this.GirlUuid, Minecraft.getMinecraft().player.getPersistentID(), string));
       Minecraft.getMinecraft().player.closeScreen();

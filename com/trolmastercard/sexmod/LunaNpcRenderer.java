@@ -25,11 +25,11 @@ public class LunaNpcRenderer extends GeoGirlRenderer {
    }
 
    @Override
-   protected ItemStack getActionItem(@Nullable ItemStack stack) {
+   protected ItemStack a(@Nullable ItemStack stack) {
       switch (this.RenderEntity.getCurrentAction()) {
          case FISHING_IDLE:
          case FISHING_START:
-            ItemStack stack2 = ((LunaNpc)this.RenderEntity).ao;
+            ItemStack stack2 = ((LunaNpc)this.RenderEntity).HeldRodStack;
             ItemStack stack3 = (ItemStack)this.RenderEntity.getDataManager().get(LunaNpc.ActiveItemStackKey);
 
             try {

@@ -298,7 +298,7 @@ public class ItemNpcEditorWand extends Item {
       }
 
       String string = playerGirl.C();
-      String string2 = GirlEntity.colorsToString(GirlEntity.getModelColors(playerGirl.isBoundToLocalPlayer()));
+      String string2 = GirlEntity.colorsToString(GirlEntity.getModelColors(playerGirl.getGirlUuid()));
       player.sendMessage(new TextComponentString(String.format("%s's model-code: %s%s$%s", MathUtils.capitalize(GirlRegistry.getByEntity(playerGirl).toString()), TextFormatting.YELLOW, string, string2)));
       player.sendMessage(new TextComponentString(TextFormatting.ITALIC + "copied to clipboard"));
       MathUtils.copyToClipboard(String.format("%s$%s", string, string2));

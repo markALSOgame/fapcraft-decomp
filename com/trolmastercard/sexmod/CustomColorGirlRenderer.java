@@ -47,12 +47,12 @@ public abstract class CustomColorGirlRenderer extends GirlPlayerRenderer {
          throw rethrow(error);
       }
 
-      vec3i = this.a(string);
+      vec3i = this.getBoneColor(string);
       ColorCache.put(i, vec3i);
       return vec3i;
    }
 
-   protected abstract Vec3i a(String string);
+   protected abstract Vec3i getBoneColor(String string);
 
    protected void b(GeoBone bone, int i) {
       List list = bone.childBones;
@@ -172,7 +172,7 @@ public abstract class CustomColorGirlRenderer extends GirlPlayerRenderer {
       }
 
       if (!bone.isHidden) {
-         Vector4f vector4f = this.a(string, f, f2, f3);
+         Vector4f vector4f = this.getBoneTint(string, f, f2, f3);
          f = vector4f.x;
          f2 = vector4f.y;
          f3 = vector4f.z;
@@ -188,14 +188,14 @@ public abstract class CustomColorGirlRenderer extends GirlPlayerRenderer {
             }
          }
 
-         for (GeoBone bone2 : bone.childBones) {
-            if (d == 0.0) {
-               this.renderRecursively(bufferBuilder, bone2, f, f2, f3, f4);
-               continue;
-            }
+          for (GeoBone bone2 : bone.childBones) {
+             if (d == 0.0) {
+                this.renderRecursively(bufferBuilder, bone2, f, f2, f3, f4);
+                continue;
+             }
 
-            this.a(bufferBuilder, bone2, f, f2, f3, f4, d);
-         }
+             this.renderBone(bufferBuilder, bone2, f, f2, f3, f4, d);
+          }
       }
 
       try {

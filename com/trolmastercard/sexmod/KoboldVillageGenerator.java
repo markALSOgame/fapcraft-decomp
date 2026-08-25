@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 import net.minecraft.init.Biomes;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
@@ -201,14 +202,14 @@ public class KoboldVillageGenerator extends WorldSavedData implements IWorldGene
         for (TribeTemplate tribeTemplate : this.QueuedTemplates) {
             int i9;
             try {
-                i9 = tribeTemplate.a.equals(tribeConfig.TribeName) ? 156 : 62;
+                i9 = tribeTemplate.TemplateName.equals(tribeConfig.TribeName) ? 156 : 62;
             }
             catch (RuntimeException runtimeException) {
                 throw KoboldVillageGenerator.rethrow(runtimeException);
             }
             i8 = i9;
             try {
-                if (!(tribeTemplate.b.a(i, i4) < (float)i8)) continue;
+                if (!(tribeTemplate.Offset.distanceTo(i, i4) < (float)i8)) continue;
                 return;
             }
             catch (RuntimeException runtimeException) {
@@ -435,14 +436,10 @@ public class KoboldVillageGenerator extends WorldSavedData implements IWorldGene
             }
         }
         BlockPos blockPos3 = null;
-        Rotation rotation = arrayList.iterator();
-        while (rotation.hasNext()) {
-            BlockPos blockPos4;
-            blockPos = blockPos4 = (BlockPos)rotation.next();
-            material = blockPos2.add(6, 0, 6);
-            blockPos = blockPos.subtract((Vec3i)material);
+        for (BlockPos blockPos4 : arrayList) {
+            BlockPos blockPos5 = blockPos4.subtract(blockPos2.add(6, 0, 6));
             try {
-                if (Math.abs(blockPos.getX()) == Math.abs(blockPos.getZ())) {
+                if (Math.abs(blockPos5.getX()) == Math.abs(blockPos5.getZ())) {
                     continue;
                 }
             }
@@ -450,7 +447,7 @@ public class KoboldVillageGenerator extends WorldSavedData implements IWorldGene
                 throw KoboldVillageGenerator.rethrow(runtimeException);
             }
             try {
-                if (Math.abs(blockPos.getX()) == Math.abs(blockPos.getZ()) - 1) {
+                if (Math.abs(blockPos5.getX()) == Math.abs(blockPos5.getZ()) - 1) {
                     continue;
                 }
             }
@@ -458,14 +455,14 @@ public class KoboldVillageGenerator extends WorldSavedData implements IWorldGene
                 throw KoboldVillageGenerator.rethrow(runtimeException);
             }
             try {
-                if (Math.abs(blockPos.getX()) - 1 == Math.abs(blockPos.getZ())) {
+                if (Math.abs(blockPos5.getX()) - 1 == Math.abs(blockPos5.getZ())) {
                     continue;
                 }
             }
             catch (RuntimeException runtimeException) {
                 throw KoboldVillageGenerator.rethrow(runtimeException);
             }
-            blockPos3 = blockPos;
+            blockPos3 = blockPos4;
             break;
         }
         try {
@@ -476,29 +473,33 @@ public class KoboldVillageGenerator extends WorldSavedData implements IWorldGene
         catch (RuntimeException runtimeException) {
             throw KoboldVillageGenerator.rethrow(runtimeException);
         }
-        blockPos = new Vec3i(0, 0, 0);
+        Rotation rotation;
+        Vec3d seatVec;
         float f = 0.0f;
         if (blockPos3.getZ() == -6) {
             rotation = Rotation.NONE;
-            vec3d = GoblinNpc.GuardSeat180;
+            seatVec = GoblinNpc.GuardSeat180;
+            blockPos = new BlockPos(0, 0, 0);
             f = 180.0f;
         } else if (blockPos3.getX() == 5) {
             rotation = Rotation.CLOCKWISE_90;
-            vec3d = GoblinNpc.GuardSeat270;
-            blockPos = new Vec3i(GoblinNpc.SeatSearchBox.getX() - 1, 0, 0);
+            seatVec = GoblinNpc.GuardSeat270;
+            blockPos = new BlockPos(GoblinNpc.SeatSearchBox.getX() - 1, 0, 0);
             f = -90.0f;
         } else if (blockPos3.getZ() == 5) {
             rotation = Rotation.CLOCKWISE_180;
-            vec3d = GoblinNpc.GuardSeat0;
-            blockPos = new Vec3i(GoblinNpc.SeatSearchBox.getX() - 1, 0, GoblinNpc.SeatSearchBox.getZ() - 1);
+            seatVec = GoblinNpc.GuardSeat0;
+            blockPos = new BlockPos(GoblinNpc.SeatSearchBox.getX() - 1, 0, GoblinNpc.SeatSearchBox.getZ() - 1);
         } else {
             rotation = Rotation.COUNTERCLOCKWISE_90;
-            vec3d = GoblinNpc.GuardSeat90;
-            blockPos = new Vec3i(0, 0, GoblinNpc.SeatSearchBox.getZ() - 1);
+            seatVec = GoblinNpc.GuardSeat90;
+            blockPos = new BlockPos(0, 0, GoblinNpc.SeatSearchBox.getZ() - 1);
             f = 90.0f;
         }
-        new StructureGenerator("goblin").a(world, blockPos2.add(0, -1, 0).add((Vec3i)blockPos), rotation);
-        vec3d.add((double)blockPos.getX(), (double)blockPos.getY(), (double)blockPos.getZ());
+
+        new StructureGenerator("goblin").placeStructureRotated(world, blockPos2.add(0, -1, 0).add(blockPos), rotation);
+
+        vec3d = seatVec.add((double)blockPos.getX(), (double)blockPos.getY(), (double)blockPos.getZ());
         vec3d = new Vec3d((double)blockPos2.getX() + vec3d.x + 0.5, (double)blockPos2.getY() + vec3d.y, (double)blockPos2.getZ() + vec3d.z + 0.5);
         GoblinNpc goblin = new GoblinNpc(world, true, f, vec3d);
         goblin.forceSpawn = true;

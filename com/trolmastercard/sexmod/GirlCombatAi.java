@@ -2,6 +2,13 @@ package com.trolmastercard.sexmod;
 
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.item.ItemBow;
+import net.minecraft.enchantment.Enchantment;
+import com.google.common.collect.Multimap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntityTippedArrow;
@@ -134,7 +141,7 @@ public class GirlCombatAi extends GirlAiBase {
                break;
             }
             if (this.Girl.Inventory.getStackInSlot(1).getItem() instanceof ItemBow && this.Girl.getEntitySenses().canSee((Entity)this.Target) && ++this.BowChargeTicks > 0 && d > 6.0) {
-               this.DataManager.set(InventoryGirlEntity.ModeKey, (Object)2);
+               this.DataManager.set(InventoryGirlEntity.ModeKey, 2);
                this.Girl.setCurrentAction(GirlAnimationState.BOW);
                if (++this.BowChargeTicks >= 32) {
                   this.BowChargeTicks = -20;
@@ -146,18 +153,18 @@ public class GirlCombatAi extends GirlAiBase {
                return;
             }
             if (d < 2.0) {
-               this.DataManager.set(InventoryGirlEntity.ModeKey, (Object)1);
+               this.DataManager.set(InventoryGirlEntity.ModeKey, 1);
                this.Navigation.tryMoveToEntityLiving((Entity)this.Target, 0.5);
-               this.Girl.a(GirlEntity.WalkState.WALK);
+               this.Girl.setWalkState(GirlEntity.WalkState.WALK);
                break;
             }
-            this.DataManager.set(InventoryGirlEntity.ModeKey, (Object)1);
+            this.DataManager.set(InventoryGirlEntity.ModeKey, 1);
             this.Navigation.tryMoveToEntityLiving((Entity)this.Target, 0.7);
-            this.Girl.a(GirlEntity.WalkState.RUN);
+            this.Girl.setWalkState(GirlEntity.WalkState.RUN);
             break;
          }
          case FOLLOW: {
-            this.DataManager.set(InventoryGirlEntity.ModeKey, (Object)0);
+            this.DataManager.set(InventoryGirlEntity.ModeKey, 0);
             double d = this.Girl.getDistance((Entity)this.Player);
             if ((double)this.Navigation.getPathSearchRange() > d) {
                this.Navigation.clearPath();
@@ -173,7 +180,7 @@ public class GirlCombatAi extends GirlAiBase {
             break;
          }
          case IDLE: {
-            this.DataManager.set(InventoryGirlEntity.ModeKey, (Object)0);
+            this.DataManager.set(InventoryGirlEntity.ModeKey, 0);
             if (!this.Girl.IsDowned) {
                if (++this.RandomMoveTimer > 200 + ModConstants.Random.nextInt(100)) {
                   this.RandomMoveTimer = 0;
@@ -219,7 +226,7 @@ public class GirlCombatAi extends GirlAiBase {
                 block61: {
                     boolean flag2;
                     DamageSource damageSource;
-                    Entity entity;
+                    EntityLivingBase entity;
                     block59: {
                         block57: {
                             try {
@@ -238,7 +245,7 @@ public class GirlCombatAi extends GirlAiBase {
                                 throw GirlCombatAi.rethrow(runtimeException);
                             }
                             if (this.Player.isRiding()) {
-                                entity = this.Player.getRidingEntity();
+                                entity = (EntityLivingBase)this.Player.getRidingEntity();
                                 try {
                                     block56: {
                                         try {
@@ -349,7 +356,7 @@ public class GirlCombatAi extends GirlAiBase {
                         }
                         Vec3d vec3d = this.Girl.getPositionVector();
                         AxisAlignedBB axisAlignedBB = new AxisAlignedBB(vec3d.x - 5.0, vec3d.y - 2.0, vec3d.z - 5.0, vec3d.x + 5.0, vec3d.y + 2.0, vec3d.z + 5.0);
-                        List list = this.Girl.world.getEntitiesWithinAABB(EntityMob.class, axisAlignedBB);
+                        List<EntityMob> list = this.Girl.world.getEntitiesWithinAABB(EntityMob.class, axisAlignedBB);
                         list.sort((entityMob, entityMob2) -> {
                             int i;
                             double d = entityMob.getDistance((Entity)this.Girl);
@@ -483,15 +490,15 @@ public class GirlCombatAi extends GirlAiBase {
 
    void meleeAttack() {
         this.Girl.setCurrentAction(GirlAnimationState.ATTACK);
-        this.DataManager.set(InventoryGirlEntity.ModeKey, (Object)1);
+        this.DataManager.set(InventoryGirlEntity.ModeKey, 1);
         ItemStack itemStack = this.Girl.Inventory.getStackInSlot(0);
-        Multimap multimap = itemStack.getAttributeModifiers(EntityEquipmentSlot.MAINHAND);
+        Multimap<String, AttributeModifier> multimap = itemStack.getAttributeModifiers(EntityEquipmentSlot.MAINHAND);
         float f = 0.0f;
         float f2 = 0.0f;
-        for (AttributeModifier attributeModifier : multimap.get((Object)SharedMonsterAttributes.ATTACK_DAMAGE.getName())) {
+        for (AttributeModifier attributeModifier : multimap.get(SharedMonsterAttributes.ATTACK_DAMAGE.getName())) {
             f = (float)attributeModifier.getAmount();
         }
-        for (AttributeModifier attributeModifier : multimap.get((Object)SharedMonsterAttributes.ATTACK_SPEED.getName())) {
+        for (AttributeModifier attributeModifier : multimap.get(SharedMonsterAttributes.ATTACK_SPEED.getName())) {
             f2 = (float)attributeModifier.getAmount();
         }
         f2 = Math.max(f2, 0.5f);
@@ -554,7 +561,7 @@ public class GirlCombatAi extends GirlAiBase {
       }
 
       this.Navigation.setSpeed(d);
-      this.Girl.a(this.Girl.getWalkState());
+      this.Girl.setWalkState(this.Girl.getWalkState());
       return d;
    }
 

@@ -71,14 +71,14 @@ public class GirlHomeWorldData extends WorldSavedData {
             continue;
          }
 
-         CustomNameData.put(uuid, this.a(tagCompound.getCompoundTag(string)));
+         CustomNameData.put(uuid, this.readNamesFromNbt(tagCompound.getCompoundTag(string)));
       }
    }
 
    public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
       for (Entry entry : CustomNameData.entrySet()) {
          UUID uuid = (UUID)entry.getKey();
-         tagCompound.setTag(uuid.toString(), this.a((HashMap<GirlRegistry, String>)entry.getValue()));
+         tagCompound.setTag(uuid.toString(), this.writeNamesToNbt((HashMap<GirlRegistry, String>)entry.getValue()));
       }
 
       return tagCompound;

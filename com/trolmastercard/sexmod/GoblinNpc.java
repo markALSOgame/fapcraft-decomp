@@ -111,7 +111,6 @@ import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
-import net.minecraft.entity.ai.EntityAIOpenDoor;
 
 /*
  * Duplicate member names - consider using --renamedupmembers true
@@ -190,8 +189,8 @@ implements GirlMaster {
 
     public GoblinNpc(World world, @Nonnull String string, int i) {
         this(world);
-        this.DataManager.set(QueenNameKey, (Object)string);
-        this.DataManager.set(M, (Object)this.generateAppearanceKey(new StringBuilder(), i));
+        this.DataManager.set(QueenNameKey,string);
+        this.DataManager.set(M,this.generateAppearanceKey(new StringBuilder(), i));
     }
 
     public GoblinNpc(World world, boolean flag, float f, Vec3d vec3d) {
@@ -199,19 +198,19 @@ implements GirlMaster {
         if (!flag) {
             return;
         }
-        this.DataManager.set(M, (Object)this.generateRandomAppearanceKey(new StringBuilder()));
+        this.DataManager.set(M,this.generateRandomAppearanceKey(new StringBuilder()));
         this.ThroneRot = f;
         this.ThronePos = vec3d;
         this.aX = true;
         this.setTargetPos(vec3d);
-        this.void_b(f);
+        this.b(f);
         this.setCurrentAction(GirlAnimationState.SIT);
         this.setShouldBeAtTargetPos(true);
         this.setPosition(vec3d.x, vec3d.y, vec3d.z);
     }
 
     @Override
-    public void g() {
+    public void noop() {
         super.noop();
         this.a((UUID)null);
         this.noClip = false;
@@ -222,13 +221,13 @@ implements GirlMaster {
     protected void entityInit() {
         super.entityInit();
         TribeColor tribeColor = TribeColor.values()[this.getRNG().nextInt(TribeColor.values().length)];
-        this.DataManager.register(K, (Object)new BlockPos(tribeColor.getColor()));
-        this.DataManager.register(N, (Object)DefaultTribeColor.name());
-        this.DataManager.register(BoundPlayerUuidKey, (Object)"");
-        this.DataManager.register(QueenNameKey, (Object)"");
-        this.DataManager.register(HeldItemKey, (Object)ItemStack.EMPTY);
-        this.DataManager.register(TamedKey, (Object)false);
-        this.DataManager.register(PregnantKey, (Object)false);
+        this.DataManager.register(K,new BlockPos(tribeColor.getColor()));
+        this.DataManager.register(TribeColorKey,DefaultTribeColor.name());
+        this.DataManager.register(BoundPlayerUuidKey,"");
+        this.DataManager.register(QueenNameKey,"");
+        this.DataManager.register(HeldItemKey,ItemStack.EMPTY);
+        this.DataManager.register(TamedKey,false);
+        this.DataManager.register(PregnantKey,false);
     }
 
     @Override
@@ -295,7 +294,7 @@ implements GirlMaster {
     }
 
     @Override
-    public String getDisplayName() {
+    public String getGirlName() {
         return "Goblin";
     }
 
@@ -312,28 +311,23 @@ implements GirlMaster {
     public void a(UUID uUID) {
         try {
             if (uUID == null) {
-                this.DataManager.set(BoundPlayerUuidKey, (Object)"");
+                this.DataManager.set(BoundPlayerUuidKey,"");
                 return;
             }
         }
         catch (ConcurrentModificationException concurrentModificationException) {
             throw GoblinNpc.rethrow(concurrentModificationException);
         }
-        this.DataManager.set(BoundPlayerUuidKey, (Object)uUID.toString());
+        this.DataManager.set(BoundPlayerUuidKey,uUID.toString());
     }
 
     @Override
     @Nullable
     public UUID getGirlUuid() {
         String string = (String)this.DataManager.get(BoundPlayerUuidKey);
-        try {
             if ("".equals(string)) {
                 return null;
             }
-        }
-        catch (Exception exception) {
-            throw GoblinNpc.rethrow(exception);
-        }
         try {
             return UUID.fromString((String)this.DataManager.get(BoundPlayerUuidKey));
         }
@@ -348,7 +342,7 @@ implements GirlMaster {
     }
 
     @Override
-    public void b(int i) {
+    public void setPickupCountdown(int i) {
         this.aQ = i;
     }
 
@@ -448,7 +442,7 @@ implements GirlMaster {
         }
         try {
             GirlEffectEntity.appendZeroPaddedNumber(stringBuilder, Integer.parseInt(GirlEffectEntity.getAttributeStrings(this)[9]));
-            this.DataManager.set(M, (Object)stringBuilder.toString());
+            this.DataManager.set(M,stringBuilder.toString());
             if (Main.proxy instanceof ClientProxy) {
                 GoblinNpcRenderer.clearColorCache();
             }
@@ -473,7 +467,7 @@ implements GirlMaster {
             GirlEffectEntity.appendZeroPaddedNumber(stringBuilder, i);
         }
         GirlEffectEntity.appendZeroPaddedNumber(stringBuilder, Integer.parseInt(GirlEffectEntity.getAttributeStrings(this)[9]));
-        this.DataManager.set(M, (Object)stringBuilder.toString());
+        this.DataManager.set(M,stringBuilder.toString());
         GoblinNpcRenderer.clearColorCache();
     }
 
@@ -495,12 +489,12 @@ implements GirlMaster {
     public void writeEntityToNBT(NBTTagCompound nBTTagCompound) {
         try {
             super.writeEntityToNBT(nBTTagCompound);
-            nBTTagCompound.setString("bodyColor", (String)this.DataManager.get(N));
+            nBTTagCompound.setString("bodyColor", (String)this.DataManager.get(TribeColorKey));
             nBTTagCompound.setInteger("eyeColorX", ((BlockPos)this.DataManager.get(K)).getX());
             nBTTagCompound.setInteger("eyeColorY", ((BlockPos)this.DataManager.get(K)).getY());
             nBTTagCompound.setInteger("eyeColorZ", ((BlockPos)this.DataManager.get(K)).getZ());
             nBTTagCompound.setString("model", (String)this.DataManager.get(M));
-            nBTTagCompound.setString("girlID", (String)this.DataManager.get(u));
+            nBTTagCompound.setString("girlID", (String)this.DataManager.get(GirlUuidKey));
             nBTTagCompound.setString("queen", (String)this.DataManager.get(QueenNameKey));
             nBTTagCompound.setBoolean("isQueen", this.aX);
             nBTTagCompound.setBoolean("isTamed", ((Boolean)this.DataManager.get(TamedKey)).booleanValue());
@@ -533,8 +527,8 @@ implements GirlMaster {
         block10: {
             super.readEntityFromNBT(nBTTagCompound);
             this.aX = nBTTagCompound.getBoolean("isQueen");
-            this.DataManager.set(M, (Object)nBTTagCompound.getString("model"));
-            this.DataManager.set(N, (Object)nBTTagCompound.getString("bodyColor"));
+            this.DataManager.set(M,nBTTagCompound.getString("model"));
+            this.DataManager.set(TribeColorKey,nBTTagCompound.getString("bodyColor"));
             String[] stringArray = GirlEffectEntity.getAttributeStrings(this);
             try {
                 try {
@@ -543,7 +537,7 @@ implements GirlMaster {
                 catch (ConcurrentModificationException concurrentModificationException) {
                     throw GoblinNpc.rethrow(concurrentModificationException);
                 }
-                this.DataManager.set(M, (Object)this.generateAppearanceKey(new StringBuilder(), this.getAppearanceIndex()));
+                this.DataManager.set(M,this.generateAppearanceKey(new StringBuilder(), this.getAppearanceIndex()));
                 Main.LOGGER.log(Level.INFO, "updated an old Goblin");
             }
             catch (ConcurrentModificationException concurrentModificationException) {
@@ -551,10 +545,10 @@ implements GirlMaster {
             }
         }
         try {
-            this.DataManager.set(K, (Object)new BlockPos(nBTTagCompound.getInteger("eyeColorX"), nBTTagCompound.getInteger("eyeColorY"), nBTTagCompound.getInteger("eyeColorZ")));
-            this.DataManager.set(u, (Object)nBTTagCompound.getString("girlID"));
-            this.DataManager.set(QueenNameKey, (Object)nBTTagCompound.getString("queen"));
-            this.DataManager.set(TamedKey, (Object)nBTTagCompound.getBoolean("isTamed"));
+            this.DataManager.set(K,new BlockPos(nBTTagCompound.getInteger("eyeColorX"), nBTTagCompound.getInteger("eyeColorY"), nBTTagCompound.getInteger("eyeColorZ")));
+            this.DataManager.set(GirlUuidKey,nBTTagCompound.getString("girlID"));
+            this.DataManager.set(QueenNameKey,nBTTagCompound.getString("queen"));
+            this.DataManager.set(TamedKey,nBTTagCompound.getBoolean("isTamed"));
             this.aO = nBTTagCompound.getInteger("robTicks");
             if (!this.aX) {
                 return;
@@ -575,7 +569,7 @@ implements GirlMaster {
         catch (ConcurrentModificationException concurrentModificationException) {
             throw GoblinNpc.rethrow(concurrentModificationException);
         }
-        this.DataManager.set(PregnantKey, (Object)nBTTagCompound.getBoolean("preggo"));
+        this.DataManager.set(PregnantKey,nBTTagCompound.getBoolean("preggo"));
         this.ImpregnationTick = nBTTagCompound.getLong("impregnationTick");
     }
 
@@ -617,9 +611,9 @@ implements GirlMaster {
                             }
                         }
                         this.setTargetPos(entityPlayer.getPositionVector());
-                        this.void_b(entityPlayer.rotationYaw);
+                        this.b(entityPlayer.rotationYaw);
                         this.setCurrentAction(GirlAnimationState.CATCH);
-                        this.DataManager.set(h, (Object)"bj");
+                        this.DataManager.set(BlowjobStageKey,"bj");
                         this.a(entityPlayer.getPersistentID());
                         this.handleGirlUuidEvent(entityPlayer.getPersistentID());
                         this.getNavigator().clearPath();
@@ -642,7 +636,7 @@ implements GirlMaster {
             this.setCurrentAction(GirlAnimationState.PICK_UP);
             this.aQ = 45;
             this.setShouldBeAtTargetPos(false);
-            this.DataManager.set(TamedKey, (Object)true);
+            this.DataManager.set(TamedKey,true);
             this.getNavigator().clearPath();
         }
         return true;
@@ -964,7 +958,7 @@ implements GirlMaster {
         }
         try {
             if (this.ImpregnationTick + 8400L < this.world.getTotalWorldTime()) {
-                this.DataManager.set(PregnantKey, (Object)false);
+                this.DataManager.set(PregnantKey,false);
             }
         }
         catch (ConcurrentModificationException concurrentModificationException) {
@@ -1075,8 +1069,8 @@ implements GirlMaster {
         GoblinNpc goblin3 = (GoblinNpc)list.get(1);
         goblin2.setTargetPos(vec3d);
         goblin3.setTargetPos(vec3d2);
-        goblin2.void_b(0.0f);
-        goblin3.void_b(0.0f);
+        goblin2.b(0.0f);
+        goblin3.b(0.0f);
         goblin2.setShouldBeAtTargetPos(true);
         goblin3.setShouldBeAtTargetPos(true);
         goblin2.setCurrentAction(GirlAnimationState.AWAIT_PICK_UP);
@@ -1217,7 +1211,7 @@ implements GirlMaster {
             throw GoblinNpc.rethrow(concurrentModificationException);
         }
         this.setTargetPos(vec3d);
-        this.void_b(this.ThroneRot);
+        this.b(this.ThroneRot);
         this.setCurrentAction(GirlAnimationState.BREEDING_INTRO_0);
         this.noClip = true;
         this.setNoGravity(true);
@@ -1229,7 +1223,7 @@ implements GirlMaster {
         if (list.size() >= 1) {
             goblin = list.get(0);
             goblin.setTargetPos(vec3d);
-            goblin.void_b(this.ThroneRot);
+            goblin.b(this.ThroneRot);
             goblin.setCurrentAction(GirlAnimationState.BREEDING_INTRO_1);
             goblin.noClip = true;
             goblin.setNoGravity(true);
@@ -1237,7 +1231,7 @@ implements GirlMaster {
         if (list.size() >= 2) {
             goblin = list.get(1);
             goblin.setTargetPos(vec3d);
-            goblin.void_b(this.ThroneRot);
+            goblin.b(this.ThroneRot);
             goblin.setCurrentAction(GirlAnimationState.BREEDING_INTRO_2);
             goblin.noClip = true;
             goblin.setNoGravity(true);
@@ -1339,7 +1333,7 @@ implements GirlMaster {
         this.handleGirlUuidEvent(uUID);
         this.setCurrentAction(GirlAnimationState.JUMP_0);
         this.setTargetPos(vec3d);
-        this.void_b(f);
+        this.b(f);
         this.setShouldBeAtTargetPos(true);
         List<GoblinNpc> list = this.getOrSpawnGuards();
         if (list.size() > 0) {
@@ -1347,14 +1341,14 @@ implements GirlMaster {
             goblin.handleGirlUuidEvent(uUID);
             goblin.setCurrentAction(GirlAnimationState.JUMP_1);
             goblin.setTargetPos(vec3d);
-            goblin.void_b(f);
+            goblin.b(f);
             goblin.setShouldBeAtTargetPos(true);
             if (list.size() > 1) {
                 GoblinNpc goblin2 = list.get(1);
                 goblin2.handleGirlUuidEvent(uUID);
                 goblin2.setCurrentAction(GirlAnimationState.JUMP_2);
                 goblin2.setTargetPos(vec3d);
-                goblin2.void_b(f);
+                goblin2.b(f);
                 goblin2.setShouldBeAtTargetPos(true);
             }
         }
@@ -1378,7 +1372,7 @@ implements GirlMaster {
         goblin3.setPosition(this.posX, this.posY, this.posZ);
         this.world.spawnEntity((Entity)goblin3);
         this.NearbyGoblins.add(goblin3);
-        goblin2 = new GoblinNpc(this.world, this.getGirlUuid().toString(), this.getAppearanceIndex());
+        GoblinNpc goblin2 = new GoblinNpc(this.world, this.getGirlUuid().toString(), this.getAppearanceIndex());
         goblin2.setPosition(this.posX, this.posY, this.posZ);
         this.world.spawnEntity((Entity)goblin2);
         this.NearbyGoblins.add(goblin2);
@@ -1448,7 +1442,7 @@ implements GirlMaster {
                 this.motionY = vec3d2.y;
                 this.motionZ = vec3d2.z;
                 if (!this.world.isRemote) {
-                    this.void_b(f2);
+                    this.b(f2);
                 }
             }
             catch (ConcurrentModificationException concurrentModificationException) {
@@ -1568,32 +1562,17 @@ implements GirlMaster {
         }
         double d = 20.0;
         do {
-            int i;
-            Vec3d vec3d;
-            Vec3d vec3d2;
-            Vec3d vec3d3;
             if (d <= 0.0) {
                 return;
             }
-            Vec3d vec3d4 = this.getPositionVector().subtract(entityPlayer.getPositionVector());
-            Vec3d vec3d5 = new Vec3d(Math.abs(vec3d4.x), Math.abs(vec3d4.y), Math.abs(vec3d4.z));
-            double d2 = vec3d5.x / (vec3d5.x + vec3d5.z);
-            double d3 = vec3d5.z / (vec3d5.x + vec3d5.z);
-            try {
-                Vec3d vec3d6;
-                vec3d3 = this.getPositionVector();
-                vec3d2 = vec3d6;
-                vec3d = vec3d6;
-                i = vec3d4.x > 0.0 ? 1 : -1;
-            }
-            catch (ConcurrentModificationException concurrentModificationException) {
-                throw GoblinNpc.rethrow(concurrentModificationException);
-            }
-            vec3d2((double)i * d2 * d, 0.0, (double)(vec3d4.z > 0.0 ? 1 : -1) * d3 * d);
-            Vec3d vec3d7 = vec3d3.add(vec3d);
+            Vec3d vec3d = this.getPositionVector().subtract(entityPlayer.getPositionVector());
+            Vec3d vec3d2 = new Vec3d(Math.abs(vec3d.x), Math.abs(vec3d.y), Math.abs(vec3d.z));
+            double d2 = vec3d2.x / (vec3d2.x + vec3d2.z);
+            double d3 = vec3d2.z / (vec3d2.x + vec3d2.z);
+            Vec3d vec3d3 = this.getPositionVector().add(new Vec3d((double)(vec3d.x > 0.0 ? 1 : -1) * d2 * d, 0.0, (double)(vec3d.z > 0.0 ? 1 : -1) * d3 * d));
             PathNavigate pathNavigate = this.getNavigator();
             pathNavigate.clearPath();
-            flag = pathNavigate.tryMoveToXYZ(vec3d7.x, vec3d7.y, vec3d7.z, (double)0.825f);
+            flag = pathNavigate.tryMoveToXYZ(vec3d3.x, vec3d3.y, vec3d3.z, (double)0.825f);
             d -= 1.0;
         } while (!flag);
     }
@@ -1750,7 +1729,7 @@ implements GirlMaster {
         goblin.setPosition(entityPlayer.posX + vec3d4.x, entityPlayer.posY, entityPlayer.posZ + vec3d4.z);
         goblin.setCurrentAction(GirlAnimationState.RUN);
         this.world.spawnEntity((Entity)goblin);
-        goblin.DataManager.set(HeldItemKey, (Object)itemStack);
+        goblin.DataManager.set(HeldItemKey,itemStack);
         entityPlayer.sendMessage((ITextComponent)new TextComponentString(String.format("<%s> I got your %s hehe~", goblin.getDisplayName(), itemStack.getDisplayName())));
         entityPlayer.inventory.removeStackFromSlot(i.intValue());
         this.aO = 0;
@@ -1812,7 +1791,7 @@ implements GirlMaster {
             throw GoblinNpc.rethrow(concurrentModificationException);
         }
         this.setTargetPos(this.ThronePos);
-        this.void_b(this.ThroneRot);
+        this.b(this.ThroneRot);
         this.setShouldBeAtTargetPos(true);
         this.setNoGravity(true);
         this.setCurrentAction(GirlAnimationState.SIT);
@@ -2168,7 +2147,7 @@ implements GirlMaster {
             }
             try {
                 if (girlAnimationState == GirlAnimationState.BREEDING_CUM_0) {
-                    this.DataManager.set(PregnantKey, (Object)true);
+                    this.DataManager.set(PregnantKey,true);
                     this.ImpregnationTick = this.world.getTotalWorldTime();
                     this.LastAmbientTicks = this.world.getTotalWorldTime();
                 }
@@ -2186,7 +2165,7 @@ implements GirlMaster {
             }
             try {
                 if (girlAnimationState == GirlAnimationState.NELSON_CUM) {
-                    this.DataManager.set(PregnantKey, (Object)true);
+                    this.DataManager.set(PregnantKey,true);
                 }
             }
             catch (ConcurrentModificationException concurrentModificationException) {
@@ -2199,7 +2178,7 @@ implements GirlMaster {
                 catch (ConcurrentModificationException concurrentModificationException) {
                     throw GoblinNpc.rethrow(concurrentModificationException);
                 }
-                this.DataManager.set(PregnantKey, (Object)false);
+                this.DataManager.set(PregnantKey,false);
             }
             catch (ConcurrentModificationException concurrentModificationException) {
                 throw GoblinNpc.rethrow(concurrentModificationException);
@@ -2212,7 +2191,7 @@ implements GirlMaster {
         EntityPlayer entityPlayer = this.world.getPlayerEntityByUUID(this.getSexPlayerUuid());
         try {
             if (entityPlayer != null) {
-                PacketResetGirl.Handler.a((EntityPlayerMP)entityPlayer);
+                PacketResetGirl.Handler.handle((EntityPlayerMP)entityPlayer);
             }
         }
         catch (ConcurrentModificationException concurrentModificationException) {
@@ -2223,7 +2202,7 @@ implements GirlMaster {
             this.setShouldBeAtTargetPos(false);
             this.noClip = false;
             this.setNoGravity(false);
-            this.DataManager.set(HeldItemKey, (Object)ItemStack.EMPTY);
+            this.DataManager.set(HeldItemKey,ItemStack.EMPTY);
             if (!((Boolean)this.DataManager.get(TamedKey)).booleanValue()) {
                 this.setPositionAndUpdate(this.HomePos.x, this.HomePos.y, this.HomePos.z);
                 this.world.removeEntity((Entity)this);
@@ -2246,7 +2225,7 @@ implements GirlMaster {
         }
         this.a((UUID)null);
         this.setTargetPos(entityPlayer.getPositionVector());
-        this.void_b(entityPlayer.rotationYaw);
+        this.b(entityPlayer.rotationYaw);
         this.setShouldBeAtTargetPos(true);
         this.noClip = true;
         this.setNoGravity(true);
@@ -2255,7 +2234,7 @@ implements GirlMaster {
         this.handleGirlUuidEvent(entityPlayer.getPersistentID());
     }
 
-    void void_z() {
+    void z() {
         EntityPlayer entityPlayer = this.world.getPlayerEntityByUUID(this.getSexPlayerUuid());
         try {
             if (entityPlayer == null) {
@@ -2267,7 +2246,7 @@ implements GirlMaster {
         }
         this.a((UUID)null);
         this.setTargetPos(entityPlayer.getPositionVector());
-        this.void_b(entityPlayer.rotationYaw + 180.0f);
+        this.b(entityPlayer.rotationYaw + 180.0f);
         this.setShouldBeAtTargetPos(true);
         this.noClip = true;
         this.setNoGravity(true);
@@ -2299,7 +2278,7 @@ implements GirlMaster {
             throw GoblinNpc.rethrow(concurrentModificationException);
         }
         entityPlayer.inventory.addItemStackToInventory(itemStack.copy());
-        this.DataManager.set(HeldItemKey, (Object)ItemStack.EMPTY);
+        this.DataManager.set(HeldItemKey,ItemStack.EMPTY);
     }
 
     public static void handlePickUp(GirlEntity girl) {
@@ -2315,7 +2294,7 @@ implements GirlMaster {
         UUID uUID = girlMaster.getGirlUuid();
         try {
             if (uUID == null) {
-                girlMaster.b(-1);
+                girlMaster.setPickupCountdown(-1);
                 girl.setCurrentAction(GirlAnimationState.NULL);
                 girlMaster.a((UUID)null);
                 return;
@@ -2327,7 +2306,7 @@ implements GirlMaster {
         EntityPlayer entityPlayer = girl.world.getPlayerEntityByUUID(uUID);
         try {
             if (entityPlayer == null) {
-                girlMaster.b(-1);
+                girlMaster.setPickupCountdown(-1);
                 girl.setCurrentAction(GirlAnimationState.NULL);
                 girlMaster.a((UUID)null);
                 return;
@@ -2339,7 +2318,7 @@ implements GirlMaster {
         try {
             girl.setPosition(entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ);
             if (girl.getPositionVector().distanceTo(entityPlayer.getPositionVector()) > 10.0) {
-                girlMaster.b(-1);
+                girlMaster.setPickupCountdown(-1);
                 girl.setCurrentAction(GirlAnimationState.NULL);
                 girlMaster.a((UUID)null);
                 return;
@@ -2350,7 +2329,7 @@ implements GirlMaster {
         }
         int i = ((GoblinNpc)girl).getPickupCountdown() - 1;
         try {
-            girlMaster.b(i);
+            girlMaster.setPickupCountdown(i);
             if (i != 0) {
                 return;
             }
@@ -2728,27 +2707,27 @@ implements GirlMaster {
         AnimationController.ISoundListener iSoundListener = arg1 -> {
             switch (arg1.sound) {
                 case "catchEh": {
-                    this.void_a("ehh..");
+                    this.a("ehh..");
                     this.playRandomSound(ModSounds.MISC_PLOB, new int[0]);
                     break;
                 }
                 case "catchAkward": {
-                    this.void_a("awkward..");
+                    this.a("awkward..");
                     this.playRandomSound(ModSounds.MISC_PLOB, new int[0]);
                     break;
                 }
                 case "catchWell": {
-                    this.void_a("well...");
+                    this.a("well...");
                     this.playRandomSound(ModSounds.MISC_PLOB, new int[0]);
                     break;
                 }
                 case "catchRather": {
-                    this.void_a("would you rather have this stupid... thing?");
+                    this.a("would you rather have this stupid... thing?");
                     this.playRandomSound(ModSounds.MISC_PLOB, new int[0]);
                     break;
                 }
                 case "catchMe": {
-                    this.void_a("...or use me?~");
+                    this.a("...or use me?~");
                     this.playRandomSound(ModSounds.MISC_PLOB, new int[0]);
                     break;
                 }
@@ -2765,17 +2744,17 @@ implements GirlMaster {
                     break;
                 }
                 case "paizuriChoice": {
-                    this.void_a("good choice!~");
+                    this.a("good choice!~");
                     this.playRandomSound(ModSounds.MISC_PLOB, new int[0]);
                     break;
                 }
                 case "paizuriBoth": {
-                    this.void_a("...for both of us!");
+                    this.a("...for both of us!");
                     this.playRandomSound(ModSounds.MISC_PLOB, new int[0]);
                     break;
                 }
                 case "paizruiUse": {
-                    this.void_a("now use me like a fuck toy!~");
+                    this.a("now use me like a fuck toy!~");
                     this.playRandomSound(ModSounds.MISC_PLOB, new int[0]);
                     break;
                 }
@@ -2857,17 +2836,17 @@ implements GirlMaster {
                         minecraft.player.rotationYawHead = minecraft.player.rotationYaw;
                         minecraft.gameSettings.thirdPersonView = 0;
                     }
-                    this.void_a("hmm...");
+                    this.a("hmm...");
                     this.playRandomSound(ModSounds.MISC_PLOB, new int[0]);
                     break;
                 }
                 case "breedingFound": {
-                    this.void_a("guess we found a worthy breeding partner!");
+                    this.a("guess we found a worthy breeding partner!");
                     this.playRandomSound(ModSounds.MISC_PLOB, new int[0]);
                     break;
                 }
                 case "breedingEnough": {
-                    this.void_a("Eh.. go pin him down, before he runs off!");
+                    this.a("Eh.. go pin him down, before he runs off!");
                     this.playRandomSound(ModSounds.MISC_PLOB, new int[0]);
                     break;
                 }
@@ -2987,9 +2966,15 @@ implements GirlMaster {
         animationData.addAnimationController(this.MovementController);
         animationData.addAnimationController(this.EyesController);
     }
+ static RuntimeException rethrow(RuntimeException error) {
 
-    private static Exception rethrow(Exception exception) {
-        return exception;
+       return error;
+
+    }
+
+
+    private static RuntimeException rethrow(Exception exception) {
+        return new RuntimeException(exception);
     }
 
     public static class EventHandler {
@@ -3065,8 +3050,8 @@ implements GirlMaster {
                     goblin3.dimension = i;
                     goblin3.forceSpawn = true;
                     goblin3.setCustomModel(string);
-                    goblin3.DataManager.set(M, (Object)string2);
-                    goblin3.DataManager.set(TamedKey, (Object)true);
+                    goblin3.DataManager.set(M,string2);
+                    goblin3.DataManager.set(TamedKey,true);
                     world.spawnEntity((Entity)goblin3);
                     goblin3.setPositionAndUpdate(entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ);
                     goblin3.a(uUID);
@@ -3159,7 +3144,7 @@ implements GirlMaster {
                     catch (ConcurrentModificationException concurrentModificationException) {
                         throw GoblinNpc.EventHandler.rethrow(concurrentModificationException);
                     }
-                    GirlMaster girlMaster = (ai)((Object)girl2);
+                    GirlMaster girlMaster = (GirlMaster)((Object)girl2);
                     if (!uUID.equals(girlMaster.getGirlUuid())) continue;
                     girl = girl2;
                     break;

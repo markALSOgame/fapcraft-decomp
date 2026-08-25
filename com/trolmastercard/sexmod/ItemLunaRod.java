@@ -39,7 +39,7 @@ public class ItemLunaRod extends ItemFishingRod {
                   return 0.0F;
                }
             } catch (RuntimeException error) {
-               throw rethrow(error);
+               throw error;
             }
 
             try {
@@ -47,7 +47,7 @@ public class ItemLunaRod extends ItemFishingRod {
                   return 0.0F;
                }
             } catch (RuntimeException error2) {
-               throw rethrow(error2);
+               throw error2;
             }
 
             try {
@@ -55,15 +55,12 @@ public class ItemLunaRod extends ItemFishingRod {
                   return 1.0F;
                }
             } catch (RuntimeException error3) {
-               throw rethrow(error3);
+               throw error3;
             }
 
             return 0.0F;
          }
 
-         private static RuntimeException rethrow(RuntimeException error4) {
-            return error4;
-         }
       });
    }
 
@@ -87,7 +84,7 @@ public class ItemLunaRod extends ItemFishingRod {
    public ActionResult<ItemStack> a(World world, LunaNpc luna, EnumHand hand) {
       ItemStack stack = luna.getHeldItem(hand);
       if (luna.Familiar != null) {
-         int i = luna.Familiar.c();
+         int i = luna.Familiar.getRodDamage();
          stack.damageItem(i, luna);
          luna.swingArm(hand);
          world.playSound(
@@ -122,7 +119,7 @@ public class ItemLunaRod extends ItemFishingRod {
                   familiar.setLureSpeed(i2);
                }
             } catch (RuntimeException error) {
-               throw rethrow(error);
+               throw error;
             }
 
             int i3 = EnchantmentHelper.getFishingLuckBonus(stack);
@@ -132,7 +129,7 @@ public class ItemLunaRod extends ItemFishingRod {
                   familiar.setLuck(i3);
                }
             } catch (RuntimeException error2) {
-               throw rethrow(error2);
+               throw error2;
             }
 
             world.spawnEntity(familiar);

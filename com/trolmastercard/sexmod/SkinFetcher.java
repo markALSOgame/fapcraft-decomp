@@ -28,14 +28,10 @@ public class SkinFetcher {
          StringBuilder sb = new StringBuilder();
          int i3 = 0;
 
-         try {
             while (string.charAt(i2 + i3) != '"') {
                sb.append(string.charAt(i2 + i3));
                i3++;
             }
-         } catch (Exception error) {
-            throw rethrow(error);
-         }
 
          String string2 = new String(Base64.getDecoder().decode(sb.toString()));
          int i4 = string2.indexOf("\"url\" : ");
@@ -43,14 +39,10 @@ public class SkinFetcher {
          StringBuilder sb2 = new StringBuilder();
          int i6 = 0;
 
-         try {
             while (string2.charAt(i5 + i6) != '"') {
                sb2.append(string2.charAt(i5 + i6));
                i6++;
             }
-         } catch (Exception error2) {
-            throw rethrow(error2);
-         }
 
          URL url2 = new URL(sb2.toString());
          return ImageIO.read(url2);
@@ -60,8 +52,14 @@ public class SkinFetcher {
          );
       }
    }
+ static RuntimeException rethrow(RuntimeException error) {
 
-   private static Exception rethrow(Exception error) {
       return error;
+
+   }
+
+
+   private static RuntimeException rethrow(Exception error) {
+      return new RuntimeException(error);
    }
 }

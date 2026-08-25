@@ -20,25 +20,25 @@ public class StructureGenerator extends WorldGenerator implements TemplatePlacem
 
    public void placeStructure(World world, BlockPos pos) {
       MinecraftServer server = world.getMinecraftServer();
-      TemplateManager templateManager = PreviewRenderer.getStructureTemplateManager();
+      TemplateManager templateManager = ServerWorld.getStructureTemplateManager();
       ResourceLocation location = new ResourceLocation("sexmod", this.TemplateName);
       Template template = templateManager.get(server, location);
       if (template != null) {
          IBlockState state = world.getBlockState(pos);
          world.notifyBlockUpdate(pos, state, state, 3);
-         template.addBlocksToWorld(world, pos, a);
+         template.addBlocksToWorld(world, pos, Placement);
       }
    }
 
    public void placeStructureRotated(World world, BlockPos pos, Rotation rotation) {
       MinecraftServer server = world.getMinecraftServer();
-      TemplateManager templateManager = PreviewRenderer.getStructureTemplateManager();
+      TemplateManager templateManager = ServerWorld.getStructureTemplateManager();
       ResourceLocation location = new ResourceLocation("sexmod", this.TemplateName);
       Template template = templateManager.get(server, location);
       if (template != null) {
          IBlockState state = world.getBlockState(pos);
          world.notifyBlockUpdate(pos, state, state, 2);
-         template.addBlocksToWorld(world, pos, a.setRotation(rotation));
+         template.addBlocksToWorld(world, pos, Placement.setRotation(rotation));
       }
    }
 

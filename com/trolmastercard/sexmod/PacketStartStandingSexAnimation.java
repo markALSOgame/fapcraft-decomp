@@ -77,9 +77,15 @@ public class PacketStartStandingSexAnimation implements IMessage {
             });
             return null;
         }
+ static RuntimeException rethrow(RuntimeException error) {
 
-      private static Exception rethrow(Exception error) {
          return error;
+
+      }
+
+
+      private static RuntimeException rethrow(Exception error) {
+         return new RuntimeException(error);
       }
    }
 }

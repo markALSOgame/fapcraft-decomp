@@ -87,14 +87,14 @@ public class PacketSendBlocks implements IMessage {
                             catch (RuntimeException runtimeException) {
                                 throw PacketSendBlocks.Handler.rethrow(runtimeException);
                             }
-                            GuiMark.addMarks(packet.Blocks);
+                            GuiMark.a(packet.Blocks);
                             break block9;
                         }
                         catch (RuntimeException runtimeException) {
                             throw PacketSendBlocks.Handler.rethrow(runtimeException);
                         }
                     }
-                    GuiMark.removeMarks(packet.Blocks);
+                    GuiMark.b(packet.Blocks);
                 }
                 return null;
             }

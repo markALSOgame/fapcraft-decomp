@@ -9,6 +9,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.server.management.PlayerList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
@@ -74,9 +75,9 @@ public class PacketClaimTribe implements IMessage {
                         throw PacketClaimTribe.Handler.rethrow(runtimeException);
                     }
                     EntityDataManager entityDataManager = object2.getDataManager();
-                    entityDataManager.set(GirlEntity.MasterUuidKey, (Object)packet.PlayerUuid.toString());
-                    entityDataManager.set(KoboldNpc.TribeNameKey, (Object)packet.TribeName);
-                    eyeAndKoboldColor = EyeAndKoboldColor.valueOf((String)entityDataManager.get(KoboldNpc.BodyColorKey));
+                    entityDataManager.set(GirlEntity.MasterUuidKey, packet.PlayerUuid.toString());
+                    entityDataManager.set(KoboldNpc.TribeNameKey, packet.TribeName);
+                    eyeAndKoboldColor = EyeAndKoboldColor.valueOf((String)entityDataManager.get(KoboldNpc.TribeColorKey));
                 }
                 try {
                     if (eyeAndKoboldColor == null) {

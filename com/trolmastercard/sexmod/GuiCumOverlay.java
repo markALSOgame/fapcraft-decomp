@@ -77,7 +77,7 @@ public class GuiCumOverlay {
 
       for (ParticleEmitter particleEmitter4 : Particles) {
          try {
-            if (particleEmitter4.Girl.f().equals(girl2.getGirlUuid())) {
+            if (particleEmitter4.Girl.getGirlUuid().equals(girl2.getGirlUuid())) {
                list.add(particleEmitter4);
             }
          } catch (RuntimeException error3) {

@@ -61,32 +61,20 @@ public class DevConsole {
    @SideOnly(Side.CLIENT)
    @SubscribeEvent
    public void onSetDevFloatCommand(ClientChatEvent clientChatEvent) {
-      try {
          if (!isDeobfuscatedEnvironment()) {
             return;
          }
-      } catch (Exception error) {
-         throw rethrow(error);
-      }
 
       String string = clientChatEvent.getOriginalMessage();
       String[] stringArray = string.split(" ");
 
-      try {
          if (stringArray.length != 3) {
             return;
          }
-      } catch (Exception error2) {
-         throw rethrow(error2);
-      }
 
-      try {
          if (!"set".equalsIgnoreCase(stringArray[0])) {
             return;
          }
-      } catch (Exception error3) {
-         throw rethrow(error3);
-      }
 
       int i;
       float f;
@@ -102,40 +90,28 @@ public class DevConsole {
 
       Minecraft.getMinecraft()
          .player
-         .sendMessage(new TextComponentString(String.format("%sSet dev float N.%s from %s to %s", TextFormatting.GRAY, i, PreviewRenderer[i], f)));
-      PreviewRenderer[i] = f;
+         .sendMessage(new TextComponentString(String.format("%sSet dev float N.%s from %s to %s", TextFormatting.GRAY, i, DevFloats[i], f)));
+      DevFloats[i] = f;
       clientChatEvent.setCanceled(true);
    }
 
    @SideOnly(Side.CLIENT)
    @SubscribeEvent
    public void onGetDevFloatCommand(ClientChatEvent clientChatEvent) {
-      try {
          if (!isDeobfuscatedEnvironment()) {
             return;
          }
-      } catch (Exception error) {
-         throw rethrow(error);
-      }
 
       String string = clientChatEvent.getOriginalMessage();
       String[] stringArray = string.split(" ");
 
-      try {
          if (stringArray.length != 2) {
             return;
          }
-      } catch (Exception error2) {
-         throw rethrow(error2);
-      }
 
-      try {
          if (!"get".equalsIgnoreCase(stringArray[0])) {
             return;
          }
-      } catch (Exception error3) {
-         throw rethrow(error3);
-      }
 
       int i;
       try {
@@ -149,7 +125,7 @@ public class DevConsole {
 
       Minecraft.getMinecraft()
          .player
-         .sendMessage(new TextComponentString(String.format("%sdev float N.%s is %s", TextFormatting.YELLOW, i, PreviewRenderer[i])));
+         .sendMessage(new TextComponentString(String.format("%sdev float N.%s is %s", TextFormatting.YELLOW, i, DevFloats[i])));
       clientChatEvent.setCanceled(true);
    }
 
@@ -232,7 +208,7 @@ public class DevConsole {
       }
 
       if ("girls".equals(string)) {
-         List list = mcPlayer.world.getEntities(GirlEntity.class, arg1 -> true);
+         List<GirlEntity> list = mcPlayer.world.getEntities(GirlEntity.class, arg1 -> true);
          mcPlayer.sendMessage(new TextComponentString(String.valueOf(list.size())));
 
          for (GirlEntity girl : list) {
@@ -275,7 +251,7 @@ public class DevConsole {
             devConsole.sendChatMessage(string2);
          }
 
-         HashMap map = GirlHomeBuilder.getLoadedHomes(uuid, mcPlayer.world);
+         HashMap<UUID, BlockPos> map = GirlHomeBuilder.getLoadedHomes(uuid, mcPlayer.world);
 
          for (Entry entry : map.entrySet()) {
             this.sendChatMessage(String.format("saved pos of %s at %s", ((UUID)entry.getKey()).toString(), ((BlockPos)entry.getValue()).toString()));
@@ -305,8 +281,14 @@ public class DevConsole {
    void sendChatMessage(String string) {
       Minecraft.getMinecraft().player.sendMessage(new TextComponentString(string));
    }
+ static RuntimeException rethrow(RuntimeException error) {
 
-   private static Exception rethrow(Exception error) {
       return error;
+
+   }
+
+
+   private static RuntimeException rethrow(Exception error) {
+      return new RuntimeException(error);
    }
 }

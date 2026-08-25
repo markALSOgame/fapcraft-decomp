@@ -51,12 +51,12 @@ public abstract class ScaledGirlGeoRenderer<G extends GirlEffectEntity> extends 
          throw rethrow(error);
       }
 
-      vec3i = this.a(string);
+      vec3i = this.getBoneColor(string);
       ColorCache.put(i, vec3i);
       return vec3i;
    }
 
-   protected abstract Vec3i a(String string2);
+   protected abstract Vec3i getBoneColor(String string2);
 
    protected static void b(GeoBone bone, int i) {
       List list = bone.childBones;
@@ -132,7 +132,7 @@ public abstract class ScaledGirlGeoRenderer<G extends GirlEffectEntity> extends 
 
    @Override
 
-   public void a(BufferBuilder bufferBuilder, GeoBone bone, float f, float f2, float f3, float f4, double d) {
+   public void renderBone(BufferBuilder bufferBuilder, GeoBone bone, float f, float f2, float f3, float f4, double d) {
         block13: {
             try {
                 if (((GirlEffectEntity)this.RenderEntity).world instanceof PreviewWorld) {
@@ -153,7 +153,7 @@ public abstract class ScaledGirlGeoRenderer<G extends GirlEffectEntity> extends 
             }
             try {
                 try {
-                    if (!string.equals("itemRenderer") || ((GirlEffectEntity)this.RenderEntity).y() != GirlAnimationState.PAYMENT) break block13;
+                    if (!string.equals("itemRenderer") || ((GirlEffectEntity)this.RenderEntity).getCurrentAction() != GirlAnimationState.PAYMENT) break block13;
                 }
                 catch (RuntimeException runtimeException) {
                     throw ScaledGirlGeoRenderer.rethrow(runtimeException);
@@ -164,7 +164,7 @@ public abstract class ScaledGirlGeoRenderer<G extends GirlEffectEntity> extends 
                 throw ScaledGirlGeoRenderer.rethrow(runtimeException);
             }
         }
-        this.a(bufferBuilder, bone.getName(), bone);
+        this.applyBoneState(bufferBuilder, bone.getName(), bone);
         MATRIX_STACK.push();
         MATRIX_STACK.translate(bone);
         MATRIX_STACK.moveToPivot(bone);
@@ -181,7 +181,7 @@ public abstract class ScaledGirlGeoRenderer<G extends GirlEffectEntity> extends 
                 MATRIX_STACK.pop();
             }
             for (GeoBone geoBone2 : bone.childBones) {
-                this.a(bufferBuilder, geoBone2, f, f2, f3, f4, d);
+                this.renderBone(bufferBuilder, geoBone2, f, f2, f3, f4, d);
             }
         }
         MATRIX_STACK.pop();
@@ -189,7 +189,7 @@ public abstract class ScaledGirlGeoRenderer<G extends GirlEffectEntity> extends 
 
    @Override
    public void renderRecursively(BufferBuilder bufferBuilder, GeoBone bone, float f, float f2, float f3, float f4) {
-      this.a(bufferBuilder, bone, f, f2, f3, f4, 0.0);
+      this.renderBone(bufferBuilder, bone, f, f2, f3, f4, 0.0);
    }
 
 

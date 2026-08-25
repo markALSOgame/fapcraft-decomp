@@ -80,7 +80,7 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
    @Nullable
    public static PlayerGirlEntity getServerSideByUuid(UUID uuid) {
       try {
-         for (GirlEntity girl : ad()) {
+         for (GirlEntity girl : GirlEntity.getAllGirls()) {
             try {
                if (girl.world.isRemote) {
                   continue;
@@ -158,7 +158,7 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
    }
 
    @Override
-   public String getDisplayName() {
+   public String getGirlName() {
       if (((Optional)this.DataManager.get(BoundPlayerKey)).isPresent()) {
          EntityPlayer player = this.world.getPlayerEntityByUUID((UUID)((Optional)this.DataManager.get(BoundPlayerKey)).get());
 
@@ -336,7 +336,7 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
    }
 
    protected EntityPlayer j() {
-      List list = this.world.playerEntities;
+      List<EntityPlayer> list = this.world.playerEntities;
       EntityPlayer player = null;
 
       for (EntityPlayer player2 : list) {
@@ -428,7 +428,7 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
 
       try {
          if (this.isBoundToLocalPlayer()) {
-            ClientChatHandler.Entry.a();
+            ClientChatHandler.Instance.a();
          }
       } catch (ConcurrentModificationException error2) {
          throw rethrow(error2);
@@ -460,7 +460,7 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
    void void_d(EntityPlayer player) {
       NBTTagCompound tagCompound = player.getEntityData();
       String string = tagCompound.getString("sexmod:CustomModel" + GirlRegistry.getByEntity(this));
-      this.f(string);
+      this.setCustomModel(string);
    }
 
    @Override
@@ -567,8 +567,8 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
                 }
                 i = 0;
             }
-            playerGirl.f(i);
-        }
+            playerGirl.setOutfitIndex(i);
+         }
         try {
             if (this.JoinTickCounter < 100) {
                 return;
@@ -672,9 +672,9 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
                 }
                 i = 0;
             }
-            playerGirl.JoinTickCounter = i;
-        }
-        super.setCurrentAction(girlAnimationState);
+            this.JoinTickCounter = i;
+         }
+         super.setCurrentAction(girlAnimationState);
     }
 
    void syncEquipment(EntityPlayer player) {

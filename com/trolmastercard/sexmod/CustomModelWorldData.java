@@ -45,7 +45,7 @@ public class CustomModelWorldData extends WorldSavedData {
 
          return c.get(uuid2);
       } else if (girl instanceof ManglelieNpc) {
-         UUID uuid3 = GalathOwnershipData.getOwnerUuid(((ManglelieNpc)girl).v());
+         UUID uuid3 = GalathOwnershipData.getOwnerUuid(((ManglelieNpc)girl).getGirlUuid());
 
          HashMap map;
          try {
@@ -74,7 +74,7 @@ public class CustomModelWorldData extends WorldSavedData {
          c.put(uuid2, girl.C());
       } else {
          if (girl instanceof ManglelieNpc) {
-            UUID uuid3 = GalathOwnershipData.getOwnerUuid(((ManglelieNpc)girl).v());
+            UUID uuid3 = GalathOwnershipData.getOwnerUuid(((ManglelieNpc)girl).getGirlUuid());
 
             HashMap map;
             UUID uuid4;

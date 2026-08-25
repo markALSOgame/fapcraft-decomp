@@ -16,6 +16,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLog;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -71,7 +72,7 @@ public class GuiStructureBuilder extends GuiScreen {
 
    public void onGuiClosed() {
       super.onGuiClosed();
-      List list = Arrays.asList(this.CornerOffsetA, this.CornerOffsetB, this.CornerOffsetC, this.CornerOffsetD);
+      List<Float> list = Arrays.asList(this.CornerOffsetA, this.CornerOffsetB, this.CornerOffsetC, this.CornerOffsetD);
       float f = Collections.max(list);
 
       try {
@@ -117,66 +118,16 @@ public class GuiStructureBuilder extends GuiScreen {
 
 
    void b() {
-        block6: {
-            boolean flag;
-            BlockPos blockPos;
-            PacketSendBlocks packet;
-            PacketSendBlocks packet2;
-            SimpleNetworkWrapper simpleNetworkWrapper;
-            block8: {
-                block7: {
-                    IBlockState iBlockState = this.mc.world.getBlockState(this.Pos);
-                    try {
-                        try {
-                            PacketSendBlocks packet3;
-                            try {
-                                if (!(iBlockState.getBlock() instanceof BlockBed) && !(iBlockState.getBlock() instanceof BlockChest)) break block6;
-                            }
-                            catch (NullPointerException nullPointerException) {
-                                throw GuiStructureBuilder.rethrow(nullPointerException);
-                            }
-                            simpleNetworkWrapper = NetworkHandler.channel;
-                            packet2 = packet3;
-                            packet = packet3;
-                            blockPos = this.Pos;
-                            if (GuiMark.isMarked(this.Pos)) break block7;
-                        }
-                        catch (NullPointerException nullPointerException) {
-                            throw GuiStructureBuilder.rethrow(nullPointerException);
-                        }
-                        flag = true;
-                        break block8;
-                    }
-                    catch (NullPointerException nullPointerException) {
-                        throw GuiStructureBuilder.rethrow(nullPointerException);
-                    }
-                }
-                flag = false;
-            }
-            packet2(blockPos, flag);
-            simpleNetworkWrapper.sendToServer((IMessage)packet);
-        }
-    }
+      IBlockState iBlockState = this.mc.world.getBlockState(this.Pos);
+      if (iBlockState.getBlock() instanceof BlockBed || iBlockState.getBlock() instanceof BlockChest) {
+         NetworkHandler.channel.sendToServer(new PacketSendBlocks(this.Pos, !GuiMark.isMarked(this.Pos)));
+      }
+   }
 
 
    void d() {
-        boolean flag;
-        PacketSetTribeFollowMode packet;
-        PacketSetTribeFollowMode packet2;
-        SimpleNetworkWrapper simpleNetworkWrapper;
-        try {
-            PacketSetTribeFollowMode packet3;
-            simpleNetworkWrapper = NetworkHandler.channel;
-            packet2 = packet3;
-            packet = packet3;
-            flag = !ExecuteBuild;
-        }
-        catch (NullPointerException nullPointerException) {
-            throw GuiStructureBuilder.rethrow(nullPointerException);
-        }
-        packet2(flag);
-        simpleNetworkWrapper.sendToServer((IMessage)packet);
-    }
+      NetworkHandler.channel.sendToServer(new PacketSetTribeFollowMode(!ExecuteBuild));
+   }
 
    void c() {
       ItemRenderUtil.toggleAnimated();
@@ -329,10 +280,8 @@ public class GuiStructureBuilder extends GuiScreen {
                                                 }
                                                 try {
                                                     try {
-                                                        gui2.CornerOffsetA = f8 + (float)i6 * this.mc.getTickLength();
-                                                        GuiStructureBuilder gui3 = this;
-                                                        GuiStructureBuilder gui4 = gui3;
-                                                        f7 = gui3.CornerOffsetB;
+                                                        this.CornerOffsetA = f8 + (float)i6 * this.mc.getTickLength();
+                                                        f7 = this.CornerOffsetB;
                                                         if (i >= this.width / 2 || i2 >= this.height / 2) break block52;
                                                     }
                                                     catch (NullPointerException nullPointerException) {
@@ -349,10 +298,8 @@ public class GuiStructureBuilder extends GuiScreen {
                                         }
                                         try {
                                             try {
-                                                gui4.CornerOffsetB = f7 + (float)i5 * this.mc.getTickLength();
-                                                GuiStructureBuilder gui5 = this;
-                                                GuiStructureBuilder gui6 = gui5;
-                                                f6 = gui5.CornerOffsetC;
+                                                this.CornerOffsetB = f7 + (float)i5 * this.mc.getTickLength();
+                                                f6 = this.CornerOffsetC;
                                                 if (i <= this.width / 2 || i2 <= this.height / 2) break block54;
                                             }
                                             catch (NullPointerException nullPointerException) {
@@ -369,10 +316,8 @@ public class GuiStructureBuilder extends GuiScreen {
                                 }
                                 try {
                                     try {
-                                        gui6.CornerOffsetC = f6 + (float)i4 * this.mc.getTickLength();
-                                        GuiStructureBuilder gui7 = this;
-                                        GuiStructureBuilder gui8 = gui7;
-                                        f4 = gui7.CornerOffsetD;
+                                        this.CornerOffsetC = f6 + (float)i4 * this.mc.getTickLength();
+                                        f4 = this.CornerOffsetD;
                                         if (i <= this.width / 2 || i2 >= this.height / 2) break block56;
                                     }
                                     catch (NullPointerException nullPointerException) {
@@ -388,7 +333,7 @@ public class GuiStructureBuilder extends GuiScreen {
                             i3 = -1;
                         }
                         try {
-                            gui8.CornerOffsetD = f4 + (float)i3 * this.mc.getTickLength();
+                            this.CornerOffsetD = f4 + (float)i3 * this.mc.getTickLength();
                             this.CornerOffsetA = MathUtils.clamp(this.CornerOffsetA, 0.0f, 1.0f);
                             this.CornerOffsetB = MathUtils.clamp(this.CornerOffsetB, 0.0f, 1.0f);
                             this.CornerOffsetC = MathUtils.clamp(this.CornerOffsetC, 0.0f, 1.0f);

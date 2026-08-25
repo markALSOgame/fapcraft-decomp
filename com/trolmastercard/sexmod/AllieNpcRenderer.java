@@ -86,7 +86,7 @@ public class AllieNpcRenderer extends GeoGirlRenderer {
          throw rethrow(error4);
       }
 
-      this.renderLivingLabel(this.RenderEntity, this.RenderEntity.getDisplayName(), d, d2 + this.RenderEntity.getRenderLabelOffset(), d3, 300);
+      this.renderLivingLabel(this.RenderEntity, this.RenderEntity.getGirlName(), d, d2 + this.RenderEntity.getRenderLabelOffset(), d3, 300);
    }
 
    private static RuntimeException rethrow(RuntimeException error) {

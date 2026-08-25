@@ -22,7 +22,7 @@ public class SlimePlayerRenderer extends GirlPlayerRenderer {
    }
 
    @Override
-   protected void applyBaseTransform() {
+   protected void applyScaleOffset() {
       GlStateManager.translate(0.0F, -1.25F, 0.0F);
       GlStateManager.scale(0.8F, 0.8F, 0.8F);
    }
@@ -119,9 +119,9 @@ public class SlimePlayerRenderer extends GirlPlayerRenderer {
    }
 
    @Override
-   protected void applyItemOffset(boolean flag) {
+   protected void applyHandOffset(boolean flag) {
       try {
-         super.applyItemOffset(flag);
+         super.applyHandOffset(flag);
          if (flag) {
             GlStateManager.translate(0.15F, 0.0F, 0.0F);
             return;
@@ -135,21 +135,21 @@ public class SlimePlayerRenderer extends GirlPlayerRenderer {
    }
 
    @Override
-   public HashSet<String> getTrackedBones() {
-      HashSet set = super.getTrackedBones();
+   public HashSet<String> getFilteredBoneNames() {
+      HashSet set = super.getFilteredBoneNames();
       set.add("figure");
       return set;
    }
 
    @Override
 
-   protected void applyArmPose(boolean flag, boolean flag2) {
+   protected void applyDualHandOffset(boolean flag, boolean flag2) {
         block14: {
             block13: {
                 block12: {
                     try {
                         try {
-                            super.applyArmPose(flag, flag2);
+                            super.applyDualHandOffset(flag, flag2);
                             if (!flag || flag2) break block12;
                         }
                         catch (RuntimeException runtimeException) {
