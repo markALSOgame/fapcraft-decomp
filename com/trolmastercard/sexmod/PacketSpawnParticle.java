@@ -6,6 +6,9 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import java.util.ArrayList;
+import net.minecraft.entity.EnumParticleTypes;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class PacketSpawnParticle implements IMessage {
    boolean Loaded = false;
@@ -43,7 +46,7 @@ public class PacketSpawnParticle implements IMessage {
 
    public static class Handler implements IMessageHandler<PacketSpawnParticle, IMessage> {
 
-      public IMessage handle(PacketSpawnParticle packet, MessageContext ctx) {
+      public IMessage onMessage(PacketSpawnParticle packet, MessageContext ctx) {
             block11: {
                 try {
                     try {

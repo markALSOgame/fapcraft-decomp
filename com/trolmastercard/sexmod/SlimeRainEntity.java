@@ -27,6 +27,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
+import java.util.Random;
 
 public class SlimeRainEntity extends EntityLiving {
    public static int RainDurationTicks = 8400;

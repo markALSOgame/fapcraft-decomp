@@ -4,6 +4,13 @@ import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class PacketSummonAllie implements IMessage {
    boolean Loaded = false;
@@ -17,7 +24,7 @@ public class PacketSummonAllie implements IMessage {
 
    public static class Handler implements IMessageHandler<PacketSummonAllie, IMessage> {
 
-      public IMessage handle(PacketSummonAllie packet, MessageContext ctx) {
+      public IMessage onMessage(PacketSummonAllie packet, MessageContext ctx) {
             block4: {
                 try {
                     try {

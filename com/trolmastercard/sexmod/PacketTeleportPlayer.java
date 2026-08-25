@@ -6,6 +6,11 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import java.util.UUID;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class PacketTeleportPlayer implements IMessage {
    boolean Loaded;
@@ -62,7 +67,7 @@ public class PacketTeleportPlayer implements IMessage {
 
    public static class Handler implements IMessageHandler<PacketTeleportPlayer, IMessage> {
 
-      public IMessage handle(PacketTeleportPlayer packet, MessageContext ctx) {
+      public IMessage onMessage(PacketTeleportPlayer packet, MessageContext ctx) {
             block4: {
                 try {
                     try {

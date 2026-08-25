@@ -6,6 +6,10 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import java.util.ArrayList;
+import net.minecraft.entity.Entity;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class PacketUploadInventory implements IMessage {
    boolean Loaded;
@@ -29,7 +33,7 @@ public class PacketUploadInventory implements IMessage {
 
    public static class Handler implements IMessageHandler<PacketUploadInventory, IMessage> {
 
-      public IMessage handle(PacketUploadInventory packet, MessageContext ctx) {
+      public IMessage onMessage(PacketUploadInventory packet, MessageContext ctx) {
             block4: {
                 try {
                     try {

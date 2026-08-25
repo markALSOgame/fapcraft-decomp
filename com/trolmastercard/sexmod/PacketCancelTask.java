@@ -5,6 +5,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import java.util.HashSet;
+import java.util.UUID;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class PacketCancelTask implements IMessage {
    boolean Loaded = false;
@@ -30,7 +34,7 @@ public class PacketCancelTask implements IMessage {
 
    public static class Handler implements IMessageHandler<PacketCancelTask, IMessage> {
 
-      public IMessage handle(PacketCancelTask packet, MessageContext ctx) {
+      public IMessage onMessage(PacketCancelTask packet, MessageContext ctx) {
             block4: {
                 try {
                     try {

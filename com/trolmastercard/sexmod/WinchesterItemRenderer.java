@@ -6,6 +6,12 @@ import net.minecraft.util.math.Vec3d;
 import org.lwjgl.opengl.GL11;
 import software.bernie.geckolib3.geo.render.built.GeoCube;
 import software.bernie.geckolib3.renderers.geo.GeoItemRenderer;
+import javax.vecmath.Tuple3f;
+import javax.vecmath.Tuple4f;
+import javax.vecmath.Vector3f;
+import javax.vecmath.Vector4f;
+import software.bernie.geckolib3.geo.render.built.GeoQuad;
+import software.bernie.geckolib3.geo.render.built.GeoVertex;
 
 public class WinchesterItemRenderer extends GeoItemRenderer<ItemWinchester> {
    static final Vec3d DefaultColor = new Vec3d(0.0, 1.0, 0.0);

@@ -14,6 +14,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import java.util.Map;
 
 public class PacketGetTribeUIValues implements IMessage {
    boolean Loaded = false;
@@ -68,7 +69,7 @@ public class PacketGetTribeUIValues implements IMessage {
    }
 
    public static class Handler implements IMessageHandler<PacketGetTribeUIValues, IMessage> {
-      public IMessage handle(PacketGetTribeUIValues packet, MessageContext ctx) {
+      public IMessage onMessage(PacketGetTribeUIValues packet, MessageContext ctx) {
          try {
             if (!packet.Loaded) {
                System.out.println("received an invalid message @GetTribeUIValues :(");

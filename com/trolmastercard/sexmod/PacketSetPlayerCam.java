@@ -4,6 +4,9 @@ import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class PacketSetPlayerCam implements IMessage {
    boolean Loaded = false;
@@ -35,7 +38,7 @@ public class PacketSetPlayerCam implements IMessage {
 
    public static class Handler implements IMessageHandler<PacketSetPlayerCam, IMessage> {
 
-      public IMessage handle(PacketSetPlayerCam packet, MessageContext ctx) {
+      public IMessage onMessage(PacketSetPlayerCam packet, MessageContext ctx) {
             block4: {
                 try {
                     try {

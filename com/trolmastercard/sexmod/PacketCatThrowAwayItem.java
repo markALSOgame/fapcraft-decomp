@@ -6,6 +6,9 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import java.util.ArrayList;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class PacketCatThrowAwayItem implements IMessage {
    boolean Loaded = false;
@@ -29,7 +32,7 @@ public class PacketCatThrowAwayItem implements IMessage {
 
    public static class Handler implements IMessageHandler<PacketCatThrowAwayItem, IMessage> {
 
-      public IMessage handle(PacketCatThrowAwayItem packet, MessageContext ctx) {
+      public IMessage onMessage(PacketCatThrowAwayItem packet, MessageContext ctx) {
             block4: {
                 try {
                     try {

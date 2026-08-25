@@ -4,6 +4,10 @@ import com.google.common.base.Predicate;
 import javax.annotation.Nullable;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import net.minecraft.entity.EntityLivingBase;
 
 public class KoboldTargetAi extends EntityAINearestAttackableTarget<KoboldNpc> {
    private final int TargetInterval;

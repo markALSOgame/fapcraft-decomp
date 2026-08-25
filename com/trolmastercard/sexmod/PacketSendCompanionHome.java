@@ -6,6 +6,14 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import java.util.ArrayList;
+import java.util.Random;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EnumParticleTypes;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class PacketSendCompanionHome implements IMessage {
    boolean Loaded;
@@ -29,7 +37,7 @@ public class PacketSendCompanionHome implements IMessage {
 
    public static class Handler implements IMessageHandler<PacketSendCompanionHome, IMessage> {
 
-      public IMessage handle(PacketSendCompanionHome packet, MessageContext ctx) {
+      public IMessage onMessage(PacketSendCompanionHome packet, MessageContext ctx) {
             block4: {
                 try {
                     try {

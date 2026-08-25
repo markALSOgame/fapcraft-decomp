@@ -6,6 +6,9 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class PacketResetController implements IMessage {
    public static final int Range = 100;
@@ -33,7 +36,7 @@ public class PacketResetController implements IMessage {
 
    public static class Handler implements IMessageHandler<PacketResetController, IMessage> {
 
-      public IMessage handle(PacketResetController packet, MessageContext ctx) {
+      public IMessage onMessage(PacketResetController packet, MessageContext ctx) {
             try {
                 if (!packet.Loaded) {
                     System.out.println("received an invalid message @ResetController :(");

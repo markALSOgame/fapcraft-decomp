@@ -31,6 +31,8 @@ import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import java.util.Map;
+import net.minecraftforge.client.event.InputEvent;
 
 public class GuiCustomizeGirl extends GuiScreen {
    public static final ResourceLocation Texture = new ResourceLocation("sexmod", "textures/gui/clothing_icons.png");

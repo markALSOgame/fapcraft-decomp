@@ -23,6 +23,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import java.util.Map;
+import java.util.Random;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.block.BlockBed;
 
 public class BedLogic {
    public static float angleDifference(float f, float f2) {

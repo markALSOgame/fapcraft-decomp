@@ -7,6 +7,9 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import java.util.ArrayList;
+import java.util.Map;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class PacketRequestServerModelAvailability implements IMessage {
    boolean Loaded = false;
@@ -82,7 +85,7 @@ public class PacketRequestServerModelAvailability implements IMessage {
 
    public static class Handler implements IMessageHandler<PacketRequestServerModelAvailability, IMessage> {
 
-      public IMessage handle(PacketRequestServerModelAvailability packet, MessageContext ctx) {
+      public IMessage onMessage(PacketRequestServerModelAvailability packet, MessageContext ctx) {
             block13: {
                 block14: {
                     try {

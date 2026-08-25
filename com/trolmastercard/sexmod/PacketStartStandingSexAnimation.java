@@ -39,7 +39,7 @@ public class PacketStartStandingSexAnimation implements IMessage {
 
    public static class Handler implements IMessageHandler<PacketStartStandingSexAnimation, IMessage> {
 
-      public IMessage handle(PacketStartStandingSexAnimation packet, MessageContext ctx) {
+      public IMessage onMessage(PacketStartStandingSexAnimation packet, MessageContext ctx) {
             block4: {
                 try {
                     try {

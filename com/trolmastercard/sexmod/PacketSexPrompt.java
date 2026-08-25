@@ -46,7 +46,7 @@ public class PacketSexPrompt implements IMessage {
    }
 
    public static class Handler implements IMessageHandler<PacketSexPrompt, IMessage> {
-      public IMessage handle(PacketSexPrompt packet, MessageContext ctx) {
+      public IMessage onMessage(PacketSexPrompt packet, MessageContext ctx) {
          try {
             if (!packet.Loaded) {
                System.out.println("received an invalid message @SexPrompt :(");

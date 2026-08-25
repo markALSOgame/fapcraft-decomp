@@ -109,7 +109,7 @@ public class PacketDownloadServerModel implements IMessage {
       }
 
 
-      public IMessage handle(PacketDownloadServerModel packet, MessageContext ctx) {
+      public IMessage onMessage(PacketDownloadServerModel packet, MessageContext ctx) {
             if (!packet.Loaded) {
                 System.out.println("received an invalid Message @DownloadServerModel :(");
                 return null;

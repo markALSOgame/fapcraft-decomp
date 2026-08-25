@@ -14,6 +14,7 @@ import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.AnimationProcessor;
 import software.bernie.geckolib3.core.processor.IBone;
+import software.bernie.geckolib3.core.controller.AnimationController;
 
 public abstract class GirlGeoModel<T extends GirlEntity> extends GirlAnimatedGeoModel<T> implements GirlBoneList {
    public static final List<String> BraStringBones = Arrays.asList(

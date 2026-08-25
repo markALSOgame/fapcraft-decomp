@@ -63,7 +63,7 @@ public class PacketUpdatePlayerModel implements IMessage {
 
    public static class Handler implements IMessageHandler<PacketUpdatePlayerModel, IMessage> {
 
-      public IMessage handle(PacketUpdatePlayerModel packet, MessageContext ctx) {
+      public IMessage onMessage(PacketUpdatePlayerModel packet, MessageContext ctx) {
             block4: {
                 try {
                     try {

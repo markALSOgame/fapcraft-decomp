@@ -17,6 +17,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 import org.apache.logging.log4j.Level;
+import java.util.Map;
+import net.minecraft.nbt.NBTBase;
 
 public class GalathOwnershipData extends WorldSavedData {
    public static boolean f = true;

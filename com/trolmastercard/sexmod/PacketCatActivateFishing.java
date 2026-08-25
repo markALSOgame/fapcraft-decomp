@@ -6,6 +6,11 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import java.util.ArrayList;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class PacketCatActivateFishing implements IMessage {
    boolean Loaded = false;
@@ -29,7 +34,7 @@ public class PacketCatActivateFishing implements IMessage {
 
    public static class Handler implements IMessageHandler<PacketCatActivateFishing, IMessage> {
 
-      public IMessage handle(PacketCatActivateFishing packet, MessageContext ctx) {
+      public IMessage onMessage(PacketCatActivateFishing packet, MessageContext ctx) {
             block4: {
                 try {
                     try {

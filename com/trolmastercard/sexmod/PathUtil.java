@@ -5,6 +5,7 @@ import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.math.BlockPos;
+import java.util.ArrayList;
 
 public class PathUtil {
    public static BlockPos getPathEndPos(Path path) {

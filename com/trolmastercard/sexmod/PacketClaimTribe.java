@@ -6,6 +6,14 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import java.util.List;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class PacketClaimTribe implements IMessage {
    boolean Loaded = false;
@@ -37,7 +45,7 @@ public class PacketClaimTribe implements IMessage {
 
    public static class Handler implements IMessageHandler<PacketClaimTribe, IMessage> {
 
-      public IMessage handle(PacketClaimTribe packet, MessageContext ctx) {
+      public IMessage onMessage(PacketClaimTribe packet, MessageContext ctx) {
             block4: {
                 try {
                     try {

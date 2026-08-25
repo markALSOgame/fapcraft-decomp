@@ -34,7 +34,7 @@ public class PacketFutaState implements IMessage {
    }
 
    public static class Handler implements IMessageHandler<PacketFutaState, IMessage> {
-      public IMessage handle(PacketFutaState packet, MessageContext ctx) {
+      public IMessage onMessage(PacketFutaState packet, MessageContext ctx) {
          try {
             if (!packet.Loaded) {
                System.out.println("received an invalid message @UpdateEquipment :(");

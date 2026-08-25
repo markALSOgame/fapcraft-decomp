@@ -14,6 +14,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.Vec3i;
 import software.bernie.geckolib3.geo.render.built.GeoBone;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
+import net.minecraft.util.math.BlockPos;
 
 public class KoboldNpcRenderer extends ScaledGirlGeoRenderer<KoboldNpc> {
    static final HashSet<String> MainColorBones = new HashSet<>(

@@ -20,6 +20,8 @@ import net.minecraft.util.math.Vec3d;
 import software.bernie.geckolib3.geo.render.built.GeoBone;
 import software.bernie.geckolib3.renderers.geo.GeoItemRenderer;
 import software.bernie.geckolib3.renderers.geo.IGeoRenderer;
+import javax.vecmath.Tuple3f;
+import net.minecraft.entity.Entity;
 
 public class ItemRenderUtil extends GeoItemRenderer<ItemDragonStaff> {
    private static final ResourceLocation CrystalTexture = new ResourceLocation("textures/entity/endercrystal/endercrystal.png");

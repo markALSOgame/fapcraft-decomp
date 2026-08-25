@@ -4,6 +4,8 @@ import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import java.util.UUID;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class PacketSetTribeFollowMode implements IMessage {
    boolean Loaded = false;
@@ -27,7 +29,7 @@ public class PacketSetTribeFollowMode implements IMessage {
 
    public static class Handler implements IMessageHandler<PacketSetTribeFollowMode, IMessage> {
 
-      public IMessage handle(PacketSetTribeFollowMode packet, MessageContext ctx) {
+      public IMessage onMessage(PacketSetTribeFollowMode packet, MessageContext ctx) {
             block4: {
                 try {
                     try {

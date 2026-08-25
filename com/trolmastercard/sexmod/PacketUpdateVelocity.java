@@ -7,6 +7,8 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class PacketUpdateVelocity implements IMessage {
    boolean Loaded = false;
@@ -36,7 +38,7 @@ public class PacketUpdateVelocity implements IMessage {
 
    public static class Handler implements IMessageHandler<PacketUpdateVelocity, IMessage> {
 
-      public IMessage handle(PacketUpdateVelocity packet, MessageContext ctx) {
+      public IMessage onMessage(PacketUpdateVelocity packet, MessageContext ctx) {
             block4: {
                 try {
                     try {

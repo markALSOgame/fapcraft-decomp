@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class PacketInformOfOwnership implements IMessage {
    boolean Loaded = false;
@@ -27,7 +28,7 @@ public class PacketInformOfOwnership implements IMessage {
 
    public static class Handler implements IMessageHandler<PacketInformOfOwnership, IMessage> {
 
-      public IMessage handle(PacketInformOfOwnership packet, MessageContext ctx) {
+      public IMessage onMessage(PacketInformOfOwnership packet, MessageContext ctx) {
             block4: {
                 try {
                     try {

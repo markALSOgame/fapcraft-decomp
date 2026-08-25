@@ -3,6 +3,7 @@ package com.trolmastercard.sexmod;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Map;
 
 public class BiMap<K, V> {
    private final HashMap<K, V> ForwardMap = new HashMap<>();

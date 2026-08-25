@@ -14,6 +14,10 @@ import software.bernie.geckolib3.geo.render.built.GeoModel;
 import software.bernie.geckolib3.geo.render.built.GeoQuad;
 import software.bernie.geckolib3.geo.render.built.GeoVertex;
 import software.bernie.geckolib3.renderers.geo.GeoItemRenderer;
+import javax.vecmath.Tuple3f;
+import javax.vecmath.Tuple4f;
+import javax.vecmath.Vector3f;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class GeoModelDrawer extends GeoItemRenderer<ItemGalathCoin> {
    public static final Vec3f GlowColor = new Vec3f(0.84705883F, 0.11764706F, 0.35686275F);

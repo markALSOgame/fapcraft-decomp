@@ -15,6 +15,8 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.ai.EntityAIBase;
 
 public class PotionHandler extends Potion {
    public static final Potion b = new PotionHandler("horny potion", false, 16736968, 0, 0);

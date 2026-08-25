@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 public class PacketSendChatMessage implements IMessage {
    boolean Loaded;
@@ -66,7 +67,7 @@ public class PacketSendChatMessage implements IMessage {
    }
 
    public static class Handler implements IMessageHandler<PacketSendChatMessage, IMessage> {
-      public IMessage handle(PacketSendChatMessage packet, MessageContext ctx) {
+      public IMessage onMessage(PacketSendChatMessage packet, MessageContext ctx) {
          try {
             if (!packet.Loaded) {
                System.out.println("recieved an unvalid message @SendChatMessage :(");

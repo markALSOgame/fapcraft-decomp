@@ -8,6 +8,12 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class PacketUploadModelString implements IMessage {
    boolean Loaded = false;
@@ -63,7 +69,7 @@ public class PacketUploadModelString implements IMessage {
 
    public static class Handler implements IMessageHandler<PacketUploadModelString, IMessage> {
 
-      public IMessage handle(PacketUploadModelString packet, MessageContext ctx) {
+      public IMessage onMessage(PacketUploadModelString packet, MessageContext ctx) {
             block4: {
                 try {
                     try {

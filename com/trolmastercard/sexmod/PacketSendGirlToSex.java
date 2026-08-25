@@ -30,7 +30,7 @@ public class PacketSendGirlToSex implements IMessage {
    }
 
    public static class Handler implements IMessageHandler<PacketSendGirlToSex, IMessage> {
-      public IMessage handle(PacketSendGirlToSex packet, MessageContext ctx) {
+      public IMessage onMessage(PacketSendGirlToSex packet, MessageContext ctx) {
          try {
             if (!packet.Loaded) {
                System.out.println("received an invalid message @SendGirlToSex :(");

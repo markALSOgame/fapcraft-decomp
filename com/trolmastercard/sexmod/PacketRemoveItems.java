@@ -7,6 +7,8 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class PacketRemoveItems implements IMessage {
    boolean Loaded = false;
@@ -34,7 +36,7 @@ public class PacketRemoveItems implements IMessage {
 
    public static class Handler implements IMessageHandler<PacketRemoveItems, IMessage> {
 
-      public IMessage handle(PacketRemoveItems packet, MessageContext ctx) {
+      public IMessage onMessage(PacketRemoveItems packet, MessageContext ctx) {
             block4: {
                 try {
                     try {

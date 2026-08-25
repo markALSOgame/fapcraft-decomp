@@ -5,6 +5,9 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.client.IClientCommand;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 
 public class CommandWhitelistServer extends CommandBase implements IClientCommand {
    public static final CommandWhitelistServer Instance = new CommandWhitelistServer();

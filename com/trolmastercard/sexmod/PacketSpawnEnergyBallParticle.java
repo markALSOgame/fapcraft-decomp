@@ -6,6 +6,7 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class PacketSpawnEnergyBallParticle implements IMessage {
    boolean Loaded = false;
@@ -77,7 +78,7 @@ public class PacketSpawnEnergyBallParticle implements IMessage {
 
    public static class Handler implements IMessageHandler<PacketSpawnEnergyBallParticle, IMessage> {
 
-      public IMessage handle(PacketSpawnEnergyBallParticle packet, MessageContext ctx) {
+      public IMessage onMessage(PacketSpawnEnergyBallParticle packet, MessageContext ctx) {
             block7: {
                 try {
                     try {

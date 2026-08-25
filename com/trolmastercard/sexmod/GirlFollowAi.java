@@ -1,4 +1,5 @@
 package com.trolmastercard.sexmod;
+import net.minecraft.entity.Entity;
 
 public class GirlFollowAi extends GirlAiBase {
    int FollowTimer = 0;

@@ -34,7 +34,7 @@ public class PacketBeeOpenChest implements IMessage {
    }
 
    public static class Handler implements IMessageHandler<PacketBeeOpenChest, IMessage> {
-      public IMessage handle(PacketBeeOpenChest packet, MessageContext ctx) {
+      public IMessage onMessage(PacketBeeOpenChest packet, MessageContext ctx) {
          try {
             if (!packet.Loaded) {
                System.out.println("received an invalid message @BeeOpenChest :(");

@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import java.util.Map;
 
 public class PacketGirlSpecific implements IMessage {
    boolean Loaded = false;
@@ -77,7 +78,7 @@ public class PacketGirlSpecific implements IMessage {
 
    public static class Handler implements IMessageHandler<PacketGirlSpecific, IMessage> {
 
-      public IMessage handle(PacketGirlSpecific packet, MessageContext ctx) {
+      public IMessage onMessage(PacketGirlSpecific packet, MessageContext ctx) {
             block4: {
                 try {
                     try {

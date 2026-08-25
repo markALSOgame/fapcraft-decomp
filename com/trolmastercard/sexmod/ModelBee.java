@@ -3,6 +3,7 @@ package com.trolmastercard.sexmod;
 import net.minecraft.util.ResourceLocation;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.AnimationProcessor;
+import software.bernie.geckolib3.core.processor.IBone;
 
 public class ModelBee extends GirlGeoModel {
    @Override

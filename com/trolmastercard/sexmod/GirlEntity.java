@@ -65,6 +65,18 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.geckolib3.model.provider.GeoModelProvider;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 import software.bernie.geckolib3.util.MatrixStack;
+import java.util.Collections;
+import java.util.Map;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.entity.ai.EntityAIOpenDoor;
+import net.minecraft.pathfinding.Path;
+import net.minecraft.pathfinding.PathNavigateGround;
+import net.minecraft.pathfinding.PathPoint;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import software.bernie.geckolib3.geo.render.built.GeoBone;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType;
 
 public abstract class GirlEntity extends EntityCreature implements IAnimatable {
    public static int j = 22;

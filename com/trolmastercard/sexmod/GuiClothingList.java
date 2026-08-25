@@ -19,6 +19,9 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Mouse;
+import java.util.Map;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundEvent;
 
 public class GuiClothingList extends GuiListExtended {
    static final int LabelColor = 3809871;

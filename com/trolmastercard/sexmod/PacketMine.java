@@ -9,6 +9,15 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import java.util.UUID;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class PacketMine implements IMessage {
    boolean Loaded = false;
@@ -38,7 +47,7 @@ public class PacketMine implements IMessage {
 
    public static class Handler implements IMessageHandler<PacketMine, IMessage> {
 
-      public IMessage handle(PacketMine packet, MessageContext ctx) {
+      public IMessage onMessage(PacketMine packet, MessageContext ctx) {
             block4: {
                 try {
                     try {

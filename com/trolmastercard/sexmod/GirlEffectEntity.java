@@ -5,6 +5,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import java.util.Random;
 
 public abstract class GirlEffectEntity extends GirlEntity {
    public static final DataParameter<String> TribeColorKey = EntityDataManager.createKey(GirlEffectEntity.class, DataSerializers.STRING).getSerializer().createKey(119);

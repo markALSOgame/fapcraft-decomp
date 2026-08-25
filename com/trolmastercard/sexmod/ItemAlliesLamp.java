@@ -39,6 +39,12 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import net.minecraft.entity.EnumParticleTypes;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import software.bernie.geckolib3.core.builder.ILoopType;
 
 public class ItemAlliesLamp extends Item implements IAnimatable {
    static final String InUseTag = "sexmodAllieInUse";

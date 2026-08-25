@@ -149,6 +149,8 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.resource.GeckoLibCache;
+import java.util.Random;
+import net.minecraft.entity.ai.EntityAIOpenDoor;
 
 /*
  * Duplicate member names - consider using --renamedupmembers true

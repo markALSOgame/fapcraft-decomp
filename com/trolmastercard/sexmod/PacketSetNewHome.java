@@ -37,7 +37,7 @@ public class PacketSetNewHome implements IMessage {
    }
 
    public static class Handler implements IMessageHandler<PacketSetNewHome, IMessage> {
-      public IMessage handle(PacketSetNewHome packet, MessageContext ctx) {
+      public IMessage onMessage(PacketSetNewHome packet, MessageContext ctx) {
          try {
             if (!packet.Loaded) {
                System.out.println("received an invalid message @SetNewHome :(");

@@ -6,6 +6,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import java.util.UUID;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraft.block.BlockBed;
+import net.minecraft.block.BlockChest;
 
 public class PacketSendBlocks implements IMessage {
    boolean Loaded = false;
@@ -59,7 +66,7 @@ public class PacketSendBlocks implements IMessage {
 
    public static class Handler implements IMessageHandler<PacketSendBlocks, IMessage> {
 
-      public IMessage handle(PacketSendBlocks packet, MessageContext ctx) {
+      public IMessage onMessage(PacketSendBlocks packet, MessageContext ctx) {
             block7: {
                 block9: {
                     block8: {

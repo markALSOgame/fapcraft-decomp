@@ -4,6 +4,11 @@ import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import java.util.UUID;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class PacketRequestRiding implements IMessage {
    boolean Loaded = false;
@@ -17,7 +22,7 @@ public class PacketRequestRiding implements IMessage {
 
    public static class Handler implements IMessageHandler<PacketRequestRiding, IMessage> {
 
-      public IMessage handle(PacketRequestRiding packet, MessageContext ctx) {
+      public IMessage onMessage(PacketRequestRiding packet, MessageContext ctx) {
             block7: {
                 try {
                     try {

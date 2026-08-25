@@ -32,7 +32,7 @@ public class PacketSetPlayerMovement implements IMessage {
 
    public static class Handler implements IMessageHandler<PacketSetPlayerMovement, IMessage> {
 
-      public IMessage handle(PacketSetPlayerMovement packet, MessageContext ctx) {
+      public IMessage onMessage(PacketSetPlayerMovement packet, MessageContext ctx) {
             if (!packet.Loaded || ctx.side != Side.CLIENT) {
                 System.out.println("received an invalid message @SetPlayerMovement :(");
                 return null;

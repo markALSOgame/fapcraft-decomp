@@ -4,6 +4,8 @@ import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class PacketGalathRapePounce implements IMessage {
    boolean Loaded = false;
@@ -27,7 +29,7 @@ public class PacketGalathRapePounce implements IMessage {
 
    public static class Handler implements IMessageHandler<PacketGalathRapePounce, IMessage> {
 
-      public IMessage handle(PacketGalathRapePounce packet, MessageContext ctx) {
+      public IMessage onMessage(PacketGalathRapePounce packet, MessageContext ctx) {
             block4: {
                 try {
                     try {

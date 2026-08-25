@@ -5,6 +5,12 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.pathfinding.Path;
+import net.minecraft.pathfinding.PathPoint;
 
 public class EntityAIOpenDoor extends EntityAIBase {
    protected EntityLiving entity;

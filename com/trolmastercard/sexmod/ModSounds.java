@@ -4,6 +4,7 @@ import java.util.HashMap;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import java.util.Random;
 
 public class ModSounds {
    public static final SoundEvent[] MISC_PLOB = new SoundEvent[1];

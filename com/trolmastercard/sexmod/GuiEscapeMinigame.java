@@ -11,6 +11,8 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraftforge.client.event.InputEvent;
 
 @SideOnly(Side.CLIENT)
 public class GuiEscapeMinigame extends Gui {

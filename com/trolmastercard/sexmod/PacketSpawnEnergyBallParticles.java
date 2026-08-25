@@ -5,6 +5,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class PacketSpawnEnergyBallParticles implements IMessage {
    Vec3d Pos;
@@ -34,7 +35,7 @@ public class PacketSpawnEnergyBallParticles implements IMessage {
 
    public static class Handler implements IMessageHandler<PacketSpawnEnergyBallParticles, IMessage> {
 
-      public IMessage handle(PacketSpawnEnergyBallParticles packet, MessageContext ctx) {
+      public IMessage onMessage(PacketSpawnEnergyBallParticles packet, MessageContext ctx) {
             block8: {
                 block7: {
                     block6: {

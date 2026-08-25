@@ -35,6 +35,8 @@ import software.bernie.geckolib3.geo.raw.tree.RawGeometryTree;
 import software.bernie.geckolib3.geo.render.GeoBuilder;
 import software.bernie.geckolib3.geo.render.built.GeoModel;
 import software.bernie.geckolib3.resource.GeckoLibCache;
+import java.util.ArrayList;
+import net.minecraft.entity.Entity;
 
 public class FilePersistence {
    public static final String ModelsFolder = "sexmod/custom_models";

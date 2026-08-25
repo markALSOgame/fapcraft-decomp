@@ -15,6 +15,9 @@ import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.storage.MapData;
 import net.minecraftforge.client.event.RenderSpecificHandEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.util.EnumHand;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 public class HandItemRenderer {
    Minecraft Mc;

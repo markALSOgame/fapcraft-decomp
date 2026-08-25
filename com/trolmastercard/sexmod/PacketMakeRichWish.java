@@ -5,6 +5,14 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import java.util.Random;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class PacketMakeRichWish implements IMessage {
    boolean Loaded;
@@ -30,7 +38,7 @@ public class PacketMakeRichWish implements IMessage {
 
    public static class Handler implements IMessageHandler<PacketMakeRichWish, IMessage> {
 
-      public IMessage handle(PacketMakeRichWish packet, MessageContext ctx) {
+      public IMessage onMessage(PacketMakeRichWish packet, MessageContext ctx) {
             block4: {
                 try {
                     try {

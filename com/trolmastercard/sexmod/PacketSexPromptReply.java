@@ -123,7 +123,7 @@ public class PacketSexPromptReply implements IMessage {
       }
 
 
-      public IMessage handle(PacketSexPromptReply packet, MessageContext ctx) {
+      public IMessage onMessage(PacketSexPromptReply packet, MessageContext ctx) {
             block4: {
                 try {
                     try {

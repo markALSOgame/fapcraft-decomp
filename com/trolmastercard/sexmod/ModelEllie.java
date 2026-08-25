@@ -3,6 +3,10 @@ package com.trolmastercard.sexmod;
 import java.util.HashMap;
 import net.minecraft.util.ResourceLocation;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.Vec3d;
+import software.bernie.geckolib3.core.processor.IBone;
 
 public class ModelEllie extends GirlGeoModel {
    HashMap<Integer, float[]> HeadYawRotations = new HashMap<Integer, float[]>() {

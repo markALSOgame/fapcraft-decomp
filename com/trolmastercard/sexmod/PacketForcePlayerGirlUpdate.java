@@ -6,6 +6,7 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class PacketForcePlayerGirlUpdate implements IMessage {
    boolean Loaded = false;
@@ -37,7 +38,7 @@ public class PacketForcePlayerGirlUpdate implements IMessage {
 
    public static class Handler implements IMessageHandler<PacketForcePlayerGirlUpdate, IMessage> {
 
-      public IMessage handle(PacketForcePlayerGirlUpdate packet, MessageContext ctx) {
+      public IMessage onMessage(PacketForcePlayerGirlUpdate packet, MessageContext ctx) {
             block7: {
                 try {
                     try {

@@ -6,6 +6,8 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3i;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.math.BlockPos;
 
 public class KoboldPlayerRenderer extends CustomColorGirlRenderer {
    public KoboldPlayerRenderer(RenderManager renderManager, AnimatedGeoModel animatedGeoModel) {

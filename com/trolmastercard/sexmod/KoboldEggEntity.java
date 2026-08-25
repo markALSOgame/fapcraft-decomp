@@ -28,6 +28,10 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import java.util.List;
+import java.util.Random;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EnumParticleTypes;
 
 public class KoboldEggEntity extends EntityLivingBase implements IAnimatable {
    static final int HatchDuration = 12000;

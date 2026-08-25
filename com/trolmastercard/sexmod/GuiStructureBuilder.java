@@ -15,6 +15,13 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import org.lwjgl.opengl.GL11;
+import net.minecraft.block.BlockBed;
+import net.minecraft.block.BlockChest;
 
 public class GuiStructureBuilder extends GuiScreen {
    static final float f = 100.0F;

@@ -9,6 +9,8 @@ import net.minecraft.block.BlockLog;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 
 public class TreeCluster {
    public static final int MaxLogCapacity = 30;

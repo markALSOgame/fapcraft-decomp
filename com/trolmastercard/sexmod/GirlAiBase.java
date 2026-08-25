@@ -8,6 +8,7 @@ import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import java.util.Random;
 
 public abstract class GirlAiBase extends EntityAIBase {
    public GirlEntity Girl;
