@@ -99,6 +99,14 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
    }
 
    public ResourceLocation getEntityTexture(T t) {
+      try {
+         return this.d(t);
+      } catch (Exception e) {
+         return new ResourceLocation("sexmod", "textures/player/steve.png");
+      }
+   }
+
+   protected ResourceLocation d(T t) {
       label38: {
          if (!(t.world instanceof PreviewWorld) && t.getSexPlayerUuid() != null) {
             break label38;
@@ -109,7 +117,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
             if (location == null) {
                try {
                   return this.a(Mc.getSession().getProfile().getId(), t.world);
-               } catch (Exception e) {
+               } catch (IOException e) {
                   return new ResourceLocation("sexmod", "textures/player/steve.png");
                }
             }
@@ -122,7 +130,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
          if (location2 == null) {
             try {
                return this.a(t.getSexPlayerUuid(), t.world);
-            } catch (Exception e) {
+            } catch (IOException e) {
                return new ResourceLocation("sexmod", "textures/player/steve.png");
             }
          }
@@ -401,7 +409,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
             bufferBuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
 
             try {
-               Minecraft.getMinecraft().renderEngine.bindTexture(this.getEntityTexture(this.RenderEntity));
+               Minecraft.getMinecraft().renderEngine.bindTexture(this.d(this.RenderEntity));
                break label30;
             } catch (Exception error2) {
                error = error2;

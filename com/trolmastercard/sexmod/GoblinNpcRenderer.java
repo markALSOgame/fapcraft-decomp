@@ -91,7 +91,7 @@ public class GoblinNpcRenderer extends ScaledGirlGeoRenderer<GoblinNpc> {
       Mc = Minecraft.getMinecraft();
    }
 
-   protected ResourceLocation d(GoblinNpc goblin) throws IOException {
+   protected ResourceLocation d(GoblinNpc goblin) {
       UUID uuid = goblin.getSexPlayerUuid();
       if (uuid == null) {
          uuid = goblin.getGirlUuid();
@@ -105,7 +105,11 @@ public class GoblinNpcRenderer extends ScaledGirlGeoRenderer<GoblinNpc> {
          ResourceLocation location = TextureCache.get(Mc.getSession().getProfile().getId());
 
             if (location == null) {
-               return this.a(Mc.getSession().getProfile().getId(), goblin.world);
+               try {
+                  return this.a(Mc.getSession().getProfile().getId(), goblin.world);
+               } catch (IOException e) {
+                  return new ResourceLocation("sexmod", "textures/player/steve.png");
+               }
             }
 
             return location;
@@ -114,7 +118,11 @@ public class GoblinNpcRenderer extends ScaledGirlGeoRenderer<GoblinNpc> {
       ResourceLocation location2 = TextureCache.get(uuid);
 
          if (location2 == null) {
-            return this.a(uuid, goblin.world);
+            try {
+               return this.a(uuid, goblin.world);
+            } catch (IOException e) {
+               return new ResourceLocation("sexmod", "textures/player/steve.png");
+            }
          }
 
       return location2;
