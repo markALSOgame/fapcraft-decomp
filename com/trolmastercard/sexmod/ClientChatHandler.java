@@ -13,7 +13,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 
 public class ClientChatHandler {
-   public static ClientChatHandler Instance;
+   public static ClientChatHandler Instance = new ClientChatHandler();
    private ClientChatHandler.Entry PendingEntry;
 
    public void a() {
