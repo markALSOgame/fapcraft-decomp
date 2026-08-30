@@ -52,15 +52,15 @@ public abstract class GirlGeoModel<T extends GirlEntity> extends GirlAnimatedGeo
       return null;
    }
 
-   @Override
-   public ResourceLocation getTextureLocation(T girl) {
-      return this.a(girl);
-   }
+    @Override
+    public ResourceLocation getTextureLocation(T girl) {
+       return this.g(girl);
+    }
 
-   @Override
-   public ResourceLocation getModelLocation(T girl) {
-      return this.TextureLayers[0];
-   }
+    @Override
+    public ResourceLocation getModelLocation(T girl) {
+       return this.a(girl);
+    }
 
    public ResourceLocation a(GirlEntity girl) {
       try {
