@@ -1,0 +1,77 @@
+buildscript {
+    repositories {
+        maven { url = "https://maven.minecraftforge.net" }
+        mavenCentral()
+        maven { url = 'https://plugins.gradle.org/m2/' }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+    }
+}
+
+apply plugin: 'net.minecraftforge.gradle.forge'
+
+version = "1.1.0"
+group = "com.trolmastercard.sexmod"
+archivesBaseName = "fapcraft"
+
+sourceCompatibility = targetCompatibility = '1.8'
+compileJava {
+    sourceCompatibility = targetCompatibility = '1.8'
+    options.encoding = 'UTF-8'
+    options.compilerArgs << '-Xmaxerrs' << '100000'
+}
+
+minecraft {
+    version = project.forge_version
+    runDir = "run"
+    mappings = project.mcp_version
+}
+
+repositories {
+    maven { url = "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/" }
+}
+
+sourceSets.main.java {
+    exclude 'org/**'
+    exclude 'software/**'
+}
+
+dependencies {
+    deobfCompile "software.bernie.geckolib:geckolib-forge-1.12.2:3.0.31"
+}
+
+processResources {
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+        expand 'version': project.version, 'mcversion': project.minecraft.version
+    }
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
+
+task fatJar(type: Jar) {
+    archiveName = project.archivesBaseName + '-' + project.version + '-all.jar'
+    destinationDir = file('build/libs')
+    manifest {
+        attributes 'FMLCorePluginContainsFMLMod': 'true'
+    }
+    from sourceSets.main.output
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    } {
+        exclude 'META-INF/**'
+        exclude '**/*.RSA'
+        exclude '**/*.SF'
+        exclude '**/*.DSA'
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+gradle.taskGraph.whenReady { taskGraph ->
+    tasks.getAssets.enabled = false
+}

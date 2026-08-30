@@ -1,0 +1,4939 @@
+{
+ "_doc": "Member renames keyed by obfuscated owner class name. 'fields' = fields (bare/this/super/decl + obj.member inside OWNER file + Owner.m static refs everywhere). 'methods' = methods (decl/call: token followed by '('). 'types' = inner classes (decl after 'class', new X(), extends/implements/instanceof, Owner.a refs everywhere).",
+ "packets": {
+  "gh": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "b": "Loaded",
+    "c": "SenderUuid",
+    "d": "DimensionId",
+    "a": "Message"
+   }
+  },
+  "gz": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "Loaded",
+    "b": "MovementActive"
+   }
+  },
+  "a8": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "Yaw",
+    "b": "Loaded",
+    "c": "PlayerName",
+    "d": "Pitch",
+    "e": "Pos"
+   }
+  },
+  "ac": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "Loaded",
+    "b": "GirlUuid"
+   }
+  },
+  "b0": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "Loaded",
+    "b": "PlayerUuid",
+    "c": "GirlUuid"
+   }
+  },
+  "dc": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "GirlUuid",
+    "b": "Accept",
+    "c": "Loaded",
+    "d": "Reject",
+    "e": "PlayerUuid"
+   }
+  },
+  "a1": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "GirlUuid",
+    "b": "Range",
+    "c": "UnusedUuid",
+    "d": "Loaded"
+   }
+  },
+  "s": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "Teleport",
+    "b": "Loaded",
+    "c": "GirlUuid"
+   }
+  },
+  "n": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "Key",
+    "b": "Loaded",
+    "c": "Value",
+    "d": "GirlUuid"
+   }
+  },
+  "bo": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "GirlUuid",
+    "b": "PlayerUuid",
+    "c": "Loaded"
+   }
+  },
+  "gg": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "GirlUuid",
+    "b": "Loaded"
+   }
+  },
+  "a6": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "HomePos",
+    "b": "Loaded",
+    "c": "GirlUuid"
+   }
+  },
+  "b1": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "PlayerUuid",
+    "b": "Loaded",
+    "c": "GirlUuid",
+    "d": "Items"
+   }
+  },
+  "t": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "GirlUuid",
+    "b": "Stack",
+    "c": "Loaded"
+   }
+  },
+  "bg": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "Loaded"
+   }
+  },
+  "cz": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "Loaded",
+    "b": "GirlUuid"
+   }
+  },
+  "bw": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "Pos",
+    "b": "Loaded"
+   }
+  },
+  "b_": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "GirlType",
+    "b": "Loaded"
+   }
+  },
+  "g4": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "GirlUuid",
+    "b": "PlayerUuid",
+    "c": "Message",
+    "d": "Accept",
+    "e": "Loaded"
+   }
+  },
+  "eu": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "PlayerUuid",
+    "b": "GirlUuid",
+    "c": "Loaded",
+    "d": "AnimationName"
+   }
+  },
+  "f3": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "GirlUuid",
+    "b": "Loaded",
+    "c": "PlayerUuid"
+   }
+  },
+  "ej": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "GirlUuid",
+    "b": "Loaded"
+   }
+  },
+  "gk": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "Loaded",
+    "b": "GirlUuid"
+   }
+  },
+  "dq": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "Loaded",
+    "b": "GirlUuid"
+   }
+  },
+  "g9": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "PlayerUuid",
+    "b": "TribeName",
+    "c": "Loaded",
+    "d": "GirlUuid"
+   }
+  },
+  "b3": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "Loaded",
+    "b": "Accept",
+    "c": "MemberData"
+   }
+  },
+  "fj": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "Loaded",
+    "b": "FollowMode"
+   }
+  },
+  "fc": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "Pos",
+    "b": "Loaded"
+   }
+  },
+  "h6": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "Remove",
+    "b": "Loaded",
+    "c": "Blocks"
+   }
+  },
+  "au": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "Loaded",
+    "b": "Pos"
+   }
+  },
+  "en": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "Count",
+    "b": "Name",
+    "c": "GirlUuid",
+    "d": "Loaded"
+   }
+  },
+  "z": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "Value"
+   }
+  },
+  "e6": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "Pos",
+    "b": "Facing",
+    "c": "Loaded"
+   }
+  },
+  "bd": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "GirlDataMap",
+    "b": "Player",
+    "c": "Loaded"
+   }
+  },
+  "gd": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "Animation",
+    "b": "Index",
+    "c": "GirlUuid",
+    "d": "Loaded"
+   }
+  },
+  "fw": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "Loaded",
+    "b": "GirlUuid",
+    "c": "ModelString",
+    "d": "ColorIds"
+   }
+  },
+  "g_": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "Loaded",
+    "b": "Active"
+   }
+  },
+  "ct": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "GirlUuid",
+    "b": "Velocity",
+    "c": "Loaded"
+   }
+  },
+  "g6": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "Loaded",
+    "b": "ModelChecksums"
+   }
+  },
+  "cu": {
+   "types": {
+    "a": "Handler",
+    "b": "Type"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "Id",
+    "b": "Data",
+    "c": "ModelNames",
+    "d": "Loaded",
+    "e": "ModelName",
+    "f": "FileType"
+   }
+  },
+  "bv": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "Pos",
+    "b": "Loaded",
+    "c": "Dark"
+   }
+  },
+  "cd": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "Loaded"
+   }
+  },
+  "gf": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "Loaded",
+    "b": "Owns"
+   }
+  },
+  "bk": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "Loaded"
+   }
+  },
+  "ab": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "ShooterUuid",
+    "b": "TargetUuid",
+    "c": "Loaded"
+   }
+  },
+  "aq": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "Yaw",
+    "b": "Pitch",
+    "c": "Mode",
+    "d": "Loaded"
+   }
+  },
+  "ft": {
+   "types": {
+    "a": "Handler"
+   },
+   "methods": {
+    "a": "handle"
+   },
+   "fields": {
+    "a": "Loaded",
+    "b": "Data",
+    "c": "GirlUuid"
+   }
+  }
+ },
+ "commands": {
+  "a_": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "a": "TickDelay",
+    "b": "Instance",
+    "c": "Chance",
+    "d": "FilePath",
+    "e": "Enabled"
+   }
+  },
+  "fx": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "a": "Instance"
+   }
+  },
+  "aw": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "a": "Instance"
+   }
+  },
+  "gn": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "a": "Instance"
+   }
+  },
+  "fd": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "a": "Instance"
+   }
+  }
+ },
+ "containers": {
+  "bx": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "a": "Inventory",
+    "b": "OpenContainers",
+    "c": "GirlUuid",
+    "d": "SlotCount"
+   }
+  },
+  "d4": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "a": "GirlUuid",
+    "b": "Girl",
+    "c": "OpenContainers",
+    "d": "Slots"
+   }
+  },
+  "ca": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "a": "GirlUuid",
+    "b": "Slots",
+    "c": "OpenContainers",
+    "d": "LunaGirl"
+   }
+  }
+ },
+ "guis": {
+  "a": {
+   "types": {},
+   "methods": {
+    "b": {
+     "": "getSelectedClothingOptions",
+     "em": "getClothingData"
+    },
+    "a": {
+     "em": "openGui"
+    }
+   },
+   "fields": {
+    "c": "Girl",
+    "f": "MagicSlotsDirty",
+    "g": "GirlUuid",
+    "k": "Texture",
+    "m": "ClothingOptions",
+    "p": "RemovingCloth",
+    "q": "ClothingList",
+    "n": "LayoutTopPx",
+    "l": "LayoutBottomPx",
+    "o": "PreviewYaw",
+    "i": "OptionCount",
+    "t": "PrevScrollOffset",
+    "d": "SelectedSlot"
+   }
+  },
+  "b5": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "a": "Girls",
+    "b": "Tick",
+    "c": "ScrollOffset"
+   }
+  },
+  "ea": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "f": "Girl",
+    "h": "IsGoblin",
+    "i": "Texture",
+    "e": "LerpFactor",
+    "a": "OpenProgress"
+   }
+  },
+  "j": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "b": "Facing",
+    "c": "Pos",
+    "d": "ExecuteBuild",
+    "e": "TargetState",
+    "h": "Texture",
+    "l": "SupportedMaterials",
+    "m": "OpenProgress",
+    "a": "CornerOffsetA",
+    "k": "CornerOffsetB",
+    "n": "CornerOffsetC",
+    "i": "CornerOffsetD"
+   }
+  },
+  "m": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "a": "Labels",
+    "c": "Texture",
+    "f": "Items",
+    "g": "Girl",
+    "h": "CommandLabels",
+    "i": "Player",
+    "k": "IsPremium",
+    "l": "DataManager"
+   }
+  },
+  "ch": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "a": "Player",
+    "b": "Texture",
+    "c": "Dialogue",
+    "d": "Progress",
+    "e": "HasUnlocked"
+   }
+  },
+  "fb": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "a": "GirlUuid",
+    "b": "Girl",
+    "c": "Texture",
+    "d": "PlayerUuid"
+   }
+  },
+  "az": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "a": "PlayerUuid",
+    "b": "Texture",
+    "c": "GirlUuid",
+    "d": "LunaGirl"
+   }
+  },
+  "gb": {
+   "types": {},
+   "methods": {
+    "b": {
+     "": "randomizeKey"
+    },
+    "c": {
+     "": "sendEscapeRequest"
+    }
+   },
+   "fields": {
+    "e": "Mc",
+    "l": "Texture",
+    "q": "Keys",
+    "g": "MinigameActive",
+    "o": "EscapeRequested",
+    "h": "KeyDecayPerTick",
+    "d": "FallTimerTicks",
+    "a": "FallTicksMax",
+    "j": "SpawnTimerTicks",
+    "p": "KeySpawnIntervalTicks",
+    "m": "KeyMoveIntervalTicks"
+   }
+  },
+  "hf": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "consumeFlightAttempt",
+     "RenderGameOverlayEvent": "onRenderGameOverlay"
+    },
+    "c": {
+     "": "recordTouchTime"
+    },
+    "d": {
+     "": "canStartFlight"
+    },
+    "e": {
+     "": "endFlight"
+    },
+    "f": {
+     "": "startFlight"
+    }
+   },
+   "fields": {
+    "c": "Mc",
+    "j": "Texture",
+    "q": "Active",
+    "i": "BarRect",
+    "w": "SpriteRect1",
+    "k": "SpriteRect2",
+    "p": "SpriteRect3",
+    "y": "MinAttemptIntervalMs",
+    "n": "FlightCooldownMs",
+    "l": "TouchWindowMs",
+    "x": "StageOffsetX",
+    "t": "StageOffsetY",
+    "e": "AttemptsLeft",
+    "g": "LastTouchTimeMs",
+    "s": "LastAttemptMs",
+    "f": "LastFlightEndMs",
+    "u": "LastTouchStartMs"
+   }
+  },
+  "ek": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "a": "PlayerUuid",
+    "b": "Girl",
+    "c": "GirlUuid",
+    "d": "GirlInventory",
+    "e": "PlayerInventory",
+    "f": "Texture",
+    "g": "Rows"
+   }
+  },
+  "gq": {
+   "types": {
+    "a": "Entry"
+   },
+   "methods": {},
+   "fields": {
+    "a": "WidthTemplate",
+    "b": "Entries",
+    "d": "ParentGui",
+    "f": "BodySlots",
+    "c": "LabelColor",
+    "i": "ItemOffsetY",
+    "e": "HalfWidth"
+   }
+  },
+  "gm": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "a": "Mc",
+    "b": "Texture",
+    "c": "TextureManager",
+    "d": "Blue",
+    "e": "Red",
+    "f": "Marks",
+    "g": "Green"
+   }
+  },
+  "g7": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "d": "NameField",
+    "e": "GirlUuid"
+   }
+  },
+  "ds": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "a": "Progress",
+    "b": "OverlayTexture",
+    "e": "Texture"
+   }
+  },
+  "ga": {
+   "types": {},
+   "methods": {
+    "a": {
+     "ep": "addParticles",
+     "em": "removeParticlesForGirl"
+    }
+   },
+   "fields": {
+    "a": "Particles",
+    "b": "Texture",
+    "c": "Mc"
+   }
+  },
+  "fh": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "isTransitionActive",
+     "RenderGameOverlayEvent": "renderOverlay"
+    },
+    "b": {
+     "": "startTransition",
+     "Runnable": "startTransitionWithDelay"
+    }
+   },
+   "fields": {
+    "a": "BlackTexture",
+    "b": "TransitionActive",
+    "c": "OverlayTexture",
+    "d": "Duration",
+    "e": "TransitionProgress",
+    "f": "MirroredOverlayTexture"
+   }
+  },
+  "gq.a": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "c": "FontRenderer",
+    "d": "BodySlot",
+    "b": "BoneList",
+    "f": "RowY",
+    "e": "Selected"
+   }
+  }
+ },
+ "utils": {
+  "ge": {
+   "types": {},
+   "methods": {
+    "a": "init",
+    "b": "nextId"
+   },
+   "fields": {
+    "a": "NextIdCounter",
+    "b": "channel"
+   }
+  },
+  "w": {
+   "types": {
+    "a": "Entry"
+   },
+   "methods": {},
+   "fields": {
+    "a": "Instance",
+    "b": "PendingEntry"
+   }
+  },
+  "fe": {
+   "types": {
+    "b": "SlotType"
+   },
+   "methods": {},
+   "fields": {
+    "a": "Kind"
+   }
+  },
+  "bl": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "a": "X",
+    "b": "Y",
+    "c": "Width",
+    "d": "Height"
+   }
+  },
+  "r": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "a": "ColorA",
+    "b": "IdCounter",
+    "c": "CommonProxyClass",
+    "d": "ClientProxyClass",
+    "e": "ColorB",
+    "f": "Random",
+    "g": "ModName",
+    "h": "ModVersion",
+    "i": "AuxCounter",
+    "j": "StartPos",
+    "k": "EndPos",
+    "l": "ModId"
+   }
+  },
+  "fs": {
+   "types": {},
+   "methods": {
+    "a": {
+     "em": "untrackGirl",
+     "": "clearAll",
+     "UUID": "getByUuid"
+    },
+    "b": {
+     "em": "trackGirl"
+    }
+   },
+   "fields": {}
+  },
+  "ax": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "a": "KoboldHomes",
+    "b": "BedOffsets",
+    "c": "GirlHomes",
+    "d": "HomeRadius"
+   }
+  },
+  "br": {
+   "types": {
+    "b": "WhitelistFile"
+   },
+   "methods": {},
+   "fields": {
+    "a": "ModelsFolder",
+    "b": "WhitelistFile",
+    "c": "ModelCache",
+    "d": "ServerActive",
+    "e": "ClientActive",
+    "f": "ClientModelsDir"
+   }
+  },
+  "fg": {
+   "types": {},
+   "methods": {
+    "a": "execute"
+   },
+   "fields": {}
+  },
+  "ar": {
+   "types": {},
+   "methods": {
+    "a": "anchorPos"
+   },
+   "fields": {}
+  },
+  "b8": {
+   "types": {},
+   "methods": {
+    "a": "anchorPos"
+   },
+   "fields": {}
+  },
+  "br.b": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "d": "BodySlot",
+    "g": "AllowedGirls",
+    "b": "AllowedNames",
+    "k": "ModelName",
+    "j": "FileName",
+    "c": "IsValid",
+    "e": "RenderMode",
+    "m": "BaseScale",
+    "a": "HeightOffset",
+    "i": "ModelTexture",
+    "f": "SkinTexture",
+    "h": "Error",
+    "l": "AspectRatio"
+   }
+  },
+  "br.a": {
+   "types": {},
+   "methods": {},
+   "fields": {}
+  },
+  "gc": {
+   "types": {},
+   "methods": {
+    "a": {
+     "Vec3d,Vec3d": "angleBetween",
+     "float": "wrapPositiveDegrees",
+     "double": "wrapPositiveDegreesDouble"
+    },
+    "b": {
+     "float": "normalizeDegrees",
+     "double": "radToDegrees"
+    },
+    "c": {
+     "float": "degToRadians",
+     "double": "degToRadians"
+    },
+    "d": {
+     "float": "radToDegrees"
+    }
+   },
+   "fields": {}
+  },
+  "ck": {
+   "types": {},
+   "methods": {
+    "a": {
+     "Vec3d,double": "scale",
+     "Vector3f,Vec3d": "dotProduct3f",
+     "Vec3d,Vec3d": "dotProduct",
+     "double,double,double,float": "rotatePitch",
+     "Vec3d,float": "rotateYaw",
+     "Vec3d,float,float": "rotatePitchYaw",
+     "double,double,double,float,float": "rotatePitchYawCoords",
+     "Vec3d,float,float,float": "rotateEuler",
+     "Vec3d": "mirrorX",
+     "double,double,double": "inverseLerp",
+     "Vec3d,Vec3d,Vec3d": "inverseLerpComponent"
+    },
+    "b": {
+     "Vec3d,Vec3d": "crossProduct",
+     "Vec3d": "mirrorY"
+    },
+    "c": {
+     "Vec3d": "mirrorXZ"
+    }
+   },
+   "fields": {}
+  },
+  "fk": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "registerEntityRenderers"
+    }
+   },
+   "fields": {}
+  },
+  "bi": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "registerEntitiesAndSpawning",
+     "String,Class,int,int,int": "registerNpcEntity",
+     "String,Class,int": "registerSimpleEntity"
+    },
+    "b": {
+     "String,Class,int": "registerPlayerEntity"
+    }
+   },
+   "fields": {}
+  },
+  "f9": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "registerItems"
+    }
+   },
+   "fields": {}
+  },
+  "bn": {
+   "types": {},
+   "methods": {
+    "a": {
+     "boolean": "registerEventHandlers"
+    }
+   },
+   "fields": {}
+  },
+  "c": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "registerAllSounds",
+     "String": "registerSoundEvent",
+     "SoundEvent[]": "pickRandomSound"
+    }
+   },
+   "fields": {}
+  },
+  "co": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "registerAll",
+     "Register<Item>": "registerItem",
+     "ModelRegistryEvent": "registerItemModel"
+    }
+   },
+   "fields": {}
+  },
+  "b9": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "registerAll",
+     "Register<Item>": "registerItem",
+     "ModelRegistryEvent": "registerItemModel"
+    }
+   },
+   "fields": {}
+  },
+  "cc": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "registerAll",
+     "Register<Item>": "registerItem",
+     "ModelRegistryEvent": "registerItemModel",
+     "f_": "desummonGalath",
+     "UUID,f_": "spawnDesummonParticles",
+     "EntityPlayer,f_": "spawnDesummonParticles"
+    }
+   },
+   "fields": {
+    "r": "Instance",
+    "b": "KeyActivationTime",
+    "m": "KeyDeactivationTime",
+    "n": "KeyDesummonAnimTime",
+    "f": "DefeatMessage",
+    "i": "AnimFactory",
+    "a": "AnimController",
+    "c": "ActivationMs",
+    "g": "DeactivationMs",
+    "j": "DesummonAnimMs"
+   }
+  },
+  "hj": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "registerAll",
+     "Register<Item>": "registerItem",
+     "ModelRegistryEvent": "registerItemModel"
+    }
+   },
+   "fields": {
+    "a": "Instance"
+   }
+  },
+  "c7": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "registerAll",
+     "Register<Item>": "registerItem",
+     "ModelRegistryEvent": "registerItemModel"
+    }
+   },
+   "fields": {
+    "a": "Instance"
+   }
+  },
+  "gp": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "registerAll",
+     "Register<Item>": "registerItem",
+     "ModelRegistryEvent": "registerItemModel"
+    }
+   },
+   "fields": {
+    "a": "Instance"
+   }
+  },
+  "dw": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "registerAll",
+     "Register<Block>": "registerBlock"
+    }
+   },
+   "fields": {}
+  },
+  "g3": {
+   "types": {
+    "a": "TribeTemplate",
+    "b": "TribeConfig"
+   },
+   "methods": {
+    "b": {
+     "": "getInstance"
+    },
+    "a": {
+     "g3.a": "addTribeTemplate"
+    }
+   },
+   "fields": {
+    "i": "ShouldGenBuildings",
+    "j": "GenDataKey",
+    "f": "GenChance",
+    "e": "TribeBiomes",
+    "d": "QueuedTemplates"
+   }
+  },
+  "v": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "clearOwnershipData",
+     "GalathNpc": "releaseOwnedGalath",
+     "UUID": "getGalathByOwnerUuid",
+     "UUID,UUID": "setOwnership",
+     "EntityPlayer,GalathNpc": "setOwnershipByPlayer",
+     "EntityPlayer": "removeOwnershipByPlayer",
+     "UUID,World": "isGalathRecent",
+     "UUID,Long": "setLastSeenTime",
+     "UUID,long": "setLastSeenTime"
+    },
+    "e": {
+     "UUID": "markOwnerOnline"
+    },
+    "b": {
+     "UUID": "isOwnerOnline",
+     "EntityPlayer,GalathNpc": "isGalathOwnedByPlayer",
+     "GalathNpc": "getGalathOwnerUuidByEntity",
+     "EntityPlayer": "getGalathByPlayer"
+    },
+    "c": {
+     "GalathNpc": "isPlayerNearOwnedGalath",
+     "UUID": "hasOwnershipData"
+    },
+    "f": {
+     "UUID": "getOwnerUuid"
+    },
+    "d": {
+     "UUID": "removeOwnershipByGalathUuid"
+    }
+   },
+   "fields": {
+    "e": "NbtKeyGalathOwnership",
+    "d": "NbtKeyOwnership",
+    "g": "NbtKeyManglelieOwnership",
+    "i": "OnlineOwners"
+   }
+  },
+  "hy": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "registerAll",
+     "Register<Item>": "registerItem",
+     "ModelRegistryEvent": "registerItemModel"
+    }
+   },
+   "fields": {
+    "b": "Instance"
+   }
+  },
+  "ap": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "registerAll",
+     "Register<Item>": "registerItem",
+     "ModelRegistryEvent": "registerItemModel"
+    }
+   },
+   "fields": {
+    "b": "Instance",
+    "e": "InUseTag",
+    "d": "InUseTicksTag",
+    "j": "UsesTag",
+    "h": "AllieIdTag",
+    "i": "AnimFactory",
+    "g": "AnimController"
+   }
+  },
+  "gw": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "getClothingSlotCount"
+    }
+   },
+   "fields": {}
+  },
+  "fp": {
+   "types": {},
+   "methods": {
+    "a": {
+     "GirlAnimationState,GirlAnimationState[]": "isAnimationInList",
+     "GirlEntity,GirlAnimationState[]": "isGirlInAnimation",
+     "AnimationController": "getAnimationLength",
+     "GirlEntity": "getAnimationLength",
+     "GirlEntity,float": "getAnimationProgress",
+     "GirlEntity,float,float": "getAnimationNormalized"
+    },
+    "b": {
+     "GirlEntity,float": "isAnimationAtEnd"
+    },
+    "c": {
+     "GirlEntity,float": "getAnimationTick"
+    },
+    "d": {
+     "GirlEntity,float": "getAnimationNormalized01"
+    }
+   },
+   "fields": {}
+  },
+  "d3": {
+   "types": {},
+   "methods": {
+    "a": {
+     "boolean": "setAnimationLocked",
+     "InputUpdateEvent": "onInputUpdate",
+     "MouseEvent": "onMouseEvent",
+     "": "resetAnimationLock"
+    },
+    "b": {
+     "": "isAnimationLocked"
+    }
+   },
+   "fields": {
+    "c": "AnimationLocked",
+    "d": "SneakPressed",
+    "a": "JumpPressed",
+    "b": "MovementInput"
+   }
+  },
+  "y": {
+   "types": {},
+   "methods": {
+    "a": {
+     "UUID": "fetchSkinImage"
+    }
+   },
+   "fields": {}
+  },
+  "cj": {
+   "types": {},
+   "methods": {
+    "a": {
+     "float,float": "angleDifference",
+     "EntityLivingBase,float": "getBedHeadPos",
+     "World,int,int": "countNearbyBeds",
+     "World,BlockPos": "isBedSpawnValid",
+     "World,BlockPos,Vec3d,EnumFacing,EntityPlayer": "getBedRespawnPos",
+     "World,EnumParticleTypes,Vec3d,int,double,double": "spawnParticles",
+     "BlockPos,IBlockState": "getBedPosForState",
+     "Entity": "getNearbyNetworkPlayers"
+    },
+    "b": {
+     "World,BlockPos": "isBedBlock"
+    }
+   },
+   "fields": {}
+  },
+  "ds": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "isHudVisible",
+     "boolean": "showHudWithForce",
+     "double": "addProgress",
+     "RenderGameOverlayEvent": "onRenderGameOverlay"
+    },
+    "b": {
+     "": "resetProgress"
+    },
+    "c": {
+     "": "forceShowHud"
+    },
+    "d": {
+     "": "showHud"
+    }
+   },
+   "fields": {}
+  },
+  "bj": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "clearAll",
+     "GirlEntity": "removeGirl"
+    },
+    "c": {
+     "em": "getCustomModelName"
+    }
+   },
+   "fields": {}
+  },
+  "gm": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "clearMarks",
+     "BlockPos": "isMarked",
+     "BufferBuilder,BlockPos,int,int,int": "drawMark",
+     "java.util.HashSet<BlockPos>": "addMarks"
+    },
+    "b": {
+     "java.util.HashSet<BlockPos>": "removeMarks"
+    }
+   },
+   "fields": {}
+  },
+  "d6": {
+   "types": {},
+   "methods": {
+    "c": {
+     "": "clearColorCache"
+    }
+   },
+   "fields": {}
+  },
+  "d9": {
+   "types": {},
+   "methods": {
+    "e": {
+     "": "clearColorCache"
+    }
+   },
+   "fields": {}
+  },
+  "g2": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "showWarningWindow"
+    }
+   },
+   "fields": {}
+  },
+  "af": {
+   "types": {},
+   "methods": {
+    "a": {
+     "GirlEntity,float,String,String,String,float,float,float,float,String": "getGirlBonePositions",
+     "Vec3d[]": "rearrangeVec3dArray",
+     "Minecraft,GirlEntity,float": "drawGirlBones",
+     "GirlEntity,float,String,String,Vec3f,Vec3f": "getGirlBonePositionsFiltered",
+     "BufferBuilder,Vec3d[][],RgbaColor4": "drawBoneQuads"
+    }
+   },
+   "fields": {}
+  },
+  "dy": {
+   "types": {},
+   "methods": {
+    "a": {
+     "GirlEntity,float": "renderGirlBox",
+     "float": "rotateCameraToGirl",
+     "GeoBone,String": "applyBoneState",
+     "boolean,GeoBone,float,float": "applyBoneWobble",
+     "GirlEntity,GeoBone": "applyShoulderIdlePose",
+     "GeoBone,String,String,String": "applyChildBoneVisibility",
+     "GirlEntity,GeoBone,String": "applyBoneAppearanceState",
+     "GirlEntity,GirlAnimationState": "isInCatchThrowAnimation",
+     "GirlEntity,UUID,float": "getThrowAimOffset"
+    },
+    "b": {
+     "String": "parseTribeColor"
+    },
+    "c": {
+     "String": "parseGirlColor"
+    },
+    "d": {
+     "String": "parseMarkColor"
+    }
+   },
+   "fields": {
+    "w": "DefaultColor",
+    "D": "MeatParts",
+    "M": "EyeBrowParts",
+    "C": "BoobLegParts",
+    "y": "Mc",
+    "v": "LastPartialTicks",
+    "u": "Initialized",
+    "z": "LightLevel"
+   }
+  },
+  "ak": {
+   "types": {},
+   "methods": {
+    "a": {
+     "Entity,float": "getPositionOffset",
+     "Entity,EntityPlayer,float": "getPlayerRelativeOffset",
+     "": "reset"
+    },
+    "b": {
+     "Entity,EntityPlayer,float": "getPlayerRelativeOffsetWithEyeHeight"
+    }
+   },
+   "fields": {}
+  },
+  "ce": {
+   "types": {},
+   "methods": {
+    "c": {
+     "GirlEntity": "isInThreesomeAnimation"
+    },
+    "a": {
+     "GirlEntity,AnimationProcessor,float": "applyAnimationTransforms",
+     "GirlEntity,String": "getTextureForGirl",
+     "GirlEntity,Integer,AnimationEvent": "onAnimationEvent"
+    }
+   },
+   "fields": {
+    "j": "SkinTexture"
+   }
+  },
+  "bs": {
+   "fields": {
+    "d": "MaxLogCapacity",
+    "a": "AnchorPos",
+    "c": "TaskType",
+    "b": "LogPositions",
+    "f": "Assignees",
+    "e": "Facing"
+   },
+   "methods": {
+    "f": {
+     "": "getFacing"
+    },
+    "b": {
+     "": "getAnchorPos",
+     "BlockPos": "addLogPos",
+     "HashSet<BlockPos>": "removeAllLogPos",
+     "ff": "isAssigned",
+     "World,BlockPos": "isLogColumnTop"
+    },
+    "d": {
+     "": "getTaskType"
+    },
+    "g": {
+     "": "getLogPositions"
+    },
+    "a": {
+     "HashSet<BlockPos>": "addAllLogPos",
+     "BlockPos": "removeLogPos",
+     "ff": "assignKobold",
+     "": "clearAssignees",
+     "World,BlockPos,UUID": "createFallTask",
+     "World,BlockPos": "floodFill",
+     "World,BlockPos,HashSet<BlockPos>": "floodFillRecursive"
+    },
+    "c": {
+     "BlockPos": "containsLogPos",
+     "ff": "unassignKobold",
+     "": "getAssignees",
+     "World,BlockPos": "hasGroundBelow"
+    },
+    "e": {
+     "": "isFull"
+    }
+   },
+   "types": {
+    "a": "TaskType"
+   }
+  },
+  "bs.a": {
+   "fields": {
+    "a": "Cost"
+   },
+   "methods": {
+    "a": {
+     "": "getCost"
+    }
+   },
+   "types": {}
+  },
+  "ef": {
+   "fields": {},
+   "methods": {
+    "a": {
+     "BufferBuilder,Tessellator,Minecraft,ef.b": "drawQuad",
+     "BufferBuilder,Vec3d[],Vec3d[],gv": "drawFace",
+     "float,float,float,int,float": "waveFunction"
+    }
+   },
+   "types": {
+    "a": "FloatFunction",
+    "b": "QuadConfig"
+   }
+  },
+  "ef.a": {
+   "fields": {},
+   "methods": {
+    "a": {
+     "int,float": "apply"
+    }
+   },
+   "types": {}
+  },
+  "ef.b": {
+   "fields": {
+    "h": "Color",
+    "e": "RotationAngle",
+    "c": "SegmentCount",
+    "g": "SegmentLength",
+    "i": "AngleX",
+    "b": "AngleY",
+    "d": "AngleZ",
+    "f": "HalfWidth",
+    "a": "HalfHeight"
+   },
+   "methods": {
+    "a": {
+     "": "copy"
+    }
+   },
+   "types": {}
+  },
+  "gx": {
+   "types": {},
+   "methods": {
+    "a": {
+     "c3,GeoBone": "isBoneIncluded",
+     "c3,GeoBone,Vec3d,Vector3f": "applyBoneColor",
+     "Vec3d,Vector3f,Vec3d": "tintColor",
+     "EntityLivingBase,float": "setSkinColor",
+     "List<IBone>,HashSet<String>,c3": "cacheBoneColors"
+    }
+   },
+   "fields": {
+    "a": "AdultParts",
+    "b": "CurrentSkinColor",
+    "c": "BlushColor",
+    "e": "DarkShadeColor",
+    "f": "TintStrength",
+    "d": "BoneInclusionCache"
+   }
+  },
+  "fq": {
+   "types": {},
+   "methods": {
+    "a": {
+     "BlockPos,List<BlockPos>": "addSpawnPosition",
+     "Save": "onWorldSave",
+     "Load": "onWorldLoad",
+     "NBTTagCompound,String,List<BlockPos>": "writePositions"
+    },
+    "b": {
+     "NBTTagCompound,String,List<BlockPos>": "readPositions"
+    }
+   },
+   "fields": {
+    "c": "GalathSpawnPositions",
+    "b": "ManglelieSpawnPositions",
+    "a": "SaveKey",
+    "d": "SaveKey"
+   }
+  },
+  "gy": {
+   "types": {},
+   "methods": {
+    "a": {
+     "Save": "onWorldSave",
+     "Load": "onWorldLoad",
+     "UUID,fy,String": "setCustomName",
+     "UUID,fy": "getCustomName",
+     "HashMap<fy,String>": "writeNamesToNbt",
+     "NBTTagCompound": "readNamesFromNbt"
+    }
+   },
+   "fields": {
+    "a": "SaveKey",
+    "b": "CustomNameData"
+   }
+  },
+  "c4": {
+   "types": {},
+   "methods": {
+    "a": {
+     "Vec3d": "spawnSmokeRingParticles"
+    },
+    "c": {
+     "Vec3d": "spawnDragonBreathParticles"
+    }
+   },
+   "fields": {
+    "f": "OwnerGalath",
+    "h": "Velocity",
+    "c": "Charged",
+    "i": "Detonated"
+   }
+  },
+  "fl": {
+   "types": {},
+   "methods": {
+    "a": {
+     "Path": "getPathEndPos",
+     "EntityLiving": "getPathTargetPos",
+     "Path,BlockPos[]": "pathIntersectsPositions"
+    }
+   },
+   "fields": {}
+  },
+  "g0": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "isServerThread"
+    }
+   },
+   "fields": {}
+  },
+  "ad": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "isDeobfuscatedEnvironment",
+     "ClientChatEvent": "onResetColorCommand",
+     "LivingHurtEvent": "onKoboldHurtDebug",
+     "String": "sendChatMessage"
+    },
+    "b": {
+     "ClientChatEvent": "onGetDevFloatCommand"
+    },
+    "c": {
+     "ClientChatEvent": "onSetDevFloatCommand"
+    },
+    "d": {
+     "ClientChatEvent": "onDevCommand"
+    }
+   },
+   "fields": {
+    "a": "DevFloatCount",
+    "b": "DevFloats"
+   }
+  },
+  "fa": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "toggleAnimated"
+    },
+    "b": {
+     "": "isAnimated"
+    },
+    "c": {
+     "": "computeStaffRotation"
+    },
+    "d": {
+     "": "getStaffScale"
+    }
+   },
+   "fields": {
+    "c": "CrystalTexture",
+    "q": "CrystalModel",
+    "o": "IsAnimated",
+    "e": "Mc",
+    "b": "AnimationTime",
+    "n": "RotationCache",
+    "h": "HeldItem",
+    "k": "OwnerPlayer",
+    "j": "Offset2f"
+   }
+  },
+  "p": {
+   "methods": {
+    "a": {
+     "MatrixStack,GeoBone": "applyGeoBoneTransform",
+     "float[],Matrix4f": "copyMatrix4fToFloats",
+     "Matrix4f,Matrix4f": "multiplyMatrix4f"
+    }
+   },
+   "fields": {
+    "b": "MatrixArray",
+    "c": "FloatBuffer",
+    "a": "ScratchMatrix"
+   }
+  },
+  "d": {
+   "methods": {
+    "a": {
+     "Entity": "canSeeEntity",
+     "World,Vec3d,Entity": "hasLineOfSight"
+    }
+   }
+  },
+  "b": {
+   "methods": {
+    "a": {
+     "em,float": "rotateCameraToGirl",
+     "Minecraft,cy,EntityLivingBase,em,float": "getRenderPosition"
+    }
+   },
+   "fields": {
+    "a": "Mc",
+    "c": "PreviewEntity",
+    "b": "WhitelistEntry",
+    "k": "IsRendering",
+    "d": "ModelScale",
+    "j": "CachedPos"
+   }
+  },
+  "fu": {
+   "fields": {
+    "a": "DressUpButtonId"
+   },
+   "methods": {
+    "a": {
+     "PlayerSleepInBedEvent": "onPlayerSleepAttempt",
+     "GetCollisionBoxesEvent": "onGetCollisionBoxes",
+     "RightClickBlock": "onRightClickBlock",
+     "PlayerRespawnEvent": "onPlayerRespawn",
+     "EntityInteract": "onPlayerInteract",
+     "LivingHurtEvent": "onLivingHurt",
+     "InitGuiEvent": "onGuiInit",
+     "ActionPerformedEvent": "onActionPerformed",
+     "LivingDamageEvent": "onLivingDamage",
+     "double,double,double,double,double,double": "distanceTo"
+    },
+    "b": {
+     "EntityInteract": "onPlayerInteractWithGirl",
+     "RightClickBlock": "onRightClickStartDoggy"
+    }
+   },
+   "types": {}
+  },
+  "gu": {
+   "types": {
+    "a": "ArmorReductionTable"
+   },
+   "methods": {
+    "a": {
+     "LivingDamageEvent": "onLivingDamage"
+    }
+   },
+   "fields": {}
+  },
+  "gu.a": {
+   "types": {},
+   "methods": {
+    "a": {
+     "EntityEquipmentSlot,ArmorMaterial": "getReduction",
+     "EntityEquipmentSlot,ArmorMaterial,int,int": "registerReduction"
+    },
+    "b": {
+     "EntityEquipmentSlot,ArmorMaterial": "getToughness"
+    }
+   },
+   "fields": {
+    "a": "ReductionTable"
+   }
+  },
+  "e_": {
+   "types": {},
+   "methods": {
+    "a": {
+     "Pre": "onRenderPlayer",
+     "RenderTickEvent": "onRenderTick",
+     "CameraSetup": "onCameraSetup",
+     "RenderWorldLastEvent": "onRenderWorldLast",
+     "ei,EntityPlayer,double,double,double,float": "renderGirlAsPlayer",
+     "ei,EntityPlayer": "getRenderYOffset"
+    },
+    "b": {
+     "RenderTickEvent": "onRenderTickStart"
+    }
+   },
+   "fields": {
+    "c": "SentinelPartialTick",
+    "b": "StartPos",
+    "d": "PrevPos",
+    "a": "CurrentGirl",
+    "e": "CameraActive"
+   }
+  },
+  "dx": {
+   "types": {},
+   "methods": {
+    "e": {
+     "em": "getRenderOffset"
+    },
+    "a": {
+     "": "getAdultBoneParts",
+     "em,double,double,double,float,float": "render",
+     "boolean": "applyRenderOffset",
+     "boolean,boolean": "applyPoseTransform",
+     "String,float,float,float": "getBoneColor",
+     "GeoModel,BufferBuilder,em,float,float,float,float,float": "renderModel"
+    },
+    "b": {
+     "Tessellator,BufferBuilder,em,f7,float": "renderWithTexture"
+    }
+   },
+   "fields": {
+    "z": "ArmorTintedBones"
+   }
+  },
+  "di": {
+   "types": {},
+   "methods": {
+    "c": "applyBodyScale",
+    "a": {
+     "ItemStack": "getFishingRod",
+     "String,GeoBone": "animateBone",
+     "boolean,ItemStack": "poseHeldItem",
+     "boolean": "poseHand",
+     "boolean,boolean": "poseBody"
+    },
+    "b": "isBusy"
+   },
+   "fields": {
+    "z": "HairFlipRotation"
+   }
+  },
+  "dv": {
+   "types": {
+    "a": "EventHandler"
+   },
+   "methods": {
+    "c": "applyScaleOffset",
+    "a": {
+     "boolean,ItemStack": "applyHeldItemTransform",
+     "boolean": "applyHandOffset",
+     "boolean,boolean": "applyDualHandOffset",
+     "String,GeoBone": "applyBoneTransform",
+     "GeoBone,float,float,float": "applySwayRotation",
+     "GeoBone": "applySwayPosition",
+     "": "updateTrackedPlayerPositions"
+    }
+   },
+   "fields": {
+    "J": "Instances",
+    "C": "PosX",
+    "z": "PosZ",
+    "A": "PrevPosX",
+    "D": "PrevPosZ",
+    "G": "RotationOffsetX",
+    "I": "RotationOffsetZ",
+    "F": "PrevRotationOffsetX",
+    "B": "PrevRotationOffsetZ",
+    "L": "SwayAmount",
+    "H": "PrevSwayAmount"
+   }
+  },
+  "dv.a": {
+   "types": {},
+   "methods": {
+    "a": {
+     "ClientTickEvent": "onClientTick"
+    }
+   },
+   "fields": {}
+  },
+  "d5": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "getTrackedBones",
+     "String,GeoBone": "applyBoneState",
+     "boolean": "applyItemOffset",
+     "boolean,boolean": "applyArmPose",
+     "boolean,ItemStack": "applyHeldItemTransform"
+    },
+    "c": "applyBaseTransform"
+   },
+   "fields": {
+    "F": "SlimeRotation",
+    "A": "SlimeScale",
+    "D": "SlimePosition",
+    "B": "UpperBodyRotation",
+    "E": "TorsoRotation",
+    "C": "HeadRotation",
+    "z": "BoobsRotation"
+   }
+  },
+  "dj": {
+   "types": {},
+   "methods": {
+    "a": {
+     "String": "getBoneColor",
+     "": "getHeldItem",
+     "BufferBuilder,GeoBone,float,float,float,float,double": "renderBone",
+     "ff,double,double,double,float,float": "render",
+     "double,double,double": "renderNameTag"
+    },
+    "b": {
+     "": "undoBodyScale"
+    },
+    "d": {
+     "": "applyBodyScale"
+    }
+   },
+   "fields": {
+    "t": "MainColorBones",
+    "u": "SecondaryColorBones",
+    "w": "Mc",
+    "v": "RenderPosition"
+   }
+  },
+  "de": {
+   "types": {},
+   "methods": {
+    "a": {
+     "String": "getBoneColor",
+     "String,float,float,float": "getBoneColorRGBA",
+     "boolean,ItemStack": "applyHeldItemPose",
+     "boolean,boolean": "applyArmPose"
+    },
+    "d": "applyBodySizeScale",
+    "b": "undoBodySizeScale",
+    "c": "applyHeadRenderTransform"
+   },
+   "fields": {}
+  },
+  "dl": {
+   "types": {},
+   "methods": {
+    "c": "applyBodyOffset",
+    "a": {
+     "boolean,ItemStack": "applyHeldItemPose",
+     "boolean": "applyPose",
+     "boolean,boolean": "applyDualHandPose"
+    }
+   },
+   "fields": {}
+  },
+  "cn": {
+   "types": {},
+   "methods": {
+    "a": {
+     "RenderSpecificHandEvent": "onRenderSpecificHand",
+     "ItemStack,float,AbstractClientPlayer,float,float": "renderMainHandItem",
+     "EnumHandSide,float,float,ItemStack": "renderSideHandItem",
+     "ItemStack,AbstractClientPlayer,float,float": "renderGirlHandItem",
+     "ItemStack": "renderMapItem",
+     "EnumHandSide": "renderGirlHand",
+     "float": "smoothCurve",
+     "float,float": "renderSecondHand",
+     "float,float,EnumHandSide": "transformSecondHand"
+    }
+   },
+   "fields": {
+    "f": "Mc",
+    "g": "EquipProgress",
+    "c": "IsRendering",
+    "e": "MapBackgroundTexture",
+    "d": "Hand",
+    "h": "Texture",
+    "b": "Color"
+   }
+  },
+  "cb": {
+   "types": {},
+   "methods": {
+    "i": {
+     "em": "animatePussyLicking"
+    },
+    "c": {
+     "em": "syncBodyPose"
+    },
+    "d": {
+     "em": "applyHugPose"
+    },
+    "k": {
+     "em": "applyMasturbationAngles"
+    },
+    "g": {
+     "em": "updateWingsVisibility"
+    },
+    "h": {
+     "em": "applyRapeChargePose"
+    },
+    "f": {
+     "em": "applySwordAttackPose"
+    },
+    "j": {
+     "em": "hideCoinBone"
+    },
+    "a": {
+     "float": "computeHeadSway",
+     "f_,float": "getHeadSwayOffset"
+    }
+   },
+   "fields": {
+    "h": "GalathTexture",
+    "g": "LickPulse",
+    "f": "AttackStartTick",
+    "i": "AttackEndTick"
+   }
+  },
+  "ci": {
+   "types": {},
+   "methods": {
+    "a": {
+     "em,Integer,AnimationEvent": "handleAnimations",
+     "AnimationProcessor,em": "hideBodyDuringThrow",
+     "AnimationProcessor,ai,em": "animateLegs",
+     "em,IBone,IBone": "faceNearestPlayer",
+     "IBone,AnimationProcessor,em": "applyBoneVisibility",
+     "IBone,AnimationProcessor,em,ai": "applyBoneVisibilityForOwner"
+    },
+    "b": {
+     "AnimationProcessor,em": "lowerBodyForPickUp"
+    },
+    "c": "getHelmetBoneNames",
+    "d": "getMeatFootBoneNames",
+    "e": "getMeatBoneNames",
+    "f": {
+     "": "getBoobArmorBoneNames",
+     "em": "isDefaultSkin"
+    },
+    "h": "getLowerArmorBoneNames"
+   },
+   "fields": {
+    "f": "Mc"
+   }
+  },
+  "c9": {
+   "types": {},
+   "methods": {
+    "a": {
+     "em,AnimationProcessor,String": "applyBackpackState",
+     "AnimationProcessor,String": "applyArmFreckles",
+     "AnimationProcessor,String,float,float": "applyEyeBlink",
+     "List<IBone>": "hideBones",
+     "AnimationProcessor,String,float,float,String...": "applyBoneScale"
+    },
+    "b": {
+     "em": "getAnimationFileLocation",
+     "em,AnimationProcessor": "applyBodyPositioning",
+     "AnimationProcessor,String": "setUpperHorns"
+    },
+    "c": {
+     "": "getHelmetBones",
+     "AnimationProcessor,String": "getNumberedBones"
+    },
+    "d": {
+     "": "getToeBones",
+     "AnimationProcessor,String": "applyHeadFreckles"
+    },
+    "e": {
+     "": "getLowerFleshBones",
+     "AnimationProcessor,String": "setLowerHorns"
+    },
+    "f": {
+     "": "getChestBones"
+    },
+    "h": {
+     "": "getPantsBones"
+    }
+   },
+   "fields": {}
+  },
+  "cr": {
+   "types": {},
+   "methods": {
+    "a": {
+     "em": "getModelForGirl",
+     "em,Integer,AnimationEvent": "applyBedAnimations",
+     "String[],String": "copyBoneTransforms"
+    },
+    "b": {
+     "em": "getAnimationFileLocation"
+    },
+    "c": "getHelmetBones",
+    "g": "getMainBodyBones",
+    "f": "getUpperArmorBones",
+    "h": "getLegsArmorBones",
+    "e": "getLegsFleshBones"
+   },
+   "fields": {
+    "f": "BedDoggyAnimations"
+   }
+  },
+  "cx": {
+   "types": {},
+   "methods": {
+    "a": {
+     "em,Integer,AnimationEvent": "animateHeadTracking"
+    },
+    "b": {
+     "em": "getAnimationFileLocation"
+    },
+    "c": "getArmorHelmetBones",
+    "g": "getHeadbandBones",
+    "f": "getArmorShoulderBones",
+    "h": "getArmorHipAndPantsBones",
+    "e": "getFleshBones"
+   },
+   "fields": {
+    "f": "HeadYawRotations"
+   }
+  },
+  "c0": {
+   "types": {},
+   "methods": {
+    "a": {
+     "em,Integer,AnimationEvent": "onAnimationEvent",
+     "em,AnimationProcessor,AnimationEvent": "applyAnimationTransforms"
+    },
+    "b": {
+     "em": "getAnimationLocation"
+    },
+    "c": "getHelmetBones",
+    "g": "getHeadAccessoryBones",
+    "f": "getChestBones",
+    "h": "getPantsBones",
+    "e": "getLegBones"
+   },
+   "fields": {}
+  },
+  "dg": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "getAdultParts",
+     "String": "getBoneColor",
+     "String,float,float,float": "getBoneTint",
+     "String,GeoBone": "applyBoneState",
+     "em,double,double,double,float,float": "render",
+     "boolean,ItemStack": "applyItemPose",
+     "boolean,boolean": "applyArmPose"
+    },
+    "c": {
+     "String": "isBoneVisible",
+     "": "applyModelScale"
+    },
+    "b": {
+     "Tessellator,BufferBuilder,em,f7,float": "renderGeometry"
+    },
+    "e": {
+     "em": "getTexture"
+    }
+   },
+   "fields": {
+    "B": "RenderedGoblin",
+    "C": "IsShoulderCarried",
+    "E": "IsPickingUp"
+   }
+  },
+  "am": {
+   "types": {},
+   "methods": {
+    "a": {
+     "RenderWorldLastEvent": "onRenderWorldLast",
+     "RenderHandEvent": "onRenderHand",
+     "Pre": "onRenderPlayerPre"
+    },
+    "b": "onRenderThrowingGirl"
+   },
+   "fields": {}
+  },
+  "av": {
+   "types": {},
+   "methods": {
+    "a": {
+     "GeoModel,cc,float,float,float,float,float": "render",
+     "float": "getSpinAngle",
+     "long,long,float": "lerpFullToIdleRotation",
+     "": "getCurrentColor",
+     "long,long": "lerpDimToGlowColor",
+     "BufferBuilder,GeoCube": "drawCube"
+    },
+    "b": {
+     "float": "computeSpinAngle",
+     "long,long,float": "lerpIdleToFullRotation",
+     "long,long": "lerpGlowToDimColor"
+    }
+   },
+   "fields": {
+    "e": "GlowColor",
+    "f": "DimColor",
+    "b": "FullRotation",
+    "g": "IdleRotation",
+    "h": "AnimationSpeed",
+    "a": "Mc",
+    "c": "GlowPassActive",
+    "d": "CurrentColor"
+   }
+  },
+  "q": {
+   "types": {},
+   "methods": {
+    "a": {
+     "PlayerLoggedInEvent": "onPlayerLoggedIn",
+     "PlayerLoggedOutEvent": "onPlayerLoggedOut",
+     "World,EntityPlayer,UUID": "spawnBiaPlayer",
+     "World,EntityPlayer,ei": "removePlayerGirls"
+    },
+    "b": {
+     "World,EntityPlayer,UUID": "spawnElliePlayer"
+    }
+   },
+   "fields": {
+    "a": "ElliePlayerOwnerUuid",
+    "b": "BiaPlayerOwnerUuid"
+   }
+  },
+  "l": {
+   "types": {},
+   "methods": {
+    "a": {
+     "Pre": "onRenderPlayerPre",
+     "RenderHandEvent": "onRenderHand",
+     "RenderTickEvent": "onRenderTick"
+    }
+   },
+   "fields": {
+    "b": "PlayerPos",
+    "a": "LastTickPos"
+   }
+  },
+  "et": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "preloadContainers"
+    }
+   },
+   "fields": {}
+  },
+  "dp": {
+   "types": {},
+   "methods": {
+    "a": {
+     "ItemStack": "getActionItem",
+     "": "isBusy",
+     "BufferBuilder,String,GeoBone": "applyBoneState"
+    }
+   },
+   "fields": {
+    "r": "HeadRotationX"
+   }
+  },
+  "e": {
+   "types": {},
+   "methods": {
+    "a": {
+     "CultistEntity": "getEntityTexture",
+     "CultistEntity,double": "getTextureForState",
+     "ResourceLocation": "getBobOffset",
+     "CultistEntity,float": "getFatProgress"
+    },
+    "b": {
+     "CultistEntity": "getFatFrameIndex",
+     "CultistEntity,float": "getAlpha"
+    }
+   },
+   "fields": {
+    "g": "StandingTexture",
+    "f": "PraisingTexture",
+    "a": "WalkingTexture1",
+    "b": "WalkingTexture2",
+    "e": "FatTextureDir",
+    "j": "FatFrameCount",
+    "c": "BaseScale",
+    "h": "BobSpeedFactor",
+    "d": "Mc",
+    "k": "LastTexture",
+    "i": "LastSoundTime"
+   }
+  },
+  "f0": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "getSkinTexture",
+     "GeoModel,ap,float,float,float,float,float": "render",
+     "BufferBuilder,ap,GeoBone,float,float,float,float": "renderBone",
+     "String": "shouldRenderBone"
+    }
+   },
+   "fields": {
+    "a": "Mc",
+    "b": "SkinTexture"
+   }
+  },
+  "fi": {
+   "types": {},
+   "methods": {
+    "a": {
+     "gi,double,double,double,float,float": "doRender",
+     "gi": "getEntityTexture"
+    }
+   },
+   "fields": {
+    "a": "ParticlesTexture",
+    "b": "OrbitRadius",
+    "c": "BounceRadius",
+    "d": "HeightOffset"
+   }
+  },
+  "ep": {
+   "types": {},
+   "methods": {
+    "a": {
+     "Minecraft,Tessellator,BufferBuilder,float": "draw"
+    },
+    "b": "sortByDistance"
+   },
+   "fields": {
+    "g": "Particles",
+    "a": "MaxParticles",
+    "i": "StartAnchor",
+    "d": "EndAnchor",
+    "e": "Girl",
+    "j": "SpreadRadius",
+    "h": "SegmentBreakDistance"
+   }
+  },
+  "bu": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "getScaleFactor"
+    }
+   },
+   "fields": {
+    "a": "Model",
+    "b": "ElytraTexture"
+   }
+  },
+  "dd": {
+   "types": {},
+   "methods": {
+    "a": {
+     "aj,ItemStack": "render"
+    }
+   },
+   "fields": {
+    "a": "DefaultColor"
+   }
+  },
+  "ah": {
+   "types": {},
+   "methods": {
+    "b": {
+     "LivingAttackEvent": "onGirlAttacked"
+    },
+    "a": {
+     "LivingAttackEvent": "onPlayerAttackNearGirl"
+    }
+   },
+   "fields": {}
+  },
+  "ag": {
+   "types": {},
+   "methods": {
+    "a": {
+     "c4": "getEntityTexture",
+     "c4,double,double,double,float,float": "doRender",
+     "BufferBuilder,gv,float": "drawQuad"
+    }
+   },
+   "fields": {
+    "a": "Instance",
+    "b": "ChargedColorB",
+    "c": "Mc",
+    "d": "UnchargedColor",
+    "e": "ChargedColorA"
+   }
+  },
+  "d8": {
+   "types": {},
+   "methods": {
+    "a": {
+     "GeoModel,em,float,float,float,float,float": "render",
+     "double,double,double": "renderNameLabel"
+    }
+   },
+   "fields": {}
+  },
+  "d2": {
+   "types": {},
+   "methods": {
+    "a": {
+     "boolean,ItemStack": "applyItemHoldRotation",
+     "boolean": "applyBodyTilt",
+     "boolean,boolean": "applyPostureTransform"
+    },
+    "c": "applyRenderOffset"
+   },
+   "fields": {}
+  },
+  "d0": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "getAdultParts"
+    }
+   },
+   "fields": {}
+  },
+  "ey": {
+   "types": {},
+   "methods": {
+    "a": {
+     "BreakEvent": "onBreakEvent",
+     "PlayerSPPushOutOfBlocksEvent": "onPlayerPushOutOfBlocks"
+    }
+   },
+   "fields": {
+    "a": "Radius"
+   }
+  },
+  "c2": {
+   "types": {},
+   "methods": {
+    "a": {
+     "em": "getTextureForGirl"
+    },
+    "b": {
+     "": "getDefaultTexture",
+     "em": "getAnimationResource"
+    },
+    "c": {
+     "": "getHelmetArmorBones"
+    },
+    "f": {
+     "": "getTorsoArmorBones"
+    }
+   },
+   "fields": {}
+  },
+  "db": {
+   "types": {},
+   "methods": {},
+   "fields": {}
+  },
+  "c_": {
+   "types": {},
+   "methods": {
+    "a": {
+     "ModelRenderer,float,float,float": "setRotationAngles"
+    }
+   },
+   "fields": {
+    "a": "Body",
+    "d": "RightEye",
+    "e": "LeftEye",
+    "c": "Mouth",
+    "b": "Tentacles"
+   }
+  },
+  "gl": {
+   "types": {},
+   "methods": {
+    "a": {
+     "K,V": "put",
+     "K": "remove"
+    },
+    "b": {
+     "V": "getByValue",
+     "": "clear"
+    },
+    "c": {
+     "K": "get",
+     "": "entrySet"
+    },
+    "d": "values",
+    "e": "size"
+   },
+   "fields": {
+    "b": "ForwardMap",
+    "a": "ReverseMap"
+   }
+  },
+  "f4": {
+   "types": {},
+   "methods": {
+    "a": "onEntityInteract"
+   },
+   "fields": {}
+  },
+  "cl": {
+   "types": {},
+   "methods": {
+    "c": {
+     "": "getHelmetBones"
+    },
+    "g": {
+     "": "getLeafBones"
+    },
+    "f": {
+     "": "getChestBones"
+    },
+    "h": {
+     "": "getPantsBones"
+    },
+    "e": {
+     "": "getSkinBones"
+    },
+    "b": {
+     "em": "getAnimationFile"
+    }
+   },
+   "fields": {}
+  },
+  "c6": {
+   "types": {},
+   "methods": {
+    "a": {
+     "ClientTickEvent": "onClientTick"
+    }
+   },
+   "fields": {
+    "c": "VersionUrl",
+    "a": "TwitterUrl",
+    "b": "Checked"
+   }
+  },
+  "ae": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "initOutlineShader"
+    }
+   },
+   "fields": {
+    "a": "OutlineShaderLocation",
+    "b": "ShaderGroup",
+    "c": "FinalFramebuffer"
+   }
+  },
+  "a9": {
+   "types": {},
+   "methods": {
+    "a": {
+     "ap": "getAnimationLocation"
+    },
+    "b": "getModelLocation",
+    "c": "getTextureLocation"
+   },
+   "fields": {
+    "a": "Texture"
+   }
+  },
+  "c5": {
+   "types": {},
+   "methods": {
+    "b": {
+     "em": "getAnimationFileLocation"
+    },
+    "c": {
+     "": "getHelmetBoneGroup"
+    },
+    "e": {
+     "": "getBodyFleshBoneGroup"
+    },
+    "f": {
+     "": "getChestBoneGroup"
+    },
+    "h": {
+     "": "getPantsBoneGroup"
+    }
+   },
+   "fields": {}
+  },
+  "cg": {
+   "types": {},
+   "methods": {
+    "c": "HelmetBones",
+    "f": "ChestBones",
+    "h": "PantsBones",
+    "e": "FleshBones",
+    "b": {
+     "em": "getAnimation"
+    }
+   },
+   "fields": {}
+  },
+  "b4": {
+   "types": {},
+   "methods": {
+    "a": {
+     "World,BlockPos": "placeStructure",
+     "World,BlockPos,Rotation": "placeStructureRotated"
+    }
+   },
+   "fields": {
+    "c": "TemplateName"
+   }
+  },
+  "g5": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "getColor",
+     "g5": "getIndex"
+    }
+   },
+   "fields": {
+    "b": "Color"
+   }
+  },
+  "cm": {
+   "types": {},
+   "methods": {},
+   "fields": {}
+  },
+  "o": {
+   "types": {},
+   "methods": {
+    "a": {
+     "cy": "getModelLocation",
+     "cy,Integer,AnimationEvent": "setLivingAnimations"
+    },
+    "c": "getTextureLocation",
+    "b": "getAnimationFileLocation"
+   },
+   "fields": {}
+  },
+  "by": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "getColor",
+     "by": "getColorIndex"
+    }
+   },
+   "fields": {
+    "a": "Color"
+   }
+  },
+  "hn": {
+   "types": {},
+   "methods": {
+    "a": {
+     "c7,ItemStack": "render",
+     "ItemStack": "getEggColor"
+    }
+   },
+   "fields": {
+    "a": "CurrentStack"
+   }
+  },
+  "cp": {
+   "types": {},
+   "methods": {
+    "a": "render"
+   },
+   "fields": {
+    "a": "RenderEntity",
+    "b": "ShellColor"
+   }
+  },
+  "cf": {
+   "types": {},
+   "methods": {
+    "a": {
+     "ModelRenderer,float,float,float": "setRotationAngles",
+     "": "getRootModel"
+    }
+   },
+   "fields": {
+    "a": "Root",
+    "b": "ChildPart",
+    "c": "SparePart"
+   }
+  },
+  "go": {
+   "types": {},
+   "methods": {
+    "a": {
+     "ModelRenderer,float,float,float": "setRotationAngles",
+     "": "getRootModel"
+    }
+   },
+   "fields": {
+    "a": "Root"
+   }
+  },
+  "fv": {
+   "types": {},
+   "methods": {
+    "a": {
+     "ModelRenderer,float,float,float": "setRotationAngles",
+     "": "getRootModel"
+    }
+   },
+   "fields": {
+    "a": "Root"
+   }
+  },
+  "f1": {
+   "types": {},
+   "methods": {
+    "a": {
+     "ModelRenderer,float,float,float": "setRotationAngles",
+     "": "getRootModel"
+    }
+   },
+   "fields": {
+    "a": "Root"
+   }
+  },
+  "cq": {
+   "types": {},
+   "methods": {
+    "a": {
+     "ModelRenderer,float,float,float": "setRotationAngles",
+     "": "getRootModel"
+    }
+   },
+   "fields": {
+    "a": "Root"
+   }
+  },
+  "bf": {
+   "types": {},
+   "methods": {
+    "a": {
+     "ModelRenderer,float,float,float": "setRotationAngles",
+     "": "getRootModel"
+    }
+   },
+   "fields": {
+    "a": "Root"
+   }
+  },
+  "a7": {
+   "types": {},
+   "methods": {
+    "a": {
+     "ModelRenderer,float,float,float": "setRotationAngles",
+     "": "getRootModel"
+    }
+   },
+   "fields": {
+    "a": "Root"
+   }
+  },
+  "a5": {
+   "types": {},
+   "methods": {
+    "a": {
+     "ModelRenderer,float,float,float": "setRotationAngles",
+     "": "getRootModel"
+    }
+   },
+   "fields": {
+    "a": "Root"
+   }
+  },
+  "a0": {
+   "types": {},
+   "methods": {
+    "a": {
+     "ModelRenderer,float,float,float": "setRotationAngles",
+     "": "getRootModel"
+    }
+   },
+   "fields": {
+    "a": "Root"
+   }
+  },
+  "a4": {
+   "types": {},
+   "methods": {
+    "a": {
+     "ay,float,float,float,float,float,float,float": "render"
+    }
+   },
+   "fields": {
+    "a": "Model",
+    "b": "Renderer"
+   }
+  },
+  "gs": {
+   "types": {},
+   "methods": {
+    "c": "getHelmetBones",
+    "g": "getHeadAccessoryBones",
+    "f": "getChestArmorBones",
+    "a": "getFleshTorsoBones",
+    "h": "getPantsArmorBones",
+    "e": "getFleshLegsBones",
+    "b": "getBootsArmorBones",
+    "d": "getFleshFeetBones"
+   },
+   "fields": {}
+  },
+  "e8": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "a": "Glass",
+    "b": "Cube"
+   }
+  },
+  "bp": {
+   "types": {},
+   "methods": {
+    "a": {
+     "ay,double,double,double,float,float": "render",
+     "ay,float": "preRenderCallback",
+     "ay": "getEntityTexture"
+    }
+   },
+   "fields": {
+    "a": "SlimeTexture"
+   }
+  },
+  "c1": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "a": "BoneCache"
+   }
+  },
+  "fr": {
+   "types": {},
+   "methods": {
+    "a": {
+     "ClientTickEvent": "onClientTick"
+    }
+   },
+   "fields": {
+    "a": "HasShown"
+   }
+  },
+  "f7": {
+   "types": {},
+   "methods": {
+    "a": {
+     "f7": "add",
+     "float": "scale"
+    },
+    "b": {
+     "f7": "subtract"
+    }
+   },
+   "fields": {
+    "a": "X",
+    "b": "Z",
+    "c": "Y",
+    "d": "ZERO"
+   }
+  },
+  "e1": {
+   "types": {},
+   "methods": {
+    "a": {
+     "int,int": "distanceTo"
+    }
+   },
+   "fields": {
+    "a": "ZERO",
+    "b": "Y",
+    "c": "X"
+   }
+  },
+  "g8": {
+   "types": {},
+   "methods": {
+    "a": {
+     "g8": "subtract"
+    }
+   },
+   "fields": {
+    "a": "Y",
+    "b": "X"
+   }
+  },
+  "f2": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "a": "Y",
+    "b": "W",
+    "c": "Z",
+    "d": "X"
+   }
+  },
+  "bm": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "a": "Y",
+    "b": "ZERO",
+    "c": "X"
+   }
+  },
+  "gv": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "a": "R",
+    "b": "A",
+    "c": "B",
+    "d": "G"
+   }
+  },
+  "dt": {
+   "types": {},
+   "methods": {
+    "a": "getFilteredBoneNames"
+   },
+   "fields": {}
+  },
+  "aj": {
+   "types": {},
+   "methods": {
+    "a": "registerItem"
+   },
+   "fields": {
+    "a": "Factory",
+    "b": "Instance"
+   }
+  },
+  "bz": {
+   "types": {},
+   "methods": {},
+   "fields": {}
+  },
+  "k": {
+   "types": {},
+   "methods": {
+    "a": {
+     "i": "getAnimationLocation"
+    },
+    "b": {
+     "i": "getModelLocation"
+    },
+    "c": {
+     "i": "getTextureLocation"
+    }
+   },
+   "fields": {}
+  },
+  "f6": {
+   "types": {},
+   "methods": {
+    "a": {
+     "c7": "getModelLocation"
+    },
+    "b": {
+     "c7": "getTextureLocation"
+    },
+    "c": {
+     "c7": "getAnimationLocation"
+    }
+   },
+   "fields": {}
+  },
+  "d1": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "getFilteredBoneNames"
+    }
+   },
+   "fields": {}
+  },
+  "du": {
+   "types": {},
+   "methods": {},
+   "fields": {}
+  },
+  "dn": {
+   "types": {},
+   "methods": {},
+   "fields": {}
+  },
+  "dk": {
+   "types": {},
+   "methods": {},
+   "fields": {}
+  },
+  "bc": {
+   "types": {},
+   "methods": {
+    "b": "getModelLocation",
+    "a": "getTextureLocation",
+    "c": "getAnimationFileLocation"
+   },
+   "fields": {}
+  },
+  "as": {
+   "types": {},
+   "methods": {
+    "b": "getModelLocation",
+    "a": "getTextureLocation",
+    "c": "getAnimationFileLocation"
+   },
+   "fields": {}
+  },
+  "a2": {
+   "types": {},
+   "methods": {
+    "c": "getModelLocation",
+    "b": "getTextureLocation",
+    "a": "getAnimationFileLocation"
+   },
+   "fields": {}
+  },
+  "eo": {
+   "types": {},
+   "methods": {
+    "a": {
+     "LivingDeathEvent": "onGirlDeath"
+    }
+   },
+   "fields": {}
+  },
+  "ht": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "a": "Instance"
+   }
+  },
+  "d7": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "a": "Placement",
+    "b": "ServerWorld"
+   }
+  },
+  "f5": {
+   "types": {},
+   "methods": {},
+   "fields": {}
+  },
+  "dz": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "a": "EllieLootTable",
+    "b": "SlimeLootTable",
+    "c": "BiaLootTable",
+    "d": "JennyLootTable"
+   }
+  },
+  "b7": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "isVisible"
+    },
+    "b": {
+     "": "hasMangleCompanion"
+    },
+    "c": {
+     "": "shouldHideBody"
+    },
+    "d": {
+     "": "getPoseOffsets"
+    }
+   },
+   "fields": {}
+  },
+  "bq": {
+   "types": {},
+   "methods": {
+    "a": {
+     "GuiOpenEvent": "onGuiOpen"
+    }
+   },
+   "fields": {}
+  },
+  "g3.a": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "b": "Offset",
+    "a": "TemplateName"
+   }
+  },
+  "g3.b": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "f": "TribeName",
+    "b": "Generator",
+    "e": "Biomes",
+    "c": "CenterOffset",
+    "d": "Enabled"
+   }
+  }
+ },
+ "entities": {
+  "em": {
+   "types": {
+    "a": "WalkState"
+   },
+   "methods": {
+    "y": "getCurrentAction",
+    "ae": "getSexPlayerUuid",
+    "o": "getTargetPos",
+    "w": "getCustomName",
+    "ab": "getDisplayName",
+    "ad": "getAllGirls",
+    "q": "getWalkState",
+    "z": "getSexPlayer",
+    "ag": "resetTickOffset",
+    "r": "resetAimTarget",
+    "af": "getSelf",
+    "l": "advanceAnimationState",
+    "v": "getScale",
+    "f": {
+     "": "getGirlUuid",
+     "int": "setOutfitIndex",
+     "UUID": "unregisterRemote",
+     "String": "setCustomModel"
+    },
+    "e": {
+     "UUID": "handleGirlUuidEvent",
+     "": "isLocalPlayerNearby",
+     "String": "handleModelCommand"
+    },
+    "c": {
+     "Vec3d": "setTargetPos",
+     "EntityPlayer": "getByPlayer",
+     "UUID": "getByUuid",
+     "": "getDisplayName",
+     "List<Integer>": "colorsToString",
+     "String": "stringToColors"
+    },
+    "g": {
+     "": "noop",
+     "UUID": "getGirlsByOwner",
+     "String": "setCustomName",
+     "int": "getSlotColor"
+    },
+    "h": {
+     "UUID": "getModelColors",
+     "": "isTracked"
+    },
+    "ah": "getOutfitIndex",
+    "n": "isOwnedByLocalPlayer",
+    "p": "initAnimationControllers",
+    "x": "resetMasterAndWalkSpeed",
+    "aa": "getPlayerFrontPos",
+    "j": {
+     "": "getRenderPosition",
+     "UUID": "teleportPlayerInFront"
+    },
+    "a": {
+     "UUID": "getServerSideByUuid",
+     "Entity": "isGirlEntity",
+     "HashSet<String>": "joinModelNames",
+     "boolean": "setShouldBeAtTargetPos",
+     "EntityPlayer,em": "openActionMenu",
+     "EntityPlayer,em,String[],boolean": "openActionMenu",
+     "EntityPlayer,em,String[],ItemStack[],boolean": "openActionMenuWithItems",
+     "EnumParticleTypes,em": "spawnParticles",
+     "EnumParticleTypes,em,int": "spawnParticles",
+     "em,String": "sendMessageToNearbyPlayers",
+     "em,SoundEvent,boolean": "playSound",
+     "em,SoundEvent": "playSound",
+     "em,SoundEvent[]": "playSoundRandom",
+     "em,SoundEvent[],boolean": "playSoundRandom",
+     "UUID,Boolean": "getByUuidForSide"
+    },
+    "b": {
+     "UUID": "getClientSideByUuid",
+     "boolean": "setTracked",
+     "String": "getModelBone",
+     "GirlAnimationState": "setCurrentAction"
+    },
+    "d": {
+     "EntityPlayer": "getByPlayerUuid"
+    },
+    "i": {
+     "": "getRenderLabelOffset",
+     "UUID": "getGirlByUuid"
+    },
+    "k": {
+     "UUID": "advanceAnimationState"
+    }
+   },
+   "fields": {
+    "b": "CustomModelKey",
+    "c": "CustomNameKey",
+    "e": "TargetPosKey",
+    "w": "RotationYawKey",
+    "u": "GirlUuidKey",
+    "D": "OutfitIndexKey",
+    "J": "CurrentActionKey",
+    "h": "BlowjobStageKey",
+    "y": "SexPlayerUuidKey",
+    "v": "MasterUuidKey",
+    "G": "BusyKey",
+    "k": "AllGirls",
+    "z": "WanderAI",
+    "o": "WatchPlayerAI",
+    "m": "DataManager",
+    "f": "Navigation",
+    "l": "HomePos",
+    "x": "AnchorPoints",
+    "p": "AnchorNames",
+    "d": "OutfitData",
+    "I": "PaymentItems",
+    "C": "ActionController",
+    "E": "MovementController",
+    "s": "EyesController",
+    "B": "AimTarget",
+    "r": "AimYaw",
+    "q": "EnderPearl",
+    "i": "Tracked",
+    "g": "Factory",
+    "a": "WalkStateKey",
+    "H": "BoneProcessor",
+    "A": "AnimRanges"
+   }
+  },
+  "e2": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "Q": "Inventory",
+    "X": "HelmetKey",
+    "T": "ChestKey",
+    "U": "PantsKey",
+    "W": "BootsKey",
+    "M": "ModeKey",
+    "N": "IsDowned"
+   }
+  },
+  "e4": {
+   "types": {},
+   "methods": {
+    "a": {
+     "em": "getAttributeStrings",
+     "StringBuilder,int": "appendRandomNumber"
+    },
+    "b": {
+     "StringBuilder": "appendRandomGauss",
+     "StringBuilder,int": "appendRandomBelow"
+    },
+    "c": {
+     "StringBuilder,int": "appendZeroPaddedNumber"
+    }
+   },
+   "fields": {
+    "N": "TribeColorKey"
+   }
+  },
+  "fo": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "L": "Inventory"
+   }
+  },
+  "ei": {
+   "types": {},
+   "methods": {
+    "g": {
+     "EntityPlayer": "getByPlayer"
+    },
+    "e": {
+     "EntityPlayer": "isPlayerGirl",
+     "UUID": "hasGirl"
+    },
+    "d": {
+     "UUID": "getByUuid"
+    },
+    "a": {
+     "UUID": "getServerSideByUuid"
+    },
+    "m": {
+     "": "getBoundPlayerUuid"
+    },
+    "k": {
+     "": "getBoundPlayer"
+    },
+    "f": {
+     "EntityPlayer": "syncEquipment",
+     "": "isBoundToLocalPlayer"
+    },
+    "p": {
+     "": "canStartInteraction"
+    },
+    "l": {
+     "": "isInteractionAllowed"
+    },
+    "b": {
+     "EntityPlayer": "startInteraction"
+    }
+   },
+   "fields": {
+    "aa": "CustomModelTag",
+    "ae": "GirlSpecificTag",
+    "ai": "BoundPlayerKey",
+    "al": "PlayerGirls",
+    "Z": "AllPlayerGirls",
+    "ab": "Accept",
+    "ag": "FeatureEnabled",
+    "an": "JoinTickCounter"
+   }
+  },
+  "ax": {
+   "types": {
+    "a": "HomeData",
+    "b": "TribeWorldData"
+   },
+   "methods": {
+    "a": {
+     "": "clearAll",
+     "World,Vec3d": "createTribe",
+     "UUID,UUID": "setOwnerUuid",
+     "UUID,EyeAndKoboldColor": "registerTribe",
+     "BlockPos": "isBedBlock",
+     "ff": "getBedHomePositions",
+     "ff,BlockPos": "setBedHomePosition",
+     "UUID,ff": "removeKobold",
+     "UUID,boolean": "setHasTribe",
+     "UUID": "findTribeUuid",
+     "UUID,World": "getLoadedHomes",
+     "UUID,BlockPos": "addSpawnPosition",
+     "UUID,UUID,BlockPos": "putHome",
+     "UUID,bs": "removeAnchorAndGetSpawnPositions",
+     "UUID,EntityLivingBase": "addNearbyEntity"
+    },
+    "b": {
+     "UUID": "getTribeMasterUuid",
+     "UUID,bs": "addAnchor",
+     "ff": "clearBedHomePosition",
+     "UUID,ff": "removeWorkerAnchor",
+     "UUID,BlockPos": "setHomePos",
+     "UUID,EntityLivingBase": "removeNearbyEntity"
+    },
+    "c": {
+     "UUID": "hasTribe",
+     "UUID,ff": "registerKoboldInTribe",
+     "UUID,BlockPos": "findAndRemoveAnchorAt"
+    },
+    "d": {
+     "UUID,ff": "setKoboldEntity",
+     "UUID,BlockPos": "removeNearbyPosition",
+     "UUID": "getTribeAreaPositions"
+    },
+    "e": {
+     "UUID,ff": "isKoboldOfGirl",
+     "UUID,BlockPos": "removeSpawnPosition",
+     "UUID": "getNearbyEntities"
+    },
+    "f": {
+     "UUID": "getKoboldEntity",
+     "UUID,BlockPos": "addNearbyPosition"
+    },
+    "g": {
+     "UUID": "hasKobold"
+    },
+    "h": {
+     "UUID": "getKoboldCount"
+    },
+    "i": {
+     "UUID": "getActivityState"
+    },
+    "j": {
+     "UUID": "getSpawnPositions"
+    },
+    "k": {
+     "UUID": "updateKoboldEntity"
+    },
+    "l": {
+     "UUID": "getTribeColor"
+    },
+    "m": {
+     "UUID": "getHomePos"
+    },
+    "n": {
+     "UUID": "getKobolds"
+    },
+    "o": {
+     "UUID": "hasHomeData"
+    },
+    "p": {
+     "UUID": "getTreeClusters"
+    },
+    "q": {
+     "UUID": "getNearbyPositions"
+    }
+   },
+   "fields": {}
+  },
+  "br": {
+   "types": {
+    "a": "ChatListener"
+   },
+   "methods": {
+    "l": "isWhitelistedByFile",
+    "j": "getGeoModel",
+    "k": "getModelResourceLocation",
+    "i": {
+     "": "getModelCache",
+     "String": "getBaseScale"
+    },
+    "f": {
+     "": "loadWhitelistFile",
+     "String": "isModelRegistered"
+    },
+    "b": {
+     "boolean": "reloadModels",
+     "Level,String": "log",
+     "": "isServerWhitelisted",
+     "String": "getModelData"
+    },
+    "a": {
+     "boolean": "clearModelCache",
+     "String,String": "validateModelFiles",
+     "String,File": "registerTexture",
+     "File": "readGeoModel",
+     "String,String,boolean": "registerModel",
+     "String": "getAllowedGirls",
+     "em": "getModelNames",
+     "": "requestModelChecksums"
+    },
+    "h": {
+     "": "getModelsPath",
+     "String": "whitelistServer"
+    },
+    "c": {
+     "": "clearGeoModelCache",
+     "boolean": "loadModels",
+     "String": "getModelTexture"
+    },
+    "d": {
+     "": "getClientModelsPath"
+    },
+    "g": {
+     "": "getServerAddress",
+     "String": "getModelSkinTexture"
+    },
+    "e": {
+     "": "getModelChecksums",
+     "String": "getBodySlot"
+    }
+   },
+   "fields": {},
+   "a": {
+    "types": {},
+    "methods": {},
+    "fields": {}
+   }
+  },
+  "b6": {
+   "types": {},
+   "methods": {
+    "a": {
+     "Vec3d,Vec3d,int": "stepTowards",
+     "double,double,double": "cosineLerp",
+     "float,float,float": "lerp",
+     "float,float,double": "lerpAngleRadians",
+     "Vec3d,Vec3d,double": "lerpVec3d",
+     "Vec3f,Vec3f,double": "lerpVec3f",
+     "Vec3i,Vec3i,double": "lerpVec3i",
+     "RgbaColor4,RgbaColor4,double": "lerpColor",
+     "double": "easeInCubic"
+    },
+    "b": {
+     "float,float,double": "lerpAngleDegrees",
+     "double": "easeOutSine",
+     "double,double,double": "lerp"
+    },
+    "c": "EaseOutBack",
+    "d": "EaseInBack",
+    "e": "EaseOutQuart",
+    "f": "EaseOutSine",
+    "g": "EaseOutCubic",
+    "h": "EaseInOutSine"
+   },
+   "fields": {}
+  },
+  "d_": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "e": "LineTexture",
+    "l": "TextureCache",
+    "f": "BodyColor",
+    "o": "AccentColor",
+    "m": "GlowScale",
+    "i": "Mc",
+    "j": "RenderEntity",
+    "g": "ModelMatrix",
+    "h": "Initialized",
+    "p": "ProcessedBones",
+    "q": "CachedBone"
+   }
+  },
+  "dm": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "v": "RenderTrigger",
+    "s": "MainHandStack",
+    "x": "OffHandStack",
+    "w": "CurrentGirl",
+    "y": "RenderTick"
+   }
+  },
+  "d9": {
+   "types": {},
+   "methods": {
+    "e": "clearColorCache"
+   },
+   "fields": {
+    "z": "DefaultColor",
+    "A": "ColorCache"
+   }
+  },
+  "cv": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "b": "BraStringBones",
+    "e": "CamBones",
+    "d": "RenderBraStrings",
+    "c": "TextureLayers",
+    "a": "Mc"
+   }
+  },
+  "d6": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "r": "DefaultColor",
+    "s": "ColorCache"
+   }
+  },
+  "ax.a": {
+   "types": {},
+   "methods": {
+    "a": {
+     "UUID": "setOwnerUuid",
+     "": "getOwnerUuid",
+     "UUID,BlockPos": "putHome",
+     "EntityLivingBase": "addNearbyEntity",
+     "BlockPos": "setHomePos",
+     "bs": "addAnchor",
+     "fm": "setActivityState",
+     "ff": "addKobold"
+    },
+    "b": {
+     "bs": "removeAnchor",
+     "UUID": "removeHome",
+     "EntityLivingBase": "removeNearbyEntity",
+     "ff": "removeKobold",
+     "": "getNearestKobold"
+    },
+    "c": {
+     "": "getNearbyEntities"
+    },
+    "d": {
+     "": "getHomeMap"
+    },
+    "e": {
+     "": "getActivityState"
+    },
+    "f": {
+     "": "getOccupiedCount"
+    },
+    "g": {
+     "": "getHomePos"
+    }
+   },
+   "fields": {
+    "m": "GirlUuid",
+    "e": "OwnerUuid",
+    "g": "KoboldEntity",
+    "a": "Kobolds",
+    "h": "TribeColor",
+    "d": "State",
+    "l": "HomePos",
+    "f": "AnchorEntities",
+    "j": "NearbyEntities",
+    "i": "NearbyPositions",
+    "b": "SpawnPositions",
+    "k": "HomeMap",
+    "c": "HasTribe"
+   }
+  },
+  "ax.b": {
+   "types": {},
+   "methods": {
+    "b": "TribeData"
+   },
+   "fields": {}
+  },
+  "fy": {
+   "types": {},
+   "methods": {
+    "a": {
+     "String": "getByName",
+     "Entity": "getByEntity"
+    }
+   },
+   "fields": {}
+  },
+  "fe": {
+   "types": {
+    "b": "SlotType"
+   },
+   "methods": {},
+   "fields": {
+    "a": "Kind"
+   }
+  },
+  "fe.b": {
+   "types": {},
+   "methods": {
+    "a": {
+     "int": "getBySlotIndex"
+    }
+   },
+   "fields": {
+    "id": "SlotIndex"
+   }
+  },
+  "be": {
+   "types": {},
+   "methods": {
+    "a": {
+     "double,double": "angleDifference",
+     "Vec3d,Vec3d": "rotationBetween",
+     "String": "copyToClipboard",
+     "double,double,double": "isInRange",
+     "int": "weightedRandomIndex",
+     "": "randomSign",
+     "float,boolean": "randomJitter",
+     "float,float,float": "clampStep",
+     "double": "roundToInt",
+     "int,Runnable": "runAfterDelay"
+    },
+    "b": {
+     "String": "capitalize",
+     "float,float,float": "clamp",
+     "double,double,double": "clamp"
+    }
+   },
+   "fields": {}
+  },
+  "ai": {
+   "types": {},
+   "methods": {
+    "e": {
+     "": "getGirlUuid"
+    }
+   },
+   "fields": {}
+  },
+  "c3": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "getFilteredBoneNames",
+     "HashSet<String>,GeoBone": "isBoneIncluded"
+    }
+   },
+   "fields": {}
+  },
+  "cy": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "getModelName"
+    }
+   },
+   "fields": {
+    "b": "ModelNameKey",
+    "a": "ModelFolderKey",
+    "g": "AnimFactory",
+    "c": "RenderStack",
+    "d": "SlotFilter"
+   }
+  },
+  "eh": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "getColor"
+    }
+   },
+   "fields": {}
+  },
+  "ar": {
+   "types": {},
+   "methods": {
+    "a": {
+     "GirlEntity": "getAnchorPos"
+    }
+   },
+   "fields": {}
+  },
+  "an": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "advance",
+     "BlockPos,BlockPos": "getRayTracedBlocks"
+    }
+   },
+   "fields": {
+    "h": "WorldObj",
+    "d": "PrevPos",
+    "f": "CurrentPos",
+    "e": "Velocity",
+    "a": "Gravity"
+   }
+  },
+  "dh": {
+   "types": {},
+   "methods": {
+    "a": {
+     "GirlEntity,float": "renderGirl",
+     "GirlEntity,BufferBuilder,Tessellator": "renderGirlGeometry",
+     "GirlEntity,BufferBuilder,int,int": "drawGirlShadow",
+     "GirlEntity,String,GeoBone,boolean": "applyModelPartColor",
+     "GalathNpc,float,EntityLivingBase": "renderNpcWithLiving",
+     "GirlEntity,BufferBuilder,Tessellator,float": "renderGirlGeometryWithAlpha",
+     "em": "isInThreesomeAnimation",
+     "String": "parseSkirtBoneIndex"
+    },
+    "b": {
+     "GirlEntity,float": "rotateHeadToTwin",
+     "ManglelieNpc": "isManglelieNpc"
+    }
+   },
+   "fields": {
+    "u": "Initialized"
+   }
+  },
+  "da": {
+   "types": {},
+   "methods": {
+    "a": {
+     "GirlEntity,float": "renderGirl"
+    }
+   },
+   "fields": {
+    "w": "BodyTexture",
+    "r": "Initialized",
+    "s": "SavedHeadYaw"
+   }
+  },
+  "f8": {
+   "types": {
+    "b": "ArrowImpactHandler"
+   },
+   "methods": {
+    "c": {
+     "boolean": "setClaimed",
+     "": "getDisplayName"
+    },
+    "r": "isClaimed",
+    "v": "getMommyUuid",
+    "t": "isUnclaimed",
+    "a": {
+     "UUID": "setMommyUuid",
+     "boolean": "getMommy",
+     "long": "setAttackTime",
+     "Entity,f_": "isTargetBlocked",
+     "em,boolean": "getMommy"
+    },
+    "e": {
+     "": "getAttackTime",
+     "UUID": "handleGirlUuidEvent"
+    },
+    "b": {
+     "fp": "setAnimationState",
+     "": "getTargetEntity"
+    },
+    "j": "bindPendingMommy",
+    "q": "setDespawned",
+    "aX": "getDespawnPending",
+    "aZ": "setDespawnPending"
+   },
+   "fields": {
+    "ad": "MommyUuidKey",
+    "ap": "ClaimedKey",
+    "ab": "TargetEntityIdKey",
+    "al": "AttackTimeKey",
+    "ar": "FleeingKey",
+    "ac": "MommyTagKey",
+    "Q": "PendingMommyUuid",
+    "aq": "IsWild",
+    "S": "Despawned",
+    "U": "ArrowFired",
+    "aa": "DespawnPending",
+    "Z": "NameInitialized",
+    "af": "VerticalImpulse"
+   }
+  },
+  "f8.b": {
+   "types": {},
+   "methods": {
+    "a": {
+     "ProjectileImpactEvent.Arrow": "onArrowImpact"
+    }
+   },
+   "fields": {}
+  },
+  "ff": {
+   "types": {
+    "c": "DeathLootHandler"
+   },
+   "methods": {
+    "j": "getRandomBodySize",
+    "a": {
+     "World,UUID": "create",
+     "World,UUID,float": "create"
+    },
+    "c": "getDisplayName",
+    "i": "getScaleOffset"
+   },
+   "fields": {
+    "aE": "BodySizeKey",
+    "T": "CustomNameKey",
+    "aU": "TribeNameKey",
+    "aL": "BoundPlayerUuidKey",
+    "N": "BodyColorKey",
+    "K": "EyeColorKey",
+    "X": "Inventory",
+    "aY": "MemberData",
+    "aJ": "DefaultTribeColor",
+    "af": "HealthScale",
+    "an": "IdleChatLines",
+    "ai": "ChatDelayTicks",
+    "ap": "WanderTargetPos",
+    "ad": "CarriedItem",
+    "ak": "HasTribeKey"
+   }
+  },
+  "ff.c": {
+   "types": {},
+   "methods": {
+    "a": {
+     "LivingDeathEvent": "onLivingDeath"
+    },
+    "b": {
+     "LivingHurtEvent": "onLivingHurt"
+    }
+   },
+   "fields": {
+    "a": "DeathCount"
+   }
+  },
+  "f_": {
+   "types": {
+    "a": "EventHandler"
+   },
+   "methods": {
+    "a": {
+     "f_,float": "rotateToTarget",
+     "em,boolean": "getChildMangle",
+     "UUID": "setChildMangleUuid",
+     "boolean": "getChildMangle",
+     "int": "setSpecialState",
+     "EntityLivingBase": "setTargetEntity",
+     "String,UUID": "onInteractionCommand",
+     "BlockPos,World": "isSpawnPositionFree"
+    },
+    "aF": "getChildMangleUuid",
+    "M": "getTargetEntity",
+    "ar": "getCombatTargetId",
+    "az": "getSpecialState",
+    "e": {
+     "Vec3d": "setManglePos"
+    },
+    "B": {
+     "": "getManglePos"
+    },
+    "t": "resetMangle",
+    "ax": "getAttackPlayerUuid",
+    "d": {
+     "Vec3d": "addVelocity"
+    }
+   },
+   "fields": {
+    "a4": "ChildMangleUuidKey",
+    "bP": "IsKnockedOutKey",
+    "L": "IsParalyzedKey",
+    "bZ": "CurrentDeathEvent",
+    "aa": "BodyColor",
+    "bz": "RightBallOffset",
+    "bC": "LeftBallOffset",
+    "bN": "RightBallActiveKey",
+    "b7": "LeftBallActiveKey",
+    "ay": "FlipSideKey",
+    "bq": "TargetEntityIdKey",
+    "aP": "CombatTargetIdKey",
+    "b8": "ManglePosKey"
+   }
+  },
+  "f_.a": {
+   "types": {},
+   "methods": {
+    "a": {
+     "LivingSpawnEvent.CheckSpawn": "onCheckSpawn",
+     "InputEvent.KeyInputEvent": "onKeyInput",
+     "EntityMountEvent": "onMount",
+     "LivingDeathEvent": "onLivingDeath",
+     "PlayerEvent.PlayerRespawnEvent": "onRespawn",
+     "RenderWorldLastEvent": "onRenderWorldLast",
+     "PlayerWakeUpEvent": "onWakeUp"
+    },
+    "b": {
+     "f_": "isNearPlayer"
+    }
+   },
+   "fields": {}
+  },
+  "e3": {
+   "types": {
+    "c": "EventHandler"
+   },
+   "methods": {
+    "d": {
+     "UUID": "playerHasSingleGoblin",
+     "em": "getBoundPlayerPitch"
+    },
+    "e": {
+     "em": "syncThrowState"
+    },
+    "b": {
+     "em": "getBoundPlayerPos",
+     "Vec3d,float": "rotateVec3dYaw",
+     "StringBuilder": "generateRandomAppearanceKey"
+    },
+    "c": {
+     "em": "getBoundPlayerYaw"
+    },
+    "a": {
+     "em": "handlePickUp",
+     "Vec3d,float,float": "rotateVec3d",
+     "StringBuilder,int": "generateAppearanceKey"
+    }
+   },
+   "fields": {
+    "Q": "BoundPlayerUuidKey",
+    "aK": "QueenNameKey",
+    "a0": "HeldItemKey",
+    "aC": "TamedKey",
+    "aV": "PregnantKey",
+    "ax": "DefaultTribeColor",
+    "ac": "ThroneRot",
+    "av": "ImpregnationTick",
+    "al": "ThronePos",
+    "ab": "NearbyGoblins",
+    "ar": "FadeAlpha",
+    "ai": "LastAmbientTicks",
+    "ah": "SeatSearchBox",
+    "aM": "GuardSeat0",
+    "U": "GuardSeat90",
+    "aB": "GuardSeat180",
+    "ao": "GuardSeat270",
+    "af": "ThroneSeat0",
+    "au": "ThroneSeat90",
+    "W": "ThroneSeat180",
+    "at": "ThroneSeat270",
+    "aT": "PartnerPosA",
+    "ap": "PartnerPosB",
+    "as": "PartnerPosC"
+   }
+  },
+  "e3.c": {
+   "types": {},
+   "methods": {
+    "a": {
+     "TickEvent.ClientTickEvent": "onClientTick",
+     "PlayerEvent.PlayerChangedDimensionEvent": "onChangedDimension"
+    }
+   },
+   "fields": {
+    "a": "MinecraftInstance"
+   }
+  },
+  "h8": {
+   "types": {},
+   "methods": {
+    "b": {
+     "f_": "start"
+    },
+    "c": {
+     "f_": "isDone"
+    },
+    "a": {
+     "f_": "apply"
+    },
+    "e": {
+     "f_": "tick"
+    },
+    "d": {
+     "f_": "canDo"
+    }
+   },
+   "fields": {
+    "a": "CanDoPredicate",
+    "f": "StartAction",
+    "c": "ApplyAction",
+    "b": "TickAction",
+    "d": "ConditionalPredicate"
+   }
+  },
+  "eq": {
+   "types": {
+    "a": "EventHandler"
+   },
+   "methods": {},
+   "fields": {}
+  },
+  "eq.a": {
+   "types": {},
+   "methods": {
+    "a": {
+     "RenderHandEvent": "onRenderHand"
+    }
+   },
+   "fields": {
+    "a": "TrackedPlayers"
+   }
+  },
+  "eb": {
+   "types": {
+    "a": "EventHandler"
+   },
+   "methods": {
+    "a": {
+     "EntityPlayer,em,String[],ItemStack[]": "openActionMenuWithItems"
+    }
+   },
+   "fields": {
+    "af": "IsBoundKey",
+    "ag": "HeldItemStackKey",
+    "ap": "FamiliarSpawnScale",
+    "az": "ActiveItemStackKey",
+    "ao": "HeldRodStack",
+    "av": "Familiar",
+    "aj": "FamiliarAgeTicks",
+    "ai": "MoveTargetPos",
+    "au": "CurrentPath",
+    "an": "VisitedPositions",
+    "al": "FamiliarCheckTime"
+   }
+  },
+  "eb.a": {
+   "types": {},
+   "methods": {
+    "a": {
+     "EntityJoinWorldEvent": "onEntityJoinWorld"
+    }
+   },
+   "fields": {}
+  },
+  "ev": {
+   "fields": {
+    "N": "SpawnItemStack",
+    "U": "ConversionTimer",
+    "P": "PlayIntroAnim",
+    "S": "SpawnPortalsPending",
+    "R": "MenuOpen",
+    "O": "EntitySize",
+    "K": "TailBoneCount",
+    "Q": "PortalParticleCount"
+   },
+   "methods": {
+    "i": "getRenderLabelOffset",
+    "f": "isFirstTimeWithItem",
+    "ac": "onActionGuiClosed",
+    "b": {
+     "EntityPlayer": "openActionMenu",
+     "": "spawnTailParticles"
+    },
+    "a": {
+     "String,UUID": "performAction",
+     "EntityPlayer,em,String[],boolean": "openActionMenu"
+    }
+   },
+   "types": {}
+  },
+  "e0": {
+   "fields": {
+    "Y": "SeekingBed",
+    "ag": "WalkTicks",
+    "af": "ArrivedAtBed",
+    "Z": "SitTicks",
+    "ab": "FirstTick",
+    "ac": "ActionTimer",
+    "aa": "MenuPending",
+    "ai": "BedSideYaws",
+    "ad": "BedSidePositions",
+    "ah": "DanceStep"
+   },
+   "methods": {
+    "i": "getRenderLabelOffset",
+    "V": "resetActionTimer",
+    "g": "initAITasks",
+    "a": {
+     "UUID": "acceptPlayer",
+     "EntityPlayer,em,String[],boolean": "openActionMenu"
+    }
+   },
+   "types": {}
+  },
+  "el": {
+   "fields": {
+    "ad": "SoundVolume",
+    "ak": "CarryIntroTicks",
+    "ae": "PendingMenu",
+    "ac": "PhysicsInit",
+    "af": "StartSexCountdown",
+    "Y": "HugCountdown",
+    "al": "SitCountdown",
+    "ai": "HugSitCountdown",
+    "ah": "IsSitting",
+    "am": "BedTarget",
+    "Z": "DashCountdown"
+   },
+   "methods": {
+    "h": "updateCarryHud",
+    "e": "updateCarryIntro",
+    "o": "initPhysics",
+    "d": {
+     "EntityPlayer": "getByPlayerUuid"
+    },
+    "a": {
+     "EntityPlayer,em,String[],boolean": "openActionMenu"
+    }
+   },
+   "types": {}
+  },
+  "ex": {
+   "fields": {
+    "Y": "HornyPotionActive",
+    "Z": "SeekingDoggyPos",
+    "ab": "Teleporting",
+    "af": "StartDoggyPending",
+    "ac": "TeleportTicks",
+    "ad": "SeekTicks"
+   },
+   "methods": {
+    "i": "getRenderLabelOffset",
+    "a": {
+     "World": "create",
+     "String,UUID": "performAction",
+     "EntityPlayer,em,String[],boolean": "openActionMenu"
+    },
+    "b": {
+     "EntityPlayer": "openActionMenu"
+    }
+   },
+   "types": {}
+  },
+  "ec": {
+   "methods": {
+    "i": "getRenderLabelOffset",
+    "A": "suppressInventoryStripButton",
+    "v": "allowsBedInteraction",
+    "a": {
+     "int": "getHandModel"
+    },
+    "c": {
+     "int": "getHandTexture"
+    },
+    "b": {
+     "String,UUID": "performAction",
+     "EntityPlayer": "openActionMenu"
+    }
+   },
+   "types": {},
+   "fields": {}
+  },
+  "ed": {
+   "fields": {
+    "ar": "WaitTicks"
+   },
+   "methods": {
+    "i": "getRenderLabelOffset",
+    "u": "setWaitState",
+    "v": "allowsBedInteraction",
+    "a": {
+     "int": "getHandModel"
+    },
+    "c": {
+     "int": "getHandTexture"
+    },
+    "b": {
+     "String,UUID": "performAction",
+     "EntityPlayer": "openActionMenu"
+    }
+   },
+   "types": {}
+  },
+  "er": {
+   "fields": {
+    "ap": "BusyFlag",
+    "as": "WasCorrupting"
+   },
+   "methods": {
+    "i": "getRenderLabelOffset",
+    "v": "allowsBedInteraction",
+    "A": "suppressInventoryStripButton",
+    "a": {
+     "int": "getHandModel",
+     "String,UUID": "performAction"
+    },
+    "c": {
+     "int": "getHandTexture"
+    },
+    "b": {
+     "EntityPlayer": "openActionMenu"
+    }
+   },
+   "types": {}
+  },
+  "es": {
+   "methods": {
+    "i": "getRenderLabelOffset",
+    "A": "suppressInventoryStripButton",
+    "u": "startDoggy",
+    "a": {
+     "int": "getHandModel"
+    },
+    "c": {
+     "int": "getHandTexture"
+    },
+    "b": {
+     "String,UUID": "performAction",
+     "EntityPlayer": "openActionMenu"
+    }
+   },
+   "types": {},
+   "fields": {}
+  },
+  "ee": {
+   "methods": {
+    "i": "getRenderLabelOffset",
+    "p": "isCustomAnimatable",
+    "u": "sitDown",
+    "A": "isMenuOpenable",
+    "a": {
+     "int": "getHandModel",
+     "EntityPlayer": "hasCeilingAbovePlayer"
+    },
+    "c": {
+     "int": "getHandTexture",
+     "EntityPlayer": "openActionMenu"
+    },
+    "b": {
+     "String,UUID": "startAction",
+     "EntityPlayer": "onPlayerInteract"
+    }
+   },
+   "types": {},
+   "fields": {}
+  },
+  "eg": {
+   "fields": {
+    "ar": "ActionCountdown",
+    "aq": "MotionVariant"
+   },
+   "methods": {
+    "i": "getRenderLabelOffset",
+    "V": "resetAction",
+    "H": "openActionMenu",
+    "T": "getCameraPitch",
+    "ai": "getCameraYaw",
+    "A": "isMenuOpenable",
+    "a": {
+     "int": "getHandModel",
+     "String": "startActionByKey",
+     "EntityPlayer": "isLocalPlayer"
+    },
+    "c": {
+     "int": "getHandTexture"
+    },
+    "b": {
+     "String,UUID": "startAction",
+     "EntityPlayer": "onPlayerInteract"
+    }
+   },
+   "types": {}
+  },
+  "e5": {
+   "fields": {
+    "aq": "HeightOffset",
+    "as": "BoundPlayer"
+   },
+   "methods": {
+    "i": "getRenderLabelOffset",
+    "F": "isInOralState",
+    "a": {
+     "int": "getHandModel"
+    },
+    "c": {
+     "int": "getHandTexture"
+    },
+    "b": {
+     "String,UUID": "startAction",
+     "EntityPlayer": "onPlayerInteract"
+    }
+   },
+   "types": {}
+  },
+  "e7": {
+   "fields": {
+    "aw": "DefaultTribeColor",
+    "aA": "BodySizeKey"
+   },
+   "methods": {
+    "i": "getRenderLabelOffset",
+    "L": "getOutfitData",
+    "D": "getCustomizationSlots",
+    "a": {
+     "int": "getHandModel",
+     "EntityPlayer": "getInteractBox",
+     "StringBuilder": "serializeGirlSpecificData"
+    },
+    "c": {
+     "int": "getHandTexture"
+    },
+    "b": {
+     "int": "getTribeColor",
+     "String,UUID": "startAction",
+     "EntityPlayer": "onPlayerInteract"
+    }
+   },
+   "types": {}
+  },
+  "e9": {
+   "methods": {
+    "i": "getRenderLabelOffset",
+    "v": "isCustomModel",
+    "g": "onActionCleanup",
+    "a": {
+     "int": "getHandModel"
+    },
+    "c": {
+     "int": "getHandTexture"
+    },
+    "b": {
+     "String,UUID": "startAction",
+     "EntityPlayer": "onPlayerInteract"
+    }
+   },
+   "types": {},
+   "fields": {}
+  },
+  "fn": {
+   "types": {
+    "a": "JumpState"
+   },
+   "fields": {
+    "U": "TicksUntilBirthKey",
+    "R": "JumpYawKey",
+    "T": "HornyLevelKey",
+    "S": "JumpPhase",
+    "N": "JumpTicks",
+    "K": "LastOnGround",
+    "V": "ShouldJump"
+   },
+   "methods": {
+    "d": {
+     "": "spawnPregnancyParticles",
+     "EntityPlayer": "getByPlayerUuid"
+    },
+    "h": "performJump",
+    "e": "getTargetYaw",
+    "f": "getRandomYaw",
+    "g": "onBirth",
+    "a": {
+     "": "tryMate",
+     "EnumParticleTypes,em": "spawnParticles"
+    },
+    "b": {
+     "": "updateJump"
+    }
+   }
+  },
+  "fz": {
+   "fields": {
+    "N": "WildTimer",
+    "P": "ParticlePhaseTicks",
+    "O": "WildDespawnThreshold",
+    "M": "IsTamedKey"
+   },
+   "methods": {
+    "i": "getRenderLabelOffset",
+    "a": {
+     "String,UUID": "performAction"
+    },
+    "d": {
+     "EntityPlayer": "getByPlayerUuid"
+    }
+   },
+   "types": {}
+  },
+  "fn.a": {
+   "fields": {
+    "a": "AnimationId"
+   },
+   "methods": {
+    "a": "getAnimationId"
+   },
+   "types": {}
+  },
+  "f": {
+   "types": {
+    "a": "State"
+   },
+   "fields": {
+    "d": "Girl",
+    "a": "Player",
+    "c": "Navigation",
+    "e": "DataManager",
+    "f": "State",
+    "g": "WalkSpeed",
+    "h": "RunSpeed",
+    "b": "FollowDistance"
+   },
+   "methods": {
+    "a": {
+     "": "getState",
+     "GirlAiBase.a": "executeState",
+     "LivingDeathEvent": "onGirlDeath"
+    },
+    "b": {
+     "": "getMoveSpeed",
+     "RuntimeException": "rethrow"
+    },
+    "c": {
+     "": "moveToRandomNearbyPos"
+    }
+   }
+  },
+  "g": {
+   "types": {
+    "a": "EventHandler"
+   },
+   "fields": {
+    "q": "Girl",
+    "r": "Target",
+    "o": "RideMount",
+    "l": "DistanceToPlayer",
+    "i": "PlayerPos",
+    "j": "RandomMoveTimer",
+    "n": "ForcedAttackTicks",
+    "k": "AttackCooldownTicks",
+    "p": "BowChargeTicks",
+    "m": "FollowTimer",
+    "a": "Player",
+    "c": "Navigation",
+    "e": "DataManager",
+    "f": "State"
+   },
+   "methods": {
+    "a": {
+     "": "getState",
+     "GirlAiBase.a": "executeState",
+     "EntityLivingBase": "isValidTarget",
+     "RuntimeException": "rethrow"
+    },
+    "c": {
+     "": "moveToRandomNearbyPos"
+    },
+    "d": {
+     "": "meleeAttack"
+    },
+    "e": {
+     "": "shootArrow"
+    }
+   }
+  },
+  "df": {
+   "types": {},
+   "fields": {
+    "a": "Active"
+   },
+   "methods": {}
+  },
+  "h": {
+   "types": {},
+   "fields": {
+    "j": "FollowTimer",
+    "i": "StandbyTimer",
+    "d": "Girl",
+    "a": "Player",
+    "c": "Navigation",
+    "f": "State"
+   },
+   "methods": {
+    "a": {
+     "": "getState",
+     "GirlAiBase.a": "executeState",
+     "RuntimeException": "rethrow"
+    },
+    "b": {
+     "": "getMoveSpeed"
+    },
+    "c": {
+     "": "moveToRandomNearbyPos"
+    }
+   }
+  },
+  "gi": {
+   "types": {
+    "a": "HookState"
+   },
+   "methods": {
+    "a": {
+     "eb": "bindToNpc",
+     "int": "setLuck",
+     "double": "launch",
+     "": "syncHookedEntity",
+     "BlockPos": "handleBobbing",
+     "Entity": "canHookEntity"
+    },
+    "b": {
+     "": "getOwnerNpc",
+     "int": "setLureSpeed"
+    },
+    "g": "getOwnerNpcClient",
+    "c": "getRodDamage",
+    "d": "pullHookedEntity",
+    "e": "attemptHook",
+    "h": "smoothRotation"
+   },
+   "fields": {
+    "a": "Luck",
+    "b": "SummonerNpc",
+    "c": "RestTicks",
+    "d": "DiveTicks",
+    "e": "ArcAngle",
+    "f": "OwnerUuidKey",
+    "g": "HookedEntityIdKey",
+    "h": "TicksInAir",
+    "i": "HookedEntity",
+    "j": "ArcTicks",
+    "k": "InWater",
+    "l": "TicksInGround",
+    "n": "State",
+    "o": "LureSpeed"
+   }
+  },
+  "ay": {
+   "types": {
+    "a": "RandomHopAi",
+    "b": "SlimeMoveHelper",
+    "c": "MoveSlimeAi",
+    "d": "RandomHopAi"
+   },
+   "methods": {
+    "a": {
+     "int,boolean": "setSlimeSize",
+     "DataFixer": "registerFixes",
+     "Vec3d": "getNearbySlimes",
+     "Vec3d,double": "getNearbySlimesInRadius",
+     "EnumParticleTypes": "spawnParticle",
+     "": "getRandomJumpDelay"
+    },
+    "b": "updateSquish",
+    "c": "getSquishSound",
+    "d": "createInstance",
+    "e": "getPositionVec3d",
+    "f": "getJumpSound",
+    "g": "getParticleType",
+    "h": "getSlimeSize",
+    "i": "hasSlimeSize",
+    "j": "isSmallSlime",
+    "k": "isParticleSuppressed"
+   },
+   "fields": {
+    "a": "SquishTarget",
+    "b": "RainDurationTicks",
+    "c": "TimerKey",
+    "d": "SizeKey",
+    "e": "SquishFactor",
+    "f": "WasOnGround",
+    "g": "ActiveRains",
+    "h": "PrevSquishFactor"
+   }
+  },
+  "i": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "hatch",
+     "ff": "announceTribeJoin",
+     "AnimationEvent": "selectAnimation"
+    }
+   },
+   "fields": {
+    "e": "HatchDuration",
+    "d": "AnimationFactory",
+    "f": "TribeUuid",
+    "a": "AnimationController",
+    "b": "EggColorKey",
+    "c": "EggAgeKey"
+   }
+  },
+  "al": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "updateWanderTarget"
+    },
+    "b": "playWeowSound",
+    "c": "getMaxWanderDistance",
+    "d": "applyPathVelocity"
+   },
+   "fields": {
+    "a": "HitTick",
+    "d": "WaypointTicks",
+    "e": "IsAggroed",
+    "f": "TargetPos",
+    "h": "WaypointTickLimit",
+    "i": "WanderRange"
+   }
+  },
+  "hz": {
+   "types": {},
+   "methods": {
+    "a": {
+     "BlockPos": "getDoorBlock"
+    }
+   },
+   "fields": {
+    "a": "zDiff",
+    "b": "doorPosition",
+    "c": "entity",
+    "d": "doorBlock",
+    "e": "isDoorOpen",
+    "f": "xDiff",
+    "g": "closeDelay"
+   }
+  },
+  "ew": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "resetHomeData",
+     "StringBuilder": "generateAttributeString",
+     "em": "getAttributeStrings"
+    },
+    "b": "checkHomeData"
+   },
+   "fields": {
+    "as": "TribeColorKey",
+    "at": "AttributeStringKey",
+    "au": "HomePosKey",
+    "ap": "CachedTribeColor",
+    "av": "CachedAttributeString",
+    "aq": "CachedHomePos"
+   }
+  },
+  "cw": {
+   "types": {},
+   "methods": {
+    "a": {
+     "": "breed"
+    }
+   },
+   "fields": {
+    "a": "WorldObj",
+    "b": "BreedTimer",
+    "c": "Villager",
+    "d": "Mate"
+   }
+  },
+  "ho": {
+   "types": {
+    "a": "EventHandler"
+   },
+   "methods": {
+    "a": {
+     "EnderTeleportEvent": "onEnderTeleport"
+    }
+   },
+   "fields": {}
+  },
+  "bt": {
+   "types": {},
+   "methods": {
+    "a": "isFleeBlocked"
+   },
+   "fields": {
+    "a": "Manglelie",
+    "b": "SearchRadius"
+   }
+  },
+  "ez": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "b": "ParticleScale"
+   }
+  },
+  "aa": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "a": "TargetInterval",
+    "b": "RequiresDarkness"
+   }
+  },
+  "a3": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "a": "Galath",
+    "b": "DamagePos"
+   }
+  },
+  "cs": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "a": "Galath",
+    "b": "DamagePosition"
+   }
+  },
+  "bb": {
+   "types": {},
+   "methods": {},
+   "fields": {
+    "a": "Collidable"
+   }
+  }
+ }
+}

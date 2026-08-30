@@ -1,0 +1,70 @@
+package com.trolmastercard.sexmod;
+
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.CommandException;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.client.IClientCommand;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
+
+public class CommandWhitelistServer extends CommandBase implements IClientCommand {
+   public static final CommandWhitelistServer Instance = new CommandWhitelistServer();
+
+   public String getName() {
+      return "whitelistserver";
+   }
+
+   public String getUsage(ICommandSender sender) {
+      return "/whitelistserver";
+   }
+
+   public boolean allowUsageWithoutPrefix(ICommandSender sender, String string) {
+      return false;
+   }
+
+   public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
+      return true;
+   }
+
+
+   public void execute(MinecraftServer server, ICommandSender sender, String[] stringArray) throws CommandException {
+        boolean flag;
+        String string;
+        block14: {
+            block13: {
+                string = FilePersistence.getServerAddress();
+                if (string == null) {
+                    sender.sendMessage((ITextComponent)new TextComponentString(TextFormatting.YELLOW + "This is a multiplayer feature only"));
+                    return;
+                }
+                if (FilePersistence.isWhitelistedByFile(string)) {
+                    sender.sendMessage((ITextComponent)new TextComponentString(TextFormatting.GREEN + "Server is already whitelisted :)"));
+                    return;
+                }
+                if (stringArray.length <= 0 || !"confirm".equals(stringArray[0])) {
+                    flag = false;
+                    break block14;
+                }
+                flag = true;
+                break block14;
+            }
+        }
+        boolean flag2 = flag;
+        if (!flag2) {
+            sender.sendMessage((ITextComponent)new TextComponentString(TextFormatting.YELLOW + "By whitelisting this server, you allow the server to send you the custom models that are used on it"));
+            sender.sendMessage((ITextComponent)new TextComponentString(TextFormatting.RED + "ONLY WHITELIST SERVERS, WHOSE SERVER OWNER YOU KNOW AND TRUST"));
+            sender.sendMessage((ITextComponent)new TextComponentString(TextFormatting.YELLOW + "to confirm your decision type:"));
+            sender.sendMessage((ITextComponent)new TextComponentString(TextFormatting.GREEN + "/whitelistserver confirm"));
+            return;
+        }
+        FilePersistence.whitelistServer(string);
+        sender.sendMessage((ITextComponent)new TextComponentString(TextFormatting.GREEN + "confirmed :)"));
+        FilePersistence.requestModelChecksums();
+    }
+
+   private static CommandException rethrow(CommandException command) {
+      return command;
+   }
+}

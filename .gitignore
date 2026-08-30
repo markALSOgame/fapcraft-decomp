@@ -1,0 +1,26 @@
+# Gradle build artifacts
+forge/.gradle/
+forge/build/
+forge/run/
+
+# Compiled classes
+*.class
+
+# Decompile helper tools (not part of the mod)
+cfr-*.jar
+vineflower-*.jar
+sources_argfile.txt
+
+# Duplicate local artifact
+fapcraft-1.1.0-rebuilt.jar
+
+# Python
+__pycache__/
+*.pyc
+
+# IDE / OS
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db
