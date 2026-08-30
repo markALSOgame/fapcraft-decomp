@@ -659,8 +659,8 @@ public class ManglelieNpcRenderer extends GeoGirlRenderer<ManglelieNpc> {
       bufferBuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
 
       try {
-         Minecraft.getMinecraft().renderEngine.bindTexture(this.d(this.RenderEntity));
-      } catch (IOException error3) {
+         Minecraft.getMinecraft().renderEngine.bindTexture(this.getEntityTexture(this.RenderEntity));
+      } catch (Exception error3) {
          error3.printStackTrace();
       }
 

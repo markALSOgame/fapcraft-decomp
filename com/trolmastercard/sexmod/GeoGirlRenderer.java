@@ -98,7 +98,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
       this.shadowSize = 0.2F;
    }
 
-   protected ResourceLocation d(T t) throws IOException {
+   public ResourceLocation getEntityTexture(T t) {
       label38: {
          if (!(t.world instanceof PreviewWorld) && t.getSexPlayerUuid() != null) {
             break label38;
@@ -107,7 +107,11 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
          ResourceLocation location = TextureCache.get(Mc.getSession().getProfile().getId());
 
             if (location == null) {
-               return this.a(Mc.getSession().getProfile().getId(), t.world);
+               try {
+                  return this.a(Mc.getSession().getProfile().getId(), t.world);
+               } catch (Exception e) {
+                  return new ResourceLocation("sexmod", "textures/player/steve.png");
+               }
             }
 
             return location;
@@ -116,7 +120,11 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
       ResourceLocation location2 = TextureCache.get(t.getSexPlayerUuid());
 
          if (location2 == null) {
-            return this.a(t.getSexPlayerUuid(), t.world);
+            try {
+               return this.a(t.getSexPlayerUuid(), t.world);
+            } catch (Exception e) {
+               return new ResourceLocation("sexmod", "textures/player/steve.png");
+            }
          }
 
       return location2;
@@ -382,7 +390,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
       }
 
       label30: {
-         IOException error;
+         Exception error;
          try {
             Tessellator.getInstance().draw();
             this.undoBodyScale();
@@ -393,9 +401,9 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
             bufferBuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
 
             try {
-               Minecraft.getMinecraft().renderEngine.bindTexture(this.d(this.RenderEntity));
+               Minecraft.getMinecraft().renderEngine.bindTexture(this.getEntityTexture(this.RenderEntity));
                break label30;
-            } catch (IOException error2) {
+            } catch (Exception error2) {
                error = error2;
             }
          } catch (IllegalStateException error3) {

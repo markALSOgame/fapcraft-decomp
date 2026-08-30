@@ -567,8 +567,8 @@ public class GalathNpcRenderer extends GeoGirlRenderer<GalathNpc> implements Gir
       bufferBuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
 
       try {
-         Minecraft.getMinecraft().renderEngine.bindTexture(this.d(this.RenderEntity));
-      } catch (IOException error2) {
+         Minecraft.getMinecraft().renderEngine.bindTexture(this.getEntityTexture(this.RenderEntity));
+      } catch (Exception error2) {
          error2.printStackTrace();
       }
 
