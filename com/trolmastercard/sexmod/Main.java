@@ -25,7 +25,7 @@ import software.bernie.geckolib3.GeckoLib;
 public class Main {
    @Instance
    public static Main instance;
-   @SidedProxy(clientSide = "ClientProxy", serverSide = "CommonProxy")
+   @SidedProxy(clientSide = "com.trolmastercard.sexmod.ClientProxy", serverSide = "com.trolmastercard.sexmod.CommonProxy")
    public static CommonProxy proxy;
    public static final Logger LOGGER = LogManager.getLogger("sexmod");
 

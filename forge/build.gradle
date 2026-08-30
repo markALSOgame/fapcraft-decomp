@@ -72,6 +72,25 @@ task fatJar(type: Jar) {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
+jar {
+    manifest {
+        attributes 'FMLCorePluginContainsFMLMod': 'true'
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    } {
+        exclude 'META-INF/**'
+        exclude '**/*.RSA'
+        exclude '**/*.SF'
+        exclude '**/*.DSA'
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+reobf {
+    fatJar {}
+}
+
 gradle.taskGraph.whenReady { taskGraph ->
     tasks.getAssets.enabled = false
 }
