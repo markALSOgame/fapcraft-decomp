@@ -1,5 +1,7 @@
 # Fapcraft (com.trolmastercard.sexmod)
 
+[English README](README.md) | [Русская версия](README_RU.md)
+
 Decompiled copy of the Minecraft Forge 1.12.2 mod **Fapcraft** (`com.trolmastercard.sexmod`, TMC 1.1.0).
 
 ## Contents
