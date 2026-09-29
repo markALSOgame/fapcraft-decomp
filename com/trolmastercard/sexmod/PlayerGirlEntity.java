@@ -27,6 +27,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
@@ -58,7 +59,7 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
 
    protected PlayerGirlEntity(World world) {
       super(world);
-      this.setSize(0.01F, 0.01F);
+      this.setSize(0.1F, 0.1F);
       AllPlayerGirls.add(this);
    }
 
@@ -301,6 +302,32 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
       player.sendPlayerAbilities();
    }
 
+   // Restored from the original bytecode. This is the void (UUID) overload that the
+   // decompilation had merged into hasGirl(UUID) below - it is what actually grabs the
+   // player and starts the interaction. Without it the girl enters the busy state but
+   // never applies (or ever releases) the player's noClip/flying/invisible state, which
+   // is what left the player unable to move until the world was reloaded.
+   protected void startInteraction(UUID uuid) {
+      EntityPlayerMP entityPlayerMP = (EntityPlayerMP)this.world.getPlayerEntityByUUID(uuid);
+      EntityPlayerMP entityPlayerMP2 = (EntityPlayerMP)this.world.getPlayerEntityByUUID((UUID)((Optional)this.DataManager.get(BoundPlayerKey)).get());
+      NetworkHandler.channel.sendTo((IMessage)new PacketSetPlayerMovement(false), entityPlayerMP);
+      NetworkHandler.channel.sendTo((IMessage)new PacketSetPlayerMovement(false), entityPlayerMP2);
+      this.rotationYaw = 0.0F;
+      this.rotationYawHead = 0.0F;
+      entityPlayerMP.rotationYaw = 180.0F;
+      entityPlayerMP.rotationYawHead = 180.0F;
+      entityPlayerMP.setNoGravity(true);
+      entityPlayerMP.noClip = true;
+      Vec3d vec3d = this.getPositionVector();
+      entityPlayerMP.setPositionAndUpdate(vec3d.x, vec3d.y, vec3d.z + 1.0);
+      entityPlayerMP.capabilities.isFlying = true;
+      entityPlayerMP2.capabilities.isFlying = true;
+      this.teleportPlayerInFront(uuid);
+      this.DataManager.set(GirlEntity.BusyKey, true);
+      this.setTargetPos(vec3d);
+      this.b(0.0F);
+   }
+
    public static boolean hasGirl(UUID uuid) {
       C_();
 
@@ -332,7 +359,7 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
    }
 
    public AxisAlignedBB getEntityBoundingBox() {
-      return super.getEntityBoundingBox().offset(0.0, 0.5, 0.0);
+      return super.getEntityBoundingBox().offset(0.0, 0.0, 0.0);
    }
 
    protected EntityPlayer j() {
@@ -387,7 +414,7 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
       EntityPlayerMP serverPlayer2 = (EntityPlayerMP)this.world.getPlayerEntityByUUID((UUID)((Optional)this.DataManager.get(BoundPlayerKey)).get());
       NetworkHandler.channel.sendTo(new PacketSetPlayerMovement(false), serverPlayer);
       NetworkHandler.channel.sendTo(new PacketSetPlayerMovement(false), serverPlayer2);
-      this.hasGirl(uuid);
+      this.handleGirlUuidEvent(uuid);
       this.rotationYaw = 0.0F;
       this.rotationYawHead = 0.0F;
       serverPlayer.rotationYaw = 180.0F;
@@ -471,7 +498,8 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
             EntityPlayer entityPlayer;
             block16: {
                 PlayerGirlEntity.C_();
-                this.isInteractionAllowed();
+                // original ei.func_70619_bc calls the inherited em.l()V here, not ei.l()Z
+                this.advanceAnimationState();
                 this.G();
                 UUID uUID = this.getBoundPlayerUuid();
                 try {
@@ -587,7 +615,8 @@ public abstract class PlayerGirlEntity extends InventoryGirlEntity {
         }
         try {
             if (this.world.isRemote) {
-                this.isOwnedByLocalPlayer();
+                // original ei.D() calls ei.n()V here, not the inherited em.n()Z
+                this.n();
                 return;
             }
         }

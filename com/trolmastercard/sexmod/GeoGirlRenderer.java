@@ -98,14 +98,6 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
       this.shadowSize = 0.2F;
    }
 
-   public ResourceLocation getEntityTexture(T t) {
-      try {
-         return this.d(t);
-      } catch (Exception e) {
-         return new ResourceLocation("sexmod", "textures/player/steve.png");
-      }
-   }
-
    protected ResourceLocation d(T t) {
       label38: {
          if (!(t.world instanceof PreviewWorld) && t.getSexPlayerUuid() != null) {
@@ -367,6 +359,7 @@ public abstract class GeoGirlRenderer<T extends GirlEntity & IAnimatable> extend
         BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
         try {
             bufferBuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
+
             this.bindTexture(Objects.requireNonNull(this.getEntityTexture(this.RenderEntity)));
             this.ProcessedBones.clear();
             flag2 = ((GirlEntity)t).isTracked();

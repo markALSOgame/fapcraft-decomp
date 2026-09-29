@@ -572,7 +572,7 @@ implements BooleanCheck {
     public void registerControllers(AnimationData animationData) {
         try {
             if (this.ActionController == null) {
-                this.canStartInteraction();
+                this.initAnimationControllers();
             }
         }
         catch (RuntimeException runtimeException) {

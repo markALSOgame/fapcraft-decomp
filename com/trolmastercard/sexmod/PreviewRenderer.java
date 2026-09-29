@@ -144,7 +144,10 @@ public class PreviewRenderer extends GeoEntityRenderer<PreviewEntity> {
       }
    }
 
-   public boolean a(PreviewEntity previewEntity, ICamera iCamera, double d, double d2, double d3) {
+   // Render.shouldRender is what RenderManager calls for culling; the original carries
+   // an ACC_BRIDGE shouldRender(Entity, ICamera, DDD) that casts and calls this method.
+   @Override
+   public boolean shouldRender(PreviewEntity previewEntity, ICamera iCamera, double d, double d2, double d3) {
       return super.shouldRender(previewEntity, iCamera, d, d2, d3);
    }
 
@@ -206,7 +209,11 @@ public class PreviewRenderer extends GeoEntityRenderer<PreviewEntity> {
     }
 
 
-   public void a(PreviewEntity previewEntity, double d2, double d3, double d4, float f, float f2) {
+   // Must keep the GeoEntityRenderer.doRender name: the original class carries an
+   // ACC_BRIDGE doRender(EntityLivingBase,...) that casts and calls this method, so
+   // RenderManager dispatch only reaches it when it is a real override.
+   @Override
+   public void doRender(PreviewEntity previewEntity, double d2, double d3, double d4, float f, float f2) {
         EntityPlayer entityPlayer;
         UUID uUID;
         EntityLivingBase girl;
@@ -388,7 +395,11 @@ public class PreviewRenderer extends GeoEntityRenderer<PreviewEntity> {
       return vec3d.subtract(vec3d3);
    }
 
-   public void a(GeoModel model, PreviewEntity previewEntity, float f, float f2, float f3, float f4, float f5) {
+   // Same as doRender above: the original carries an ACC_BRIDGE
+   // render(GeoModel, Object, FFFFF) that casts and calls this method, and
+   // GeoEntityRenderer.doRender dispatches the model render through that name.
+   @Override
+   public void render(GeoModel model, PreviewEntity previewEntity, float f, float f2, float f3, float f4, float f5) {
       GlStateManager.disableCull();
       GlStateManager.enableRescaleNormal();
       BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();

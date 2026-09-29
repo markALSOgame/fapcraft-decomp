@@ -730,7 +730,7 @@ extends GirlEntity {
             this.setCurrentAction(GirlAnimationState.RIDE_MOMMY_HEAD);
             this.PendingMommyUuid = null;
             if (f_2.getCurrentAction() == GirlAnimationState.HUG_MANG) {
-                f_2.getChildMangle(false);
+                f_2.setShouldBeAtTargetPos(false);
                 f_2.setCurrentAction((GirlAnimationState)null);
             }
         }

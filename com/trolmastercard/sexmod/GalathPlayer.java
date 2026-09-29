@@ -462,7 +462,7 @@ implements BoxSource {
     @Override
     @SideOnly(value=Side.CLIENT)
     public void registerControllers(AnimationData animationData) {
-        this.canStartInteraction();
+        this.initAnimationControllers();
         this.ActionController.registerSoundListener(arg1 -> {
             switch (arg1.sound) {
                 case "attackDone": {

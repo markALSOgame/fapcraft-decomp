@@ -57,7 +57,7 @@ public class PlayerLoginHandler {
         if (uuid.equals(ElliePlayerOwnerUuid)) {
             this.spawnElliePlayer(world, (EntityPlayer)serverPlayer, uuid);
         }
-        GalathNpc.getByPlayer((EntityPlayer)serverPlayer);
+        GalathNpc.c(serverPlayer);
     }
 
    void spawnBiaPlayer(World world, EntityPlayer player, UUID uuid) {

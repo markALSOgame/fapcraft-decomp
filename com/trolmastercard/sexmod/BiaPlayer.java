@@ -324,7 +324,7 @@ extends PlayerGirlEntity {
                                     throw BiaPlayer.rethrow(runtimeException);
                                 }
                             }
-                            this.hasGirl(entityPlayer.getPersistentID());
+                            this.startInteraction(entityPlayer.getPersistentID());
                         }
                         this.ActionCountdown = GirlEntity.j;
                         return;
@@ -567,7 +567,7 @@ extends PlayerGirlEntity {
     public void registerControllers(AnimationData animationData) {
         try {
             if (this.ActionController == null) {
-                this.canStartInteraction();
+                this.initAnimationControllers();
             }
         }
         catch (RuntimeException runtimeException) {

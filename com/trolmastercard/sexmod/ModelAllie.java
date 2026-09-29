@@ -13,7 +13,7 @@ public class ModelAllie extends GirlGeoModel<GirlEntity> {
    }
 
    @Override
-   public ResourceLocation getTextureLocation(GirlEntity girl) {
+   public ResourceLocation getModelLocation(GirlEntity girl) {
       try {
          if (girl.world instanceof PreviewWorld) {
             return this.TextureLayers[0];

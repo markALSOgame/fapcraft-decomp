@@ -319,7 +319,7 @@ public class GirlInteractHandler {
 
       try {
          if (playerGirl2.canStartInteraction()) {
-            playerGirl2.startInteraction(Minecraft.getMinecraft().player);
+            playerGirl2.canInteract(Minecraft.getMinecraft().player);
          }
       } catch (RuntimeException error7) {
          throw rethrow(error7);
@@ -371,7 +371,7 @@ public class GirlInteractHandler {
       try {
          if (playerGirl.canStartInteraction()) {
             playerGirl.Accept = false;
-            playerGirl.startInteraction(player2);
+            playerGirl.canInteract(player2);
          }
       } catch (RuntimeException error5) {
          throw rethrow(error5);

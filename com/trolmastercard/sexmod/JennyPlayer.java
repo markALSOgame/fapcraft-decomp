@@ -147,7 +147,7 @@ extends PlayerGirlEntity {
                         throw JennyPlayer.rethrow(runtimeException);
                     }
                 }
-                this.hasGirl(entityPlayer.getPersistentID());
+                this.startInteraction(entityPlayer.getPersistentID());
                 entityPlayer.setPositionAndUpdate(this.getPositionVector().x, this.w().y, this.getPositionVector().z);
                 this.teleportServerPlayerInFront((EntityPlayerMP)entityPlayer, false);
                 entityPlayer.moveRelative(0.0f, 0.0f, 0.0f, 0.0f);
@@ -459,7 +459,7 @@ extends PlayerGirlEntity {
     public void registerControllers(AnimationData animationData) {
         try {
             if (this.ActionController == null) {
-                this.canStartInteraction();
+                this.initAnimationControllers();
             }
         }
         catch (RuntimeException runtimeException) {

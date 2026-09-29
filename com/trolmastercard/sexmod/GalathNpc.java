@@ -733,7 +733,7 @@ BoxSource {
                     this.void_c();
                 }
                 try {
-                    this.getPlayerFrontPos();
+                    this.aa();
                     super.onUpdate();
                     if (!flag) break block9;
                     this.au();

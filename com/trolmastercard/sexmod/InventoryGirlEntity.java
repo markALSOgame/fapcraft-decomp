@@ -117,7 +117,8 @@ public abstract class InventoryGirlEntity extends GirlEntity {
                         throw InventoryGirlEntity.rethrow(runtimeException);
                     }
                 }
-                List<EntityMob> list = this.world.getEntitiesWithinAABB(EntityMob.class, new AxisAlignedBB(this.posX - 7.0, this.posY - 1.0, this.posZ - 7.0, this.posX + 7.0, this.posY + 1.0, this.posZ + 7.0));
+                // original e2.func_70619_bc builds the box from two BlockPos, not raw doubles
+                List<EntityMob> list = this.world.getEntitiesWithinAABB(EntityMob.class, new AxisAlignedBB(new BlockPos(this.posX - 7.0, this.posY - 1.0, this.posZ - 7.0), new BlockPos(this.posX + 7.0, this.posY + 1.0, this.posZ + 7.0)));
                 try {
                     i = list.isEmpty() ? 4 : 1;
                 }

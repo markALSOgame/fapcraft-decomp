@@ -2,6 +2,7 @@ package com.trolmastercard.sexmod;
 
 import javax.annotation.Nullable;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
@@ -38,7 +39,11 @@ public class CultistRenderer extends Render<CultistEntity> {
    }
 
 
-   public void a(CultistEntity cultistEntity, double d, double d2, double d3, float f, float f2) {
+   // Must keep the Render.doRender name: the original class carries an ACC_BRIDGE
+   // doRender(Entity,...) that casts and calls this method, so RenderManager dispatch
+   // only reaches it when it is a real override.
+   @Override
+   public void doRender(CultistEntity cultistEntity, double d, double d2, double d3, float f, float f2) {
         ResourceLocation resourceLocation;
         block6: {
             GL11.glDisable((int)2896);

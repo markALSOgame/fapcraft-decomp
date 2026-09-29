@@ -251,7 +251,8 @@ public class ModelGoblin extends GirlGeoModel<GirlEntity> {
             }
             try {
                 try {
-                    if (this.Mc.gameSettings.thirdPersonView == 0 && this.Mc.player.getPersistentID().equals(((PlayerGirlEntity)girl).m())) break block10;
+                    // ci.a(AnimationProcessor, GirlEntity) invokes ei.m(), which returns UUID
+                    if (this.Mc.gameSettings.thirdPersonView == 0 && this.Mc.player.getPersistentID().equals(((PlayerGirlEntity)girl).getBoundPlayerUuid())) break block10;
                 }
                 catch (RuntimeException runtimeException) {
                     throw ModelGoblin.rethrow(runtimeException);

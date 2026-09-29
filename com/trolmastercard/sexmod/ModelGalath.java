@@ -593,27 +593,6 @@ public class ModelGalath extends GirlGeoModel<GirlEntity> {
 
 
    @Override
-   public ResourceLocation getModelLocation(GirlEntity girl) {
-        try {
-            if (girl.world instanceof PreviewWorld) {
-                return this.TextureLayers[0];
-            }
-        }
-        catch (RuntimeException runtimeException) {
-            throw ModelGalath.rethrow(runtimeException);
-        }
-        try {
-            if (((BoxSource)((Object)girl)).hasMangleCompanion()) {
-                return this.TextureLayers[2];
-            }
-        }
-        catch (RuntimeException runtimeException) {
-            throw ModelGalath.rethrow(runtimeException);
-        }
-        return this.TextureLayers[(Integer)girl.getDataManager().get(GirlEntity.OutfitIndexKey)];
-    }
-
-   @Override
    public String[] getHelmetBones() {
       return new String[]{"armorHelmet"};
    }

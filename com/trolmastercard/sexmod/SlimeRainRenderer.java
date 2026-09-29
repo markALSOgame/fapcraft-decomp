@@ -3,6 +3,7 @@ package com.trolmastercard.sexmod;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 
 public class SlimeRainRenderer extends RenderLiving<SlimeRainEntity> {
@@ -13,7 +14,10 @@ public class SlimeRainRenderer extends RenderLiving<SlimeRainEntity> {
       this.addLayer(new SlimeRainLayer(this));
    }
 
-   public void render(SlimeRainEntity slimeRainEntity, double d, double d2, double d3, float f, float f2) {
+   // Must keep the RenderLiving.doRender name: the original class carries three
+   // ACC_BRIDGE doRender(...) overloads that cast and call this method.
+   @Override
+   public void doRender(SlimeRainEntity slimeRainEntity, double d, double d2, double d3, float f, float f2) {
       this.shadowSize = 0.25F * slimeRainEntity.getSlimeSize();
       super.doRender(slimeRainEntity, d, d2, d3, f, f2);
    }

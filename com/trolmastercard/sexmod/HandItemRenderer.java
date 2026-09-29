@@ -67,8 +67,11 @@ public class HandItemRenderer {
                                 f3 = ((Float)ObfuscationReflectionHelper.getPrivateValue(ItemRenderer.class, itemRenderer, "prevEquippedProgressMainHand")).floatValue();
                                 f2 = ((Float)ObfuscationReflectionHelper.getPrivateValue(ItemRenderer.class, itemRenderer, "equippedProgressMainHand")).floatValue();
                             } else {
-                                f3 = ((Float)ObfuscationReflectionHelper.getPrivateValue(ItemRenderer.class, itemRenderer, "prevEquippedProgressMainHand")).floatValue();
-                                f2 = ((Float)ObfuscationReflectionHelper.getPrivateValue(ItemRenderer.class, itemRenderer, "equippedProgressMainHand")).floatValue();
+                                // In production the field carries its SRG name, not the MCP one -
+                                // reflecting by the MCP name throws NoSuchFieldException and floods
+                                // chat with the stack trace. Both names are present in the original.
+                                f3 = ((Float)ObfuscationReflectionHelper.getPrivateValue(ItemRenderer.class, itemRenderer, "field_187469_f")).floatValue();
+                                f2 = ((Float)ObfuscationReflectionHelper.getPrivateValue(ItemRenderer.class, itemRenderer, "field_187470_g")).floatValue();
                             }
                             this.EquipProgress = 2.0f - (f3 + (f2 - f3) * renderSpecificHandEvent.getPartialTicks());
                         }

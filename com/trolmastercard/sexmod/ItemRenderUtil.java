@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformT
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
@@ -78,7 +79,12 @@ public class ItemRenderUtil extends GeoItemRenderer<ItemDragonStaff> {
       IsAnimated = flag;
    }
 
-   public void a(ItemDragonStaff item, ItemStack stack) {
+   // Must keep the GeoItemRenderer.render name: the erased descriptor is
+   // (Item, ItemStack) and TileEntityItemStackRenderer dispatches through it, so the
+   // original class carries an ACC_BRIDGE render(Item, ItemStack) that calls this
+   // method. Without the override nothing sets Offset2f/HeldItem/AnimationTime.
+   @Override
+   public void render(ItemDragonStaff item, ItemStack stack) {
       EntityPlayer player2 = null;
 
       for (EntityPlayer player3 : this.Mc.world.playerEntities) {

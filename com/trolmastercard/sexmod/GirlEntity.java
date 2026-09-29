@@ -2053,7 +2053,14 @@ public abstract class GirlEntity extends EntityCreature implements IAnimatable {
    }
 
    public Vec3d a(double d) {
-      EntityPlayer player = this.world.getPlayerEntityByUUID(this.getSexPlayerUuid());
+      EntityPlayer player = this.getSexPlayerUuid() == null ? null : this.world.getPlayerEntityByUUID(this.getSexPlayerUuid());
+
+      // The original dereferences `player` unguarded, which kills the tick (and with it the
+      // whole integrated server) as soon as a girl has no owner player in the world.
+      if (player == null) {
+         return this.getPositionVector();
+      }
+
       float f = player.rotationYaw;
       return player.getPositionVector().add(-Math.sin(f * (Math.PI / 180.0)) * d, 0.0, Math.cos(f * (Math.PI / 180.0)) * d);
    }

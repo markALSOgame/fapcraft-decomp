@@ -420,7 +420,7 @@ public class ItemGalathCoin extends Item implements IAnimatable {
          GalathOwnershipData.setOwnershipByPlayer(player, galath);
          player.world.spawnEntity(galath);
          if (GalathOwnershipData.isOwnerOnline(player.getPersistentID())) {
-            galath.getScale();
+            galath.boolean_v();
          }
       } catch (ConcurrentModificationException error5) {
          throw rethrow(error5);
@@ -456,7 +456,7 @@ public class ItemGalathCoin extends Item implements IAnimatable {
    public static void desummonGalath(GalathNpc galath) {
       galath.setCurrentAction(GirlAnimationState.GALATH_DE_SUMMON);
       galath.aC();
-      galath.getChildMangle(true);
+      galath.setShouldBeAtTargetPos(true);
       galath.setTargetPos(galath.getPositionVector());
       galath.b(galath.rotationYaw);
    }

@@ -138,7 +138,8 @@ implements VoidCallback {
         UUID uUID = this.getSexPlayerUuid();
         try {
             if (uUID == null) {
-                this.getGirlUuid();
+                // original el.b() calls el.f:()V here, not the inherited em.f:()Ljava/util/UUID;
+                this.void_f();
                 return;
             }
         }
@@ -148,7 +149,7 @@ implements VoidCallback {
         EntityPlayer entityPlayer = this.world.getPlayerEntityByUUID(uUID);
         try {
             if (entityPlayer == null) {
-                this.getGirlUuid();
+                this.void_f();
                 return;
             }
         }
@@ -347,7 +348,8 @@ implements VoidCallback {
         catch (RuntimeException runtimeException) {
             throw EllieNpc.rethrow(runtimeException);
         }
-        this.m();
+        // original el.func_70071_h_ calls el.m:()V here, not the inherited em.m:()Z
+        this.void_m();
         this.updateCarryHud();
     }
 
@@ -793,7 +795,8 @@ implements VoidCallback {
         UUID uUID = this.getSexPlayerUuid();
         try {
             if (uUID == null) {
-                this.getGirlUuid();
+                // original el.n() calls el.f:()V here, not the inherited em.f:()Ljava/util/UUID;
+                this.void_f();
                 return;
             }
         }
@@ -803,7 +806,7 @@ implements VoidCallback {
         EntityPlayer entityPlayer = this.world.getPlayerEntityByUUID(uUID);
         try {
             if (entityPlayer == null) {
-                this.getGirlUuid();
+                this.void_f();
                 return;
             }
         }

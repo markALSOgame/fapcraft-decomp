@@ -320,7 +320,7 @@ extends PlayerGirlEntity {
             }
             this.DataManager.set(GirlEntity.BlowjobStageKey, "");
             this.DataManager.set(GirlEntity.OutfitIndexKey, 0);
-            this.hasGirl(entityPlayer.getPersistentID());
+            this.startInteraction(entityPlayer.getPersistentID());
             EntityPlayerMP entityPlayerMP = (EntityPlayerMP)this.world.getPlayerEntityByUUID((UUID)((Optional)this.DataManager.get(BoundPlayerKey)).get());
             NetworkHandler.channel.sendTo((IMessage)new PacketSetPlayerMovement(false), (EntityPlayerMP)entityPlayer);
             NetworkHandler.channel.sendTo((IMessage)new PacketSetPlayerMovement(false), entityPlayerMP);

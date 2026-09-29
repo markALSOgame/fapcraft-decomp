@@ -219,7 +219,7 @@ extends PlayerGirlEntity {
             throw SlimePlayer.rethrow(runtimeException);
         }
         NetworkHandler.channel.sendTo((IMessage)new PacketSetPlayerMovement(false), (EntityPlayerMP)entityPlayer);
-        this.hasGirl(entityPlayer.getPersistentID());
+        this.startInteraction(entityPlayer.getPersistentID());
         entityPlayer.rotationYaw = this.I().floatValue();
         this.AimYaw = this.I().floatValue();
         entityPlayer.setPosition(this.w().x, this.w().y, this.w().z);
@@ -356,7 +356,7 @@ extends PlayerGirlEntity {
     public void registerControllers(AnimationData animationData) {
         try {
             if (this.ActionController == null) {
-                this.canStartInteraction();
+                this.initAnimationControllers();
             }
         }
         catch (RuntimeException runtimeException) {

@@ -201,7 +201,7 @@ extends PlayerGirlEntity {
             }
             try {
                 if (this.WaitTicks == 25) {
-                    this.hasGirl(entityPlayer.getPersistentID());
+                    this.startInteraction(entityPlayer.getPersistentID());
                     entityPlayer.moveRelative(0.0f, 0.0f, 0.0f, 0.0f);
                     entityPlayer.setPositionAndUpdate(this.getPositionVector().x, this.w().y, this.getPositionVector().z);
                     this.setCurrentAction(GirlAnimationState.COWGIRL_SITTING_INTRO);
@@ -444,7 +444,7 @@ extends PlayerGirlEntity {
     public void registerControllers(AnimationData animationData) {
         try {
             if (this.ActionController == null) {
-                this.canStartInteraction();
+                this.initAnimationControllers();
             }
         }
         catch (RuntimeException runtimeException) {

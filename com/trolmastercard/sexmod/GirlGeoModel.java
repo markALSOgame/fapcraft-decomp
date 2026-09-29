@@ -40,6 +40,7 @@ public abstract class GirlGeoModel<T extends GirlEntity> extends GirlAnimatedGeo
    );
    public static final List<String> CamBones = Arrays.asList("boyCam", "girlCam");
    public static boolean RenderBraStrings = true;
+
    protected ResourceLocation[] TextureLayers = this.a();
    protected Minecraft Mc = Minecraft.getMinecraft();
 
@@ -48,18 +49,19 @@ public abstract class GirlGeoModel<T extends GirlEntity> extends GirlAnimatedGeo
 
    protected abstract ResourceLocation[] a();
 
-   public ResourceLocation getSkinLocation() {
-      return null;
-   }
+   // original cv declares both of these abstract (cv.b() and cv.b(em))
+   public abstract ResourceLocation getSkinLocation();
+
+   public abstract ResourceLocation getAnimationFileLocation(T girl);
 
    @Override
    public ResourceLocation getTextureLocation(T girl) {
-      return this.a(girl);
+      return this.getSkinLocation();
    }
 
    @Override
    public ResourceLocation getModelLocation(T girl) {
-      return this.TextureLayers[0];
+      return this.a(girl);
    }
 
    public ResourceLocation a(GirlEntity girl) {
@@ -421,6 +423,7 @@ public abstract class GirlGeoModel<T extends GirlEntity> extends GirlAnimatedGeo
                     boolean flag5;
                     IBone iBone5;
                     boolean flag6 = this.isDefaultSkin(t);
+
                     try {
                         animationProcessor.getBone("rightArmAlex").setHidden(flag6);
                         animationProcessor.getBone("rightLowerArmAlex").setHidden(flag6);
